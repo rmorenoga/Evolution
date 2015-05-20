@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="lib/jeaf-1.0.jar" sourcepath="/home/rodrigo/Java/JEAF/JEAF-master/evolutionary_algorithms/devel/src"/>
+	<classpathentry kind="lib" path="lib">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="VREPControl/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/lib/CMA.jar"/>
+	<classpathentry kind="lib" path="lib/lib/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/lib/commons-configuration-1.5.jar"/>
+	<classpathentry kind="lib" path="lib/lib/commons-lang-2.4.jar"/>
+	<classpathentry kind="lib" path="lib/lib/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/lib/commons-math-2.0.jar"/>
+	<classpathentry kind="lib" path="lib/lib/log4j-1.2.11.jar"/>
+	<classpathentry kind="lib" path="lib/lib/mpj.jar"/>
+	<classpathentry kind="lib" path="lib/lib/mtj-0.9.11.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

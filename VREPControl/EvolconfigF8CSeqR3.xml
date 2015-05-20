@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Document   : EvolutionaryAlgorithm.xml
+    Created on : September 12, 2014
+    Author     : rodr
+    Description:
+        Purpose of the document follows.
+-->
+<!-- <!DOCTYPE EvolutionaryAlgorithm SYSTEM "es/udc/gii/common/eaf/config/dtd/EvolutionaryAlgorithm.dtd"> -->
+<EvolutionaryAlgorithm>
+  <Class>es.udc.gii.common.eaf.algorithm.parallel.ParallelEvolutionaryAlgorithm</Class>
+  <EA>es.udc.gii.common.eaf.algorithm.EvolutionaryStrategy</EA>
+  <Comparator>es.udc.gii.common.eaf.algorithm.fitness.comparator.MaximizingFitnessComparator</Comparator>
+  <Lambda>1</Lambda>
+  <EvaluationStrategy>
+     <Class>es.udc.gii.common.eaf.algorithm.parallel.evaluation.DistributedEvaluation</Class>
+     <ChunkSize>1</ChunkSize>
+     <Races>1</Races>
+  </EvaluationStrategy>
+  <Population>
+		 <Size>32</Size>
+			<Individual>
+			<Class> es.udc.gii.common.eaf.algorithm.population.Individual</Class>
+			<Chromosome size="3">
+			</Chromosome>
+			</Individual>
+  </Population>
+  <OperatorChains>
+    <ReproductionChain>
+    	<Operator>
+    		<Class>es.udc.gii.common.eaf.algorithm.operator.reproduction.mutation.EvolutionaryStrategyMutation</Class>
+   		 	<Operator>es.udc.gii.common.eaf.algorithm.operator.reproduction.mutation.de.DEMutationOperator</Operator>
+    	<MutationStrategy>
+   			 <Class>es.udc.gii.common.eaf.algorithm.operator.reproduction.mutation.de.mutationStrategy.RandomDEMutationStrategy</Class>
+   			 <F>
+    			<Class>es.udc.gii.common.eaf.plugin.parameter.Constant</Class>
+    			<Value>0.9</Value>
+    		</F>
+    			<DiffVector>1</DiffVector>
+    	</MutationStrategy>
+    	<CrossOverScheme>
+    		<Class>es.udc.gii.common.eaf.algorithm.operator.reproduction.mutation.de.crossover.BinCrossOverScheme</Class>
+    		<CR>
+    			<Class>es.udc.gii.common.eaf.plugin.parameter.Constant</Class>
+    			<Value>0.9</Value>
+    		</CR>
+   		</CrossOverScheme>
+    	</Operator>
+    </ReproductionChain>
+    <ReplaceChain>
+    	<Operator>
+    		<Class>es.udc.gii.common.eaf.algorithm.operator.replace.EvolutionaryStrategyReplaceOperator</Class>
+    	</Operator>
+    </ReplaceChain>
+  </OperatorChains>
+  <Objective>
+    	<CheckBounds/>
+    	<ObjectiveFunction>
+    	<Class>evolutionJEAFParallelRemote.CalcFitnessF8CSeqR3</Class>
+    	</ObjectiveFunction>
+  </Objective>
+  <StopTests>
+     <StopTest>
+     	<Class>es.udc.gii.common.eaf.stoptest.EvolveGenerationsStopTest</Class>
+     	<Generations>2</Generations>
+     </StopTest>
+  </StopTests>
+  <LogTool>
+     <Log>
+     	<Class>es.udc.gii.common.eaf.log.parallel.ParallelBestMeanLogTool</Class>
+     	<Folder>Testout</Folder>
+     	<Name>TestSeq3421</Name>
+     </Log>
+     <Log>
+     	<Class>es.udc.gii.common.eaf.log.parallel.BestIndividualLogTool</Class>
+     	<Folder>Testout</Folder>
+     	<Name>BestSeq3421</Name>
+     	<Number>32</Number>
+     </Log>
+  </LogTool>
+</EvolutionaryAlgorithm>

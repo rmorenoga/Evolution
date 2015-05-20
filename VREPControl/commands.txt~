@@ -1,0 +1,43 @@
+java -cp $MPJ_HOME/lib/daemon.jar:. runtime.daemon.MPJDaemon 10000
+mpjrun.sh -np 2 -dev niodev -Djava.library.path=/home/rodr/EvolWork/Tests/ -jar EvolutionJEAFPR8Test.jar
+-Xmx4g -Xms4g
+
+2 generations 4 Scenes 25 Individuals
+958 seg 16 min on 2 cores
+216 seg 3.6 min on 10 cores load avrg 14
+87 seg 1.45 min on 25 cores load avrg 29
+88 seg 1.46 min on 30 cores 
+85 avrg on 25 cores                25.4 seg avrg peak load 30
+
+2 generations 4 Scenes 26 Individuals
+91 seg 1.5 min on 26 cores        27 seg avrg peak load 37.72
+37
+2 generations 4 Scenes 27 Individuals
+92 seg 1.51 min on 27 cores        28 seg avrg peak load 37
+
+2 generations 4 Scenes 28 Individuals
+98 seg 1.63 min on 28 cores        29 seg avrg peak load 36
+
+2 generations 4 Scenes 29 Individuals
+101 seg 1.68 min on 29 cores        29.9 seg avrg peak load 40
+
+2 generations 4 Scenes 30 Individuals
+104 seg 1.73 min on 30 cores        30.9 seg avrg peak load 41.37
+
+2 generations 4 Scenes 31 Individuals
+109 seg 1.81 min on 31 cores        32 seg avrg peak load 45.9
+
+2 generations 4 Scenes 32 Individuals
+111 seg 1.85 min on 32 cores        33.5 seg avrg peak load 50.07
+
+
+
+2 generations 4 Scenes 30 Individuals
+236 seg 3.93 min on 10 cores load avrg 15
+241 seg 4.01 min on 25 cores load avrg 15
+133 seg 2.21 min on 30 cores load avrg 27
+
+
+
+
+

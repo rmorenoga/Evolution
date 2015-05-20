@@ -1,0 +1,43 @@
+
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19996
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19997
+Plugin 'RemoteApi': load succeeded.
+Using the internal 'MeshCalc' functionality.
+Using the 'Dynamics' plugin.
+Using the internal 'PathPlanning' functionality.
+Simulator ended.
+Plugin 'RemoteApi': load succeeded.
+Using the internal 'MeshCalc' functionality.
+Using the 'Dynamics' plugin.
+Using the internal 'PathPlanning' functionality.
+Simulator ended.
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19997
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19996
