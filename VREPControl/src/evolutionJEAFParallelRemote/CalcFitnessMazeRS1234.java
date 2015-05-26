@@ -275,7 +275,7 @@ public class CalcFitnessMazeRS1234 extends ObjectiveFunction{
     	
     	try {
     		// Command to kill corresponding simulator
-    		ProcessBuilder qq=new ProcessBuilder("killall","-r","vrep"+myRank);
+    		ProcessBuilder qq=new ProcessBuilder("killall","vrep"+myRank);
     		// Specify output file for command line messages
  			File log = new File("Simout/log");
  			qq.redirectErrorStream(true);

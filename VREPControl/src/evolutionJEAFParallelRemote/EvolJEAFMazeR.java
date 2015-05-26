@@ -19,23 +19,41 @@ public class EvolJEAFMazeR {
 		long startTime = System.currentTimeMillis();
 		long seed = -Long.MAX_VALUE;
 		startNumber = 0;
-//		if (args.length > 0) {
-//		    try {
-////		    	for(int j=0;j<args.length;j++){
-////		    		System.out.println("Argument "+j+" = "+args[j]);
-////		    	}
-//		        startNumber = Integer.parseInt(args[0]);
-//		    } catch (NumberFormatException e) {
-//		        System.err.println("StartNumber " + args[0] + " must be an integer.");
-//		        System.exit(1);
-//		    }
-//		}else{
-//			 System.err.println("Provide a start number");
-//			 System.exit(1);
-//		}
+		String xmlfile = "";
+		
+		if (args.length > 0) {
+		    try {
+//		    	for(int j=0;j<args.length;j++){
+//		    		System.out.println("Argument "+j+" = "+args[j]);
+//		    	}
+		    	if(args.length>=4){
+		        startNumber = Integer.parseInt(args[3]);
+		        if(args.length>=5){
+		        	xmlfile = args[4];
+		        }else{
+		        	System.err.println("Provide a xml file");
+					System.exit(1);
+		        }
+		        
+		    	}else{
+		    		 System.err.println("Provide a start number");
+					 System.exit(1);
+		    	}
+		    } catch (NumberFormatException e) {
+		        System.err.println("StartNumber " + args[0] + " must be an integer.");
+		        System.exit(1);
+		    }
+		}else{
+			 System.err.println("Missing arguments");
+			 System.exit(1);
+		}
+		if (xmlfile==""){
+			System.err.println("Provide a xml file");
+			System.exit(1);
+		}
 		//System.out.println("StartNumber = "+startNumber);
-		
-		
+		//System.out.println("XMLFile = "+xmlfile);
+		//System.exit(0);
 		
 		/* Initialize Parallel Environment */
 		MPI.Init(args);
@@ -45,7 +63,6 @@ public class EvolJEAFMazeR {
 		
 		
 		String vrepcommand = new String("./vrep"+myRank+".sh");
-		
 		
 		try {
 			//ProcessBuilder qq=new ProcessBuilder(vrepcommand,"-h");
@@ -74,8 +91,10 @@ public class EvolJEAFMazeR {
 		EvolutionaryAlgorithm algorithm;
 		StopTest stopTest;
 		EAFRandom.init();
-		algorithm = facade.createAlgorithm("" + "EvolconfigMazeR.xml");
-        stopTest = facade.createStopTest("./" + "EvolconfigMazeR.xml");
+		//algorithm = facade.createAlgorithm("" + "EvolconfigMazeRS1234.xml");
+        //stopTest = facade.createStopTest("./" + "EvolconfigMazeRS1234.xml");
+		algorithm = facade.createAlgorithm("" + xmlfile);
+        stopTest = facade.createStopTest("./" + xmlfile);
         facade.resolve(stopTest, algorithm);
         
         
@@ -84,19 +103,22 @@ public class EvolJEAFMazeR {
   	      long elapsedTime = stopTime - startTime;
   	      System.out.println(elapsedTime);
         	System.out.println("Finished");
+        }
         	 try {
-     			ProcessBuilder qq=new ProcessBuilder("killall","-r","vrep");
+     			//ProcessBuilder qq=new ProcessBuilder("killall","-r","vrep");
+        		//ProcessBuilder qq=new ProcessBuilder("killall","-r","vrep"+myRank+".sh");
+        		 ProcessBuilder qq=new ProcessBuilder("killall","vrep"+myRank);
      			File log = new File("Simout/log");
      			qq.redirectErrorStream(true);
      			qq.redirectOutput(Redirect.appendTo(log));
      			Process p = qq.start();
                  int exitVal = p.waitFor();
-                 System.out.println("Terminated all vrep with error code "+exitVal);
+                 System.out.println("Terminated vrep"+myRank+" with error code "+exitVal);
      		} catch(Exception e) {
                  System.out.println(e.toString());
                  e.printStackTrace();
              }       	
-        }
+        
         
         
          //Terminate Parallel Environment 
