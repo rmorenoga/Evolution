@@ -122,45 +122,45 @@ public double evaluate(double[] values) {
 //*******************************************************************************************************************************
 	
 		// New Maze Parameters (Already a string)
-//		mazeseq = new char[]{'s','l','s'}; // Default Maze Sequence
-//		strSeq.setArray(mazeseq);
-//		vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
-//		rfitness = RunSimulation(vrep, clientID, MaxTime,myRank);
-//		//rfitness = RunScene(vrep, clientID, "/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt",  MaxTime, myRank);
-//		if(rfitness[0]==-1){
-//			RestartSim( myRank, j);
-//			continue;
-//		}
-//		fitness[0] = rfitness[1]; 
+		mazeseq = new char[]{'s','l','s'}; // Default Maze Sequence
+		strSeq.setArray(mazeseq);
+		vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
+		rfitness = RunSimulation(vrep, clientID, MaxTime,myRank);
+		//rfitness = RunScene(vrep, clientID, "/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt",  MaxTime, myRank);
+		if(rfitness[0]==-1){
+			RestartSim( myRank, j);
+			continue;
+		}
+		fitness[0] = rfitness[1]; 
 		//System.out.println("Fitness 1 = "+fitness[0]);
 		
 //*******************************************************************************************************************************
 		// New Maze Parameters (Already a string)
-//		mazeseq = new char[]{'s','r','s'}; // Default Maze Sequence
-//		strSeq.setArray(mazeseq);
-//		vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
-//		rfitness = RunSimulation(vrep, clientID, MaxTime,myRank);
-//		//rfitness = RunScene(vrep, clientID, "/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt",  MaxTime, myRank);
-//		if(rfitness[0]==-1){
-//			RestartSim( myRank, j);
-//			continue;
-//		}
-//		fitness[1] = rfitness[1]; 
+		mazeseq = new char[]{'s','r','s'}; // Default Maze Sequence
+		strSeq.setArray(mazeseq);
+		vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
+		rfitness = RunSimulation(vrep, clientID, MaxTime,myRank);
+		//rfitness = RunScene(vrep, clientID, "/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt",  MaxTime, myRank);
+		if(rfitness[0]==-1){
+			RestartSim( myRank, j);
+			continue;
+		}
+		fitness[1] = rfitness[1]; 
 		//System.out.println("Fitness 1 = "+fitness[0]);
 				
 //*******************************************************************************************************************************
 		
 		// New Maze Parameters (Already a string)
-//		mazeseq = new char[]{'s','s'}; // Default Maze Sequence
-//		strSeq.setArray(mazeseq);
-//		vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
-//		rfitness = RunSimulation(vrep, clientID, MaxTime,myRank);
-//		//rfitness = RunScene(vrep, clientID, "/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt",  MaxTime, myRank);
-//		if(rfitness[0]==-1){
-//			RestartSim( myRank, j);
-//			continue;
-//		}
-//		fitness[2] = rfitness[1]; 
+		mazeseq = new char[]{'s','s'}; // Default Maze Sequence
+		strSeq.setArray(mazeseq);
+		vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
+		rfitness = RunSimulation(vrep, clientID, MaxTime,myRank);
+		//rfitness = RunScene(vrep, clientID, "/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt",  MaxTime, myRank);
+		if(rfitness[0]==-1){
+			RestartSim( myRank, j);
+			continue;
+		}
+		fitness[2] = rfitness[1]; 
 		//System.out.println("Fitness 1 = "+fitness[0]);
 				
 //*******************************************************************************************************************************
@@ -175,7 +175,7 @@ public double evaluate(double[] values) {
 			RestartSim( myRank, j);
 			continue;
 		}
-		fitness[0] = rfitness[1]; 
+		fitness[3] = rfitness[1]; 
 		//System.out.println("Fitness 1 = "+fitness[0]);
 				
 //*******************************************************************************************************************************
@@ -198,8 +198,8 @@ public double evaluate(double[] values) {
 		break;
 		}
 		
-		//double fitnessd = (fitness[0]+fitness[1]+fitness[2]+fitness[3])/4;
-		double fitnessd = fitness[0];
+		double fitnessd = (fitness[0]+fitness[1]+fitness[2]+fitness[3])/4;
+		//double fitnessd = fitness[0];
 		
 		long stopTime = System.currentTimeMillis();
 	      long elapsedTime = stopTime - startTime;
