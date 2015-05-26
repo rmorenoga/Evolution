@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.lang.ProcessBuilder.Redirect;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import mpi.MPI;
 import coppelia.CharWA;
@@ -13,8 +17,8 @@ import coppelia.IntWA;
 import coppelia.remoteApi;
 import es.udc.gii.common.eaf.problem.objective.ObjectiveFunction;
 
-public class CalcFitnessMazeR extends ObjectiveFunction{
-		
+public class CalcFitnessMazeRS1234 extends ObjectiveFunction{
+	
 	public double evaluate(double[] values) {
 		// Create objects to save information into a txt file
 		FileWriter fichero = null;
@@ -93,120 +97,168 @@ public class CalcFitnessMazeR extends ObjectiveFunction{
  				// Connect with the corresponding simulator remote server
  				int clientID = vrep.simxStart("127.0.0.1", 19997 - myRank, true, true, 5000, 5);
  				
+		
+		
 		if (clientID!=-1)
 		{
-			
 			// Set Simulator signal values
-						vrep.simxSetStringSignal(clientID, "NumberandOri",strNO, vrep.simx_opmode_oneshot_wait);
-						vrep.simxSetStringSignal(clientID, "ControlParam", strCP,vrep.simx_opmode_oneshot_wait);
-						vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);	
+			vrep.simxSetStringSignal(clientID, "NumberandOri",strNO, vrep.simx_opmode_oneshot_wait);
+			vrep.simxSetStringSignal(clientID, "ControlParam", strCP,vrep.simx_opmode_oneshot_wait);
+			vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);	
 //*******************************************************************************************************************************
 	
-//						// New Maze Parameters (Already a string)
-//						mazeseq = new char[]{'s','s'}; 
-//						strSeq.setArray(mazeseq);
-//						vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
-//							
-//						// Run Scene in the simulator	
-//						rfitness = RunSimulation(vrep, clientID, MaxTime,myRank);
-//						//rfitness = RunScene(vrep, clientID, "/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt",  MaxTime, myRank);
-//							
-//						// If there is a simulator crash restart simulator	
-//						if(rfitness[0]==-1){
-//							RestartSim( myRank, j);
-//							continue;
-//						}
-//							
-//						// Retrieve the fitness if there is no crash	
-//						fitness[0] = rfitness[1]; 
+		// New Maze Parameters (Already a string)
+		mazeseq = new char[]{'s','s'}; 
+		strSeq.setArray(mazeseq);
+		vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
+			
+		// Run Scene in the simulator	
+		rfitness = RunSimulation(vrep, clientID, MaxTime,myRank);
+		//rfitness = RunScene(vrep, clientID, "/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt",  MaxTime, myRank);
+			
+		// If there is a simulator crash restart simulator	
+		if(rfitness[0]==-1){
+			RestartSim( myRank, j);
+			continue;
+		}
+			
+		// Retrieve the fitness if there is no crash	
+		fitness[0] = rfitness[1]; 
+		
 		
 //*******************************************************************************************************************************
-//						// New Maze Parameters (Already a string)
-//						mazeseq = new char[]{'s','s'}; 
-//						strSeq.setArray(mazeseq);
-//						vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
-//							
-//						// Run Scene in the simulator	
-//						rfitness = RunSimulation(vrep, clientID, MaxTime,myRank);
-//						//rfitness = RunScene(vrep, clientID, "/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt",  MaxTime, myRank);
-//							
-//						// If there is a simulator crash restart simulator	
-//						if(rfitness[0]==-1){
-//							RestartSim( myRank, j);
-//							continue;
-//						}
-//							
-//						// Retrieve the fitness if there is no crash	
-//						fitness[1] = rfitness[1]; 
+		if(fitness[0]<=(float)MaxTime*0.01f){
+			// New Maze Parameters (Already a string)
+			mazeseq = new char[]{'s','l','s'}; 
+			strSeq.setArray(mazeseq);
+			vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
 				
-//*******************************************************************************************************************************
-		
-//						// New Maze Parameters (Already a string)
-//						mazeseq = new char[]{'s','s'}; 
-//						strSeq.setArray(mazeseq);
-//						vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
-//							
-//						// Run Scene in the simulator	
-//						rfitness = RunSimulation(vrep, clientID, MaxTime,myRank);
-//						//rfitness = RunScene(vrep, clientID, "/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt",  MaxTime, myRank);
-//							
-//						// If there is a simulator crash restart simulator	
-//						if(rfitness[0]==-1){
-//							RestartSim( myRank, j);
-//							continue;
-//						}
-//							
-//						// Retrieve the fitness if there is no crash	
-//						fitness[2] = rfitness[1]; 
+			// Run Scene in the simulator	
+			rfitness = RunSimulation(vrep, clientID, MaxTime,myRank);
+			//rfitness = RunScene(vrep, clientID, "/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt",  MaxTime, myRank);
 				
-//*******************************************************************************************************************************
-		
-						// New Maze Parameters (Already a string)
-						mazeseq = new char[]{'b'}; 
-						strSeq.setArray(mazeseq);
-						vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
-							
-						// Run Scene in the simulator	
-						rfitness = RunSimulation(vrep, clientID, MaxTime,myRank);
-						//rfitness = RunScene(vrep, clientID, "/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt",  MaxTime, myRank);
-							
-						// If there is a simulator crash restart simulator	
-						if(rfitness[0]==-1){
-							RestartSim( myRank, j);
-							continue;
-						}
-							
-						// Retrieve the fitness if there is no crash	
-						fitness[0] = rfitness[1]; 
+			// If there is a simulator crash restart simulator	
+			if(rfitness[0]==-1){
+				RestartSim( myRank, j);
+				continue;
+			}
 				
+			// Retrieve the fitness if there is no crash	
+			fitness[1] = rfitness[1]; 
+		}	
 //*******************************************************************************************************************************
+		if((fitness[0]<=(float)MaxTime*0.01f) && (fitness[1]<=(float)MaxTime*0.01f)){
+			// New Maze Parameters (Already a string)
+			mazeseq = new char[]{'b'}; 
+			strSeq.setArray(mazeseq);
+			vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
+				
+			// Run Scene in the simulator	
+			rfitness = RunSimulation(vrep, clientID, MaxTime,myRank);
+			//rfitness = RunScene(vrep, clientID, "/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt",  MaxTime, myRank);
+				
+			// If there is a simulator crash restart simulator	
+			if(rfitness[0]==-1){
+				RestartSim( myRank, j);
+				continue;
+			}
+				
+			// Retrieve the fitness if there is no crash	
+			fitness[2] = rfitness[1]; 
+		}		
+//*******************************************************************************************************************************
+		if((fitness[0]<=(float)MaxTime*0.01f) && (fitness[1]<=(float)MaxTime*0.01f) && (fitness[2]<=(float)MaxTime*0.01f)){
+			// New Maze Parameters (Already a string)
+			mazeseq = new char[]{'s','r','s'}; 
+			strSeq.setArray(mazeseq);
+			vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
+				
+			// Run Scene in the simulator	
+			rfitness = RunSimulation(vrep, clientID, MaxTime,myRank);
+			//rfitness = RunScene(vrep, clientID, "/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt",  MaxTime, myRank);
+				
+			// If there is a simulator crash restart simulator	
+			if(rfitness[0]==-1){
+				RestartSim( myRank, j);
+				continue;
+			}
+				
+			// Retrieve the fitness if there is no crash	
+			fitness[3] = rfitness[1]; 
+		}		
+//*******************************************************************************************************************************
+		// Close connection with the simulator
+	    vrep.simxFinish(clientID);
+	    
+		}
+		else{
+			// No connection could be established
+			System.out.println("Failed connecting to remote API server");
+			System.out.println("Trying again for the "+j+" time");
+			continue;
+		}
+    
+		break;
+		}
 		
-						// Close connection with the simulator
-					    vrep.simxFinish(clientID);
-					    
-						}
-						else{
-							// No connection could be established
-							System.out.println("Failed connecting to remote API server");
-							System.out.println("Trying again for the "+j+" time");
-							continue;
-						}
-				    
-						break;
-						}
- 			
  		// Calculate global fitness and convert it from float to Double
 		//double fitnessd = (fitness[0]+fitness[1]+fitness[2]+fitness[3])/4;
-		double fitnessd = fitness[0];
+ 		
+ 		double fitnessd;	
+ 			
+ 			if(fitness[0]<=(float)MaxTime*0.01f){
+ 				if(fitness[1]<=(float)MaxTime*0.01f){
+ 					if(fitness[2]<=(float)MaxTime*0.01f){
+ 						fitnessd = fitness[3] - 6f;
+ 					}else{
+ 						fitnessd = fitness[2] - 4f;
+ 					}
+ 				}else{
+ 					fitnessd = fitness[1] - 2f;
+ 				}
+ 				
+ 			}else {
+ 				fitnessd = fitness[0];
+ 			}
+ 			
+ 			DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+ 			
+ 			Date today = Calendar.getInstance().getTime();
+ 			
+ 			String reportDate = df.format(today);
+ 			
+ 			try
+ 	        {
+ 	            fichero = new FileWriter("Testout/Indiv"+myRank+".txt", true);
+ 	            pw = new PrintWriter(fichero);
+
+ 	                //pw.println(fitnessd+"-"+fitness[0]+"-"+fitness[1]+"-"+fitness[2]+"-"+fitness[3]);
+ 	            pw.println(fitnessd+"-"+reportDate);
+
+ 	        } catch (Exception e) {
+ 	            e.printStackTrace();
+ 	        } finally {
+ 	           try {
+ 	           if (null != fichero)
+ 	              fichero.close();
+ 	           } catch (Exception e2) {
+ 	              e2.printStackTrace();
+ 	           }
+ 	        }	
+ 			
+ 			
+ 			
+ 			
+		
 		
 		// Calculate evaluation time and print it
-				long stopTime = System.currentTimeMillis();
-			      long elapsedTime = stopTime - startTime;
-			      System.out.println(elapsedTime);
-			      
-				//System.out.println("Total Fitness = "+fitnessd+" myrank "+myRank);
-				
-				return fitnessd;  
+		long stopTime = System.currentTimeMillis();
+	      long elapsedTime = stopTime - startTime;
+	      System.out.println(elapsedTime);
+	      
+		//System.out.println("Total Fitness = "+fitnessd+" myrank "+myRank);
+		
+		return fitnessd;  
         
     }
 	
@@ -214,7 +266,7 @@ public class CalcFitnessMazeR extends ObjectiveFunction{
     	
     }
     
-void RestartSim(int myRank,int j){
+    void RestartSim(int myRank,int j){
     	
     	// Create the command to open the corresponding simulator
     	String vrepcommand = new String("./vrep"+myRank+".sh");
@@ -416,4 +468,5 @@ void RestartSim(int myRank,int j){
 	    return fitnessout;
 }
 	
+
 }
