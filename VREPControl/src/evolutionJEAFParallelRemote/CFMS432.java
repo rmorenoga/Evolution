@@ -17,7 +17,7 @@ import coppelia.IntWA;
 import coppelia.remoteApi;
 import es.udc.gii.common.eaf.problem.objective.ObjectiveFunction;
 
-public class CalcFitnessMazeRS234 extends ObjectiveFunction {
+public class CFMS432 extends ObjectiveFunction {
 
 	public double evaluate(double[] values) {
 		// Create objects to save information into a txt file
@@ -101,7 +101,7 @@ public class CalcFitnessMazeRS234 extends ObjectiveFunction {
 				// *******************************************************************************************************************************
 
 				// New Maze Parameters (Already a string)
-				mazeseq = new char[] { 's', 'l', 's' };
+				mazeseq = new char[] { 's', 'r', 's' };
 				strSeq.setArray(mazeseq);
 				vrep.simxSetStringSignal(clientID, "Maze", strSeq,
 						vrep.simx_opmode_oneshot_wait);
@@ -125,7 +125,7 @@ public class CalcFitnessMazeRS234 extends ObjectiveFunction {
 
 				if (fitness[0] <= (float) MaxTime * 0.01f) {
 
-					// New Maze Parameters (Already a string)
+					// New Maze Parameters (Already a string)			
 					mazeseq = new char[] { 'b' };
 					strSeq.setArray(mazeseq);
 					vrep.simxSetStringSignal(clientID, "Maze", strSeq,
@@ -151,7 +151,7 @@ public class CalcFitnessMazeRS234 extends ObjectiveFunction {
 				if ((fitness[0] <= (float) MaxTime * 0.01f)
 						&& (fitness[1] <= (float) MaxTime * 0.01f)) {
 					// New Maze Parameters (Already a string)
-					mazeseq = new char[] { 's', 'r', 's' };
+					mazeseq = new char[] { 's', 'l', 's' };
 					strSeq.setArray(mazeseq);
 					vrep.simxSetStringSignal(clientID, "Maze", strSeq,
 							vrep.simx_opmode_oneshot_wait);
