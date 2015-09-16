@@ -72,31 +72,6 @@ The configuration file contains all the parameters needed for the evolutionary a
 /VREPControl/src/evolutionJEAFParallelRemote/CalcFitnessMazeRS234.java
 
 This class receives the parameters for the individual to be evaluated, packages and sends them to the corresponding simulator, and runs the robot simulation. When the simulation signals that is done the objective function class receives the results, calculates the fitness and returns it to the evolutionary process in JEAF. If there is an error during the simulation or the simulator stops responding this class also attempts to restart its corresponding simulator and tries again to evaluate the individual. In order to restart the simulator the location of the simulator should also be changed accordingly inside the RestartSim method:
-<<<<<<< HEAD
-=======
-
-    qq.directory(new File("/home/.../V-REP/Vrep" + myRank + "/"));
-    
-as well as the location of the scene file to simulate:
-
-    qq = new ProcessBuilder(vrepcommand, "-h",
-					"/home/.../Maze/MazeBuilder01.ttt");
-
-### Running
-
-In order to do an evolutionary run, all the files must be "compiled" (put in a jar file for our purposes) and all the libraries that it depends on should also be included in this jar file, this can be done by using Eclipse or any other tool. Once the jar file is generated the program can be run using the following command in a terminal:
-
-    mpjrun.sh -np numberofprecesses -dev niodev -Djava.library.path=pathtojarfile -jar Jarfile.jar
-
-provided that the configuration file and the "libremoteApiJava.so" file are inside the same folder as the jar file. The number of processes indicates the number of simulators that will be used at the same time, for example when using the above defined simulators, Vrep0 and Vrep1, this number will be 2.
-
-Alternatively the program can be run from Eclipse by using an mpj-express plugin, the installation and basic usage of this plugin can be found on the following guide http://mpj-express.org/docs/guides/RunningandDebuggingMPJExpresswithEclipse.pdf All the necessary files and libraries should be included in the project path in order for it to run. 
-					
-				
-					
-
-
->>>>>>> refs/remotes/origin/master
 
     qq.directory(new File("/home/.../V-REP/Vrep" + myRank + "/"));
     
