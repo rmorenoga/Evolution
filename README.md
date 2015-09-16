@@ -7,7 +7,7 @@ The Evolutionary framework used is JEAF (https://github.com/GII/JEAF) and the mo
 
 ## Setting Up
 
-To set up the evolutionary system the simulation in V-REP and the Java Evolutionary framework (JEAF) should be downloaded and set up. This guide will concentrate on setting up the evolution on an Ubuntu 14.04 64 bit computer. This project uses java so a jre or jdk version 1.7 or newer should be installed on the pc.
+To set up the evolutionary system the simulation in V-REP and the Java Evolutionary framework (JEAF) should be downloaded and set up. This guide will concentrate on setting up the evolution on an Ubuntu 14.04 64 bit computer. This project uses java so a jre or jdk version 1.7 or newer should be installed on the pc. The whole project is set up as an Eclipse (https://eclipse.org/) project.
 
 ### Simulator
 
@@ -43,6 +43,18 @@ and they should go before the line that says:
 After restarting the user session in Ubuntu mpj should be ready to work.
 
 ### JEAF
+
+The JEAF library jar files are already included under the VREPControl/lib folder and should be included in the path in order for the evolutionary algorithms to work. The simulator file "libremoteApi.so" should also be included in the program path to correctly communicate with the simulator.
+
+### Evolutionary algortihm
+
+The file:
+
+Evolution/VREPControl/src/evolutionJEAFParallelRemote/EvolJEAFMazeR.java    (Main)
+
+is an example of a main class for an evolutionary run. 
+
+
 
 
 
