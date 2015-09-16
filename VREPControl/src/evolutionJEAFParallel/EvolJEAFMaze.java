@@ -44,13 +44,11 @@ public class EvolJEAFMaze {
 		
 		String vrepcommand = new String("./vrep"+myRank+".sh");
 		
-		
+		/*Initialize a v-rep simulator based on the starNumber parameter */
 		try {
 			ProcessBuilder qq=new ProcessBuilder(vrepcommand,"-h");
 			//ProcessBuilder qq=new ProcessBuilder(vrepcommand);
-			//Map<String, String> env = qq.environment();
 			qq.directory(new File("/home/rodrigo/V-REP/Vrep"+myRank+"/"));
-			//qq.inheritIO();
 			File log = new File("Simout/log");
 			qq.redirectErrorStream(true);
 			qq.redirectOutput(Redirect.appendTo(log));
@@ -69,17 +67,20 @@ public class EvolJEAFMaze {
 		EvolutionaryAlgorithm algorithm;
 		StopTest stopTest;
 		EAFRandom.init();
+		/* Specify the configuration file for the evolutionary run */
 		algorithm = facade.createAlgorithm("" + "EvolconfigMaze.xml");
         stopTest = facade.createStopTest("./" + "EvolconfigMaze.xml");
+        // Start the evolutionary process
         facade.resolve(stopTest, algorithm);
         
-        
+        // If I am the process 0 terminate all simulators after finishing the evolutionary process
         if (myRank==0){        	
           long stopTime = System.currentTimeMillis();
   	      long elapsedTime = stopTime - startTime;
   	      System.out.println(elapsedTime);
         	System.out.println("Finished");
         	 try {
+        		 // kill all the v-rep processes
      			ProcessBuilder qq=new ProcessBuilder("killall","-r","vrep");
      			File log = new File("Simout/log");
      			qq.redirectErrorStream(true);

@@ -64,6 +64,7 @@ public class EvolJEAFMazeR {
 
 		String vrepcommand = new String("./vrep" + myRank + ".sh");
 
+		/*Initialize a v-rep simulator based on the starNumber parameter */
 		try {
 			// ProcessBuilder qq=new ProcessBuilder(vrepcommand,"-h");
 			// ProcessBuilder qq = new
@@ -97,16 +98,20 @@ public class EvolJEAFMazeR {
 		EAFRandom.init();
 		// algorithm = facade.createAlgorithm("" + "EvolconfigMazeRS1234.xml");
 		// stopTest = facade.createStopTest("./" + "EvolconfigMazeRS1234.xml");
+		/* Specify the configuration file for the evolutionary run */
 		algorithm = facade.createAlgorithm("" + xmlfile);
 		stopTest = facade.createStopTest("./" + xmlfile);
+		// Start the evolutionary process
 		facade.resolve(stopTest, algorithm);
 		
+		// If I am the process 0 terminate all simulators after finishing the evolutionary process
 		if (myRank == 0) {
 			long stopTime = System.currentTimeMillis();
 			long elapsedTime = stopTime - startTime;
 			System.out.println(elapsedTime);
 			System.out.println("Finished");
 		}
+		// kill all the v-rep processes
 		try {
 			// ProcessBuilder qq=new ProcessBuilder("killall","-r","vrep");
 			// ProcessBuilder qq=new
