@@ -4,7 +4,7 @@ import es.udc.gii.common.eaf.algorithm.CMAEvolutionaryAlgorithm;
 import es.udc.gii.common.eaf.algorithm.EvolutionaryAlgorithm;
 import es.udc.gii.common.eaf.algorithm.EvolutionaryStrategy;
 import es.udc.gii.common.eaf.algorithm.population.Individual;
-import es.udc.gii.common.eaf.benchmark.BenchmarkObjectiveFunction;
+//import es.udc.gii.common.eaf.benchmark.BenchmarkObjectiveFunction;
 import es.udc.gii.common.eaf.facade.EAFFacade;
 import es.udc.gii.common.eaf.problem.objective.ObjectiveFunction;
 import es.udc.gii.common.eaf.stoptest.CompositeStopTest;
