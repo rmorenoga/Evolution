@@ -34,7 +34,7 @@ Three files should be modified inside the simulators files in order for them to 
 
 ### Simulation
 
-The simulation scene files can be found in the Maze folder (/VREPControl/Maze/).
+The simulation scene files can be found in the Maze folder (/Simulation/Maze/).
 
 The file MazeBuilder01.ttt contains all that is needed for the evolution of a robot with no sensors to take place. This file receives the parameters from the main evolutionary algorithms in java, builds a maze for the robot, runs the simulation and returns a fitness to the main algorithm, for it to work properly, the file should be opened with V-REP and the script associated with the InitControl object should be modified. 
 
@@ -42,7 +42,7 @@ Inside the InitControl object script are four lines that load the basic parts of
 
     shandle = simLoadModel("/home/.../V-REP/corridors/StraigthCorr.ttm")
 
-and should be modified to reflect the location of the model files in the file system, the model files can be found inside the corridors folder under the Maze folder (/VREPControl/Maze/).
+and should be modified to reflect the location of the model files in the file system, the model files can be found inside the corridors folder under the Maze folder (/Simulation/Maze/).
 
 ### JEAF
 
