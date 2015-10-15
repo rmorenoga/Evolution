@@ -15,7 +15,7 @@ import es.udc.gii.common.eaf.problem.objective.ObjectiveFunction;
 
 public class TimeTest {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException{
 
 		long startTime = System.currentTimeMillis();
 		long stopTime = 0;
@@ -76,7 +76,7 @@ public class TimeTest {
 	}
 
 	static long RunSimulation(remoteApi vrep, int clientID, int MaxTime,
-			int threadnum) {
+			int threadnum) throws InterruptedException{
 
 		long startTime = System.currentTimeMillis();
 		long stopTime = 0;
@@ -96,6 +96,11 @@ public class TimeTest {
 		out.setValue(0);
 
 		while (out.getValue() == 0) {
+			
+			// Pause Java program execution 10 ms while waiting
+			Thread.sleep(10);
+			
+			
 			if (vrep.simxGetIntegerSignal(clientID, "finished", out,
 					vrep.simx_opmode_buffer) == vrep.simx_return_ok) {
 				// We received a finished signal and everything is ok
