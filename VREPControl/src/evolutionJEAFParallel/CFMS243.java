@@ -1,4 +1,4 @@
-package evolutionJEAFParallelRemote;
+package evolutionJEAFParallel;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -18,10 +18,10 @@ import coppelia.IntW;
 import coppelia.IntWA;
 import coppelia.remoteApi;
 import es.udc.gii.common.eaf.problem.objective.ObjectiveFunction;
-import evolutionJEAFParallel.EvolJEAFMaze;
 
 public class CFMS243 extends ObjectiveFunction {
-
+	
+	
 
 	public double evaluate(double[] values) {
 		
@@ -31,7 +31,7 @@ public class CFMS243 extends ObjectiveFunction {
 
 		// Retrieve process number from mpj
 		int myRank = MPI.COMM_WORLD.Rank();
-		myRank = myRank + EvolJEAFMazeR.startNumber;
+		myRank = myRank + EvolJEAFMaze.startNumber;
 		// Start Measuring evaluation time
 		long startTime = System.currentTimeMillis();
 
@@ -219,18 +219,8 @@ public class CFMS243 extends ObjectiveFunction {
 				fichero = new FileWriter("Testout/Indiv" + myRank + ".txt",
 						true);
 				pw = new PrintWriter(fichero);
-				//Discovering Generation number based on the output file
-				int numgen = 0;
 				
-				if (myRank<10){
-					 numgen = generation("Testout/TestS2430.txt")+1;
-				}else if (myRank<20){
-					 numgen = generation("Testout/TestS24310.txt")+1;
-				}else {
-					 numgen = generation("Testout/TestS24320.txt")+1;
-				}
-				
-				
+				int numgen = generation("Testout/TestSeq.txt")+1;
 				
 				
 
@@ -288,12 +278,12 @@ public class CFMS243 extends ObjectiveFunction {
 			// Command to open a simulator with no window
 			// qq = new ProcessBuilder(vrepcommand,"-h");
 			qq = new ProcessBuilder(vrepcommand, "-h",
-					"/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt");
+					"/home/rodrigo/V-REP/Modular/Maze/MazeBuilder01.ttt");
 			// qq = new
 			// ProcessBuilder("xvfb-run","--auto-servernum","--server-num=1",vrepcommand,
 			// "-h");
 			// Open the simulator from its own directory
-			qq.directory(new File("/home/rodr/V-REP/Vrep" + myRank + "/"));
+			qq.directory(new File("/home/rodrigo/V-REP/Vrep" + myRank + "/"));
 			// Specify output file for command line messages of the simulator
 			qq.redirectErrorStream(true);
 			qq.redirectOutput(Redirect.appendTo(log));

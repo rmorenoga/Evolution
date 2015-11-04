@@ -56,13 +56,13 @@
   <Objective>
     	<CheckBounds/>
     	<ObjectiveFunction>
-    	<Class>evolutionJEAFParallel.CalcFitnessMaze</Class>
+    	<Class>evolutionJEAFParallel.CFMS243</Class>
     	</ObjectiveFunction>
   </Objective>
   <StopTests>
      <StopTest>
      	<Class>es.udc.gii.common.eaf.stoptest.EvolveGenerationsStopTest</Class>
-     	<Generations>3</Generations>
+     	<Generations>20</Generations>
      </StopTest>
   </StopTests>
   <LogTool>
