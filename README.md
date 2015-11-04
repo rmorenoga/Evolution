@@ -5,7 +5,6 @@ The goal of this project is to evolve controllers for modular robots using evolu
 
 The Evolutionary framework used is JEAF (https://github.com/GII/JEAF) and the modular robots are simulated using V-REP(http://coppeliarobotics.com/).
 
-This is part of a Ph.D thesis project developed at the Alife research group at Universidad Nacional de Colombia, Bogota, Colombia, with the help of the REAL group at the IT University of Copenhagen.
 
 ## Setting Up
 
