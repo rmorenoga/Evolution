@@ -220,21 +220,30 @@ public class CFMS243 extends ObjectiveFunction {
 						true);
 				pw = new PrintWriter(fichero);
 				//Discovering Generation number based on the output file
+				
+				//int numgen = generation("Testout/TestS2430.txt")+1;
+				
 				int numgen = 0;
 				
-				if (myRank<10){
+//				if (myRank<10){
+//					 numgen = generation("Testout/TestS2430.txt")+1;
+//				}else if (myRank<20){
+//					 numgen = generation("Testout/TestS24310.txt")+1;
+//				}else {
+//					 numgen = generation("Testout/TestS24320.txt")+1;
+//				}
+				
+				if (myRank<8){
 					 numgen = generation("Testout/TestS2430.txt")+1;
-				}else if (myRank<20){
-					 numgen = generation("Testout/TestS24310.txt")+1;
 				}else {
-					 numgen = generation("Testout/TestS24320.txt")+1;
+					 numgen = generation("Testout/TestS2438.txt")+1;
 				}
 				
 				
 				
 				
 
-				 pw.println(numgen+"-"+fitnessd+"-"+fitness[0]+"-"+fitness[1]+"-"+fitness[2]);
+				 pw.println(numgen+","+fitnessd+","+fitness[0]+","+fitness[1]+","+fitness[2]);
 				//pw.println(fitnessd + "-" + reportDate);
 
 			} catch (Exception e) {

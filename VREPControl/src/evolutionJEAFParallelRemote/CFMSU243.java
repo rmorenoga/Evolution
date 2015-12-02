@@ -2,7 +2,9 @@ package evolutionJEAFParallelRemote;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.RandomAccessFile;
 import java.lang.ProcessBuilder.Redirect;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -98,6 +100,8 @@ public class CFMSU243 extends ObjectiveFunction {
 						vrep.simx_opmode_oneshot_wait);
 				vrep.simxSetStringSignal(clientID, "Maze", strSeq,
 						vrep.simx_opmode_oneshot_wait);
+				
+				try{
 				// *******************************************************************************************************************************
 
 				// New Maze Parameters (Already a string)
@@ -121,56 +125,9 @@ public class CFMSU243 extends ObjectiveFunction {
 				// Retrieve the fitness if there is no crash
 				fitness[0] = rfitness[1];
 
-				// *******************************************************************************************************************************
-
-//				if (fitness[0] <= (float) MaxTime * 0.01f) {
-//
-//					// New Maze Parameters (Already a string)
-//					mazeseq = new char[] { 's', 'r', 's' };
-//					strSeq.setArray(mazeseq);
-//					vrep.simxSetStringSignal(clientID, "Maze", strSeq,
-//							vrep.simx_opmode_oneshot_wait);
-//
-//					// Run Scene in the simulator
-//					rfitness = RunSimulation(vrep, clientID, MaxTime, myRank);
-//					// rfitness = RunScene(vrep, clientID,
-//					// "/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt",
-//					// MaxTime, myRank);
-//
-//					// If there is a simulator crash restart simulator
-//					if (rfitness[0] == -1) {
-//						RestartSim(myRank, j);
-//						continue;
-//					}
-//
-//					// Retrieve the fitness if there is no crash
-//					fitness[1] = rfitness[1];
-//				}
-				// *******************************************************************************************************************************
-
-//				if ((fitness[0] <= (float) MaxTime * 0.01f)
-//						&& (fitness[1] <= (float) MaxTime * 0.01f)) {
-//					// New Maze Parameters (Already a string)
-//					mazeseq = new char[] { 'b' };
-//					strSeq.setArray(mazeseq);
-//					vrep.simxSetStringSignal(clientID, "Maze", strSeq,
-//							vrep.simx_opmode_oneshot_wait);
-//
-//					// Run Scene in the simulator
-//					rfitness = RunSimulation(vrep, clientID, MaxTime, myRank);
-//					// rfitness = RunScene(vrep, clientID,
-//					// "/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt",
-//					// MaxTime, myRank);
-//
-//					// If there is a simulator crash restart simulator
-//					if (rfitness[0] == -1) {
-//						RestartSim(myRank, j);
-//						continue;
-//					}
-//
-//					// Retrieve the fitness if there is no crash
-//					fitness[2] = rfitness[1];
-//				}
+			}catch (InterruptedException e){
+				System.err.println("InterruptedException: "+e.getMessage());
+			}
 				// *******************************************************************************************************************************
 				// Close connection with the simulator
 				vrep.simxFinish(clientID);
@@ -189,38 +146,25 @@ public class CFMSU243 extends ObjectiveFunction {
 		// double fitnessd = (fitness[0]+fitness[1]+fitness[2]+fitness[3])/4;
 
 		double fitnessd;
-
-//		if (fitness[0] <= (float) MaxTime * 0.01f) {
-//			if (fitness[1] <= (float) MaxTime * 0.01f) {
-//				if (fitness[2] <= (float) MaxTime * 0.01f) {
-//					fitnessd = ((fitness[0] + fitness[1] + fitness[2]) / 3) - 4f;
-//				} else {
-//					fitnessd = fitness[2] - 4f;
-//				}
-//			} else {
-//				fitnessd = fitness[1] - 2f;
-//			}
-//		} else {
-//			fitnessd = fitness[0];
-//		}
 		
 		fitnessd = fitness[0];
 
-		if (fitnessd <= ((MaxTime * 0.01))) {
-
-			DateFormat df = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-
-			Date today = Calendar.getInstance().getTime();
-
-			String reportDate = df.format(today);
 
 			try {
 				fichero = new FileWriter("Testout/Indiv" + myRank + ".txt",
 						true);
 				pw = new PrintWriter(fichero);
+				
+				int numgen = 0;
+				
+				if (myRank<8){
+					 numgen = generation("Testout/TestSU2430.txt")+1;
+				}else {
+					 numgen = generation("Testout/TestSU2438.txt")+1;
+				}
 
-				// pw.println(fitnessd+"-"+fitness[0]+"-"+fitness[1]+"-"+fitness[2]+"-"+fitness[3]);
-				pw.println(fitnessd + "-" + reportDate);
+				pw.println(numgen+","+fitnessd);
+				//pw.println(fitnessd + "-" + reportDate);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -232,7 +176,7 @@ public class CFMSU243 extends ObjectiveFunction {
 					e2.printStackTrace();
 				}
 			}
-		}
+		
 		// Calculate evaluation time and print it
 		long stopTime = System.currentTimeMillis();
 		long elapsedTime = stopTime - startTime;
@@ -308,7 +252,7 @@ public class CFMSU243 extends ObjectiveFunction {
 	}
 
 	float[] RunSimulation(remoteApi vrep, int clientID, int MaxTime,
-			int threadnum) {
+			int threadnum) throws InterruptedException{
 
 		long startTime = System.currentTimeMillis();
 		long stopTime = 0;
@@ -329,6 +273,9 @@ public class CFMSU243 extends ObjectiveFunction {
 		out.setValue(0);
 
 		while (out.getValue() == 0) {
+			
+			Thread.sleep(10);
+			
 			if (vrep.simxGetIntegerSignal(clientID, "finished", out,
 					vrep.simx_opmode_buffer) == vrep.simx_return_ok) {
 				// We received a fitness signal and everything is ok
@@ -464,5 +411,60 @@ public class CFMSU243 extends ObjectiveFunction {
 
 		return fitnessout;
 	}
+	
+	public int generation( String string ) {
+	    RandomAccessFile fileHandler = null;
+	    try {
+	        fileHandler = new RandomAccessFile( string, "r" );
+	        long fileLength = fileHandler.length() - 1;
+	        StringBuilder sb = new StringBuilder();
+	       
+
+	        for(long filePointer = fileLength; filePointer != -1; filePointer--){
+	            fileHandler.seek( filePointer );
+	            int readByte = fileHandler.readByte();
+
+	            if( readByte == 0xA ) {
+	                if( filePointer == fileLength ) {
+	                    continue;
+	                }
+	                break;
+
+	            } else if( readByte == 0xD ) {
+	                if( filePointer == fileLength - 1 ) {
+	                    continue;
+	                }
+	                break;
+	            }
+
+	            sb.append( ( char ) readByte );
+	            
+	        }
+	        
+	        if (fileLength  <= 0){
+	        	return -1;
+	        }else{
+	        	 String lastLine = sb.reverse().toString();
+	        	 String number = lastLine.substring(0, lastLine.indexOf(" "));
+	        	 //System.out.println(lastLine.indexOf(" "));
+	 	        return Integer.parseInt(number);
+	        }
+	       
+	    } catch( java.io.FileNotFoundException e ) {
+	        e.printStackTrace();
+	        return -1;
+	    } catch( java.io.IOException e ) {
+	        e.printStackTrace();
+	        return -1;
+	    } finally {
+	        if (fileHandler != null )
+	            try {
+	                fileHandler.close();
+	            } catch (IOException e) {
+	                /* ignore */
+	            }
+	    }
+	}
+
 
 }
