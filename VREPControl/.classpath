@@ -17,5 +17,10 @@
 	<classpathentry kind="lib" path="lib/lib/log4j-1.2.11.jar"/>
 	<classpathentry kind="lib" path="lib/lib/mpj.jar"/>
 	<classpathentry kind="lib" path="lib/lib/mtj-0.9.11.jar"/>
+	<classpathentry kind="lib" path="lib/math.jar"/>
+	<classpathentry kind="lib" path="lib/optimization.jar"/>
+	<classpathentry kind="lib" path="lib/random.jar"/>
+	<classpathentry kind="lib" path="lib/services.jar"/>
+	<classpathentry kind="lib" path="lib/types.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

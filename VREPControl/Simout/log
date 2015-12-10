@@ -314,3 +314,417 @@ Plugin 'LuaRemoteApiClient': loading...
 Plugin 'LuaRemoteApiClient': load succeeded.
 Plugin 'RemoteApi': loading...
 Starting a remote API server on port 19997
+libGL error: pci id for fd 16: 80ee:beef, driver (null)
+libGL error: core dri or dri2 extension not found
+libGL error: failed to load driver: vboxvideo
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19997
+QSslSocket: cannot resolve SSLv2_client_method
+QSslSocket: cannot resolve SSLv2_server_method
+Plugin 'RemoteApi': load succeeded.
+Using the internal 'MeshCalc' functionality.
+Using the 'Dynamics' plugin.
+Using the internal 'PathPlanning' functionality.
+Checking for an updated V-REP version...
+A new V-REP version is available for download: V-REP V3.2.3
+
+Main changes in that version:
+-Many bug fixed
+-Many new API functions, incl. calling a child script function from a plugin
+-New models, incl. the Velodyne VPL-16
+-New tutorial on how to build a clean and efficient simulation model
+-Improved external IK: support for several instances and double-precision
+-Many simple example scenes related to the IK/FK functionality.
+
+Please visit www.coppeliarobotics.com to download the last V-REP version.
+***
+153
+158
+175
+***
+250
+255
+272
+***
+347
+352
+369
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19997
+Terminated
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19997
+Terminated
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19997
+Terminated
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19997
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19996
+Terminated
+Terminated
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19997
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19996
+Terminated
+Terminated
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19996
+Terminated
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19996
+Terminated
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19996
+Terminated
+libGL error: pci id for fd 16: 80ee:beef, driver (null)
+libGL error: core dri or dri2 extension not found
+libGL error: failed to load driver: vboxvideo
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19997
+QSslSocket: cannot resolve SSLv2_client_method
+QSslSocket: cannot resolve SSLv2_server_method
+Plugin 'RemoteApi': load succeeded.
+Using the internal 'MeshCalc' functionality.
+Using the 'Dynamics' plugin.
+Using the internal 'PathPlanning' functionality.
+Checking for an updated V-REP version...
+Failed checking whether this V-REP version is up-to-date.
+Please visit www.coppeliarobotics.com to verify
+that you are running the last V-REP version.
+***
+153
+158
+175
+***
+250
+***
+330
+335
+352
+Simulator ended.
+libGL error: pci id for fd 16: 80ee:beef, driver (null)
+libGL error: core dri or dri2 extension not found
+libGL error: failed to load driver: vboxvideo
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19997
+QMutex: destroying locked mutex
+Plugin 'RemoteApi': load succeeded.
+Using the internal 'MeshCalc' functionality.
+Using the 'Dynamics' plugin.
+Using the internal 'PathPlanning' functionality.
+***
+153
+***
+233
+238
+255
+***
+330
+335
+352
+***
+427
+***
+507
+512
+529
+***
+604
+609
+626
+libGL error: pci id for fd 16: 80ee:beef, driver (null)
+libGL error: core dri or dri2 extension not found
+libGL error: failed to load driver: vboxvideo
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19997
+Plugin 'RemoteApi': load succeeded.
+Using the internal 'MeshCalc' functionality.
+Using the 'Dynamics' plugin.
+Using the internal 'PathPlanning' functionality.
+***
+153
+158
+175
+***
+250
+255
+272
+***
+347
+***
+427
+432
+449
+***
+524
+529
+546
+***
+621
+libGL error: pci id for fd 16: 80ee:beef, driver (null)
+libGL error: core dri or dri2 extension not found
+libGL error: failed to load driver: vboxvideo
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19997
+Plugin 'RemoteApi': load succeeded.
+Using the internal 'MeshCalc' functionality.
+Using the 'Dynamics' plugin.
+Using the internal 'PathPlanning' functionality.
+***
+153
+***
+233
+238
+255
+libGL error: pci id for fd 16: 80ee:beef, driver (null)
+libGL error: core dri or dri2 extension not found
+libGL error: failed to load driver: vboxvideo
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19997
+QMutex: destroying locked mutex
+Plugin 'RemoteApi': load succeeded.
+Using the internal 'MeshCalc' functionality.
+Using the 'Dynamics' plugin.
+Using the internal 'PathPlanning' functionality.
+***
+153
+***
+233
+238
+255
+libGL error: pci id for fd 16: 80ee:beef, driver (null)
+libGL error: core dri or dri2 extension not found
+libGL error: failed to load driver: vboxvideo
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19997
+Plugin 'RemoteApi': load succeeded.
+Using the internal 'MeshCalc' functionality.
+Using the 'Dynamics' plugin.
+Using the internal 'PathPlanning' functionality.
+Simulator ended.
+libGL error: pci id for fd 16: 80ee:beef, driver (null)
+libGL error: core dri or dri2 extension not found
+libGL error: failed to load driver: vboxvideo
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19997
+Plugin 'RemoteApi': load succeeded.
+Using the internal 'MeshCalc' functionality.
+Using the 'Dynamics' plugin.
+Using the internal 'PathPlanning' functionality.
+***
+153
+158
+175
+libGL error: pci id for fd 16: 80ee:beef, driver (null)
+libGL error: core dri or dri2 extension not found
+libGL error: failed to load driver: vboxvideo
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19997
+QMutex: destroying locked mutex
+Plugin 'RemoteApi': load succeeded.
+Using the internal 'MeshCalc' functionality.
+Using the 'Dynamics' plugin.
+Using the internal 'PathPlanning' functionality.
+***
+153
+***
+233
+238
+255
+libGL error: pci id for fd 16: 80ee:beef, driver (null)
+libGL error: core dri or dri2 extension not found
+libGL error: failed to load driver: vboxvideo
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19997
+QSslSocket: cannot resolve SSLv2_client_method
+QSslSocket: cannot resolve SSLv2_server_method
+Plugin 'RemoteApi': load succeeded.
+Using the internal 'MeshCalc' functionality.
+Using the 'Dynamics' plugin.
+Using the internal 'PathPlanning' functionality.
+Checking for an updated V-REP version...
+A new V-REP version is available for download: V-REP V3.2.3
+
+Main changes in that version:
+-Many bug fixed
+-Many new API functions, incl. calling a child script function from a plugin
+-New models, incl. the Velodyne VPL-16
+-New tutorial on how to build a clean and efficient simulation model
+-Improved external IK: support for several instances and double-precision
+-Many simple example scenes related to the IK/FK functionality.
+
+Please visit www.coppeliarobotics.com to download the last V-REP version.
+***
+153
+158
+175
+***
+250
+libGL error: pci id for fd 16: 80ee:beef, driver (null)
+libGL error: core dri or dri2 extension not found
+libGL error: failed to load driver: vboxvideo
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19997
+Plugin 'RemoteApi': load succeeded.
+Using the internal 'MeshCalc' functionality.
+Using the 'Dynamics' plugin.
+Using the internal 'PathPlanning' functionality.
+***
+153
+158
+175
+***
+250
+255
+272
+libGL error: pci id for fd 16: 80ee:beef, driver (null)
+libGL error: core dri or dri2 extension not found
+libGL error: failed to load driver: vboxvideo
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19997
+QMutex: destroying locked mutex
+Plugin 'RemoteApi': load succeeded.
+Using the internal 'MeshCalc' functionality.
+Using the 'Dynamics' plugin.
+Using the internal 'PathPlanning' functionality.
+***
+153
+***
+233
+238
+255
