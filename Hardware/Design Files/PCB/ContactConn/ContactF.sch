@@ -1,0 +1,150 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:ContactF-cache
+EELAYER 25 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L PWR_FLAG #FLG01
+U 1 1 56678AAE
+P 4100 4150
+F 0 "#FLG01" H 4100 4245 50  0001 C CNN
+F 1 "PWR_FLAG" H 4100 4330 50  0000 C CNN
+F 2 "" H 4100 4150 60  0000 C CNN
+F 3 "" H 4100 4150 60  0000 C CNN
+	1    4100 4150
+	1    0    0    -1  
+$EndComp
+$Comp
+L VCC #PWR02
+U 1 1 56678AC2
+P 4100 4250
+F 0 "#PWR02" H 4100 4100 50  0001 C CNN
+F 1 "VCC" H 4100 4400 50  0000 C CNN
+F 2 "" H 4100 4250 60  0000 C CNN
+F 3 "" H 4100 4250 60  0000 C CNN
+	1    4100 4250
+	-1   0    0    1   
+$EndComp
+$Comp
+L GND #PWR03
+U 1 1 56678AD6
+P 3600 4250
+F 0 "#PWR03" H 3600 4000 50  0001 C CNN
+F 1 "GND" H 3600 4100 50  0000 C CNN
+F 2 "" H 3600 4250 60  0000 C CNN
+F 3 "" H 3600 4250 60  0000 C CNN
+	1    3600 4250
+	1    0    0    -1  
+$EndComp
+$Comp
+L PWR_FLAG #FLG04
+U 1 1 56678AEA
+P 3600 4150
+F 0 "#FLG04" H 3600 4245 50  0001 C CNN
+F 1 "PWR_FLAG" H 3600 4330 50  0000 C CNN
+F 2 "" H 3600 4150 60  0000 C CNN
+F 3 "" H 3600 4150 60  0000 C CNN
+	1    3600 4150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3600 4250 3600 4150
+Wire Wire Line
+	4100 4250 4100 4150
+$Comp
+L CONN_01X01 P1
+U 1 1 56678B9B
+P 5250 3550
+F 0 "P1" H 5250 3650 50  0000 C CNN
+F 1 "CONN_01X01" V 5350 3550 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Angled_1x01" H 5250 3550 60  0001 C CNN
+F 3 "" H 5250 3550 60  0000 C CNN
+	1    5250 3550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4900 3550 4900 4800
+Wire Wire Line
+	4900 3550 5050 3550
+Wire Wire Line
+	5450 4300 5800 4300
+Wire Wire Line
+	5800 4300 5800 3550
+$Comp
+L CONN_01X01 P3
+U 1 1 56678C2A
+P 4900 5000
+F 0 "P3" H 4900 5100 50  0000 C CNN
+F 1 "CONN_01X01" V 5000 5000 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Angled_1x01" H 4900 5000 60  0001 C CNN
+F 3 "" H 4900 5000 60  0000 C CNN
+	1    4900 5000
+	0    1    1    0   
+$EndComp
+$Comp
+L CONN_01X01 P4
+U 1 1 56678C8E
+P 5700 4900
+F 0 "P4" H 5700 5000 50  0000 C CNN
+F 1 "CONN_01X01" V 5800 4900 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Angled_1x01" H 5700 4900 60  0001 C CNN
+F 3 "" H 5700 4900 60  0000 C CNN
+	1    5700 4900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5450 4300 5450 4900
+Wire Wire Line
+	5450 4900 5500 4900
+$Comp
+L CONN_01X01 P2
+U 1 1 56678B36
+P 6000 3550
+F 0 "P2" H 6000 3650 50  0000 C CNN
+F 1 "CONN_01X01" V 6100 3550 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Angled_1x01" H 6000 3550 60  0001 C CNN
+F 3 "" H 6000 3550 60  0000 C CNN
+	1    6000 3550
+	1    0    0    -1  
+$EndComp
+$EndSCHEMATC
