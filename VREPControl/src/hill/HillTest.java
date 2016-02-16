@@ -44,7 +44,7 @@ public class HillTest {
 			 //ProcessBuilder qq = new
 			 //ProcessBuilder(vrepcommand,"/home/rodrigo/V-REP/Modular/Maze/MazeBuilder01.ttt");
 			 //ProcessBuilder qq = new
-				//	 ProcessBuilder(vrepcommand,"-h","/home/rodrigo/V-REP/Modular/Maze/MazeBuilder01.ttt");
+					 //ProcessBuilder(vrepcommand,"-h","/home/rodrigo/V-REP/Modular/Maze/MazeBuilder01.ttt");
 			
 			qq.directory(new File("/home/rodr/V-REP/Vrep" + simNumber + "/"));
 			//qq.directory(new File("/home/rodrigo/V-REP/Vrep" + simNumber + "/"));
@@ -68,7 +68,8 @@ public class HillTest {
 	Space<double[]> space = new HyperCube(min,max);
 	
 	//Optimization function
-	OptimizationFunction<double[]> function = new HillMazeRand3(simNumber, alpha);
+	//OptimizationFunction<double[]> function = new HillMazeRand3(simNumber, alpha);
+	OptimizationFunction<double[]> function = new HillMAS(simNumber, alpha);
 	Goal<double[]> goal = new OptimizationGoal<double[]>(function);
 	
 	
@@ -77,7 +78,7 @@ public class HillTest {
 	IntensityMutation variation = new GaussianMutation(0.1,null,adapt);
 	
 	//Search Method
-	int MAXITERS = 9000;
+	int MAXITERS = 1000;
 	boolean neutral = true;
 	HillClimbing<double[]> search = new HillClimbing<double[]>(variation, neutral, MAXITERS);
 	
@@ -94,10 +95,15 @@ public class HillTest {
 	FileTracer tracer = new FileTracer("Hillsim"+simNumber+".txt",',');
 	ConsoleTracer tracer1 = new ConsoleTracer();
 	//Tracer.addTracer(goal, tracer);
+//	Tracer.addTracer(search, tracer);
+//	Tracer.addTracer(HillMazeRand3.class,tracer);
+//	Tracer.addTracer(search,tracer1);
+//	Tracer.addTracer(HillMazeRand3.class,tracer1);.
 	Tracer.addTracer(search, tracer);
-	Tracer.addTracer(HillMazeRand3.class,tracer);
+	Tracer.addTracer(HillMAS.class,tracer);
 	Tracer.addTracer(search,tracer1);
-	Tracer.addTracer(HillMazeRand3.class,tracer1);
+	//Tracer.addTracer(HillMaze.class,tracer1);
+	
 	
 	
 	Solution<double[]> solution = search.apply(space, goal);
@@ -105,6 +111,7 @@ public class HillTest {
 	System.out.println(solution.quality());
 	
 	tracer.close();
+	tracer1.close();
 	
 	/* Kill all the v-rep processes */
 	try {

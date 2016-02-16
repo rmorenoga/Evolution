@@ -14,6 +14,7 @@ import coppelia.remoteApi;
 
 public class HillMazeRand3 extends OptimizationFunction<double[]> {
 
+	
 	public int simNumber = 0;
 	public float alpha = 0.7f;
 

@@ -4,6 +4,7 @@ import java.io.File;
 import java.lang.ProcessBuilder.Redirect;
 
 import unalcol.optimization.OptimizationFunction;
+import unalcol.tracer.Tracer;
 import coppelia.CharWA;
 import coppelia.FloatWA;
 import coppelia.IntW;
@@ -141,9 +142,11 @@ public class HillMaze  extends OptimizationFunction<double[]>{
 		long stopTime = System.currentTimeMillis();
 		long elapsedTime = stopTime - startTime;
 		System.out.println(elapsedTime);
+		
+		String tr = new String("->,"+x[0]+"," + x[1]+"," +x[2]+","+fitnessd);
 
 		// System.out.println("Total Fitness = "+fitnessd+" myrank "+myRank);
-
+		Tracer.trace(this,tr);
 		return fitnessd;
 	}
 	
