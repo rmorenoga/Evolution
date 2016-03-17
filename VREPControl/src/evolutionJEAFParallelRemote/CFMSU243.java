@@ -74,7 +74,7 @@ public class CFMSU243 extends ObjectiveFunction {
 		strSeq.setArray(mazeseq);
 
 		// Array that receives fitness from the simulator or signals a crash
-		float[] rfitness = new float[2];
+		float[] rfitness = new float[3];
 
 		// Fitness to be returned to Evolutionary Algorithm
 		float[] fitness = new float[] { 1000, 1000, 1000 };
@@ -261,7 +261,7 @@ public class CFMSU243 extends ObjectiveFunction {
 		IntW out = new IntW(0);
 		CharWA datastring = new CharWA(1);
 		FloatWA out2 = new FloatWA(3);
-		float[] fitnessout = new float[2];
+		float[] fitnessout = new float[3];
 
 		// Start Simulation
 		int ret = vrep.simxStartSimulation(clientID,
@@ -326,15 +326,31 @@ public class CFMSU243 extends ObjectiveFunction {
 		}
 
 		fitnessout[0] = 0;
+		
+		float alpha = 0.7f;
+		float beta = 1 - alpha;
+
 		if (out2.getArray()[0] == 0) {
 			// The robot could get out of the maze so the fitness is the time it
-			// spent
-			fitnessout[1] = out2.getArray()[1] * 0.01f;
+			// spent normalized
+			fitnessout[1] = beta * out2.getArray()[1] / MaxTime;
+			fitnessout[2] = 1;
 		} else if (out2.getArray()[1] == 0) {
 			// The robot could not get out of the maze so the fitness is the
 			// distance to goal + the maximum time allowed
-			fitnessout[1] = out2.getArray()[0] + (float) MaxTime * 0.01f;
+			fitnessout[1] = alpha * out2.getArray()[0] + beta * 1.0f;
+			fitnessout[2] = 0;
 		}
+//		
+//		if (out2.getArray()[0] == 0) {
+//			// The robot could get out of the maze so the fitness is the time it
+//			// spent
+//			fitnessout[1] = out2.getArray()[1] * 0.01f;
+//		} else if (out2.getArray()[1] == 0) {
+//			// The robot could not get out of the maze so the fitness is the
+//			// distance to goal + the maximum time allowed
+//			fitnessout[1] = out2.getArray()[0] + (float) MaxTime * 0.01f;
+//		}
 
 		// Return the fitness of the run
 		return fitnessout;

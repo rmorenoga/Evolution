@@ -1,33 +1,42 @@
-package hill;
+package evolHAEA;
 
+import unalcol.optimization.OptimizationFunction;
+import unalcol.types.collection.bitarray.BitArray;
+import hill.Simulation;
 import coppelia.CharWA;
 import coppelia.FloatWA;
 import coppelia.IntWA;
 import coppelia.remoteApi;
-import unalcol.optimization.OptimizationFunction;
-import unalcol.tracer.Tracer;
 
-public class HillMAS extends OptimizationFunction<double[]>{
+public class HMAS extends OptimizationFunction<double[]>{
 	
-	public int simNumber = 0;
 	public float alpha = 0.7f;
+	protected BitArray servers;
 	
-	HillMAS(int simNumber) {
-		this.simNumber = simNumber;
+	public HMAS(int numberOfServers) {
+		servers = new BitArray(numberOfServers, false);
 	}
 	
-	public HillMAS(){
-		
+	public synchronized int getSimNumber() {
+		for(int i = 0;i < servers.size(); ++i)
+			if(!servers.get(i)) {
+				servers.set(i, true);
+				return i;
+			}
+		return -1;
 	}
-
-	HillMAS(int simNumber, float alpha) {
-		this.simNumber = simNumber;
+	
+	HMAS(int numberOfServers, float alpha) {
+		servers = new BitArray(numberOfServers, false);
 		this.alpha = alpha;
 	}
-	
+
 	public Double apply(double[] x) {
-		// Start Measuring evaluation time
-				long startTime = System.currentTimeMillis();
+				System.out.println("hi");
+				int simNumber = -1;
+				while(simNumber < 0) simNumber = getSimNumber();
+				
+				System.out.println("sim: "+simNumber);
 
 				float ampli = (float) x[0];
 				float offset = (float) x[1];
@@ -48,7 +57,7 @@ public class HillMAS extends OptimizationFunction<double[]>{
 				int[] orientation = new int[] { 1, 0, 1, 0, 1, 0, 1, 0 };
 
 				// Simulation Parameters
-				int MaxTime = 120;
+				int MaxTime = 30;
 
 				// Pack Integers into one String data signal
 				IntWA NumberandOri = new IntWA(Numberofmodules + 3);
@@ -92,8 +101,8 @@ public class HillMAS extends OptimizationFunction<double[]>{
 
 					// Simulator interaction start
 					remoteApi vrep = new remoteApi(); // Create simulator control object
-					Simulation sim = new Simulation(this.simNumber);
-					vrep.simxFinish(-1); // just in case, close all opened connections
+					Simulation sim = new Simulation(simNumber);
+					//vrep.simxFinish(-1); // just in case, close all opened connections
 					// Connect with the corresponding simulator remote server
 					int clientID = vrep.simxStart("127.0.0.1", 19997 - simNumber, true,
 							true, 5000, 5);
@@ -156,8 +165,10 @@ public class HillMAS extends OptimizationFunction<double[]>{
 				//String tr = new String(fitness[0]+","+fitness[1]+","+fitness[2]+","+fitness[3]+","+fitness[4]+","+fitness[5]);
 				
 		        //Tracer.trace(this,tr);
-
+				servers.set(simNumber, false);
 				return fitnesst;
 	}
 
 }
+
+

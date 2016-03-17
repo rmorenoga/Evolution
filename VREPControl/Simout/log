@@ -794,3 +794,21 @@ Plugin 'LuaRemoteApiClient': load succeeded.
 Plugin 'RemoteApi': loading...
 Starting a remote API server on port 19997
 Terminated
+libGL error: pci id for fd 16: 80ee:beef, driver (null)
+libGL error: core dri or dri2 extension not found
+libGL error: failed to load driver: vboxvideo
+Add-on script 'vrepAddOnScript-addOnScriptDemo.lua' was loaded.
+Simulator launched.
+Plugin 'Dynamics': loading...
+Plugin 'Dynamics': load succeeded.
+Plugin 'LuaRemoteApiClient': loading...
+Plugin 'LuaRemoteApiClient': load succeeded.
+Plugin 'RemoteApi': loading...
+Starting a remote API server on port 19997
+Plugin 'RemoteApi': load succeeded.
+Using the internal 'MeshCalc' functionality.
+Using the 'Dynamics' plugin.
+Using the internal 'PathPlanning' functionality.
+Simulator ended.
+vrep0: no process found
+vrep0: no process found

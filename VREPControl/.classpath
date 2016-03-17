@@ -22,5 +22,6 @@
 	<classpathentry kind="lib" path="lib/random.jar"/>
 	<classpathentry kind="lib" path="lib/services.jar"/>
 	<classpathentry kind="lib" path="lib/types.jar"/>
+	<classpathentry kind="lib" path="lib/evolution.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
