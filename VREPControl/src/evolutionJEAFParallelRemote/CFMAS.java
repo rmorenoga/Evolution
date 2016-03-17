@@ -1,12 +1,11 @@
 package evolutionJEAFParallelRemote;
 
-import hill.Simulation;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 
+import simvrep.Simulation;
 import mpi.MPI;
 import coppelia.CharWA;
 import coppelia.FloatWA;
