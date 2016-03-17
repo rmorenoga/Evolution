@@ -2,7 +2,7 @@ package evolHAEA;
 
 import unalcol.optimization.OptimizationFunction;
 import unalcol.types.collection.bitarray.BitArray;
-import hill.Simulation;
+import simvrep.Simulation;
 import coppelia.CharWA;
 import coppelia.FloatWA;
 import coppelia.IntWA;
