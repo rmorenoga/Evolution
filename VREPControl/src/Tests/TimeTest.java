@@ -60,7 +60,10 @@ public class TimeTest {
 
 			// Run Scene in the simulator
 			simtime = RunSimulation(vrep, clientID, MaxTime, myRank);
-
+			
+			// *******************************************************************************************************************************
+			// Close connection with the simulator
+			vrep.simxFinish(clientID);
 		} else {
 			// No connection could be established
 			System.out.println("Failed connecting to remote API server");

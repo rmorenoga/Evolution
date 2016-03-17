@@ -4,6 +4,7 @@ import coppelia.CharWA;
 import coppelia.FloatWA;
 import coppelia.IntWA;
 import coppelia.remoteApi;
+import simvrep.Simulation;
 import unalcol.optimization.OptimizationFunction;
 import unalcol.tracer.Tracer;
 

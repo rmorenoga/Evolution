@@ -33,6 +33,8 @@ public class GeneralizationTest {
 		float[][] indiv = new float[][]{
 				{-1.0f, -0.34856381681107756f, -0.7018207570662021f},
 				 };
+				{0.8231876101554202f,0.3938365318859707f,-0.46775484270457374f},
+			};
 				
 				
 				
@@ -49,7 +51,7 @@ public class GeneralizationTest {
 		FileWriter file= null;
 		PrintWriter pw = null;
 		try {
-			file = new FileWriter("SU243Gen210.txt", true);
+			file = new FileWriter("IndGenResult.txt", true);
 			pw = new PrintWriter(file);
 			
 			pw.println(indiv[0]+","+indiv[1]+","+indiv[2]+","+result[0]+","+result[1]+","+result[2]+","+result[3]+","+result[4]+","+result[5]);

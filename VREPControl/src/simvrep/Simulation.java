@@ -1,4 +1,4 @@
-package hill;
+package simvrep;
 
 import java.io.File;
 import java.lang.ProcessBuilder.Redirect;
@@ -19,17 +19,17 @@ public class Simulation {
 
 	public void RestartSim(int j) {
 		
-		int myRank = this.simnumber;
+		int simnumber = this.simnumber;
 
 		// Create the command to open the corresponding simulator
-		String vrepcommand = new String("./vrep" + myRank + ".sh");
+		String vrepcommand = new String("./vrep" + simnumber + ".sh");
 
 		System.out.println("Restarting simulator and trying again for the " + j
-				+ " time in " + myRank);
+				+ " time in " + simnumber);
 
 		try {
 			// Command to kill corresponding simulator
-			ProcessBuilder qq = new ProcessBuilder("killall", "vrep" + myRank);
+			ProcessBuilder qq = new ProcessBuilder("killall", "vrep" + simnumber);
 			// Specify output file for command line messages
 			File log = new File("Simout/log");
 			qq.redirectErrorStream(true);
@@ -38,7 +38,7 @@ public class Simulation {
 			Process p = qq.start();
 			// Wait for process to finish
 			int exitVal = p.waitFor();
-			System.out.println("Terminated vrep" + myRank + " with error code "
+			System.out.println("Terminated vrep" + simnumber + " with error code "
 					+ exitVal);
 
 			// Command to open a simulator with no window
@@ -49,7 +49,7 @@ public class Simulation {
 			// ProcessBuilder("xvfb-run","--auto-servernum","--server-num=1",vrepcommand,
 			// "-h");
 			// Open the simulator from its own directory
-			qq.directory(new File("/home/rodr/V-REP/Vrep" + myRank + "/"));
+			qq.directory(new File("/home/rodr/V-REP/Vrep" + simnumber + "/"));
 			// Specify output file for command line messages of the simulator
 			qq.redirectErrorStream(true);
 			qq.redirectOutput(Redirect.appendTo(log));
