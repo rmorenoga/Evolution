@@ -35,16 +35,17 @@ public class IndvModTest {
 				}
 
 				// Pack Floats into one String data signal
-				FloatWA ControlParam = new FloatWA(3);
 				float[] CP = new float[24];
 				for (int i = 0; i < ampli.length; i++) {
 					CP[(i*3)] = ampli[i];
 					CP[(i*3)+1] = offset[i];
 					CP[(i*3)+2] = phase[i];
 				}
-				ControlParam.setArray(CP);
-				CharWA strCP = new CharWA(1);
-				strCP.setArray(ControlParam.getCharArrayFromArray());
+				FloatWA ControlParam = new FloatWA(CP.length);
+				System.arraycopy(CP,0,ControlParam.getArray(),0,CP.length);
+				char[] p = ControlParam.getCharArrayFromArray();
+				CharWA strCP = new CharWA(p.length);
+				System.arraycopy(p,0,strCP.getArray(),0,p.length);
 				
 				
 				// Pack Integers into one String data signal
@@ -55,9 +56,10 @@ public class IndvModTest {
 				for (int i = 2; i < Numberofmodules + 2; i++) {
 					NO[i] = orientation[i - 2];
 				}
-				NumberandOri.setArray(NO);
-				CharWA strNO = new CharWA(1);
-				strNO.setArray(NumberandOri.getCharArrayFromArray());
+				System.arraycopy(NO,0,NumberandOri.getArray(),0,NO.length);
+				char[] p2 = NumberandOri.getCharArrayFromArray();
+				CharWA strNO = new CharWA(p2.length);
+				System.arraycopy(p2,0,strNO.getArray(),0,p2.length);
 				
 				// Array that receives fitness from the simulator or signals a crash
 				float[] rfitness = new float[3];

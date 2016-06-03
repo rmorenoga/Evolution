@@ -41,9 +41,10 @@ public class CalcFitnessMazeRS1234 extends ObjectiveFunction{
 		CP[0] = ampli;
 		CP[1] = offset;
 		CP[2] = phase;
-		ControlParam.setArray(CP);
-		CharWA strCP = new CharWA(1);
-		strCP.setArray(ControlParam.getCharArrayFromArray());
+		System.arraycopy(CP,0,ControlParam.getArray(),0,CP.length);
+		char[] p = ControlParam.getCharArrayFromArray();
+		CharWA strCP = new CharWA(p.length);
+		System.arraycopy(p,0,strCP.getArray(),0,p.length);
 		
 		// Morphology Parameters
 		int Numberofmodules = 8;
@@ -64,15 +65,16 @@ public class CalcFitnessMazeRS1234 extends ObjectiveFunction{
      for (int i = 3; i < Numberofmodules + 3; i++) {
      	NO[i] = orientation[i - 3];
      }
-     NumberandOri.setArray(NO);
-     CharWA strNO = new CharWA(1);
-     strNO.setArray(NumberandOri.getCharArrayFromArray());
+     System.arraycopy(NO,0,NumberandOri.getArray(),0,NO.length);
+		char[] p2 = NumberandOri.getCharArrayFromArray();
+		CharWA strNO = new CharWA(p2.length);
+		System.arraycopy(p2,0,strNO.getArray(),0,p2.length);
 	
     // Maze Parameters (Already a string)
     char[] mazeseq = new char[]{'s'}; // Default Maze Sequence
   	//char[] mazeseq = new char[]{'s','l','s','s','l','s','l','s','l','l'};
-  	CharWA strSeq=new CharWA(1);
-  	strSeq.setArray(mazeseq);
+    CharWA strSeq = new CharWA(mazeseq.length);
+	System.arraycopy(mazeseq,0,strSeq.getArray(),0,mazeseq.length);
 		
   	
  // Array that receives fitness from the simulator or signals a crash
@@ -109,7 +111,8 @@ public class CalcFitnessMazeRS1234 extends ObjectiveFunction{
 	
 		// New Maze Parameters (Already a string)
 		mazeseq = new char[]{'s','s'}; 
-		strSeq.setArray(mazeseq);
+		strSeq.initArray(mazeseq.length);
+		System.arraycopy(mazeseq,0,strSeq.getArray(),0,mazeseq.length);
 		vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
 			
 		// Run Scene in the simulator	
@@ -130,7 +133,8 @@ public class CalcFitnessMazeRS1234 extends ObjectiveFunction{
 		if(fitness[0]<=(float)MaxTime*0.01f){
 			// New Maze Parameters (Already a string)
 			mazeseq = new char[]{'s','l','s'}; 
-			strSeq.setArray(mazeseq);
+			strSeq.initArray(mazeseq.length);
+			System.arraycopy(mazeseq,0,strSeq.getArray(),0,mazeseq.length);
 			vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
 				
 			// Run Scene in the simulator	
@@ -150,7 +154,8 @@ public class CalcFitnessMazeRS1234 extends ObjectiveFunction{
 		if((fitness[0]<=(float)MaxTime*0.01f) && (fitness[1]<=(float)MaxTime*0.01f)){
 			// New Maze Parameters (Already a string)
 			mazeseq = new char[]{'b'}; 
-			strSeq.setArray(mazeseq);
+			strSeq.initArray(mazeseq.length);
+			System.arraycopy(mazeseq,0,strSeq.getArray(),0,mazeseq.length);
 			vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
 				
 			// Run Scene in the simulator	
@@ -170,7 +175,8 @@ public class CalcFitnessMazeRS1234 extends ObjectiveFunction{
 		if((fitness[0]<=(float)MaxTime*0.01f) && (fitness[1]<=(float)MaxTime*0.01f) && (fitness[2]<=(float)MaxTime*0.01f)){
 			// New Maze Parameters (Already a string)
 			mazeseq = new char[]{'s','r','s'}; 
-			strSeq.setArray(mazeseq);
+			strSeq.initArray(mazeseq.length);
+			System.arraycopy(mazeseq,0,strSeq.getArray(),0,mazeseq.length);
 			vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
 				
 			// Run Scene in the simulator	

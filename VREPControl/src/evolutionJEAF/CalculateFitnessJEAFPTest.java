@@ -63,9 +63,10 @@ public class CalculateFitnessJEAFPTest extends ObjectiveFunction{
 		{
 			NO[i] = orientation[i-2];
 		}
-		NumberandOri.setArray(NO);
-		CharWA strNO=new CharWA(1);
-		strNO.setArray(NumberandOri.getCharArrayFromArray());
+		System.arraycopy(NO,0,NumberandOri.getArray(),0,NO.length);
+		char[] p2 = NumberandOri.getCharArrayFromArray();
+		CharWA strNO = new CharWA(p2.length);
+		System.arraycopy(p2,0,strNO.getArray(),0,p2.length);
 		
 		//Pack Floats into one String data signal
 		FloatWA ControlParam =new FloatWA(5);
@@ -75,9 +76,10 @@ public class CalculateFitnessJEAFPTest extends ObjectiveFunction{
 		CP[2] = CPGPhase;
 		CP[3] = GoalX;
 		CP[4] = GoalY;
-		ControlParam.setArray(CP);
-		CharWA strCP=new CharWA(1);
-		strCP.setArray(ControlParam.getCharArrayFromArray());
+		System.arraycopy(CP,0,ControlParam.getArray(),0,CP.length);
+		char[] p = ControlParam.getCharArrayFromArray();
+		CharWA strCP = new CharWA(p.length);
+		System.arraycopy(p,0,strCP.getArray(),0,p.length);
 		
 		System.out.println("Hi from "+myRank);
 		
@@ -195,9 +197,10 @@ public class CalculateFitnessJEAFPTest extends ObjectiveFunction{
 		 GoalY = -3.875f;
 		 CP[3] = GoalX;
 		 CP[4] = GoalY;
-		 ControlParam.setArray(CP);
-		 strCP=new CharWA(1);
-		 strCP.setArray(ControlParam.getCharArrayFromArray());   
+		 System.arraycopy(CP,0,ControlParam.getArray(),0,CP.length);
+		 p = ControlParam.getCharArrayFromArray();
+		 strCP.initArray(p.length);
+		 System.arraycopy(p,0,strCP.getArray(),0,p.length);   
 		 ret = vrep.simxSetStringSignal(clientID, "ControlParam", strCP, vrep.simx_opmode_oneshot_wait) ;
 	  	    
 	  	    

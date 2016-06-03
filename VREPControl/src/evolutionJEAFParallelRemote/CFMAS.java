@@ -40,9 +40,10 @@ public class CFMAS extends ObjectiveFunction {
 		CP[0] = ampli;
 		CP[1] = offset;
 		CP[2] = phase;
-		ControlParam.setArray(CP);
-		CharWA strCP = new CharWA(1);
-		strCP.setArray(ControlParam.getCharArrayFromArray());
+		System.arraycopy(CP,0,ControlParam.getArray(),0,CP.length);
+		char[] p = ControlParam.getCharArrayFromArray();
+		CharWA strCP = new CharWA(p.length);
+		System.arraycopy(p,0,strCP.getArray(),0,p.length);
 
 		// Morphology Parameters
 		int Numberofmodules = 8;
@@ -60,9 +61,10 @@ public class CFMAS extends ObjectiveFunction {
 		for (int i = 3; i < Numberofmodules + 3; i++) {
 			NO[i] = orientation[i - 3];
 		}
-		NumberandOri.setArray(NO);
-		CharWA strNO = new CharWA(1);
-		strNO.setArray(NumberandOri.getCharArrayFromArray());
+		System.arraycopy(NO,0,NumberandOri.getArray(),0,NO.length);
+		char[] p2 = NumberandOri.getCharArrayFromArray();
+		CharWA strNO = new CharWA(p2.length);
+		System.arraycopy(p2,0,strNO.getArray(),0,p2.length);
 
 		// All combinations of sub-environments
 		char[][] subenvperm = new char[][] {
@@ -75,8 +77,9 @@ public class CFMAS extends ObjectiveFunction {
 
 		// Maze Parameters (Already a string)
 		char[] mazeseq = new char[] { 's' }; // Default Maze Sequence
-		CharWA strSeq = new CharWA(1);
-		strSeq.setArray(mazeseq);
+		CharWA strSeq = new CharWA(mazeseq.length);
+		System.arraycopy(mazeseq,0,strSeq.getArray(),0,mazeseq.length);
+
 
 		// Array that receives fitness from the simulator or signals a crash
 		float[] rfitness = new float[3];
@@ -114,7 +117,8 @@ public class CFMAS extends ObjectiveFunction {
 
 						// New Maze Parameters (Already a string)
 						mazeseq = subenvperm[i];
-						strSeq.setArray(mazeseq);
+						strSeq.initArray(mazeseq.length);
+						System.arraycopy(mazeseq,0,strSeq.getArray(),0,mazeseq.length);
 						vrep.simxSetStringSignal(clientID, "Maze", strSeq,
 								vrep.simx_opmode_oneshot_wait);
 

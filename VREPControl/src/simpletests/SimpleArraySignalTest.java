@@ -28,9 +28,11 @@ public class SimpleArraySignalTest {
 			System.out.println("Int: "+ out.getArray()[0]+" "+out.getArray()[1]+" "+out.getArray()[2]+" "+out.getArray()[3]);
 			System.out.println("String: "+ str.getArray());
 			out.initArray(3);
-			out.setArray(new float[]{1.2f, 5.6f, 3.4f});
-			str.initArray(1);
-			str.setArray(out.getCharArrayFromArray());
+			float[] f = new float[]{1.2f, 5.6f, 3.4f};
+			System.arraycopy(f,0,out.getArray(),0,f.length);
+			char[] p = out.getCharArrayFromArray();
+			str.initArray(p.length);
+			System.arraycopy(p,0,str.getArray(),0,p.length);
 			ret = vrep.simxSetStringSignal(clientID, "in",str, vrep.simx_opmode_oneshot_wait);
 		}	
 		else

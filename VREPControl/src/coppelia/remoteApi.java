@@ -1,6 +1,6 @@
 // This file is part of the REMOTE API
 // 
-// Copyright 2006-2014 Coppelia Robotics GmbH. All rights reserved. 
+// Copyright 2006-2016 Coppelia Robotics GmbH. All rights reserved. 
 // marc@coppeliarobotics.com
 // www.coppeliarobotics.com
 // 
@@ -24,7 +24,7 @@
 // along with the REMOTE API.  If not, see <http://www.gnu.org/licenses/>.
 // -------------------------------------------------------------------
 //
-// This file was automatically created for V-REP release V3.1.3 on Sept. 30th 2014
+// This file was automatically created for V-REP release V3.3.0 on February 19th 2016
 
 package coppelia;
 
@@ -105,6 +105,7 @@ public class remoteApi
 	public native int simxGetStringParameter(int clientID,int paramIdentifier,StringW paramValue,int operationMode);
 	public native int simxGetCollisionHandle(int clientID,final String collisionObjectName,IntW handle,int operationMode);
 	public native int simxGetDistanceHandle(int clientID,final String distanceObjectName,IntW handle,int operationMode);
+	public native int simxGetCollectionHandle(int clientID,final String collectionName,IntW handle,int operationMode);
 	public native int simxReadCollision(int clientID,int collisionObjectHandle,BoolW collisionState,int operationMode);
 	public native int simxGetObjects(int clientID,int objectType,IntWA objectHandles,int operationMode);
 	public native int simxDisplayDialog(int clientID,final String titleText,final String mainText,int dialogType,final String initialText,FloatWA titleColors,FloatWA dialogColors,IntW dialogHandle,IntW uiHandle,int operationMode);
@@ -141,6 +142,7 @@ public class remoteApi
 	public native int simxQuery(int clientID,final String signalName, final CharWA signalValue,final String retSignalName, CharWA retSignalValue, int timeOutInMs);
 	public native int simxGetObjectGroupData(int clientID,int objectType,int dataType,IntWA handles,IntWA intData,FloatWA floatData,StringWA stringData,int operationMode);
 	public native int simxGetObjectVelocity(int clientID,int objectHandle, FloatWA linearVelocity, FloatWA angularVelocity, int operationMode);
+	public native int simxCallScriptFunction(int clientID,final String scriptDescription,int options,final String functionName,final IntWA inInts,final FloatWA inFloats,final StringWA inStrings,final CharWA inBuffer,IntWA outInts,FloatWA outFloats,StringWA outStrings,CharWA outBuffer,int operationMode);
 	
 	
 	public static final int SIMX_HEADER_SIZE = 18;
@@ -407,7 +409,6 @@ public class remoteApi
 	public static final int sim_simulation_advancing = 16;								/* Simulation is advancing */
 	public static final int sim_simulation_advancing_firstafterstop =16 |0;		/* First simulation pass (1x) */
 	public static final int sim_simulation_advancing_running = 16|1;		/* Normal simulation pass (>=1x) */
-	/* reserved									=sim_simulation_advancing|0x02, */
 	public static final int sim_simulation_advancing_lastbeforepause = 16|3;		/* Last simulation pass before pause (1x) */
 	public static final int sim_simulation_advancing_firstafterpause = 16|4;		/* First simulation pass after pause (1x) */
 	public static final int sim_simulation_advancing_abouttostop = 16|5;		/* "Trying to stop" simulation pass (>=1x) */
@@ -424,9 +425,10 @@ public class remoteApi
 	/* Script types (serialized!) */
 	public static final int sim_scripttype_mainscript = 0;
 	public static final int sim_scripttype_childscript = 1;
-	public static final int sim_scripttype_pluginscript = 2;
-	public static final int sim_scripttype_threaded = 240;		/* Combine with one of above's type values */
-		
+	public static final int sim_scripttype_jointctrlcallback = 4;
+	public static final int sim_scripttype_contactcallback = 5;
+	public static final int sim_scripttype_customizationscript = 6;
+	public static final int sim_scripttype_generalcallback = 7;
 
 	/* API call error messages */
 	public static final int sim_api_errormessage_ignore = 0;	/* does not memorize nor output errors */
@@ -586,7 +588,24 @@ public class remoteApi
 	public static final int	sim_boolparam_aux_clip_planes_enabled = 23;
 	public static final int	sim_boolparam_full_model_copy_from_api = 24;
 	public static final int	sim_boolparam_realtime_simulation = 25;
+	public static final int	sim_boolparam_force_show_wireless_emission = 27;
+	public static final int	sim_boolparam_force_show_wireless_reception = 28;
 	public static final int	sim_boolparam_video_recording_triggered = 29;
+	
+	public static final int	sim_boolparam_threaded_rendering_enabled = 32;
+	public static final int	sim_boolparam_fullscreen = 33;
+	public static final int	sim_boolparam_headless = 34;
+	public static final int	sim_boolparam_hierarchy_toolbarbutton_enabled = 35;
+	public static final int	sim_boolparam_browser_toolbarbutton_enabled = 36;
+	public static final int	sim_boolparam_objectshift_toolbarbutton_enabled = 37;
+	public static final int	sim_boolparam_objectrotate_toolbarbutton_enabled = 38;
+	public static final int	sim_boolparam_force_calcstruct_all_visible = 39;
+	public static final int	sim_boolparam_force_calcstruct_all = 40;
+	public static final int	sim_boolparam_exit_request = 41;
+	public static final int	sim_boolparam_play_toolbarbutton_enabled = 42;
+	public static final int	sim_boolparam_pause_toolbarbutton_enabled = 43;
+	public static final int	sim_boolparam_stop_toolbarbutton_enabled = 44;
+	public static final int	sim_boolparam_waiting_for_trigger = 45;
 
 
 	/* Integer parameters: */
@@ -616,14 +635,36 @@ public class remoteApi
 	public static final int	sim_intparam_mouse_y = 23;
 	public static final int	sim_intparam_core_count = 24;
 	public static final int	sim_intparam_work_thread_calc_time_ms = 25;
+	public static final int	sim_intparam_idle_fps = 26;
+	public static final int	sim_intparam_prox_sensor_select_down = 27;
+	public static final int	sim_intparam_prox_sensor_select_up = 28;
+	public static final int	sim_intparam_stop_request_counter = 29;
+	public static final int	sim_intparam_program_revision = 30;
+	public static final int	sim_intparam_mouse_buttons = 31;
+	public static final int	sim_intparam_dynamic_warning_disabled_mask = 32;
+	public static final int	sim_intparam_simulation_warning_disabled_mask = 33;
+	public static final int	sim_intparam_scene_index = 34;
+	public static final int	sim_intparam_motionplanning_seed = 35;
+	public static final int	sim_intparam_speedmodifier = 36;
 
 	/* Float parameters: */
 	public static final int sim_floatparam_rand = 0; /* random value (0.0-1.0) */
 	public static final int sim_floatparam_simulation_time_step = 1; 
+	public static final int coppelia_remoteApi_sim_floatparam_stereo_distance = 2; 
 		
 	/* String parameters: */
 	public static final int	sim_stringparam_application_path = 0; /* path of V-REP's executable */
 	public static final int	sim_stringparam_video_filename = 1;
+	public static final int	sim_stringparam_app_arg1 = 2;
+	public static final int	sim_stringparam_app_arg2 = 3;
+	public static final int	sim_stringparam_app_arg3 = 4;
+	public static final int	sim_stringparam_app_arg4 = 5;
+	public static final int	sim_stringparam_app_arg5 = 6;
+	public static final int	sim_stringparam_app_arg6 = 7;
+	public static final int	sim_stringparam_app_arg7 = 8;
+	public static final int	sim_stringparam_app_arg8 = 9;
+	public static final int	sim_stringparam_app_arg9 = 10;
+	public static final int	sim_stringparam_scene_path_and_name = 13;
 		
 	/* Array parameters: */
 	public static final int sim_arrayparam_gravity = 0;
@@ -632,6 +673,7 @@ public class remoteApi
 	public static final int sim_arrayparam_background_color1 = 3;
 	public static final int sim_arrayparam_background_color2 = 4;
 	public static final int sim_arrayparam_ambient_light = 5; 
+	public static final int sim_arrayparam_random_euler = 6; 
 
 	/* User interface elements: */
 	public static final int sim_gui_menubar = 1;
@@ -682,7 +724,7 @@ public class remoteApi
 	/* Command return codes */
 	public static final int simx_return_ok = 0;
 	public static final int simx_return_novalue_flag = 1;		/* input buffer doesn't contain the specified command */
-	public static final int simx_return_timeout_flag = 2;		/* command reply not received in time for simx_opmode_oneshot_wait operation mode */
+	public static final int simx_return_timeout_flag = 2;		/* command reply not received in time for simx_opmode_blocking operation mode */
 	public static final int simx_return_illegal_opmode_flag = 4;		/* command doesn't support the specified operation mode */
 	public static final int simx_return_remote_error_flag = 8;		/* command caused an error on the server side */
 	public static final int simx_return_split_progress_flag = 16;		/* previous similar command not yet fully processed (applies to simx_opmode_oneshot_split operation modes) */
@@ -692,7 +734,7 @@ public class remoteApi
 	/* Following for backward compatibility (same as above) */
 	public static final int simx_error_noerror = 0;
 	public static final int simx_error_novalue_flag = 1;		/* input buffer doesn't contain the specified command */
-	public static final int simx_error_timeout_flag = 2;		/* command reply not received in time for simx_opmode_oneshot_wait operation mode */
+	public static final int simx_error_timeout_flag = 2;		/* command reply not received in time for simx_opmode_blocking operation mode */
 	public static final int simx_error_illegal_opmode_flag = 4;		/* command doesn't support the specified operation mode */
 	public static final int simx_error_remote_error_flag = 8;		/* command caused an error on the server side */
 	public static final int simx_error_split_progress_flag = 16;		/* previous similar command not yet fully processed (applies to simx_opmode_oneshot_split operation modes) */
@@ -702,6 +744,7 @@ public class remoteApi
 
 			/* Regular operation modes */
 	public static final int	simx_opmode_oneshot = 0;		/* sends command as one chunk. Reply will also come as one chunk. Doesn't wait for the reply. */
+	public static final int	simx_opmode_blocking = 65536;		/* sends command as one chunk. Reply will also come as one chunk. Waits for the reply (_REPLY_WAIT_TIMEOUT_IN_MS is the timeout). */
 	public static final int	simx_opmode_oneshot_wait = 65536;		/* sends command as one chunk. Reply will also come as one chunk. Waits for the reply (_REPLY_WAIT_TIMEOUT_IN_MS is the timeout). */
 	public static final int	simx_opmode_streaming = 131072;
 	public static final int	simx_opmode_continuous = 131072;

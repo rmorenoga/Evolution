@@ -26,11 +26,6 @@ public class IntWA
         w = new int[i];
         return w;
     }
-    
-    public void setArray(int[] input)
-    {
-    	w = input;
-    }
 
     public int[] getArray()
     {

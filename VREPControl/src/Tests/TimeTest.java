@@ -41,9 +41,10 @@ public class TimeTest {
 		for (int i = 2; i < Numberofmodules + 2; i++) {
 			NO[i] = orientation[i - 2];
 		}
-		NumberandOri.setArray(NO);
-		CharWA strNO = new CharWA(1);
-		strNO.setArray(NumberandOri.getCharArrayFromArray());
+		System.arraycopy(NO,0,NumberandOri.getArray(),0,NO.length);
+		char[] p2 = NumberandOri.getCharArrayFromArray();
+		CharWA strNO = new CharWA(p2.length);
+		System.arraycopy(p2,0,strNO.getArray(),0,p2.length);
 
 		// Simulator interaction start
 		remoteApi vrep = new remoteApi(); // Create simulator control object

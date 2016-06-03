@@ -15,11 +15,6 @@ public class FloatWA
     {
         w = new float[i];
     }
-    
-    public void setArray(float[] input)
-    {
-    	w = input;
-    }
 
     public float[] getArray()
     {

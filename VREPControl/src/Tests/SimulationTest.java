@@ -50,10 +50,11 @@ public class SimulationTest {
 		this.simnumber = simnumber;
 		this.MaxTime = MaxTime;
 
-		FloatWA ControlParam = new FloatWA(3);
-		ControlParam.setArray(robot.getControlParam());
-		CharWA strCP = new CharWA(1);
-		strCP.setArray(ControlParam.getCharArrayFromArray());
+		FloatWA ControlParam = new FloatWA(robot.getControlParam().length);
+		System.arraycopy(robot.getControlParam(),0,ControlParam.getArray(),0,robot.getControlParam().length);
+		char[] p = ControlParam.getCharArrayFromArray();
+		CharWA strCP = new CharWA(p.length);
+		System.arraycopy(p,0,strCP.getArray(),0,p.length);
 		
 		int nmodules = robot.getNumberofmodules();
 		int[] orientation = robot.getOrientation();
@@ -65,9 +66,11 @@ public class SimulationTest {
 		for (int i = 2; i < nmodules + 2; i++) {
 			NO[i] = orientation[i - 2];
 		}
-		NumberandOri.setArray(NO);
-		CharWA strNO = new CharWA(1);
-		strNO.setArray(NumberandOri.getCharArrayFromArray());
+		System.arraycopy(NO,0,NumberandOri.getArray(),0,NO.length);
+		char[] p2 = NumberandOri.getCharArrayFromArray();
+		CharWA strNO = new CharWA(p2.length);
+		System.arraycopy(p2,0,strNO.getArray(),0,p2.length);
+		
 
 	}
 
@@ -99,8 +102,8 @@ public class SimulationTest {
 	 *            a char array containing the maze sequence
 	 */
 	public void SendMaze(char[] sequence) {
-		strSeq = new CharWA(1);
-		strSeq.setArray(sequence);
+		strSeq = new CharWA(sequence.length);
+		System.arraycopy(sequence,0,strSeq.getArray(),0,sequence.length);
 
 		vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
 	}
