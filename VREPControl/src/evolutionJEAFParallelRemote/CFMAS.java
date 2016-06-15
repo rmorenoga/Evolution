@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 
-import simvrep.Simulation;
+import simvrep.SimulationOld;
 import mpi.MPI;
 import coppelia.CharWA;
 import coppelia.FloatWA;
@@ -96,7 +96,7 @@ public class CFMAS extends ObjectiveFunction {
 
 			// Simulator interaction start
 			remoteApi vrep = new remoteApi(); // Create simulator control object
-			Simulation sim = new Simulation(myRank);
+			SimulationOld sim = new SimulationOld(myRank);
 			vrep.simxFinish(-1); // just in case, close all opened connections
 			// Connect with the corresponding simulator remote server
 			int clientID = vrep.simxStart("127.0.0.1", 19997 - myRank, true,

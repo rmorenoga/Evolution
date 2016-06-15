@@ -4,7 +4,7 @@ import coppelia.CharWA;
 import coppelia.FloatWA;
 import coppelia.IntWA;
 import coppelia.remoteApi;
-import simvrep.Simulation;
+import simvrep.SimulationOld;
 import unalcol.optimization.OptimizationFunction;
 import unalcol.tracer.Tracer;
 
@@ -96,7 +96,7 @@ public class HillMAS extends OptimizationFunction<double[]>{
 
 					// Simulator interaction start
 					remoteApi vrep = new remoteApi(); // Create simulator control object
-					Simulation sim = new Simulation(this.simNumber);
+					SimulationOld sim = new SimulationOld(this.simNumber);
 					vrep.simxFinish(-1); // just in case, close all opened connections
 					// Connect with the corresponding simulator remote server
 					int clientID = vrep.simxStart("127.0.0.1", 19997 - simNumber, true,

@@ -2,7 +2,7 @@ package evolHAEA;
 
 import unalcol.optimization.OptimizationFunction;
 import unalcol.types.collection.bitarray.BitArray;
-import simvrep.Simulation;
+import simvrep.SimulationOld;
 import coppelia.CharWA;
 import coppelia.FloatWA;
 import coppelia.IntWA;
@@ -103,7 +103,7 @@ public class HMAS extends OptimizationFunction<double[]>{
 
 					// Simulator interaction start
 					remoteApi vrep = new remoteApi(); // Create simulator control object
-					Simulation sim = new Simulation(simNumber);
+					SimulationOld sim = new SimulationOld(simNumber);
 					//vrep.simxFinish(-1); // just in case, close all opened connections
 					// Connect with the corresponding simulator remote server
 					int clientID = vrep.simxStart("127.0.0.1", 19997 - simNumber, true,

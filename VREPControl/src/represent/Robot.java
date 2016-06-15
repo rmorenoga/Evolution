@@ -1,6 +1,6 @@
-package Tests;
+package represent;
 
-public class RobotTest {
+public class Robot {
 
 	// Morphology Parameters
 	/**
@@ -25,7 +25,7 @@ public class RobotTest {
 	 * @param orientation the orientation of the modules in the configuration
 	 * @param ControlParam the control parameters of the robot
 	 */
-	public RobotTest(int Numberofmodules, int[] orientation, float[] ControlParam){
+	public Robot(int Numberofmodules, int[] orientation, float[] ControlParam){
 		this.Numberofmodules = Numberofmodules;
 		this.orientation = orientation;
 		this.ControlParam = ControlParam;

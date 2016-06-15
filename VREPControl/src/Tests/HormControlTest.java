@@ -1,5 +1,8 @@
 package Tests;
 
+import represent.Robot;
+import simvrep.Simulation;
+
 public class HormControlTest {
 	
 	public static void main(String[] args) throws InterruptedException{
@@ -34,9 +37,9 @@ public class HormControlTest {
 						// Array that receives fitness from the simulator or signals a crash
 						float[] rfitness = new float[3];
 						
-						RobotTest robot = new RobotTest(Numberofmodules,orientation,CP);
+						Robot robot = new Robot(Numberofmodules,orientation,CP);
 						
-						SimulationTest sim = new SimulationTest(simulator,MaxTime,robot);
+						Simulation sim = new Simulation(simulator,MaxTime,robot);
 						
 						if(sim.Connect()){
 							

@@ -1,6 +1,6 @@
 package Tests;
 
-import simvrep.Simulation;
+import simvrep.SimulationOld;
 import coppelia.CharWA;
 import coppelia.FloatWA;
 import coppelia.IntWA;
@@ -66,7 +66,7 @@ public class IndvModTest {
 				
 				// Simulator interaction start
 				remoteApi vrep = new remoteApi(); // Create simulator control object
-				Simulation sim = new Simulation(simulator);
+				SimulationOld sim = new SimulationOld(simulator);
 				vrep.simxFinish(-1); // just in case, close all opened connections
 				// Connect with the corresponding simulator remote server
 				int clientID = vrep.simxStart("127.0.0.1", 19997-simulator, true, true, 5000, 5);
