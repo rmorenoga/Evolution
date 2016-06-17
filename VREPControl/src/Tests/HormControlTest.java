@@ -11,11 +11,11 @@ public class HormControlTest {
 				int simulator= 0;
 				
 				// Morphology Parameters
-						int Numberofmodules = 8;
-						int[] orientation = new int[] { 1, 0, 1, 0, 1, 0, 1, 0 };
+						int Numberofmodules = 3;
+						int[] orientation = new int[] { 1, 0, 1};
 						
 						// Simulation Parameters
-						int MaxTime = 10;
+						int MaxTime = 30;
 						
 						float[] ampset = new float []{0.5f,0.4f,0.3f,0.5f,0.6f,0.3f,0.5f};
 						float[] offsetset = new float[] {0.1f,-0.1f,0.2f,0.3f,-0.4f,0.3f,0.4f} ;
@@ -24,7 +24,7 @@ public class HormControlTest {
 						float[] offstep = new float []{0.01f,0.01f,0.01f,0.01f,0.01f,0.01f,0.01f};
 						float[] phasestep = new float []{0.01f,0.01f,0.01f,0.01f,0.01f,0.01f,0.01f};
 						
-						float[] CP = new float[]{42};
+						float[] CP = new float[42];
 						for (int i = 0; i < 7; i++) {
 							CP[i] = ampset[i];
 							CP[i+7] = offsetset[i];
@@ -37,6 +37,14 @@ public class HormControlTest {
 						// Array that receives fitness from the simulator or signals a crash
 						float[] rfitness = new float[3];
 						
+						char[][] subenvperm = new char[][] {
+							{ 's', 'l', 's', 'b', 's', 'r', 's' },
+							{ 's', 'l', 's', 's', 'r', 's', 'b' },
+							{ 'b', 's', 'l', 's', 's', 'r', 's' },
+							{ 'b', 's', 'r', 's', 's', 'l', 's' },
+							{ 's', 'r', 's', 's', 'l', 's', 'b' },
+							{ 's', 'r', 's', 'b', 's', 'l', 's' } };
+						
 						Robot robot = new Robot(Numberofmodules,orientation,CP);
 						
 						Simulation sim = new Simulation(simulator,MaxTime,robot);
@@ -44,6 +52,7 @@ public class HormControlTest {
 						if(sim.Connect()){
 							
 							sim.SendSignals();
+							sim.SendMaze(subenvperm[0]);
 							
 							rfitness = sim.RunSimulation(0.7f);
 							

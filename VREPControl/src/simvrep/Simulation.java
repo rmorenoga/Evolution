@@ -54,7 +54,7 @@ public class Simulation {
 		FloatWA ControlParam = new FloatWA(robot.getControlParam().length);
 		System.arraycopy(robot.getControlParam(),0,ControlParam.getArray(),0,robot.getControlParam().length);
 		char[] p = ControlParam.getCharArrayFromArray();
-		CharWA strCP = new CharWA(p.length);
+		strCP = new CharWA(p.length);
 		System.arraycopy(p,0,strCP.getArray(),0,p.length);
 		
 		int nmodules = robot.getNumberofmodules();
@@ -69,7 +69,7 @@ public class Simulation {
 		}
 		System.arraycopy(NO,0,NumberandOri.getArray(),0,NO.length);
 		char[] p2 = NumberandOri.getCharArrayFromArray();
-		CharWA strNO = new CharWA(p2.length);
+		strNO = new CharWA(p2.length);
 		System.arraycopy(p2,0,strNO.getArray(),0,p2.length);
 		
 
@@ -108,6 +108,11 @@ public class Simulation {
 
 		vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
 	}
+	
+	public void SendMaze(char[] sequence, float width){
+		SendMaze(sequence);
+		vrep.simxSetFloatSignal(clientID, "MazeW", width, vrep.simx_opmode_oneshot_wait);
+	}
 
 	public void SendSignals() {
 		// Set Simulator signal values
@@ -126,7 +131,6 @@ public class Simulation {
 	 */
 	public float[] RunSimulation(float alpha) throws InterruptedException {
 
-		int threadnum = this.simnumber;
 
 		long startTime = System.currentTimeMillis();
 		long stopTime = 0;
@@ -139,7 +143,7 @@ public class Simulation {
 
 		// Start Simulation
 		int ret = vrep.simxStartSimulation(clientID, vrep.simx_opmode_oneshot_wait);
-		System.out.println("Start: " + ret + " sim: " + threadnum);
+		System.out.println("Start: " + ret + " sim: " + simnumber);
 		// Setting up and waiting for finished flag
 		vrep.simxGetIntegerSignal(clientID, "finished", out, vrep.simx_opmode_streaming);
 		out.setValue(0);
