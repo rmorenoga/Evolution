@@ -42,13 +42,13 @@ public class EvolJEAFMaze {
 		myRank = myRank +startNumber;
 		
 		
-		String vrepcommand = new String("./vrep"+myRank+".sh");
+		String vrepcommand = new String("./vrep.sh");
 		
 		/*Initialize a v-rep simulator based on the starNumber parameter */
 		try {
-			ProcessBuilder qq=new ProcessBuilder(vrepcommand,"-h","/home/rodrigo/V-REP/Modular/Maze/MazeBuilder01.ttt");
+			ProcessBuilder qq=new ProcessBuilder(vrepcommand,"-h","/home/rodr/git/Evolution/Simulation/Maze/MazeBuilder01.ttt");
 			//ProcessBuilder qq=new ProcessBuilder(vrepcommand);
-			qq.directory(new File("/home/rodrigo/V-REP/Vrep"+myRank+"/"));
+			qq.directory(new File("/home/rodr/V-REP/Vrep"+myRank+"/"));
 			File log = new File("Simout/log");
 			qq.redirectErrorStream(true);
 			qq.redirectOutput(Redirect.appendTo(log));

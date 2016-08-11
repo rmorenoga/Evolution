@@ -15,7 +15,7 @@
      <Class>es.udc.gii.common.eaf.algorithm.evaluate.SerialEvaluationStrategy</Class>
   </EvaluationStrategy>
   <Population>
-		 <Size>30</Size>
+		 <Size>5</Size>
 			<Individual>
 			<Class> es.udc.gii.common.eaf.algorithm.population.Individual</Class>
 			<Chromosome size="42">
@@ -59,7 +59,7 @@
   <StopTests>
      <StopTest>
      	<Class>es.udc.gii.common.eaf.stoptest.EvolveGenerationsStopTest</Class>
-     	<Generations>50</Generations>
+     	<Generations>3</Generations>
      </StopTest>
   </StopTests>
   <LogTool>

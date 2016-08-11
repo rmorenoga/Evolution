@@ -62,7 +62,7 @@
   <StopTests>
      <StopTest>
      	<Class>es.udc.gii.common.eaf.stoptest.EvolveGenerationsStopTest</Class>
-     	<Generations>20</Generations>
+     	<Generations>3</Generations>
      </StopTest>
   </StopTests>
   <LogTool>
