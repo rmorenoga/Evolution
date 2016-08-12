@@ -25,7 +25,7 @@ public class IndvModTest {
 				int[] orientation = new int[] { 1, 0, 1, 0, 1, 0, 1, 0 };
 				
 				// Simulation Parameters
-				int MaxTime = 10;
+				int MaxTime = 20;
 				
 				float[] ampli = new float []{1.0f,0.711348f,0.70585454f,0.71121466f,0.7105515f,0.7125742f,0.72154087f,0.7007457f};
 				float[] offset = new float[] {-0.31413087f,0.6831712f,0.68761957f,0.45336556f,0.2831308f,0.6872697f,0.453305f,0.44914752f} ;
