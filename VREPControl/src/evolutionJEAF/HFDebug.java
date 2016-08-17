@@ -4,6 +4,15 @@ import es.udc.gii.common.eaf.problem.objective.ObjectiveFunction;
 import represent.Robot;
 import simvrep.Simulation;
 
+/**
+ * JEAF Objective function for use with MDebug.ttt
+ * Configures a robot and launches a simulation with
+ * a particular 3 part composed environment.
+ * 
+ * @author rodr
+ *
+ */
+
 public class HFDebug extends ObjectiveFunction{
 	public void reset(){
 		
