@@ -216,7 +216,7 @@ public class Simulation {
 	 * @param j
 	 *            the attempt number
 	 */
-	public void RestartSim(int j) {
+	public void RestartSim(int j, String scene) {
 
 		int simnumber = this.simnumber;
 
@@ -240,12 +240,12 @@ public class Simulation {
 
 			// Command to open a simulator with no window
 			// qq = new ProcessBuilder(vrepcommand,"-h");
-			qq = new ProcessBuilder(vrepcommand, "-h", "/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt");
+			qq = new ProcessBuilder(vrepcommand, "scenes/Maze/"+scene);
 			// qq = new
 			// ProcessBuilder("xvfb-run","--auto-servernum","--server-num=1",vrepcommand,
 			// "-h");
 			// Open the simulator from its own directory
-			qq.directory(new File("/home/rodr/V-REP/Vrep" + simnumber + "/"));
+			qq.directory(new File("/home/julian/V-REP/Vrep" + simnumber + "/"));
 			// Specify output file for command line messages of the simulator
 			qq.redirectErrorStream(true);
 			qq.redirectOutput(Redirect.appendTo(log));

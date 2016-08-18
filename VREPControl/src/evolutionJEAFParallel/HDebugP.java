@@ -5,6 +5,13 @@ import mpi.MPI;
 import represent.Robot;
 import simvrep.Simulation;
 
+/**
+ * For use with MDebug.ttt and MRun.ttt
+ * 
+ * @author rodr
+ *
+ */
+
 public class HDebugP extends ObjectiveFunction {
 
 	public void reset() {
@@ -45,24 +52,39 @@ public class HDebugP extends ObjectiveFunction {
 		Robot robot = new Robot(Numberofmodules, orientation, CP);
 
 		Simulation sim = new Simulation(simulator, MaxTime, robot);
-		
-		if (sim.Connect()) {
 
-			sim.SendSignals();
-			sim.SendMaze(subenvperm[2], 0.8f);
+		// Number of retries in case of simulator crash
+		int maxTries = 5;
 
-			try {
-				rfitness = sim.RunSimulation(0.7f);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		// Retry if there is a simulator crash
+		for (int j = 0; j < maxTries; j++) {
+
+			if (sim.Connect()) {
+
+				sim.SendSignals();
+				sim.SendMaze(subenvperm[2], 0.8f);
+
+				try {
+					rfitness = sim.RunSimulation(0.7f);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+				sim.Disconnect();
+
+				if (rfitness[0] == -1) {
+					sim.RestartSim(j, "MRun.ttt");
+					continue;
+				}
+
+			} else {
+				// No connection could be established
+				System.out.println("Failed connecting to remote API server");
+				System.out.println("Trying again for the " + j + " time in " + simulator);
+				continue;
 			}
-
-			sim.Disconnect();
-
-		} else {
-			// No connection could be established
-			System.out.println("Failed connecting to remote API server");
+			break;
 		}
 
 		return rfitness[1];

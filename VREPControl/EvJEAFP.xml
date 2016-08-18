@@ -56,7 +56,7 @@
   <Objective>
     	<CheckBounds/>
     	<ObjectiveFunction>
-    	<Class>HDebugP</Class>
+    	<Class>evolutionJEAFParallel.HDebugP</Class>
     	</ObjectiveFunction>
   </Objective>
   <StopTests>
