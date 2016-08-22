@@ -71,9 +71,9 @@ public class EvJEAFP {
 		
 		/*Initialize a v-rep simulator based on the starNumber parameter */
 		try {
-			ProcessBuilder qq = new ProcessBuilder(vrepcommand,
+			ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h",
 					"scenes/Maze/MRun.ttt");
-			qq.directory(new File("/home/julian/V-REP/Vrep" + myRank + "/"));
+			qq.directory(new File("/home/rodr/V-REP/Vrep" + myRank + "/"));
 			File log = new File("Simout/log");
 			qq.redirectErrorStream(true);
 			qq.redirectOutput(Redirect.appendTo(log));
