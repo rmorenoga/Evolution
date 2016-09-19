@@ -37,17 +37,27 @@ public class HDebugP extends ObjectiveFunction {
 
 		// Control Parameters
 		float[] CP = new float[42];
-		for (int i = 0; i < values.length; i++) {
+		
+		//CPG set parameters for each hormone
+		for (int i = 0; i < 21; i++) {
 			CP[i] = (float) values[i];
+		}
+		//CPG step parameters for each hormone
+		for (int i = 21; i < 42;i++){
+			CP[i] = (float) values[i]*0.01f;
 		}
 
 		// Array that receives fitness from the simulator or signals a crash
 		float[] rfitness = new float[3];
 
-		char[][] subenvperm = new char[][] { { 's', 'l', 's', 'b', 's', 'r', 's' },
-				{ 's', 'l', 's', 's', 'r', 's', 'b' }, { 'b', 's', 'l', 's', 's', 'r', 's' },
-				{ 'b', 's', 'r', 's', 's', 'l', 's' }, { 's', 'r', 's', 's', 'l', 's', 'b' },
-				{ 's', 'r', 's', 'b', 's', 'l', 's' } };
+		char[][] subenvperm = new char[][] {
+			{ 's', 'l', 's', 'b', 's', 'r', 's' },
+			{ 's', 'l', 's', 's', 'r', 's', 'b' },
+			{ 'b', 's', 'l', 's', 's', 'r', 's' },
+			{ 'b', 's', 'r', 's', 's', 'l', 's' },
+			{ 's', 'r', 's', 's', 'l', 's', 'b' },
+			{ 's', 'r', 's', 'b', 's', 'l', 's' },
+			{'s','s'}};
 
 		Robot robot = new Robot(Numberofmodules, orientation, CP);
 
@@ -62,7 +72,7 @@ public class HDebugP extends ObjectiveFunction {
 			if (sim.Connect()) {
 
 				sim.SendSignals();
-				sim.SendMaze(subenvperm[2], 0.8f);
+				sim.SendMaze(subenvperm[6], 0.8f);
 
 				try {
 					rfitness = sim.RunSimulation(0.7f);
