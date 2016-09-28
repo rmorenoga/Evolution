@@ -82,9 +82,10 @@ public class Simulation {
 	 */
 	public boolean Connect() {
 		vrep = new remoteApi(); // Create simulator control object
-		vrep.simxFinish(-1); // just in case, close all opened connections
+		//vrep.simxFinish(-1); // just in case, close all opened connections
 		// Connect with the corresponding simulator remote server
-		int clientID = vrep.simxStart("127.0.0.1", 19997 - simnumber, true, true, 5000, 5);
+		clientID = vrep.simxStart("127.0.0.1", 19997 - simnumber, true, true, 5000, 5);
+		System.out.println("Sim "+simnumber+" ClientID "+clientID);
 		return clientID != -1;
 	}
 

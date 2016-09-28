@@ -32,16 +32,16 @@ public class HAEAParallel {
 	public static void main(String[] args) {
 		
 		//Search Space Definition 
-				int DIM = 3;
+				int DIM = 42;
 				double[] min = DoubleArray.create(DIM,-1);
 				double[] max = DoubleArray.create(DIM,1);
 				
 			Space<double[]> space = new HyperCube(min,max);
 			
 			//Optimization function
-			OptimizationFunction<double[]> function = new HMAS(2);
+			OptimizationFunction<double[]> function = new HDebugP(2);
 			Goal<double[]> goal = new OptimizationGoal<double[]>(function);
-			goal.setMaxThreads(5);
+			goal.setMaxThreads(2);
 			
 			//Variation Definition
 			AdaptMutationIntensity adapt = new OneFifthRule(20,0.9);
