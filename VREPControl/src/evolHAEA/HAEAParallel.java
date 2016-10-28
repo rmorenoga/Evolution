@@ -60,12 +60,12 @@ public class HAEAParallel {
 		}
 		
 
-		// Start Simulators
+		/*// Start Simulators
 		for (int j = 0; j < Nsim; j++) {
 
 			String vrepcommand = new String("./vrep" + j + ".sh");
 
-			/* Initialize a v-rep simulator based on the Nsim parameter */
+			 Initialize a v-rep simulator based on the Nsim parameter 
 			try {
 				ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h", "scenes/Maze/MDebug.ttt");
 				qq.directory(new File("/home/rodr/V-REP/Vrep" + j + "/"));
@@ -78,7 +78,7 @@ public class HAEAParallel {
 				System.out.println(e.toString());
 				e.printStackTrace();
 			}
-		}
+		}*/
 
 		// Search Space Definition
 		int DIM = 42;
