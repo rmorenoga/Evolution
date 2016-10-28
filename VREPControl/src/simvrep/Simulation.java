@@ -11,9 +11,11 @@ import coppelia.remoteApi;
 import represent.Robot;
 
 public class Simulation {
+	
+	boolean DEBUG = true;
 
 	/**
-	 * Siumlator server number to connect to
+	 * Simulator server number to connect to
 	 */
 	public int simnumber;
 
@@ -48,6 +50,9 @@ public class Simulation {
 	 */
 
 	public Simulation(int simnumber, int MaxTime, Robot robot) {
+		if (DEBUG){
+			System.out.println("Building Simulation with simnumber: "+simnumber+" MaxTime: "+MaxTime);
+		}
 		this.simnumber = simnumber;
 		this.MaxTime = MaxTime;
 
@@ -80,19 +85,25 @@ public class Simulation {
 	 * 
 	 * @return whether the simulator returns a valid clientID
 	 */
-	public boolean Connect() {
+	public synchronized boolean Connect() {
+		if (DEBUG){
+			System.out.println("Using Connect() in "+simnumber);
+		}
 		vrep = new remoteApi(); // Create simulator control object
 		//vrep.simxFinish(-1); // just in case, close all opened connections
 		// Connect with the corresponding simulator remote server
 		clientID = vrep.simxStart("127.0.0.1", 19997 - simnumber, true, true, 5000, 5);
-		System.out.println("Sim "+simnumber+" ClientID "+clientID);
+		//System.out.println("Sim "+simnumber+" ClientID "+clientID);
 		return clientID != -1;
 	}
 
 	/**
 	 * Closes the connection with the simulator
 	 */
-	public void Disconnect() {
+	public synchronized void Disconnect() {
+		if (DEBUG){
+			System.out.println("Using Disconnect() in "+simnumber);
+		}
 		// Close connection with the simulator
 		vrep.simxFinish(clientID);
 	}
@@ -103,22 +114,36 @@ public class Simulation {
 	 * @param sequence
 	 *            a char array containing the maze sequence
 	 */
-	public void SendMaze(char[] sequence) {
+	public synchronized void SendMaze(char[] sequence) {
+		if (DEBUG){
+			System.out.println("Using SendMaze() in "+simnumber);
+		}
 		strSeq = new CharWA(sequence.length);
 		System.arraycopy(sequence,0,strSeq.getArray(),0,sequence.length);
 
 		vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
 	}
 	
-	public void SendMaze(char[] sequence, float width){
+	public synchronized void SendMaze(char[] sequence, float width){
+		if (DEBUG){
+			System.out.println("Using SendMaze() in "+simnumber);
+		}
 		SendMaze(sequence);
 		vrep.simxSetFloatSignal(clientID, "MazeW", width, vrep.simx_opmode_oneshot_wait);
 	}
 
-	public void SendSignals() {
+	public synchronized void SendSignals() {
+		if (DEBUG){
+			System.out.println("Using SendSignals() in "+simnumber);
+		}
 		// Set Simulator signal values
 		vrep.simxSetStringSignal(clientID, "NumberandOri", strNO, vrep.simx_opmode_oneshot_wait);
 		vrep.simxSetStringSignal(clientID, "ControlParam", strCP, vrep.simx_opmode_oneshot_wait);
+		
+		//Send the server number
+		vrep.simxSetIntegerSignal(clientID,"Server",simnumber,vrep.simx_opmode_oneshot);
+		
+		
 	}
 
 	/**
@@ -131,6 +156,9 @@ public class Simulation {
 	 * @throws InterruptedException
 	 */
 	public float[] RunSimulation(float alpha) throws InterruptedException {
+		if (DEBUG){
+			System.out.println("Using RunSimulation() in "+simnumber);
+		}
 
 
 		long startTime = System.currentTimeMillis();
@@ -145,6 +173,12 @@ public class Simulation {
 		// Start Simulation
 		int ret = vrep.simxStartSimulation(clientID, vrep.simx_opmode_oneshot_wait);
 		System.out.println("Start: " + ret + " sim: " + simnumber);
+		if (ret == 1){
+			System.out.println("Failed to start simulation");
+			fitnessout[0] = -1; //The simulator should be restarted
+			fitnessout[1] = 1000;
+			return fitnessout;
+		}
 		// Setting up and waiting for finished flag
 		vrep.simxGetIntegerSignal(clientID, "finished", out, vrep.simx_opmode_streaming);
 		out.setValue(0);
@@ -164,7 +198,7 @@ public class Simulation {
 				stopTime = System.currentTimeMillis();
 				elapsedTime = stopTime - startTime;
 
-				if (elapsedTime > 300000) {
+				if (elapsedTime > 90000) {
 					System.out.println("Too much time has passed attempting to restart simulator");
 					fitnessout[0] = -1; // This signals that the output is not
 					// ok and the simulator should be
@@ -218,6 +252,9 @@ public class Simulation {
 	 *            the attempt number
 	 */
 	public void RestartSim(int j, String scene) {
+		if (DEBUG){
+			System.out.println("Using RestartSim() in "+simnumber);
+		}
 
 		int simnumber = this.simnumber;
 
@@ -274,6 +311,9 @@ public class Simulation {
 	 *         get out of the maze
 	 */
 	private float[] Calcfitness(FloatWA output, float alpha) {
+		if (DEBUG){
+			System.out.println("Using Calcfitness() in "+simnumber);
+		}
 
 		float[] fitness = new float[2];
 		float beta = 1 - alpha;

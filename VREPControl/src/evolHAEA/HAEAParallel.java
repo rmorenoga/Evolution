@@ -26,6 +26,7 @@ import unalcol.search.population.variation.Operator;
 import unalcol.search.selection.Tournament;
 import unalcol.search.space.Space;
 import unalcol.tracer.ConsoleTracer;
+import unalcol.tracer.FileTracer;
 import unalcol.tracer.Tracer;
 import unalcol.types.real.array.DoubleArray;
 import unalcol.types.real.array.DoubleArrayPlainWrite;
@@ -66,7 +67,7 @@ public class HAEAParallel {
 
 			/* Initialize a v-rep simulator based on the Nsim parameter */
 			try {
-				ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h", "scenes/Maze/MRun.ttt");
+				ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h", "scenes/Maze/MDebug.ttt");
 				qq.directory(new File("/home/rodr/V-REP/Vrep" + j + "/"));
 				File log = new File("Simout/log");
 				qq.redirectErrorStream(true);
@@ -87,17 +88,17 @@ public class HAEAParallel {
 		Space<double[]> space = new HyperCube(min, max);
 
 		// Optimization function
-		OptimizationFunction<double[]> function = new HDebugP(2);
+		OptimizationFunction<double[]> function = new HDebugP(Nsim);
 		Goal<double[]> goal = new OptimizationGoal<double[]>(function);
-		goal.setMaxThreads(2);
+		goal.setMaxThreads(Nsim);
 
 		// Variation Definition
 		AdaptMutationIntensity adapt = new OneFifthRule(20, 0.9);
 		IntensityMutation variation = new GaussianMutation(0.1, null, adapt);
 		ArityTwo<double[]> xover = new LinearXOver();
 
-		int POPSIZE = 10;
-		int MAXITERS = 2;
+		int POPSIZE = 5;
+		int MAXITERS = 1;
 		Operator<double[]>[] opers = (Operator<double[]>[]) new Operator[2];
 		opers[0] = variation;
 		opers[1] = xover;
@@ -113,12 +114,18 @@ public class HAEAParallel {
 		WriteDescriptors w_desc = new WriteDescriptors();
 		Write.set(Space.class, w_desc);
 
-		ConsoleTracer tracer = new ConsoleTracer();
-		Tracer.addTracer(search, tracer);
+		//Add tracer based on descriptors set
+		FileTracer tracer = new FileTracer("Evolresult.txt",',');
+		ConsoleTracer tracer1 = new ConsoleTracer();
+		Tracer.addTracer(search, tracer1);
+		Tracer.addTracer(search,tracer);
 
 		Solution<double[]> solution = search.apply(space, goal);
 
 		System.out.println(solution.quality());
+		
+		tracer.close();
+		tracer1.close();
 
 		// Stop Simulators
 		for (int j = 0; j < Nsim; j++) {

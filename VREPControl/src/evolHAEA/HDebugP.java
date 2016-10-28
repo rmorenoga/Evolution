@@ -7,14 +7,22 @@ import unalcol.types.collection.bitarray.BitArray;
 
 public class HDebugP extends OptimizationFunction<double[]>{
 	
+	boolean DEBUG = true;
+	
 	protected BitArray servers;
 	public float alpha = 0.7f;
 	
 	public HDebugP(int numberOfServers) {
 		servers = new BitArray(numberOfServers, false);
+		if (DEBUG){
+			System.out.println("Building HDebugP");
+		}
 	}
 	
 	public synchronized int getSimNumber() {
+		if (DEBUG){
+			System.out.println("Using getSimNumber()");
+		}
 		for(int i = 0;i < servers.size(); ++i)
 			if(!servers.get(i)) {
 				servers.set(i, true);
@@ -24,13 +32,29 @@ public class HDebugP extends OptimizationFunction<double[]>{
 	}
 	
 	HDebugP(int numberOfServers, float alpha) {
+		if (DEBUG){
+			System.out.println("Building HDebugP");
+		}
 		servers = new BitArray(numberOfServers, false);
 		this.alpha = alpha;
 	}
 	
+	public synchronized int waitforsim(){
+		if (DEBUG){
+			System.out.println("Using waitforsim()");
+		}
+		int sim = -1;
+		while(sim < 0) sim = getSimNumber();
+		return sim;
+		
+	}
+	
 	public Double apply(double[] x) {
+		if (DEBUG){
+			System.out.println("Using apply()");
+		}
 		int simulator = -1;
-		while(simulator < 0) simulator = getSimNumber();
+		simulator = waitforsim();
 		
 		System.out.println("Got sim: "+simulator);
 		
