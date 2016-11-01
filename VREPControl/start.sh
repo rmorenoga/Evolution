@@ -1,5 +1,7 @@
 #!/bin/bash
 
-	stdbuf -oL /home/rodr/V-REP/Vrep0/vrep0.sh -h scenes/Maze/MDebug.ttt >>/home/rodr/git/Evolution/VREPControl/Simout/log0 2>&1 &
-	stdbuf -oL /home/rodr/V-REP/Vrep1/vrep1.sh -h scenes/Maze/MDebug.ttt >>/home/rodr/git/Evolution/VREPControl/Simout/log1 2>&1 &
-	
+for i in {0,1}
+do
+    stdbuf -oL /home/rodr/V-REP/Vrep$i/vrep$i.sh -h scenes/Maze/MDebug.ttt >>/home/rodr/git/Evolution/VREPControl/Simout/log$i 2>&1 &	
+done
+echo "Finished starting simulators"
