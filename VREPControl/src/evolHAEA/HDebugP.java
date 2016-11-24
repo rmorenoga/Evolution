@@ -114,8 +114,21 @@ public class HDebugP extends OptimizationFunction<double[]>{
 						sim.Disconnect();
 
 						if (rfitness[0] == -1) {
-							sim.RestartSim(j, "MRun.ttt");
-							continue;
+							//sim.RestartSim(j, "MRun.ttt");
+							//continue;
+							long startTime = System.currentTimeMillis();
+							long stopTime = System.currentTimeMillis();
+							long elapsedTime = 0;
+							
+							elapsedTime = stopTime-startTime;
+							
+							while (elapsedTime < 60000){
+								stopTime = System.currentTimeMillis();
+								elapsedTime = stopTime-startTime;
+							}
+							
+							System.exit(0);
+							
 						}
 
 					} else {

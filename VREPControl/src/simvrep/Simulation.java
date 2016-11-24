@@ -86,14 +86,17 @@ public class Simulation {
 	 * @return whether the simulator returns a valid clientID
 	 */
 	public synchronized boolean Connect() {
-		if (DEBUG){
-			System.out.println("Using Connect() in "+simnumber);
-		}
+		
 		vrep = new remoteApi(); // Create simulator control object
 		//vrep.simxFinish(-1); // just in case, close all opened connections
 		// Connect with the corresponding simulator remote server
 		clientID = vrep.simxStart("127.0.0.1", 19997 - simnumber, true, true, 5000, 5);
-		//System.out.println("Sim "+simnumber+" ClientID "+clientID);
+		
+		if (DEBUG){
+			System.out.println("Using Connect() in "+simnumber+" clientID: "+clientID);
+		}
+		
+		
 		return clientID != -1;
 	}
 
@@ -115,43 +118,46 @@ public class Simulation {
 	 *            a char array containing the maze sequence
 	 */
 	public synchronized void SendMaze(char[] sequence) {
-		if (DEBUG){
-			System.out.println("Using SendMaze() in "+simnumber);
-		}
+		
 		strSeq = new CharWA(sequence.length);
 		System.arraycopy(sequence,0,strSeq.getArray(),0,sequence.length);
 
-		vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
+		int result = vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
+		if (DEBUG){
+			System.out.println("Using SendMaze() in "+simnumber+" result: "+result);
+		}
 	}
 	
 	public synchronized void SendMaze(char[] sequence, float width){
-		if (DEBUG){
-			System.out.println("Using SendMaze() in "+simnumber);
-		}
+		
 		SendMaze(sequence);
-		vrep.simxSetFloatSignal(clientID, "MazeW", width, vrep.simx_opmode_oneshot_wait);
+		int result = vrep.simxSetFloatSignal(clientID, "MazeW", width, vrep.simx_opmode_oneshot_wait);
+		if (DEBUG){
+			System.out.println("Using SendMaze() in "+simnumber+" result: "+result);
+		}
 	}
 
 	public synchronized void SendSignals() {
-		if (DEBUG){
-			System.out.println("Using SendSignals() in "+simnumber);
-		}
+		
 		// Set Simulator signal values
-		vrep.simxSetStringSignal(clientID, "NumberandOri", strNO, vrep.simx_opmode_oneshot_wait);
-		vrep.simxSetStringSignal(clientID, "ControlParam", strCP, vrep.simx_opmode_oneshot_wait);
+		int result1 = vrep.simxSetStringSignal(clientID, "NumberandOri", strNO, vrep.simx_opmode_oneshot_wait);
+		int result2 = vrep.simxSetStringSignal(clientID, "ControlParam", strCP, vrep.simx_opmode_oneshot_wait);
 		
 		//Send the server number
-		vrep.simxSetIntegerSignal(clientID,"Server",simnumber,vrep.simx_opmode_oneshot);
+		int result3 = vrep.simxSetIntegerSignal(clientID,"Server",simnumber,vrep.simx_opmode_oneshot);
 		
+		if (DEBUG){
+			System.out.println("Using SendSignals() in "+simnumber+" signal 1: "+result1+" signal 2: "+result2+" signal 3: "+result3);
+		}
 		
 	}
 
 	/**
-	 * Runs a simulation in a previously openede scene in V-Rep
+	 * Runs a simulation in a previously opened scene in V-Rep
 	 * 
 	 * @param alpha
-	 *            the weight of the distance in the fintess calculation
-	 * @return an array with whether the simulation was succesful, the fitness
+	 *            the weight of the distance in the fitness calculation
+	 * @return an array with whether the simulation was successful, the fitness
 	 *         and whether the robot could get out of the maze
 	 * @throws InterruptedException
 	 */
@@ -180,7 +186,10 @@ public class Simulation {
 			return fitnessout;
 		}
 		// Setting up and waiting for finished flag
-		vrep.simxGetIntegerSignal(clientID, "finished", out, vrep.simx_opmode_streaming);
+		int ret1 = vrep.simxGetIntegerSignal(clientID, "finished", out, vrep.simx_opmode_streaming);
+		if (DEBUG){
+			System.out.println("Setting up finished flag in "+simnumber+" result: "+ret1);
+		}
 		out.setValue(0);
 
 		while (out.getValue() == 0) {
@@ -210,10 +219,16 @@ public class Simulation {
 		}
 
 		// Stop listening to the finished signal
-		vrep.simxGetIntegerSignal(clientID, "finished", out, vrep.simx_opmode_discontinue);
+		int ret2 = vrep.simxGetIntegerSignal(clientID, "finished", out, vrep.simx_opmode_discontinue);
+		if (DEBUG){
+			System.out.println("Stopped listening to finished flag in "+simnumber+" result: "+ret2);
+		}
 
 		// Stop simulation
-		vrep.simxStopSimulation(clientID, vrep.simx_opmode_oneshot_wait);
+		int ret3 = vrep.simxStopSimulation(clientID, vrep.simx_opmode_oneshot_wait);
+		if (DEBUG){
+			System.out.println("Stopped simulation in "+simnumber+" result: "+ret3);
+		}
 
 		// Read simulation results
 		ret = vrep.simxGetStringSignal(clientID, "Position", datastring, vrep.simx_opmode_oneshot_wait);
