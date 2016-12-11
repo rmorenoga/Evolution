@@ -24,5 +24,6 @@
 	<classpathentry kind="lib" path="lib/types.jar"/>
 	<classpathentry kind="lib" path="lib/evolution.jar"/>
 	<classpathentry kind="lib" path="lib/commons-math3-3.5.jar"/>
+	<classpathentry kind="lib" path="lib/vecmath.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

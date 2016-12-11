@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Document   : simulationConfig.xml
+    Created on : 11/12/2016
+    Author     : rodr
+    Description:
+        Purpose of the document follows.
+-->
+<SimulationConfig>
+
+ <ModuleSet>emergeModules</ModuleSet>
+
+     <Simulation>
+        <Simulator>Vrep</Simulator>
+        <ServerId>0</ServerId>
+        <WaitTimeLoadSimulator>20</WaitTimeLoadSimulator>
+        <Attempts>3</Attempts>
+	<MaxSimulationTime>6</MaxSimulationTime>
+        <TimeStartSimulation>5</TimeStartSimulation>
+        <NMaxModulos>16</NMaxModulos>
+	<UseMPI>false</UseMPI>
+	<PoseUpdateRate>0.1</PoseUpdateRate>
+        <Vrep>
+            <!-- Example of the Vrep´s Path
+            In Windows: C:\\V-REP3\\V-REP_PRO_EDU\\
+            In Linux: /work/itureal/vrep 
+            -->
+            <VrepPath>C:\\Program Files (x86)\\V-REP3\\V-REP_PRO_EDU\\</VrepPath>
+        </Vrep>
+	
+    </Simulation>
+
+     <Worlds>
+    	<NumberOfWorldsBase>1</NumberOfWorldsBase>
+        <WorldBase0>baseEstandar.world</WorldBase0>
+	<FunctionToEvaluateWorlds>min</FunctionToEvaluateWorlds>
+    </Worlds>
+
+    <Debug>false</Debug>
+
+    <Control>
+
+	<UseAmplitudeControl>false</UseAmplitudeControl>
+	<UseAngularFreqControl>false</UseAngularFreqControl>
+	<UsePhaseControl>true</UsePhaseControl>
+	
+	<UseAmplitudeModulator>false</UseAmplitudeModulator>
+	<UseFrequencyModulator>false</UseFrequencyModulator>
+	<BranchFrequencyModulator>false</BranchFrequencyModulator>
+	    
+	<AmplitudeControl>
+            <MaxValue>1</MaxValue>
+            <MinValue>0</MinValue>
+	</AmplitudeControl>
+	<AngularFreqControl>
+            <MaxValue>1</MaxValue>
+            <MinValue>0</MinValue>
+	</AngularFreqControl>
+	<PhaseControl>
+            <MaxValue>360</MaxValue>
+            <MinValue>0</MinValue>
+	</PhaseControl>
+	<AmplitudeModulator>
+            <MaxValue>0.5</MaxValue>
+            <MinValue>-0.5</MinValue>
+	</AmplitudeModulator>
+	<FrequencyModulator>
+	    <MaxValue>0.5</MaxValue>
+            <MinValue>-0.5</MinValue>
+    	</FrequencyModulator>
+        <Weighing>
+            <MaxValue>100</MaxValue>
+            <MinValue>0</MinValue>
+        </Weighing>
+    </Control>
+
+    <Tree>
+    	<MaxModules>141</MaxModules>
+	    <FirstModuleBase>true</FirstModuleBase>
+	    <ManipulatorBase>false</ManipulatorBase>
+        <FirstNumConnections>0</FirstNumConnections> 
+        <NMaxModulesIni>16</NMaxModulesIni>
+        <TypeModules>
+            <MaxValue>1</MaxValue>
+            <MinValue>1</MinValue>
+        </TypeModules>
+        <NMaxConnections>5</NMaxConnections>
+        
+            
+            <!--<></>-->
+    </Tree>
+
+</SimulationConfig>
+

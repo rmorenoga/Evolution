@@ -12,7 +12,7 @@ import org.apache.commons.configuration.XMLConfiguration;
 /**
  * SimulationConfiguration stores all the parameters of the simulation. 
  * <p>
- * The parameters of the simulation are loaded, when the progam starts, from
+ * The parameters of the simulation are loaded, when the program starts, from
  * simulationControl.xml. This file has to be placed in the same 
  * working directory as the main program. It throws an exception if a 
  * parameter is not well defined in the file.
@@ -159,7 +159,7 @@ public class SimulationConfiguration {
           //Various
             SimulationConfiguration.debug = config.getBoolean("Debug");
 
-            SimulationConfiguration.maxModules = (config.getInt("Enc.MaxModules") + 3) / 9;
+            SimulationConfiguration.maxModules = (config.getInt("Tree.MaxModules") + 3) / 9;
             
         } catch (Exception e) {
             //Error loading the parameters of the simulation
