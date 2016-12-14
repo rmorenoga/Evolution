@@ -110,7 +110,7 @@ public class RobotBuilder {
     
     public void loadScene() {
         //TODO: select the correct scene for the simulation (flat terrain, obstacles, paint wall, etc...)        
-        String scenePath = "scenes/edhmor/default.ttt";
+        String scenePath = "scenes/Maze/defaulti.ttt";
         
         int rank = 0;
         if (SimulationConfiguration.isUseMPI()) {
@@ -303,14 +303,14 @@ public class RobotBuilder {
     }
     
     private String modelPath(int moduleType) {
-        String path = "models/edhmor/";
+        String path = "models/Module/";
         path += moduleSet.getModuleSetName() + "/";             //moduleSetName
         path += moduleSet.getModuleName(moduleType) + ".ttm";   //moduleName
         return path;
     }
     
     private String forceSensorPath() {
-        String path = "models/edhmor/";
+        String path = "models/Module/";
         path += moduleSet.getModuleSetName() + "/";             //moduleSetName
         path += "forceSensor.ttm";   //moduleName
         return path;

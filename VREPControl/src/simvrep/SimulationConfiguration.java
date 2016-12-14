@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.configuration.XMLConfiguration;
+import org.apache.commons.lang.SystemUtils;
 
 
 
@@ -104,8 +105,16 @@ public class SimulationConfiguration {
             SimulationConfiguration.nAttempts = config.getInt("Simulation.Attempts");
             SimulationConfiguration.useMPI = config.getBoolean("Simulation.UseMPI");
             SimulationConfiguration.poseUpdateRate = config.getDouble("Simulation.PoseUpdateRate");
-            if(SimulationConfiguration.simulator.toLowerCase().contentEquals("vrep"))
-                SimulationConfiguration.vrepPath = config.getString("Simulation.Vrep.VrepPath");
+            if(SimulationConfiguration.simulator.toLowerCase().contentEquals("vrep")){
+            	if(SystemUtils.IS_OS_WINDOWS){
+            		SimulationConfiguration.vrepPath = config.getString("Simulation.Vrep.VrepPathW");
+            	} else {
+            		SimulationConfiguration.vrepPath = config.getString("Simulation.Vrep.VrepPathL");
+            	}
+            }
+            	
+                
+            
             
             //World Parameters
             SimulationConfiguration.numberOfWorldsBase = config.getInt("Worlds.NumberOfWorldsBase");

@@ -145,6 +145,11 @@ public void connect2Vrep(){
         //vrepApi.simxSynchronous(clientID, true); //We want the simulator to run by itself
     }
     
+	public synchronized void Disconnect() {
+		// Close connection with the simulator
+		vrepApi.simxFinish(clientID);
+	}
+
 public void stop() {
     
     // First close the connection to V-REP:	

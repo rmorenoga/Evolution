@@ -25,7 +25,8 @@
             In Windows: C:\\V-REP3\\V-REP_PRO_EDU\\
             In Linux: /work/itureal/vrep 
             -->
-            <VrepPath>C:\\Program Files (x86)\\V-REP3\\V-REP_PRO_EDU\\</VrepPath>
+            <VrepPathW>C:\\Program Files (x86)\\V-REP3\\V-REP_PRO_EDU\\</VrepPathW>
+            <VrepPathL>/V-REP/Vrep0/</VrepPathL>
         </Vrep>
 	
     </Simulation>
