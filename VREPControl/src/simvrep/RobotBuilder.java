@@ -305,6 +305,7 @@ public class RobotBuilder {
     private String modelPath(int moduleType) {
         String path = "models/Module/";
         path += moduleSet.getModuleSetName() + "/";             //moduleSetName
+        path += "CPG/";
         path += moduleSet.getModuleName(moduleType) + ".ttm";   //moduleName
         return path;
     }

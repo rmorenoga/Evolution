@@ -128,10 +128,13 @@ public class Evaluator {
 			}
 			ret = vrepApi.simxGetIntegerSignal(clientID, "finished", fin, remoteApi.simx_opmode_buffer);
 			if (ret == vrepApi.simx_return_ok) {
-				System.out.println("Flag value: " + fin.getValue());
-
+				if (SimulationConfiguration.isDebug()) {
+					System.out.println("Flag value: " + fin.getValue());
+				}
 			} else {
-				System.out.println("No flag value");
+				if (SimulationConfiguration.isDebug()) {
+					System.out.println("No flag value");
+				}
 				fin.setValue(-1);
 			}
 

@@ -10,17 +10,17 @@ public class CharWA
     {
         w = new char[i];
     }
-	
+    
     public CharWA(String s)
     {
-		w=s.toCharArray();
+        w=s.toCharArray();
     }
-	
+    
     public String getString()
     {
-		String a;
+        String a;
         a = new String(w);
-		return a;
+        return a;
     }
 
     public void initArray(int i)
