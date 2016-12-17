@@ -1,80 +1,118 @@
-function hormone(suffix,result1,result2,result3,result4,result5,result6)
-    horms = {}
-    sensed = false
-    for k = 1,7,1 do
-        horms[k] = 0
-    end
+function ghormone(connh,sensorR,sensorD)
+    local hormones = {}
+    local sensed = false
+    hormones[1] = -1
 
-    if(suffix==robotCount-2) then
-        if (result1==1) then 
-            horms[2] = 1
-            sensed = true
+    for i=1,#connh do
+        if (connh[i] == -1) then
+            if (sensorR[i] == 1)               
+                hormones[i+1] = 1-(sensorD[i]/0.2)
+                sensed = true
+            else
+                hormones[i+1] = -1
+            end
         end
     end
-    if(suffix==-1) then
-        if (result6==1) then 
-            horms[7] = 1
-            sensed = true
-        end
-    end
-    if(result2==1) then
-        horms[3] = 1
-        sensed = true
-    end
-    if(result3==1) then
-        horms[4] = 1
-        sensed = true
-    end
-    if(result4==1) then
-        horms[5] = 1
-        sensed = true
-    end
-    if(result5==1) then
-        horms[6] = 1
-        sensed = true
-    end 
-    if not sensed then 
-        horms[1] = 1
+
+    if not sensed then
+        hormones[1] = 1
     end
 
-    return horms               
+    return hormones               
 end
 
 
-function receptors(horm)
-    for k = 1,7,1 do
-        if(horm[k] == 1) then
-            --if(suffix==3) then
-                --    print('Went to 0')
-            --    end
-            if(amp<ampset[k]) then   --Amplitude
-                amp = amp + ampstep[k]
-            else
-                amp = amp - ampstep[k]
+function receptors(hormones,ampd,offd,phasediff,v,ampset,offsetset,phasediffset,vset,delta)
+    local ampdnew = ampd
+    local offdnew = offd
+    local vnew = v
+    local phasediffnew ={}      --Phasediff
+    for j=1,#phasediff do
+        phasediffnew[j] = phasediff[j]
+    end
+
+    for k=1,#hormones do
+        if (hormones[k]~=-1) then
+            if(ampdnew<ampset[k]) then   --Amplitude
+                ampdnew = ampdnew + (delta*hormones[k])
+                if (ampdnew > 1) then ampdnew = 1 end
+            elseif (ampdnew>ampset[k]) then
+                ampdnew = ampdnew - (delta*hormones[k])
+                if (ampdnew < -1) then ampdnew = -1 end
             end    
-            if(offset<offsetset[k]) then  --Offset
-                offset = offset + offsetstep[k]
-            else
-                offset = offset - offsetstep[k]
+            if(offdnew<offsetset[k]) then  --Offset
+                offdnew = offdnew + (delta*hormones[k])
+                if (offdnew > 1) then offdnew = 1 end
+            elseif (offdnew>offsetset[k]) then
+                offdnew = offdnew - (delta*hormones[k])
+                if (offdnew < -1) then offdnew = -1 end
             end    
-            if(pfactor<pfset[k]) then --Phase
-                pfactor = pfactor + pfstep[k]
-            else
-                pfactor = pfactor - pfstep[k]
-            end    
-            phasediff1 = math.pi*pfactor
-            phasediff0 = math.pi*pfactor        
+            for i=1,#phasediffset[k] do
+                if (phasediffnew[i]<phasediffset[k][i]) then
+                    phasediffnew[i] = phasediffnew[i] + (delta*hormones[k])
+                    if (phasediffnew[i] > math.pi) then phasediffnew[i] = math.pi end
+                    elseif (phasediffnew[i]>phasediffset[k][i]) then
+                        phasediffnew[i] = phasediffnew[i] - (delta*hormones[k])
+                        if (phasediffnew[i] < -math.pi) then phasediffnew[i] = -math.pi end
+                    end
+                end
+            end
+            if(vnew<vset[k]) then   --Frequency
+                vnew = vnew + (delta*hormones[k])
+                if (vnew >1) then vnew = 1 end
+            elseif (vnew>vset[k]) then
+                vnew = vnew - (delta*hormones[k])
+                if (vnew <0) then vnew = 0 end
+            end
         end
     end
+
+    return ampdnew,offdnew,phasediffnew,vnew
 end
 
-function propagate()
+function propagate(prob)
     test = math.random()
-    if(test>0.25) then --Threshold 0.25
+    if(test>prob) then --Threshold 0.25
         return true
     else
         return false
     end
 end
 
+
+function receptorsdelt(hormones,ampd,offd,phasediff,v,ampset,offsetset,phasediffset,vset)
+    local ampdnew = ampd
+    local offdnew = offd
+    local vnew = v
+    local phasediffnew ={}      
+    for j=1,#phasediff do
+        phasediffnew[j] = phasediff[j]
+    end
+
+    for k=1,#hormones do
+        if (hormones[k]~=-1) then
+            ampdnew = ampdnew + (ampset[k]*hormones[k])
+            if (ampdnew > 1) then ampdnew = 1 end
+            if (ampdnew < -1) then ampdnew = -1 end 
+
+            
+            offdnew = offdnew + (offsetset[k]*hormones[k])
+            if (offdnew > 1) then offdnew = 1 end
+            if (offdnew < -1) then offdnew = -1 end
+
+
+            for i=1,#phasediffset[k] do
+                phasediffnew[i] = phasediffnew[i] + (phasediffset[k][i]*hormones[k])
+                if (phasediffnew[i] > math.pi) then phasediffnew[i] = math.pi end
+                if (phasediffnew[i] < -math.pi) then phasediffnew[i] = -math.pi end
+            end
+            
+            vnew = vnew + (vset[k]*hormones[k])
+            if (vnew >1) then vnew = 1 end
+            if (vnew <0) then vnew = 0 end
+        end
+    end
+
+    return ampdnew,offdnew,phasediffnew,vnew
+end
 
