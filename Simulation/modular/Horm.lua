@@ -2,15 +2,17 @@ function ghormone(connh,sensorR,sensorD)
     local hormones = {}
     local sensed = false
     hormones[1] = -1
-
     for i=1,#connh do
         if (connh[i] == -1) then
-            if (sensorR[i] == 1)               
+            if (sensorR[i] == 1) then
+            --print('Generated '..i+1)              
                 hormones[i+1] = 1-(sensorD[i]/0.2)
                 sensed = true
             else
                 hormones[i+1] = -1
             end
+        else
+            hormones[i+1] = -1
         end
     end
 
@@ -32,7 +34,9 @@ function receptors(hormones,ampd,offd,phasediff,v,ampset,offsetset,phasediffset,
     end
 
     for k=1,#hormones do
+        --print(hormones[k])
         if (hormones[k]~=-1) then
+            --print('Received '..k)
             if(ampdnew<ampset[k]) then   --Amplitude
                 ampdnew = ampdnew + (delta*hormones[k])
                 if (ampdnew > 1) then ampdnew = 1 end
@@ -51,10 +55,9 @@ function receptors(hormones,ampd,offd,phasediff,v,ampset,offsetset,phasediffset,
                 if (phasediffnew[i]<phasediffset[k][i]) then
                     phasediffnew[i] = phasediffnew[i] + (delta*hormones[k])
                     if (phasediffnew[i] > math.pi) then phasediffnew[i] = math.pi end
-                    elseif (phasediffnew[i]>phasediffset[k][i]) then
-                        phasediffnew[i] = phasediffnew[i] - (delta*hormones[k])
-                        if (phasediffnew[i] < -math.pi) then phasediffnew[i] = -math.pi end
-                    end
+                elseif (phasediffnew[i]>phasediffset[k][i]) then
+                    phasediffnew[i] = phasediffnew[i] - (delta*hormones[k])
+                    if (phasediffnew[i] < -math.pi) then phasediffnew[i] = -math.pi end
                 end
             end
             if(vnew<vset[k]) then   --Frequency
