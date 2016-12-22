@@ -35,6 +35,7 @@ import util.ModuleRotation;
 import mpi.MPI;
 import represent.ModuleSet;
 import represent.ModuleSetFactory;
+import represent.RobotFeatureCalculator;
 
 
 

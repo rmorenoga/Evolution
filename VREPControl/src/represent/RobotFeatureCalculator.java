@@ -19,7 +19,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
-package simvrep;
+package represent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +29,7 @@ import javax.vecmath.Point3d;
 import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
 import org.apache.commons.math3.geometry.euclidean.threed.Vector3D;
 
-import represent.ModuleSet;
-import represent.ModuleSetFactory;
+import simvrep.SimulationConfiguration;
 import util.ModuleRotation;
 
 
@@ -73,6 +72,7 @@ public class RobotFeatureCalculator {
 	private Vector3D[] modulePosition;
 	private Rotation[] moduleRotation;
 	private ModuleSet moduleSet;
+	private RobotTree tree;
 
 	/*    *//**
 			 * Class constructor to calculate the position and orientation of
@@ -122,7 +122,7 @@ public class RobotFeatureCalculator {
 		}
 
 		// Calculate the maximum number of modules that this chromosome allows.
-		// This code is campatible with all the different chromosomes lengths
+		// This code is compatible with all the different chromosomes lengths
 		// TODO: remove the oldest chromosome versions
 		if ((chromo.length + 3) % 9 == 0) {
 			this.nModulesMax = (chromo.length + 3) / 9;
@@ -153,7 +153,7 @@ public class RobotFeatureCalculator {
 			}
 		}
 
-		// Now, analysis the chromosome
+		// Now, analyze the chromosome
 		this.chromosomeAnalysis();
 
 		// calculate the rotation and position of the modules and the force
@@ -465,7 +465,7 @@ public class RobotFeatureCalculator {
 		for (int currentLevel = 0; currentLevel < nModulesMax; currentLevel++) {
 			for (int j = 0; j < levelModuleNumber[currentLevel] && i < nModulesMax; j++) {
 				level[i] = currentLevel;
-				if (i < nModulesMax - 1) // To avoid the arry overflow
+				if (i < nModulesMax - 1) // To avoid the array overflow
 				{
 					levelModuleNumber[currentLevel + 1] += connections[i];
 					nModules += connections[i];
@@ -489,6 +489,33 @@ public class RobotFeatureCalculator {
 		// calculate connection features
 		calculateConnectionFeatures(connections);
 
+	}
+	
+	private void generateRobotTree(){
+		List<RobotNode> nodes = new ArrayList<RobotNode>();
+		int type;
+		int dadnumber;
+		int orientation;
+		int dadface;
+		RobotNode root = new RobotNode(moduleType[0], null);
+		nodes.add(root);
+		
+		RobotNode newNode;
+		RobotNode parent;
+		Connection conn; 
+		for (int j = 1; j < nModules-1; j++) {
+	           type = moduleType[j];
+	           dadnumber  = parentModule[j];
+	           parent = nodes.get(dadnumber);
+	           newNode = new RobotNode(type,parent);
+	           dadface = dadFace[j-1];
+	           orientation = childOrientation[j-1];
+	           conn = new Connection(parent,newNode,dadface,orientation);
+	           parent.addChildren(newNode, conn);
+	           
+		}
+		
+		tree.setRootNode(root);
 	}
 
 	private void calculateConnectionFeatures(int[] connections) {
