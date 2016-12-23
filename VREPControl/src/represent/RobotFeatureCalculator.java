@@ -491,7 +491,8 @@ public class RobotFeatureCalculator {
 
 	}
 	
-	private void generateRobotTree(){
+	public void generateRobotTree(){
+		tree = new RobotTree();
 		List<RobotNode> nodes = new ArrayList<RobotNode>();
 		int type;
 		int dadnumber;
@@ -503,7 +504,7 @@ public class RobotFeatureCalculator {
 		RobotNode newNode;
 		RobotNode parent;
 		Connection conn; 
-		for (int j = 1; j < nModules-1; j++) {
+		for (int j = 1; j < nModules; j++) {
 	           type = moduleType[j];
 	           dadnumber  = parentModule[j];
 	           parent = nodes.get(dadnumber);
@@ -512,10 +513,19 @@ public class RobotFeatureCalculator {
 	           orientation = childOrientation[j-1];
 	           conn = new Connection(parent,newNode,dadface,orientation);
 	           parent.addChildren(newNode, conn);
+	           nodes.add(newNode);
 	           
 		}
 		
 		tree.setRootNode(root);
+	}
+
+	public RobotTree getTree() {
+		return tree;
+	}
+
+	public void setTree(RobotTree tree) {
+		this.tree = tree;
 	}
 
 	private void calculateConnectionFeatures(int[] connections) {

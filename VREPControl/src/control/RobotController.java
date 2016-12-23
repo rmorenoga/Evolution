@@ -11,7 +11,7 @@ public abstract class RobotController {
 	protected remoteApi vrep;
 	protected int clientID;
 	protected RobotBuilder robot;
-	protected List<Integer> moduleHandlers;
+	protected int[] moduleHandlers;
 	protected int numberofModules;
 	protected int numberofParameters;
 
@@ -19,8 +19,8 @@ public abstract class RobotController {
 		this.vrep = vrep;
 		this.clientID = clientID;
 		this.robot = robot;
-		moduleHandlers = robot.getModuleHandlers();
-		this.numberofModules = moduleHandlers.size();
+		moduleHandlers = robot.getModuleHandlersint();
+		this.numberofModules = moduleHandlers.length;
 		
 	}
 	

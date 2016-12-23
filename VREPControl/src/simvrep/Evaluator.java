@@ -2,6 +2,8 @@ package simvrep;
 
 import java.util.logging.Logger;
 
+import control.CPGController;
+import control.RobotController;
 import coppelia.IntW;
 import coppelia.remoteApi;
 //import modules.control.SinusoidalController;
@@ -23,7 +25,7 @@ public class Evaluator {
 	private String scene = null;
 	private String vrepComand;
 	private RobotBuilder robot;
-	// private SinusoidalController controller;
+	private RobotController controller;
 
 	private remoteApi vrepApi;
 	private int clientID;
@@ -94,7 +96,12 @@ public class Evaluator {
 
 		robot = new RobotBuilder(vrepApi, clientID, chromosomeDouble, this.scene);
 		robot.createRobot();
-
+		float[] parameters = new float[36];
+		for (int k = 0;k<parameters.length;k++){
+			parameters[k] = 0.01f*k; 
+		}
+		controller = new CPGController(vrepApi,clientID,robot,parameters);
+		controller.sendParameters();
 		// controller = new SinusoidalController(vrepApi, clientID, robot);
 
 	}
@@ -180,6 +187,7 @@ public class Evaluator {
 
 		return fitness;
 	}
+
 
 	private void getSimulationConfigurationParameters() {
 

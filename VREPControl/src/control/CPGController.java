@@ -1,5 +1,8 @@
 package control;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import coppelia.CharWA;
 import coppelia.FloatWA;
 import coppelia.IntWA;
@@ -23,7 +26,7 @@ public class CPGController extends RobotController {
 		super(vrep, clientID, robot);
 		
 		controllerName = "CPG";
-		connectedhandles = new int[4*numberofModules];//TODO: Get connected modules from robot description
+		connectedhandles = robot.getTree().getHandlerListint();//TODO: Get connected modules from robot description
 		this.parameters = parameters;
 				
 	}
@@ -31,13 +34,17 @@ public class CPGController extends RobotController {
 	public CPGController(remoteApi vrep, int clientID, RobotBuilder robot){
 		super(vrep, clientID, robot);
 		controllerName = "CPG";
-		connectedhandles = new int[4];
+		connectedhandles = robot.getTree().getHandlerListint();
 		parameters = new float[numberofModules*numberofParameters];
 	}
 	
 
 
 	public void sendParameters() {
+		
+		for (int i = 0; i < moduleHandlers.length ;i++){
+			moduleHandlers[i] = moduleHandlers[i] + 1;
+		}
 		
 		FloatWA ControlParam = new FloatWA(parameters.length);
 		System.arraycopy(parameters,0,ControlParam.getArray(),0,parameters.length);
@@ -51,8 +58,8 @@ public class CPGController extends RobotController {
 		strConn = new CharWA(q.length);
 		System.arraycopy(q,0,strConn.getArray(),0,q.length);
 		
-		IntWA Modhandles = new IntWA(moduleHandlers.size());
-		System.arraycopy(moduleHandlers.toArray(),0,Modhandles.getArray(),0,moduleHandlers.size());
+		IntWA Modhandles = new IntWA(moduleHandlers.length);
+		System.arraycopy(moduleHandlers,0,Modhandles.getArray(),0,moduleHandlers.length);
 		char[] r = Modhandles.getCharArrayFromArray();
 		strMH = new CharWA(r.length);
 		System.arraycopy(r,0,strMH.getArray(),0,r.length);

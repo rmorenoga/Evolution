@@ -15,7 +15,7 @@ import util.InconsistentDataException;
 public class RobotNode {
 	
 	private int type;
-	private int handler;
+	private int handler = -1;
 	private RobotNode dad;
 	private List<RobotNode> children = new ArrayList<RobotNode>();
 	private List<Integer> connectedhandlers;
@@ -154,6 +154,7 @@ public class RobotNode {
         for (int f : usedFaces) {
             str += f + " ";
         }
+        str += "\n" + strIni + "Handler: "+handler;
         if (this.dad != null) {
             if (this.getDad().getConnection(this) != null) {
                 str += "\n" + strIni + "Dad face: " + this.getDad().getConnection(this).getDadFace();
@@ -195,6 +196,7 @@ public class RobotNode {
     			for (int index =0; index<connections.size();index++){
     				if (face == connections.get(index).getDadFace()){
     					handler = children.get(index).getHandler();
+    					children.get(index).askforhandlers();
     				}
     			}
     			connectedhandlers.add(handler);   			
@@ -207,17 +209,23 @@ public class RobotNode {
     			for (int index =0; index<connections.size();index++){
     				if (face == connections.get(index).getDadFace()){
     					handler = children.get(index).getHandler();
+    					children.get(index).askforhandlers();
     				}
     			}
     			connectedhandlers.add(handler);   			
     		}
     		
     	}
-    	
+    	//System.out.println(connectedhandlers);
     	
     	
     	
     }
+
+
+	public List<Integer> getConnectedhandlers() {
+		return connectedhandlers;
+	}
 
 
 	public int getHandler() {
@@ -229,5 +237,12 @@ public class RobotNode {
 		this.handler = handler;
 	}
     
+	public String branchToString() {
+        String str = this.toString();
+        for (RobotNode child : children) {
+            str += "\n" + child.branchToString();
+        }
+        return str;
+    }
     
 }
