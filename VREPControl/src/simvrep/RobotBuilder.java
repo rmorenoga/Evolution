@@ -109,8 +109,8 @@ public class RobotBuilder {
 	public void createRobot() {
 
 		// load a new scene
-		loadScene();
-		// TODO Create a class for creating simulation worlds
+		//loadScene();
+
 
 		// calculate the rotation and position of the modules and the force
 		// sensors. Load them in Vrep simulator. We also calcualte the
@@ -345,7 +345,7 @@ public class RobotBuilder {
 	private String modelPath(int moduleType) {
 		String path = "models/Module/";
 		path += moduleSet.getModuleSetName() + "/"; // moduleSetName
-		path += "CPG/";
+		path += "CPGH/";
 		path += moduleSet.getModuleName(moduleType) + ".ttm"; // moduleName
 		return path;
 	}

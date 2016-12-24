@@ -3,6 +3,7 @@ package simvrep;
 import java.util.logging.Logger;
 
 import control.CPGController;
+import control.CPGHController;
 import control.RobotController;
 import coppelia.IntW;
 import coppelia.remoteApi;
@@ -26,6 +27,7 @@ public class Evaluator {
 	private String vrepComand;
 	private RobotBuilder robot;
 	private RobotController controller;
+	private SceneBuilder scn;
 
 	private remoteApi vrepApi;
 	private int clientID;
@@ -93,14 +95,17 @@ public class Evaluator {
 
 		vrepApi = vrepSimulator.getVrepApi();
 		clientID = vrepSimulator.getClientID();
-
+		char[] maze = new char[]{'s','r'};
+		scn = new SceneBuilder(vrepApi, clientID,maze,0.7f);
+		scn.loadScene();
+		
 		robot = new RobotBuilder(vrepApi, clientID, chromosomeDouble, this.scene);
 		robot.createRobot();
-		float[] parameters = new float[36];
+		float[] parameters = new float[210];
 		for (int k = 0;k<parameters.length;k++){
 			parameters[k] = 0.01f*k; 
 		}
-		controller = new CPGController(vrepApi,clientID,robot,parameters);
+		controller = new CPGHController(vrepApi,clientID,robot,parameters);
 		controller.sendParameters();
 		// controller = new SinusoidalController(vrepApi, clientID, robot);
 
