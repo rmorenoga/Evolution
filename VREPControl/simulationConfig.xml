@@ -41,6 +41,7 @@
 
     <Control>
 
+    <Controller>CPGH</Controller>
 	<UseAmplitudeControl>false</UseAmplitudeControl>
 	<UseAngularFreqControl>false</UseAngularFreqControl>
 	<UsePhaseControl>true</UsePhaseControl>

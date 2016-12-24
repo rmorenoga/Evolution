@@ -54,6 +54,9 @@ public class SimulationConfiguration {
     
   //Control Parameters
   //TODO Adjust parameters to meet CPG parameters (our needs)
+    
+    private static String controller;
+    private static int controllerparamnumber;
     private static double maxPhaseControl;
     private static double minPhaseControl;
     private static double maxAmplitudeControl;
@@ -127,6 +130,15 @@ public class SimulationConfiguration {
     
           //Control Parameters
             //TODO Adjust to meet CPG parameters
+            
+            SimulationConfiguration.controller = config.getString("Control.Controller");
+            if (SimulationConfiguration.controller == "CPG"){
+            	SimulationConfiguration.controllerparamnumber = 6;
+            }else if (SimulationConfiguration.controller == "CPGH"){
+            	SimulationConfiguration.controllerparamnumber = 35;
+            }
+            
+            
             SimulationConfiguration.maxPhaseControl = config.getDouble("Control.PhaseControl.MaxValue");
             SimulationConfiguration.minPhaseControl = config.getDouble("Control.PhaseControl.MinValue");
             SimulationConfiguration.maxAmplitudeControl = config.getDouble("Control.AmplitudeControl.MaxValue");
@@ -178,7 +190,23 @@ public class SimulationConfiguration {
         }
     }
     
-    public SimulationConfiguration() {
+    public static int getControllerparamnumber() {
+		return controllerparamnumber;
+	}
+
+	public static void setControllerparamnumber(int controllerparamnumber) {
+		SimulationConfiguration.controllerparamnumber = controllerparamnumber;
+	}
+
+	public static String getController() {
+		return controller;
+	}
+
+	public static void setController(String controller) {
+		SimulationConfiguration.controller = controller;
+	}
+
+	public SimulationConfiguration() {
     }
 
 	public static int getServerId() {

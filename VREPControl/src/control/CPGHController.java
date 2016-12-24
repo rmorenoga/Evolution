@@ -5,6 +5,7 @@ import coppelia.FloatWA;
 import coppelia.IntWA;
 import coppelia.remoteApi;
 import simvrep.RobotBuilder;
+import simvrep.SimulationConfiguration;
 
 public class CPGHController extends RobotController {
 
@@ -16,36 +17,19 @@ public class CPGHController extends RobotController {
 	public CharWA strConn;
 
 	int[] connectedhandles;
-	float[] parameters;
 	public int numberofParameters = 35;// FIXME: Get from
 										// SimulationConfiguration class
 
 	public CPGHController(remoteApi vrep, int clientID, RobotBuilder robot, float[] parameters) {
-		super(vrep, clientID, robot);
-
-		controllerName = "CPG";
-		connectedhandles = robot.getTree().getHandlerListint();// TODO: Get
-																// connected
-																// modules from
-																// robot
-																// description
-		if (parameters.length >= numberofParameters * numberofModules) {
-			this.parameters = parameters;
-		} else {
-			System.err.println("CPGHController");
-			System.err.println("Error in the number of parameters, parameters lenght=" + parameters.length);
-			System.exit(-1);
-		}
-
-	}
-
-	public CPGHController(remoteApi vrep, int clientID, RobotBuilder robot) {
-		super(vrep, clientID, robot);
+		super(vrep, clientID, robot, parameters);
+		this.numberofParameters = SimulationConfiguration.getControllerparamnumber();
 		controllerName = "CPG";
 		connectedhandles = robot.getTree().getHandlerListint();
-		parameters = new float[numberofModules * numberofParameters];
+		
+
 	}
 
+	
 	public void sendParameters() {
 
 		for (int i = 0; i < moduleHandlers.length; i++) {

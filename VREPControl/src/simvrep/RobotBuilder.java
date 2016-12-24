@@ -49,6 +49,7 @@ public class RobotBuilder {
 	private ModuleSet moduleSet;
 	private RobotFeatureCalculator robotFeatures;
 	private RobotTree tree;
+	private String controllername;
 
 	private static final int WORLD_COORD = -1;
 
@@ -93,7 +94,7 @@ public class RobotBuilder {
 
 		// Load the module set
 		moduleSet = ModuleSetFactory.getModulesSet();
-
+		controllername = SimulationConfiguration.getController();
 		robotFeatures = new RobotFeatureCalculator(chromo);
 
 		robotFeatures.generateRobotTree();
@@ -345,7 +346,7 @@ public class RobotBuilder {
 	private String modelPath(int moduleType) {
 		String path = "models/Module/";
 		path += moduleSet.getModuleSetName() + "/"; // moduleSetName
-		path += "CPGH/";
+		path += controllername + "/";
 		path += moduleSet.getModuleName(moduleType) + ".ttm"; // moduleName
 		return path;
 	}
