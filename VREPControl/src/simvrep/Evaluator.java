@@ -2,10 +2,9 @@ package simvrep;
 
 import java.util.logging.Logger;
 
-import control.CPGController;
-import control.CPGHController;
+
 import control.RobotController;
-import control.RobotControllerFactory;
+
 import coppelia.IntW;
 import coppelia.remoteApi;
 //import modules.control.SinusoidalController;
@@ -106,8 +105,8 @@ public class Evaluator {
 		for (int k = 0;k<parameters.length;k++){
 			parameters[k] = 0.01f*k; 
 		}
-		RobotControllerFactory.reloadController(vrepApi,clientID,robot,parameters);
-		controller = RobotControllerFactory.getController();
+		controller = new RobotController(vrepApi,clientID,robot,parameters);
+
 		//controller = new CPGHController(vrepApi,clientID,robot,parameters);
 		controller.sendParameters();
 		// controller = new SinusoidalController(vrepApi, clientID, robot);
