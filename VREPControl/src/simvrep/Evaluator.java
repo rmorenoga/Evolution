@@ -55,8 +55,8 @@ public class Evaluator {
 
 		this.chromosomeDouble = cromo;
 
-		if ((cromo.length + 3) % 9 == 0) {
-			nModules = (cromo.length + 3) / 9;
+		if ((cromo.length + 3) % 8 == 0) {
+			nModules = (cromo.length + 3) / 8;
 		} else {
 			System.err.println("Vrep Evaluator");
 			System.err.println("Error in the number of modules nModules; cromo.length=" + cromo.length);
@@ -101,6 +101,7 @@ public class Evaluator {
 		
 		robot = new RobotBuilder(vrepApi, clientID, chromosomeDouble, this.scene);
 		robot.createRobot();
+		System.out.println(robot.getTree().detailedToString(robot.getTree().getNodeList()));
 		float[] parameters = new float[210];
 		for (int k = 0;k<parameters.length;k++){
 			parameters[k] = 0.01f*k; 

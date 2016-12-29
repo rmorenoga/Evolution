@@ -57,29 +57,19 @@ public class SimulationConfiguration {
     
     private static String controller;
     private static int controllerparamnumber;
-    private static double maxPhaseControl;
-    private static double minPhaseControl;
-    private static double maxAmplitudeControl;
-    private static double minAmplitudeControl;
-    private static double maxAngularFreqControl;
-    private static double minAngularFreqControl;
+    private static double maxPhase;
+    private static double minPhase;
+    private static double maxAmplitude;
+    private static double minAmplitude;
+    private static double maxAngularFreq;
+    private static double minAngularFreq;
+    private static double maxOffset;
+    private static double minOffset;
 
-    private static double maxFrequencyModulator;
-    private static double minFrequencyModulator;
-    private static double maxAmplitudeModulator;
-    private static double minAmplitudeModulator;
     
     private static double maxWeighing;
     private static double minWeighing;
     
-    private static boolean usePhaseControl;
-    private static boolean useAmplitudeControl;
-    private static boolean useAngularFControl;
-
-    private static boolean useAmplitudeModulator;
-    private static boolean useFrequencyModulator;
-    private static boolean useBranchFrequencyControl;
-
     
   //various
     private static boolean debug;
@@ -139,34 +129,18 @@ public class SimulationConfiguration {
             }
             
             
-            SimulationConfiguration.maxPhaseControl = config.getDouble("Control.PhaseControl.MaxValue");
-            SimulationConfiguration.minPhaseControl = config.getDouble("Control.PhaseControl.MinValue");
-            SimulationConfiguration.maxAmplitudeControl = config.getDouble("Control.AmplitudeControl.MaxValue");
-            SimulationConfiguration.minAmplitudeControl = config.getDouble("Control.AmplitudeControl.MinValue");
-            SimulationConfiguration.maxAngularFreqControl = config.getDouble("Control.AngularFreqControl.MaxValue");
-            SimulationConfiguration.minAngularFreqControl = config.getDouble("Control.AngularFreqControl.MinValue");
-
-            SimulationConfiguration.maxAmplitudeModulator = config.getDouble("Control.AmplitudeModulator.MaxValue");
-            SimulationConfiguration.minAmplitudeModulator = config.getDouble("Control.AmplitudeModulator.MinValue");
-            SimulationConfiguration.maxFrequencyModulator = config.getDouble("Control.FrequencyModulator.MaxValue");
-            SimulationConfiguration.minFrequencyModulator = config.getDouble("Control.FrequencyModulator.MinValue");
-
+            SimulationConfiguration.maxPhase = Math.PI*config.getDouble("Control.Phase.MaxValue")/180;
+            SimulationConfiguration.minPhase = Math.PI*config.getDouble("Control.Phase.MinValue")/180;
+            SimulationConfiguration.maxAmplitude = config.getDouble("Control.Amplitude.MaxValue");
+            SimulationConfiguration.minAmplitude = config.getDouble("Control.Amplitude.MinValue");
+            SimulationConfiguration.maxAngularFreq = config.getDouble("Control.AngularFreq.MaxValue");
+            SimulationConfiguration.minAngularFreq = config.getDouble("Control.AngularFreq.MinValue");
+            SimulationConfiguration.maxOffset = config.getDouble("Control.Offset.MaxValue");
+            SimulationConfiguration.minOffset = config.getDouble("Control.Offset.MinValue");
+            
             SimulationConfiguration.maxWeighing = config.getDouble("Control.Weighing.MaxValue");
             SimulationConfiguration.minWeighing = config.getDouble("Control.Weighing.MinValue");
 
-
-            SimulationConfiguration.usePhaseControl = config.getBoolean("Control.UsePhaseControl");
-            SimulationConfiguration.useAmplitudeControl = config.getBoolean("Control.UseAmplitudeControl");
-            SimulationConfiguration.useAngularFControl = config.getBoolean("Control.UseAngularFreqControl");
-
-            SimulationConfiguration.useAmplitudeModulator = config.getBoolean("Control.UseAmplitudeModulator");
-            SimulationConfiguration.useFrequencyModulator = config.getBoolean("Control.UseFrequencyModulator");
-            SimulationConfiguration.useBranchFrequencyControl = config.getBoolean("Control.BranchFrequencyModulator");
-            if(useBranchFrequencyControl && !useFrequencyModulator){
-                throw new Exception("Error in the parameters of frequency control: \n" +
-                        "useFrequencyControl: " + useFrequencyModulator +
-                        ";  useBranchFrequencyControl: " + useBranchFrequencyControl);
-            }
             
           //Tree parameters
             SimulationConfiguration.nMaxModulesIni = config.getInt("Tree.NMaxModulesIni");
@@ -361,85 +335,13 @@ public class SimulationConfiguration {
 		SimulationConfiguration.nMaxConnections = nMaxConnections;
 	}
 
-	public static double getMaxPhaseControl() {
-		return maxPhaseControl;
-	}
+	
 
-	public static void setMaxPhaseControl(double maxPhaseControl) {
-		SimulationConfiguration.maxPhaseControl = maxPhaseControl;
-	}
+	
 
-	public static double getMinPhaseControl() {
-		return minPhaseControl;
-	}
 
-	public static void setMinPhaseControl(double minPhaseControl) {
-		SimulationConfiguration.minPhaseControl = minPhaseControl;
-	}
 
-	public static double getMaxAmplitudeControl() {
-		return maxAmplitudeControl;
-	}
 
-	public static void setMaxAmplitudeControl(double maxAmplitudeControl) {
-		SimulationConfiguration.maxAmplitudeControl = maxAmplitudeControl;
-	}
-
-	public static double getMinAmplitudeControl() {
-		return minAmplitudeControl;
-	}
-
-	public static void setMinAmplitudeControl(double minAmplitudeControl) {
-		SimulationConfiguration.minAmplitudeControl = minAmplitudeControl;
-	}
-
-	public static double getMaxAngularFreqControl() {
-		return maxAngularFreqControl;
-	}
-
-	public static void setMaxAngularFreqControl(double maxAngularFreqControl) {
-		SimulationConfiguration.maxAngularFreqControl = maxAngularFreqControl;
-	}
-
-	public static double getMinAngularFreqControl() {
-		return minAngularFreqControl;
-	}
-
-	public static void setMinAngularFreqControl(double minAngularFreqControl) {
-		SimulationConfiguration.minAngularFreqControl = minAngularFreqControl;
-	}
-
-	public static double getMaxFrequencyModulator() {
-		return maxFrequencyModulator;
-	}
-
-	public static void setMaxFrequencyModulator(double maxFrequencyModulator) {
-		SimulationConfiguration.maxFrequencyModulator = maxFrequencyModulator;
-	}
-
-	public static double getMinFrequencyModulator() {
-		return minFrequencyModulator;
-	}
-
-	public static void setMinFrequencyModulator(double minFrequencyModulator) {
-		SimulationConfiguration.minFrequencyModulator = minFrequencyModulator;
-	}
-
-	public static double getMaxAmplitudeModulator() {
-		return maxAmplitudeModulator;
-	}
-
-	public static void setMaxAmplitudeModulator(double maxAmplitudeModulator) {
-		SimulationConfiguration.maxAmplitudeModulator = maxAmplitudeModulator;
-	}
-
-	public static double getMinAmplitudeModulator() {
-		return minAmplitudeModulator;
-	}
-
-	public static void setMinAmplitudeModulator(double minAmplitudeModulator) {
-		SimulationConfiguration.minAmplitudeModulator = minAmplitudeModulator;
-	}
 
 	public static double getMaxWeighing() {
 		return maxWeighing;
@@ -457,52 +359,69 @@ public class SimulationConfiguration {
 		SimulationConfiguration.minWeighing = minWeighing;
 	}
 
-	public static boolean isUsePhaseControl() {
-		return usePhaseControl;
+
+	public static double getMaxPhase() {
+		return maxPhase;
 	}
 
-	public static void setUsePhaseControl(boolean usePhaseControl) {
-		SimulationConfiguration.usePhaseControl = usePhaseControl;
+	public static void setMaxPhase(double maxPhase) {
+		SimulationConfiguration.maxPhase = maxPhase;
 	}
 
-	public static boolean isUseAmplitudeControl() {
-		return useAmplitudeControl;
+	public static double getMinPhase() {
+		return minPhase;
 	}
 
-	public static void setUseAmplitudeControl(boolean useAmplitudeControl) {
-		SimulationConfiguration.useAmplitudeControl = useAmplitudeControl;
+	public static void setMinPhase(double minPhase) {
+		SimulationConfiguration.minPhase = minPhase;
 	}
 
-	public static boolean isUseAngularFControl() {
-		return useAngularFControl;
+	public static double getMaxAmplitude() {
+		return maxAmplitude;
 	}
 
-	public static void setUseAngularFControl(boolean useAngularFControl) {
-		SimulationConfiguration.useAngularFControl = useAngularFControl;
+	public static void setMaxAmplitude(double maxAmplitude) {
+		SimulationConfiguration.maxAmplitude = maxAmplitude;
 	}
 
-	public static boolean isUseAmplitudeModulator() {
-		return useAmplitudeModulator;
+	public static double getMinAmplitude() {
+		return minAmplitude;
 	}
 
-	public static void setUseAmplitudeModulator(boolean useAmplitudeModulator) {
-		SimulationConfiguration.useAmplitudeModulator = useAmplitudeModulator;
+	public static void setMinAmplitude(double minAmplitude) {
+		SimulationConfiguration.minAmplitude = minAmplitude;
 	}
 
-	public static boolean isUseFrequencyModulator() {
-		return useFrequencyModulator;
+	public static double getMaxAngularFreq() {
+		return maxAngularFreq;
 	}
 
-	public static void setUseFrequencyModulator(boolean useFrequencyModulator) {
-		SimulationConfiguration.useFrequencyModulator = useFrequencyModulator;
+	public static void setMaxAngularFreq(double maxAngularFreq) {
+		SimulationConfiguration.maxAngularFreq = maxAngularFreq;
 	}
 
-	public static boolean isUseBranchFrequencyControl() {
-		return useBranchFrequencyControl;
+	public static double getMinAngularFreq() {
+		return minAngularFreq;
 	}
 
-	public static void setUseBranchFrequencyControl(boolean useBranchFrequencyControl) {
-		SimulationConfiguration.useBranchFrequencyControl = useBranchFrequencyControl;
+	public static void setMinAngularFreq(double minAngularFreq) {
+		SimulationConfiguration.minAngularFreq = minAngularFreq;
+	}
+
+	public static double getMaxOffset() {
+		return maxOffset;
+	}
+
+	public static void setMaxOffset(double maxOffset) {
+		SimulationConfiguration.maxOffset = maxOffset;
+	}
+
+	public static double getMinOffset() {
+		return minOffset;
+	}
+
+	public static void setMinOffset(double minOffset) {
+		SimulationConfiguration.minOffset = minOffset;
 	}
 
 	public static boolean isDebug() {

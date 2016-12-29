@@ -42,34 +42,23 @@
     <Control>
 
     <Controller>CPGH</Controller>
-	<UseAmplitudeControl>false</UseAmplitudeControl>
-	<UseAngularFreqControl>false</UseAngularFreqControl>
-	<UsePhaseControl>true</UsePhaseControl>
-	
-	<UseAmplitudeModulator>false</UseAmplitudeModulator>
-	<UseFrequencyModulator>false</UseFrequencyModulator>
-	<BranchFrequencyModulator>false</BranchFrequencyModulator>
 	    
-	<AmplitudeControl>
+	<Amplitude>
+            <MaxValue>1</MaxValue>
+            <MinValue>-1</MinValue>
+	</Amplitude>
+	<AngularFreq>
             <MaxValue>1</MaxValue>
             <MinValue>0</MinValue>
-	</AmplitudeControl>
-	<AngularFreqControl>
-            <MaxValue>1</MaxValue>
-            <MinValue>0</MinValue>
-	</AngularFreqControl>
-	<PhaseControl>
-            <MaxValue>360</MaxValue>
-            <MinValue>0</MinValue>
-	</PhaseControl>
-	<AmplitudeModulator>
-            <MaxValue>0.5</MaxValue>
-            <MinValue>-0.5</MinValue>
-	</AmplitudeModulator>
-	<FrequencyModulator>
-	    <MaxValue>0.5</MaxValue>
-            <MinValue>-0.5</MinValue>
-    	</FrequencyModulator>
+	</AngularFreq>
+	<Phase>
+            <MaxValue>180</MaxValue>
+            <MinValue>-180</MinValue>
+	</Phase>
+	<Offset>
+		<MaxValue>1</MaxValue>
+		<MinValue>-1</MinValue>
+	</Offset>
         <Weighing>
             <MaxValue>100</MaxValue>
             <MinValue>0</MinValue>

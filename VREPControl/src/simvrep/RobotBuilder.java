@@ -377,25 +377,7 @@ public class RobotBuilder {
 		return forceSensorHandlers;
 	}
 
-	public double[] getAmplitudeControl() {
-		return robotFeatures.getAmplitudeControl();
-	}
-
-	public double[] getAngularFreqControl() {
-		return robotFeatures.getAngularFreqControl();
-	}
-
-	public int[] getPhaseControl() {
-		return robotFeatures.getPhaseControl();
-	}
-
-	public double[] getAmplitudeModulation() {
-		return robotFeatures.getAmplitudeModulation();
-	}
-
-	public double[] getFrequencyModulation() {
-		return robotFeatures.getFrequencyModulation();
-	}
+	
 
 	public int[] getModuleType() {
 		return robotFeatures.getModuleType();

@@ -45,6 +45,19 @@ public class RobotController {
 			System.err.println("Error in the number of parameters, parameters lenght=" + parameters.length);
 			System.exit(-1);
 		}
+			adjustParam();
+	}
+	
+	private void adjustParam(){
+		float maxPhase = (float) SimulationConfiguration.getMaxPhase();
+		float minPhase = (float) SimulationConfiguration.getMinPhase();
+		float maxAmplitude = (float) SimulationConfiguration.getMaxAmplitude();
+		float minAmplitude  = (float) SimulationConfiguration.getMinAmplitude();
+		float maxOffset = (float) SimulationConfiguration.getMaxOffset();
+		float minOffset = (float) SimulationConfiguration.getMinOffset();
+		float maxFreq = (float) SimulationConfiguration.getMaxAngularFreq();
+		float minFreq = (float) SimulationConfiguration.getMinAngularFreq();
+		
 		
 	}
 	

@@ -50,11 +50,6 @@ public class RobotFeatureCalculator {
 	private String pathBase = "/home/fai/svn/tesis/programacion/gazebo/tesis/";
 	private String worldbase = "base.world";
 	private int[] childOrientation;
-	private double amplitudeControl[];
-	private double angularFreqControl[];
-	private int phaseControl[];
-	private double amplitudeModulation[];
-	private double frequencyModulation[];
 	private int[] parentModule;
 	private int[][] occupiedFaces;
 
@@ -122,10 +117,8 @@ public class RobotFeatureCalculator {
 		}
 
 		// Calculate the maximum number of modules that this chromosome allows.
-		// This code is compatible with all the different chromosomes lengths
-		// TODO: remove the oldest chromosome versions
-		if ((chromo.length + 3) % 9 == 0) {
-			this.nModulesMax = (chromo.length + 3) / 9;
+		if ((chromo.length + 3) % 8 == 0) {
+			this.nModulesMax = 2*(chromo.length + 3) / 8;
 		} else {
 			System.err.println("VrepCreateRobot: Error in the lenght of the chromosome; length: " + chromo.length);
 			for (int i = 0; i < chromo.length; i++) {
@@ -144,15 +137,6 @@ public class RobotFeatureCalculator {
 
 		initArrays();
 
-		if ((chromo.length + 3) % 9 != 0) {
-			for (int i = 0; i < nModulesMax; i++) {
-				this.amplitudeControl[i] = 0.0;
-				this.angularFreqControl[i] = 0.0;
-				this.amplitudeModulation[i] = 0.0;
-				this.frequencyModulation[i] = 0.0;
-			}
-		}
-
 		// Now, analyze the chromosome
 		this.chromosomeAnalysis();
 
@@ -170,11 +154,6 @@ public class RobotFeatureCalculator {
 
 		this.dadFace = new int[nModulesMax - 1];
 		this.childOrientation = new int[nModulesMax - 1];
-		this.amplitudeControl = new double[nModulesMax];
-		this.angularFreqControl = new double[nModulesMax];
-		this.phaseControl = new int[nModulesMax];
-		this.amplitudeModulation = new double[nModulesMax];
-		this.frequencyModulation = new double[nModulesMax];
 		this.parentModule = new int[nModulesMax];
 		this.occupiedFaces = new int[nModulesMax][14];
 
@@ -414,45 +393,6 @@ public class RobotFeatureCalculator {
 			childOrientation[i] = chromosomeInt[3 * nModulesMax - 2 + i];
 		}
 
-		if ((chromosomeInt.length + 3) % 9 == 0) {
-
-			// Control parameters of the amplitude
-			for (int i = 0; i < (nModulesMax); i++) {
-				this.amplitudeControl[i] = chromosomeDouble[4 * nModulesMax - 3 + i];
-			}
-
-			// Control parameters of the angular frequency
-			for (int i = 0; i < (nModulesMax); i++) {
-				this.angularFreqControl[i] = chromosomeDouble[5 * nModulesMax - 3 + i];
-			}
-
-			// Control parameters of phase
-			for (int i = 0; i < (nModulesMax); i++) {
-				this.phaseControl[i] = chromosomeInt[6 * nModulesMax - 3 + i];
-			}
-
-			// Control parameters of the amplitude modulator
-			for (int i = 0; i < (nModulesMax); i++) {
-				this.amplitudeModulation[i] = chromosomeDouble[7 * nModulesMax - 3 + i];
-			}
-
-			// Control parameters of the frequency modulator
-			for (int i = 0; i < (nModulesMax); i++) {
-				this.frequencyModulation[i] = chromosomeDouble[8 * nModulesMax - 3 + i];
-			}
-
-		} else {
-			for (int i = 0; i < (nModulesMax); i++) {
-				phaseControl[i] = chromosomeInt[4 * nModulesMax - 3 + i];
-			}
-
-			if (chromosomeInt.length > 5 * nModulesMax - 3) {
-				for (int i = 0; i < (nModulesMax); i++) {
-					frequencyModulation[i] = chromosomeDouble[5 * nModulesMax - 3 + i];
-				}
-			}
-
-		}
 
 		// Calculating the level of each module
 		int[] levelModuleNumber = new int[nModulesMax];
@@ -561,25 +501,6 @@ public class RobotFeatureCalculator {
 		return Math.sqrt(deviation) / this.nModules;
 	}
 
-	public double[] getAmplitudeControl() {
-		return amplitudeControl;
-	}
-
-	public double[] getAngularFreqControl() {
-		return angularFreqControl;
-	}
-
-	public int[] getPhaseControl() {
-		return phaseControl;
-	}
-
-	public double[] getAmplitudeModulation() {
-		return amplitudeModulation;
-	}
-
-	public double[] getFrequencyModulation() {
-		return frequencyModulation;
-	}
 
 	public int[] getModuleType() {
 		return moduleType;
