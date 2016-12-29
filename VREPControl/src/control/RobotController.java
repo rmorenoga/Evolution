@@ -85,11 +85,14 @@ public void sendParameters() {
 		strMH = new CharWA(r.length);
 		System.arraycopy(r,0,strMH.getArray(),0,r.length);
 		
+		//Pause communication
+		vrep.simxPauseCommunication(clientID, true);
 		// Set Simulator signal values
-		int result1 = vrep.simxSetStringSignal(clientID, "ControlParam", strCP, vrep.simx_opmode_blocking);
-		int result2 = vrep.simxSetStringSignal(clientID, "ConnHandles", strConn, vrep.simx_opmode_blocking);
-		int result3 = vrep.simxSetStringSignal(clientID, "ModHandles", strMH, vrep.simx_opmode_blocking);
-		
+		int result1 = vrep.simxSetStringSignal(clientID, "ControlParam", strCP, vrep.simx_opmode_oneshot);
+		int result2 = vrep.simxSetStringSignal(clientID, "ConnHandles", strConn, vrep.simx_opmode_oneshot);
+		int result3 = vrep.simxSetStringSignal(clientID, "ModHandles", strMH, vrep.simx_opmode_oneshot);
+		//Unpause communication
+		vrep.simxPauseCommunication(clientID,false);
 		
 	}
 	

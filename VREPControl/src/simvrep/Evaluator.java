@@ -4,7 +4,8 @@ import java.util.logging.Logger;
 
 
 import control.RobotController;
-
+import coppelia.CharWA;
+import coppelia.FloatWA;
 import coppelia.IntW;
 import coppelia.remoteApi;
 //import modules.control.SinusoidalController;
@@ -101,7 +102,7 @@ public class Evaluator {
 		
 		robot = new RobotBuilder(vrepApi, clientID, chromosomeDouble, this.scene);
 		robot.createRobot();
-		System.out.println(robot.getTree().detailedToString(robot.getTree().getNodeList()));
+		//System.out.println(robot.getTree().detailedToString(robot.getTree().getNodeList()));
 		float[] parameters = new float[210];
 		for (int k = 0;k<parameters.length;k++){
 			parameters[k] = 0.01f*k; 
@@ -113,22 +114,32 @@ public class Evaluator {
 		// controller = new SinusoidalController(vrepApi, clientID, robot);
 
 	}
+	
+	public void setControllerParam(float[] param){
+		controller.setParameters(param);
+	}
+	
+	public void sendControllerParam(){
+		controller.sendParameters();
+	}
 
 	public double evaluate() {
-
+		
+		double fitness = 0;
 		IntW fin = new IntW(0);
-		// TODO Send control parameters before simulation start, can be done
-		// also when building the robot
-
+		CharWA datastring = new CharWA(1);
+		FloatWA fit = new FloatWA(2);
+		
+		vrepApi.simxSetIntegerSignal(clientID, "MaxTime", (int)Math.ceil(maxSimulationTime), remoteApi.simx_opmode_oneshot);
 		// start the simulation:
 		int ret = vrepApi.simxStartSimulation(clientID, remoteApi.simx_opmode_blocking);
 
 		System.out.println("Start: " + ret);
 		if (ret == remoteApi.simx_return_novalue_flag) {
-			System.out.println("Value not returned from simulator");
+			System.out.println("Value not returned from simulator when starting simulation");
 		}
 		if (ret == 3) {
-			System.out.println("Timeout");
+			System.out.println("Timeout when starting simulation");
 		}
 
 		vrepApi.simxGetIntegerSignal(clientID, "finished", fin, remoteApi.simx_opmode_streaming);
@@ -164,13 +175,25 @@ public class Evaluator {
 		ret = vrepApi.simxStopSimulation(clientID, remoteApi.simx_opmode_blocking);
 		System.out.println("Stop: " + ret);
 		if (ret == remoteApi.simx_return_novalue_flag) {
-			System.out.println("Value not returned from simulator");
+			System.out.println("Value not returned from simulator when stopping simulation");
 		}
 		if (ret == 3) {
-			System.out.println("Timeout");
+			System.out.println("Timeout when stopping simulation");
 		}
 
-		// TODO Receive simulation results
+		//Receive simulation results
+		ret = vrepApi.simxGetStringSignal(clientID, "Position", datastring, remoteApi.simx_opmode_blocking);
+		if (ret == remoteApi.simx_return_novalue_flag) {
+			System.out.println("Value not returned from simulator when querying simulation results");
+		}
+		if (ret == 3) {
+			System.out.println("Timeout when querying simulation results");
+		}
+		
+		fit.initArrayFromCharArray(datastring.getArray());
+		float[] fitn = new float[2];
+		fitn = Calcfitness(fit, 0.7f);
+		fitness = fitn[0];
 
 		// Before closing the connection to V-REP, make sure that the last
 		// command sent out had time to arrive. You can guarantee this with (for
@@ -178,7 +201,7 @@ public class Evaluator {
 		IntW pingTime = new IntW(0);
 		vrepApi.simxGetPingTime(clientID, pingTime);
 
-		// //Close the scene, We dont need to close the scene but just in case
+		// //Close the scene, We don't need to close the scene but just in case
 		// int iter = 0;
 		// int ret = vrepApi.simxCloseScene(clientID,
 		// remoteApi.simx_opmode_oneshot_wait);
@@ -191,7 +214,7 @@ public class Evaluator {
 		// System.err.println("The scene has not been closed after 100
 		// trials.");
 
-		double fitness = 0;
+		//System.out.println(fitness);
 
 		return fitness;
 	}
@@ -218,6 +241,38 @@ public class Evaluator {
 	public void getVrepPing() {
 		IntW pingTime = new IntW(0);
 		vrepApi.simxGetPingTime(clientID, pingTime);
+	}
+	
+	/**
+	 * Calculate fitness based on the output coming from the simulator
+	 * 
+	 * @param output
+	 *            the output coming from the simulator
+	 * @param alpha
+	 *            the weight of the distance of in the fitness calculation
+	 * @return an array with the calculated fitness and whether the robot could
+	 *         get out of the maze
+	 */
+	private float[] Calcfitness(FloatWA output, float alpha) {
+
+
+		float[] fitness = new float[2];
+		float beta = 1 - alpha;
+
+		if (output.getArray()[0] == 0) {
+			// The robot could get out of the maze so the fitness is the time it
+			// spent normalized
+			fitness[0] = beta * output.getArray()[1] / (float)maxSimulationTime;
+			fitness[1] = 1;
+		} else if (output.getArray()[1] == 0) {
+			// The robot could not get out of the maze so the fitness is the
+			// distance to goal + the maximum time allowed
+			fitness[0] = alpha * output.getArray()[0] + beta * 1.0f;
+			fitness[1] = 0;
+		}
+
+		return fitness;
+
 	}
 
 }

@@ -134,7 +134,7 @@ public class RobotBuilder {
 		int nAttemps = SimulationConfiguration.getnAttempts();
 		int ret;
 		for (int i = 0; i < nAttemps; i++) {
-			ret = vrep.simxLoadScene(clientID, scenePath, 0, remoteApi.simx_opmode_oneshot_wait);
+			ret = vrep.simxLoadScene(clientID, scenePath, 0, remoteApi.simx_opmode_blocking);
 			if (ret == remoteApi.simx_return_ok) {
 				// System.out.format("Scene loaded correctly: \n");
 				return;
@@ -264,7 +264,7 @@ public class RobotBuilder {
 		IntW moduleHandle = new IntW(0);
 		// clientID,final String modelPathAndName, int options, IntW baseHandle,
 		// int operationMode
-		int ret = vrep.simxLoadModel(clientID, modelPath, 0, moduleHandle, remoteApi.simx_opmode_oneshot_wait);
+		int ret = vrep.simxLoadModel(clientID, modelPath, 0, moduleHandle, remoteApi.simx_opmode_blocking);
 
 		if (ret == remoteApi.simx_return_ok) {
 			// System.out.format("Model loaded correctly: %d\n",
@@ -288,7 +288,7 @@ public class RobotBuilder {
 		IntW forceSensorHandle = new IntW(0);
 		// clientID,final String modelPathAndName, int options, IntW baseHandle,
 		// int operationMode
-		int ret = vrep.simxLoadModel(clientID, modelPath, 0, forceSensorHandle, remoteApi.simx_opmode_oneshot_wait);
+		int ret = vrep.simxLoadModel(clientID, modelPath, 0, forceSensorHandle, remoteApi.simx_opmode_blocking);
 
 		if (ret == remoteApi.simx_return_ok) {
 			// System.out.format("Model loaded correctly: %d\n",
