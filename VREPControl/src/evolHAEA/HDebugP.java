@@ -1,5 +1,7 @@
 package evolHAEA;
 
+import java.util.List;
+
 import represent.Robot;
 import simvrep.Simulation;
 import unalcol.optimization.OptimizationFunction;
@@ -7,13 +9,16 @@ import unalcol.types.collection.bitarray.BitArray;
 
 public class HDebugP extends OptimizationFunction<double[]>{
 	
-	boolean DEBUG = true;
+	boolean DEBUG = false;
+	
+	protected List<Simulation> simulators;
 	
 	protected BitArray servers;
 	public float alpha = 0.7f;
 	
-	public HDebugP(int numberOfServers) {
+	public HDebugP(int numberOfServers, List<Simulation> simulators) {
 		servers = new BitArray(numberOfServers, false);
+		this.simulators = simulators;
 		if (DEBUG){
 			System.out.println("Building HDebugP");
 		}
@@ -63,7 +68,7 @@ public class HDebugP extends OptimizationFunction<double[]>{
 				int[] orientation = new int[] { 1, 0, 1, 0, 1, 0, 1, 0 };
 				
 				// Simulation Parameters
-				int MaxTime = 30;
+				//int MaxTime = 30;
 
 				// Control Parameters
 				float[] CP = new float[42];
@@ -91,7 +96,7 @@ public class HDebugP extends OptimizationFunction<double[]>{
 
 				Robot robot = new Robot(Numberofmodules, orientation, CP);
 
-				Simulation sim = new Simulation(simulator, MaxTime, robot);
+				Simulation sim = simulators.get(simulator);
 				
 				// Number of retries in case of simulator crash
 				int maxTries = 5;
@@ -99,8 +104,8 @@ public class HDebugP extends OptimizationFunction<double[]>{
 				// Retry if there is a simulator crash
 				for (int j = 0; j < maxTries; j++) {
 
-					if (sim.Connect()) {
-
+					//if (sim.Connect()) {
+						sim.prepareSignals(robot);
 						sim.SendSignals();
 						sim.SendMaze(subenvperm[6], 0.8f);
 
@@ -111,7 +116,7 @@ public class HDebugP extends OptimizationFunction<double[]>{
 							e.printStackTrace();
 						}
 
-						sim.Disconnect();
+						//sim.Disconnect();
 
 						if (rfitness[0] == -1) {
 							//sim.RestartSim(j, "MRun.ttt");
@@ -131,12 +136,12 @@ public class HDebugP extends OptimizationFunction<double[]>{
 							
 						}
 
-					} else {
+					//} else {
 						// No connection could be established
-						System.out.println("Failed connecting to remote API server");
-						System.out.println("Trying again for the " + j + " time in " + simulator);
-						continue;
-					}
+					//	System.out.println("Failed connecting to remote API server");
+					//	System.out.println("Trying again for the " + j + " time in " + simulator);
+					//	continue;
+					//}
 					break;
 				}
 				

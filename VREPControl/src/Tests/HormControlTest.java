@@ -55,10 +55,10 @@ public class HormControlTest {
 						
 						Robot robot = new Robot(Numberofmodules,orientation,CP);
 						
-						Simulation sim = new Simulation(simulator,MaxTime,robot);
+						Simulation sim = new Simulation(simulator,MaxTime);
 						
 						if(sim.Connect()){
-							
+							sim.prepareSignals(robot);
 							sim.SendSignals();
 							sim.SendMaze(subenvperm[6],0.8f);
 							

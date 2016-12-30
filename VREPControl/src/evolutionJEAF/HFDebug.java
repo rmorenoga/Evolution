@@ -50,10 +50,10 @@ public class HFDebug extends ObjectiveFunction{
 			
 		Robot robot = new Robot(Numberofmodules,orientation,CP);
 		
-		Simulation sim = new Simulation(simulator,MaxTime,robot);
+		Simulation sim = new Simulation(simulator,MaxTime);
 		
 		if(sim.Connect()){
-			
+			sim.prepareSignals(robot);
 			sim.SendSignals();
 			sim.SendMaze(subenvperm[2],0.8f);
 

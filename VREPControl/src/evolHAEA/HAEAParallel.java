@@ -2,6 +2,10 @@ package evolHAEA;
 
 import java.io.File;
 import java.lang.ProcessBuilder.Redirect;
+import java.util.ArrayList;
+import java.util.List;
+
+import simvrep.Simulation;
 
 import hill.HillMAS;
 import unalcol.descriptors.Descriptors;
@@ -34,6 +38,7 @@ import unalcol.types.real.array.DoubleArrayPlainWrite;
 public class HAEAParallel {
 
 	public static int Nsim;
+	public static List<Simulation> simulators;
 
 	public static void main(String[] args) {
 
@@ -58,14 +63,15 @@ public class HAEAParallel {
 			System.err.println("Missing arguments");
 			System.exit(1);
 		}
-		
 
-		/*// Start Simulators
+		simulators = new ArrayList<Simulation>();
+
+		// Start Simulators
 		for (int j = 0; j < Nsim; j++) {
 
-			String vrepcommand = new String("./vrep" + j + ".sh");
+			/*String vrepcommand = new String("./vrep" + j + ".sh");
 
-			 Initialize a v-rep simulator based on the Nsim parameter 
+			// Initialize a v-rep simulator based on the Nsim parameter
 			try {
 				ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h", "scenes/Maze/MDebug.ttt");
 				qq.directory(new File("/home/rodr/V-REP/Vrep" + j + "/"));
@@ -77,8 +83,23 @@ public class HAEAParallel {
 			} catch (Exception e) {
 				System.out.println(e.toString());
 				e.printStackTrace();
+			}*/
+
+			Simulation sim = new Simulation(j, 12);
+			// Retry if there is a simulator crash
+			for (int i = 0; i < 5; i++) {
+				if (sim.Connect()) {
+					simulators.add(sim);
+				} else {
+					// No connection could be established
+					System.out.println("Failed connecting to remote API server");
+					System.out.println("Trying again for the " + i + " time in " + j);
+					continue;
+				}
+				break;
 			}
-		}*/
+
+		}
 
 		// Search Space Definition
 		int DIM = 42;
@@ -88,7 +109,7 @@ public class HAEAParallel {
 		Space<double[]> space = new HyperCube(min, max);
 
 		// Optimization function
-		OptimizationFunction<double[]> function = new HDebugP(Nsim);
+		OptimizationFunction<double[]> function = new HDebugP(Nsim,simulators);
 		Goal<double[]> goal = new OptimizationGoal<double[]>(function);
 		goal.setMaxThreads(Nsim);
 
@@ -97,8 +118,8 @@ public class HAEAParallel {
 		IntensityMutation variation = new GaussianMutation(0.1, null, adapt);
 		ArityTwo<double[]> xover = new LinearXOver();
 
-		int POPSIZE = 5;
-		int MAXITERS = 1;
+		int POPSIZE = 10;
+		int MAXITERS = 10;
 		Operator<double[]>[] opers = (Operator<double[]>[]) new Operator[2];
 		opers[0] = variation;
 		opers[1] = xover;
@@ -114,18 +135,22 @@ public class HAEAParallel {
 		WriteDescriptors w_desc = new WriteDescriptors();
 		Write.set(Space.class, w_desc);
 
-		//Add tracer based on descriptors set
-		FileTracer tracer = new FileTracer("Evolresult.txt",',');
+		// Add tracer based on descriptors set
+		FileTracer tracer = new FileTracer("Evolresult.txt", ',');
 		ConsoleTracer tracer1 = new ConsoleTracer();
 		Tracer.addTracer(search, tracer1);
-		Tracer.addTracer(search,tracer);
+		Tracer.addTracer(search, tracer);
 
 		Solution<double[]> solution = search.apply(space, goal);
 
 		System.out.println(solution.quality());
-		
+
 		tracer.close();
 		tracer1.close();
+		
+		for (Simulation sim : simulators){
+			sim.Disconnect();
+		}
 
 		// Stop Simulators
 		for (int j = 0; j < Nsim; j++) {

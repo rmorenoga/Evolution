@@ -61,7 +61,7 @@ public class HDebugP extends ObjectiveFunction {
 
 		Robot robot = new Robot(Numberofmodules, orientation, CP);
 
-		Simulation sim = new Simulation(simulator, MaxTime, robot);
+		Simulation sim = new Simulation(simulator, MaxTime);
 
 		// Number of retries in case of simulator crash
 		int maxTries = 5;
@@ -70,7 +70,7 @@ public class HDebugP extends ObjectiveFunction {
 		for (int j = 0; j < maxTries; j++) {
 
 			if (sim.Connect()) {
-
+				sim.prepareSignals(robot);
 				sim.SendSignals();
 				sim.SendMaze(subenvperm[6], 0.8f);
 

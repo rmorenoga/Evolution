@@ -12,7 +12,7 @@ import represent.Robot;
 
 public class Simulation {
 	
-	boolean DEBUG = true;
+	boolean DEBUG = false;
 
 	/**
 	 * Simulator server number to connect to
@@ -49,13 +49,25 @@ public class Simulation {
 	 * @param robot
 	 */
 
-	public Simulation(int simnumber, int MaxTime, Robot robot) {
+	public Simulation(int simnumber, int MaxTime) {
 		if (DEBUG){
 			System.out.println("Building Simulation with simnumber: "+simnumber+" MaxTime: "+MaxTime);
 		}
 		this.simnumber = simnumber;
 		this.MaxTime = MaxTime;
 
+		
+
+	}
+	
+	/**
+	 * Prepares signals to be sent to the simulator from parameters stored in the robot 
+	 * representation
+	 * @param robot
+	 */
+	
+	public void prepareSignals(Robot robot){
+		
 		FloatWA ControlParam = new FloatWA(robot.getControlParam().length);
 		System.arraycopy(robot.getControlParam(),0,ControlParam.getArray(),0,robot.getControlParam().length);
 		char[] p = ControlParam.getCharArrayFromArray();
@@ -77,7 +89,6 @@ public class Simulation {
 		strNO = new CharWA(p2.length);
 		System.arraycopy(p2,0,strNO.getArray(),0,p2.length);
 		
-
 	}
 
 	/**
@@ -85,7 +96,7 @@ public class Simulation {
 	 * 
 	 * @return whether the simulator returns a valid clientID
 	 */
-	public synchronized boolean Connect() {
+	public boolean Connect() {
 		
 		vrep = new remoteApi(); // Create simulator control object
 		//vrep.simxFinish(-1); // just in case, close all opened connections
@@ -103,10 +114,16 @@ public class Simulation {
 	/**
 	 * Closes the connection with the simulator
 	 */
-	public synchronized void Disconnect() {
+	public void Disconnect() {
 		if (DEBUG){
 			System.out.println("Using Disconnect() in "+simnumber);
 		}
+		// Before closing the connection to V-REP, make sure that the last
+		// command sent out had time to arrive. You can guarantee this with (for
+		// example):
+		IntW pingTime = new IntW(0);
+		vrep.simxGetPingTime(clientID, pingTime);
+		
 		// Close connection with the simulator
 		vrep.simxFinish(clientID);
 	}
@@ -117,31 +134,31 @@ public class Simulation {
 	 * @param sequence
 	 *            a char array containing the maze sequence
 	 */
-	public synchronized void SendMaze(char[] sequence) {
+	public void SendMaze(char[] sequence) {
 		
 		strSeq = new CharWA(sequence.length);
 		System.arraycopy(sequence,0,strSeq.getArray(),0,sequence.length);
 
-		int result = vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot_wait);
+		int result = vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot);
 		if (DEBUG){
 			System.out.println("Using SendMaze() in "+simnumber+" result: "+result);
 		}
 	}
 	
-	public synchronized void SendMaze(char[] sequence, float width){
+	public void SendMaze(char[] sequence, float width){
 		
 		SendMaze(sequence);
-		int result = vrep.simxSetFloatSignal(clientID, "MazeW", width, vrep.simx_opmode_oneshot_wait);
+		int result = vrep.simxSetFloatSignal(clientID, "MazeW", width, vrep.simx_opmode_oneshot);
 		if (DEBUG){
 			System.out.println("Using SendMaze() in "+simnumber+" result: "+result);
 		}
 	}
 
-	public synchronized void SendSignals() {
+	public void SendSignals() {
 		
 		// Set Simulator signal values
-		int result1 = vrep.simxSetStringSignal(clientID, "NumberandOri", strNO, vrep.simx_opmode_oneshot_wait);
-		int result2 = vrep.simxSetStringSignal(clientID, "ControlParam", strCP, vrep.simx_opmode_oneshot_wait);
+		int result1 = vrep.simxSetStringSignal(clientID, "NumberandOri", strNO, vrep.simx_opmode_oneshot);
+		int result2 = vrep.simxSetStringSignal(clientID, "ControlParam", strCP, vrep.simx_opmode_oneshot);
 		
 		//Send the server number
 		int result3 = vrep.simxSetIntegerSignal(clientID,"Server",simnumber,vrep.simx_opmode_oneshot);
@@ -177,7 +194,7 @@ public class Simulation {
 		float[] fitnessout = new float[3];
 
 		// Start Simulation
-		int ret = vrep.simxStartSimulation(clientID, vrep.simx_opmode_oneshot_wait);
+		int ret = vrep.simxStartSimulation(clientID, vrep.simx_opmode_blocking);
 		System.out.println("Start: " + ret + " sim: " + simnumber);
 		if (ret == 1){
 			System.out.println("Failed to start simulation");
@@ -194,7 +211,7 @@ public class Simulation {
 
 		while (out.getValue() == 0) {
 
-			Thread.sleep(10);
+			Thread.sleep(100);
 
 			if (vrep.simxGetIntegerSignal(clientID, "finished", out, vrep.simx_opmode_buffer) == vrep.simx_return_ok) {
 				// We received a fitness signal and everything is ok
@@ -208,7 +225,7 @@ public class Simulation {
 				elapsedTime = stopTime - startTime;
 
 				if (elapsedTime > 90000) {
-					System.out.println("Too much time has passed attempting to restart simulator");
+					System.out.println("Too much time has passed attempting to restart simulator in "+simnumber);
 					fitnessout[0] = -1; // This signals that the output is not
 					// ok and the simulator should be
 					// restarted
@@ -225,14 +242,14 @@ public class Simulation {
 		}
 
 		// Stop simulation
-		int ret3 = vrep.simxStopSimulation(clientID, vrep.simx_opmode_oneshot_wait);
+		int ret3 = vrep.simxStopSimulation(clientID, vrep.simx_opmode_blocking);
 		if (DEBUG){
 			System.out.println("Stopped simulation in "+simnumber+" result: "+ret3);
 		}
 
 		// Read simulation results
-		ret = vrep.simxGetStringSignal(clientID, "Position", datastring, vrep.simx_opmode_oneshot_wait);
-		if (ret != vrep.simx_return_ok) {
+		ret = vrep.simxGetStringSignal(clientID, "Position", datastring, vrep.simx_opmode_blocking);
+		if (ret == vrep.simx_return_novalue_flag) {
 			System.out.println("Position Signal not received");
 		}
 
@@ -254,10 +271,27 @@ public class Simulation {
 		fitness = Calcfitness(out2, alpha);
 		fitnessout[1] = fitness[0];
 		fitnessout[2] = fitness[1];
+		
+		// Before closing the connection to V-REP, make sure that the last
+		// command sent out had time to arrive. You can guarantee this with (for
+		// example):
+		IntW pingTime = new IntW(0);
+		vrep.simxGetPingTime(clientID, pingTime);
+		//if(DEBUG){
+			System.out.println("Ping to "+simnumber+": "+pingTime.getValue());
+		//}
 
 		// Return the fitness of the run
 		return fitnessout;
 
+	}
+
+	public int getSimnumber() {
+		return simnumber;
+	}
+
+	public void setSimnumber(int simnumber) {
+		this.simnumber = simnumber;
 	}
 
 	/**
