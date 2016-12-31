@@ -15,7 +15,7 @@
         <ServerId>0</ServerId>
         <WaitTimeLoadSimulator>20</WaitTimeLoadSimulator>
         <Attempts>3</Attempts>
-	<MaxSimulationTime>6</MaxSimulationTime>
+	<MaxSimulationTime>30</MaxSimulationTime>
         <TimeStartSimulation>5</TimeStartSimulation>
         <NMaxModulos>16</NMaxModulos>
 	<UseMPI>false</UseMPI>

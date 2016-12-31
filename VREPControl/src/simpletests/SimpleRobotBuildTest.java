@@ -42,7 +42,11 @@ public class SimpleRobotBuildTest {
 
 		if (chromosome != null && !chromosome.equals("")) {
 			double[] chromosomeDouble = ChromoConversion.str2double(chromosome);
-			Evaluator evaluator = new Evaluator(chromosomeDouble, worldBase.get(0));
+			float[] parameters = new float[210];
+			for (int k = 0;k<parameters.length;k++){
+				parameters[k] = 0.01f*k; 
+			}
+			Evaluator evaluator = new Evaluator(chromosomeDouble, worldBase.get(0),parameters);
 			evaluator.setMaxSimulationTime(6);
 			double fitness = evaluator.evaluate();
 			System.out.println(fitness);

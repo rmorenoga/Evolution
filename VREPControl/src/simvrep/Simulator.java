@@ -125,7 +125,7 @@ public void connect2Vrep(){
 
         int port = SimulationConfiguration.getVrepStartingPort();
         if (SimulationConfiguration.isUseMPI()) {
-            port += MPI.COMM_WORLD.Rank();
+            port -= MPI.COMM_WORLD.Rank();
         }
 
         clientID = vrepApi.simxStart("127.0.0.1", port, true, true, 5000, 5);

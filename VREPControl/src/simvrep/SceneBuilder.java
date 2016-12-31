@@ -5,22 +5,22 @@ import coppelia.remoteApi;
 import mpi.MPI;
 
 public class SceneBuilder {
-	
+
 	private char[] maze;
 	private CharWA strSeq;
 	private int clientID;
 	private remoteApi vrep;
 	private float width;
 	private float bheight = 0.2f;
-	
-	public SceneBuilder(remoteApi vrep, int clientID,char[] maze, float width){
+
+	public SceneBuilder(remoteApi vrep, int clientID, char[] maze, float width) {
 		this.maze = maze;
 		this.vrep = vrep;
 		this.clientID = clientID;
 		this.width = width;
 	}
-	
-	public void loadScene(){
+
+	public void loadScene() {
 		String scenePath = "scenes/Maze/defaultm.ttt";
 
 		int rank = 0;
@@ -35,7 +35,7 @@ public class SceneBuilder {
 			if (ret == remoteApi.simx_return_ok) {
 				// System.out.format("Scene loaded correctly: \n");
 				strSeq = new CharWA(maze.length);
-				System.arraycopy(maze,0,strSeq.getArray(),0,maze.length);
+				System.arraycopy(maze, 0, strSeq.getArray(), 0, maze.length);
 
 				int result = vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_blocking);
 				result = vrep.simxSetFloatSignal(clientID, "MazeW", width, vrep.simx_opmode_blocking);
@@ -55,9 +55,18 @@ public class SceneBuilder {
 		if (SimulationConfiguration.isUseMPI())
 			MPI.COMM_WORLD.Abort(-1);// Try to close all the programs
 		System.exit(-1);
-		
-		
+
 	}
-	
+
+	public void closeScene(){
+		 int iter = 0;
+				 int ret = vrep.simxCloseScene(clientID,remoteApi.simx_opmode_blocking);
+				 while(ret != remoteApi.simx_return_ok && iter < 100){
+				 ret = vrep.simxCloseScene(clientID,remoteApi.simx_opmode_blocking);
+				 iter++;
+				 }
+				 if(ret != remoteApi.simx_return_ok)
+				 System.err.println("The scene has not been closed after 100 trials.");
+	}
 
 }

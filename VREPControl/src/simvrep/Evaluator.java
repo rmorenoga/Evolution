@@ -43,11 +43,11 @@ public class Evaluator {
 		this.maxSimulationTime = number;
 	}
 
-	public Evaluator(double[] cromo) {
-		this(cromo, "");
+	public Evaluator(double[] cromo, float[] parameters) {
+		this(cromo, "", parameters);
 	}
 
-	public Evaluator(double[] cromo, String scene) {
+	public Evaluator(double[] cromo, String scene, float[] parameters) {
 
 		this.scene = scene;
 		if (scene == null || scene.isEmpty() || scene.equals("")) {
@@ -103,10 +103,7 @@ public class Evaluator {
 		robot = new RobotBuilder(vrepApi, clientID, chromosomeDouble, this.scene);
 		robot.createRobot();
 		//System.out.println(robot.getTree().detailedToString(robot.getTree().getNodeList()));
-		float[] parameters = new float[210];
-		for (int k = 0;k<parameters.length;k++){
-			parameters[k] = 0.01f*k; 
-		}
+
 		controller = new RobotController(vrepApi,clientID,robot,parameters);
 
 		//controller = new CPGHController(vrepApi,clientID,robot,parameters);
@@ -201,18 +198,8 @@ public class Evaluator {
 		IntW pingTime = new IntW(0);
 		vrepApi.simxGetPingTime(clientID, pingTime);
 
-		// //Close the scene, We don't need to close the scene but just in case
-		// int iter = 0;
-		// int ret = vrepApi.simxCloseScene(clientID,
-		// remoteApi.simx_opmode_oneshot_wait);
-		// while(ret != remoteApi.simx_return_ok && iter < 100){
-		// ret = vrepApi.simxCloseScene(clientID,
-		// remoteApi.simx_opmode_oneshot_wait);
-		// iter++;
-		// }
-		// if(ret != remoteApi.simx_return_ok)
-		// System.err.println("The scene has not been closed after 100
-		// trials.");
+		// //Close the scene
+		scn.closeScene();
 
 		//System.out.println(fitness);
 

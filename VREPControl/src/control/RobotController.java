@@ -58,6 +58,21 @@ public class RobotController {
 		float maxFreq = (float) SimulationConfiguration.getMaxAngularFreq();
 		float minFreq = (float) SimulationConfiguration.getMinAngularFreq();
 		
+		//Assuming min raw parameter is 0 and max is 1
+		
+		float[] grownparam = new float[parameters.length];
+		for (int i = 0; i<parameters.length; i = i + numberofParameters){
+			for (int j = 0;j<5; j++){
+				grownparam[i+j] = (parameters[i+j]*(maxAmplitude-minAmplitude))+minAmplitude;
+				grownparam[i+j+5] = (parameters[i+j+5]*(maxOffset-minOffset))+minOffset;
+				grownparam[i+j+30] = (parameters[i+j+30]*(maxFreq-minFreq))+minFreq;
+			}
+			for (int j = 0;j<20; j++){
+				grownparam[i+j+10] = (parameters[i+j+10]*(maxPhase-minPhase))+minPhase;
+			}
+			
+			parameters = grownparam;
+		}
 		
 	}
 	
