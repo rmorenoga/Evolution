@@ -22,6 +22,7 @@ public class MainJEAF {
 		long seed = -Long.MAX_VALUE;
 		startNumber = 0;
 		String xmlfile = "";
+		int arg1, arg0 = 0;
 
 		// Acquire parameters through command line arguments
 		if (args.length > 0) {
@@ -29,10 +30,17 @@ public class MainJEAF {
 				 //for(int j=0;j<args.length;j++){
 				 //System.out.println("Argument "+j+" = "+args[j]);
 				 //}
-				if (args.length >= 4) {//4
-					startNumber = Integer.parseInt(args[3]);//3
-					if (args.length >= 5) {//5
-						xmlfile = args[4];
+				if (SimulationConfiguration.isUseMPI()){
+					arg0 = 4;
+					arg1 = 5;
+				}else{
+					arg0 = 1;
+					arg1 = 2;
+				}
+				if (args.length >= arg0) {//4
+					startNumber = Integer.parseInt(args[arg0-1]);//3
+					if (args.length >= arg1) {//5
+						xmlfile = args[arg1-1];
 					} else {
 						System.err.println("Provide a xml file");
 						System.exit(1);
