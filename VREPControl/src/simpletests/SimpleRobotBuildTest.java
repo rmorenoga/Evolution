@@ -46,10 +46,15 @@ public class SimpleRobotBuildTest {
 			for (int k = 0;k<parameters.length;k++){
 				parameters[k] = 0.01f*k; 
 			}
-			Evaluator evaluator = new Evaluator(chromosomeDouble, worldBase.get(0),parameters);
-			evaluator.setMaxSimulationTime(6);
-			double fitness = evaluator.evaluate();
-			System.out.println(fitness);
+			
+			//Repeat 
+			for (int i = 0;i<3;i++){
+				Evaluator evaluator = new Evaluator(chromosomeDouble, worldBase.get(0),parameters);
+				evaluator.setMaxSimulationTime(10);
+				double fitness = evaluator.evaluate();
+				System.out.println(fitness);
+			}
+			
 
 		}
 

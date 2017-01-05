@@ -28,7 +28,7 @@ public class Evaluator {
 	private String vrepComand;
 	private RobotBuilder robot;
 	private RobotController controller;
-	private SceneBuilder scn;
+	//private SceneBuilder scn;
 
 	private remoteApi vrepApi;
 	private int clientID;
@@ -96,12 +96,22 @@ public class Evaluator {
 
 		vrepApi = vrepSimulator.getVrepApi();
 		clientID = vrepSimulator.getClientID();
-		char[] maze = new char[]{'s','r'};
-		scn = new SceneBuilder(vrepApi, clientID,maze,0.7f);
-		scn.loadScene();
 		
-		robot = new RobotBuilder(vrepApi, clientID, chromosomeDouble, this.scene);
-		robot.createRobot();
+		SceneBuilder scn  = SimulationConfiguration.getScene();
+		if (scn == null){
+			char[] maze = new char[]{'s','r'};
+			scn = new SceneBuilder(vrepApi, clientID,maze,0.7f);
+			SimulationConfiguration.setScene(scn);
+			scn.loadScene();
+			
+		}
+		robot = SimulationConfiguration.getRobot();
+		if (robot == null){
+			robot = new RobotBuilder(vrepApi, clientID, chromosomeDouble, this.scene);
+			robot.createRobot();
+			SimulationConfiguration.setRobot(robot);
+		}
+		
 		//System.out.println(robot.getTree().detailedToString(robot.getTree().getNodeList()));
 
 		controller = new RobotController(vrepApi,clientID,robot,parameters);
@@ -199,7 +209,7 @@ public class Evaluator {
 		vrepApi.simxGetPingTime(clientID, pingTime);
 
 		// //Close the scene
-		scn.closeScene();
+		//scn.closeScene();
 
 		//System.out.println(fitness);
 

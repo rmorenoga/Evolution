@@ -29,10 +29,10 @@ public class MainJEAF {
 				// for(int j=0;j<args.length;j++){
 				// System.out.println("Argument "+j+" = "+args[j]);
 				// }
-				if (args.length >= 4) {
-					startNumber = Integer.parseInt(args[3]);
-					if (args.length >= 5) {
-						xmlfile = args[4];
+				if (args.length >= 1) {//4
+					startNumber = Integer.parseInt(args[0]);//3
+					if (args.length >= 2) {//5
+						xmlfile = args[1];
 					} else {
 						System.err.println("Provide a xml file");
 						System.exit(1);

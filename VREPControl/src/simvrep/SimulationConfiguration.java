@@ -39,8 +39,26 @@ public class SimulationConfiguration {
     private static String vrepPath;
     private static int vrepStartingPort = 19997;
     private static Simulator vrep = null;
+    private static SceneBuilder scene = null;
+    private static RobotBuilder robot = null;
     
-  //Parametes of the modules 
+  public static RobotBuilder getRobot() {
+		return robot;
+	}
+
+	public static void setRobot(RobotBuilder robot) {
+		SimulationConfiguration.robot = robot;
+	}
+
+public static SceneBuilder getScene() {
+		return scene;
+	}
+
+	public static void setScene(SceneBuilder scene) {
+		SimulationConfiguration.scene = scene;
+	}
+
+	//Parametes of the modules 
     private static String moduleSet;
     
   //Parameters of the tree
@@ -119,12 +137,12 @@ public class SimulationConfiguration {
             SimulationConfiguration.functionToEvaluateWorlds = config.getString("Worlds.FunctionToEvaluateWorlds");
     
           //Control Parameters
-            //TODO Adjust to meet CPG parameters
+
             
             SimulationConfiguration.controller = config.getString("Control.Controller");
-            if (SimulationConfiguration.controller == "CPG"){
+            if (SimulationConfiguration.controller.contentEquals("CPG")){
             	SimulationConfiguration.controllerparamnumber = 6;
-            }else if (SimulationConfiguration.controller == "CPGH"){
+            }else if (SimulationConfiguration.controller.contentEquals("CPGH")){
             	SimulationConfiguration.controllerparamnumber = 35;
             }
             
