@@ -75,7 +75,7 @@ public void start(int jobId) {
             SimulationConfiguration.setVrepStartingPort(initPort * 144 + 20000);
             int port = SimulationConfiguration.getVrepStartingPort();
             if (SimulationConfiguration.isUseMPI()) {
-                port += MPI.COMM_WORLD.Rank();
+                port -= MPI.COMM_WORLD.Rank();
             }
             processArguments.add("-h");
             processArguments.add("-gREMOTEAPISERVERSERVICE_" + port + "_FALSE_TRUE");

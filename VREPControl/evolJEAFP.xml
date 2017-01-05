@@ -21,7 +21,7 @@
 		 <Size>5</Size>
 			<Individual>
 			<Class> es.udc.gii.common.eaf.algorithm.population.Individual</Class>
-			<Chromosome size="3">
+			<Chromosome size="210">
 			</Chromosome>
 			</Individual>
   </Population>
@@ -56,7 +56,7 @@
   <Objective>
     	<CheckBounds/>
     	<ObjectiveFunction>
-    	<Class>evolutionJEAFParallel.CFMS243</Class>
+    	<Class>evolJEAF.EmCorrJEAF</Class>
     	</ObjectiveFunction>
   </Objective>
   <StopTests>

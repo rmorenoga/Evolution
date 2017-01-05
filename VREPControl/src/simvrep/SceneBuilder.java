@@ -6,12 +6,14 @@ import mpi.MPI;
 
 public class SceneBuilder {
 
+
 	private char[] maze;
 	private CharWA strSeq;
 	private int clientID;
 	private remoteApi vrep;
 	private float width;
 	private float bheight = 0.2f;
+	private int rank = 0;
 
 	public SceneBuilder(remoteApi vrep, int clientID, char[] maze, float width) {
 		this.maze = maze;
@@ -23,9 +25,10 @@ public class SceneBuilder {
 	public void loadScene() {
 		String scenePath = "scenes/Maze/defaultm.ttt";
 
-		int rank = 0;
+
 		if (SimulationConfiguration.isUseMPI()) {
 			rank = MPI.COMM_WORLD.Rank();
+			//System.out.println("Got rank: "+rank+" when loading scene");
 		}
 
 		int nAttemps = SimulationConfiguration.getnAttempts();
@@ -56,6 +59,10 @@ public class SceneBuilder {
 			MPI.COMM_WORLD.Abort(-1);// Try to close all the programs
 		System.exit(-1);
 
+	}
+
+	public int getRank() {
+		return rank;
 	}
 
 	public void closeScene(){

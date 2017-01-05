@@ -51,6 +51,9 @@ public class SimulationConfiguration {
 	}
 
 public static SceneBuilder getScene() {
+	//if (scene != null){
+		//System.out.println("Getting scene with rank: "+scene.getRank());
+	//}
 		return scene;
 	}
 
