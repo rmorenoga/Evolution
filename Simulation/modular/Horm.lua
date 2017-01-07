@@ -119,3 +119,29 @@ function receptorsdelt(hormones,ampd,offd,phasediff,v,ampset,offsetset,phasediff
     return ampdnew,offdnew,phasediffnew,vnew
 end
 
+
+function integrate(hormones,count)
+    for k=1,#hormones do
+        if (hormones[k]~=-1) then
+            count[k] = count[k]+1
+        end
+    end
+    return count
+end
+
+function sortbycount(count)
+    local sorted = {}
+    local countcopy = {}
+    for i=1,#count do
+        countcopy[i] = count[i]
+    end
+    local countinv = {}
+    for k,v in pairs(count) do
+        countinv[v]=k
+    end
+    table.sort(countcopy,function(a,b) return a>b end)
+    for i=1,#countcopy do
+        sorted[i]=countinv[countcopy[i]]
+    end
+    return sorted
+end
