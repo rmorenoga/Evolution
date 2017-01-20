@@ -48,12 +48,12 @@ public class SimpleRobotBuildTest {
 			}
 			
 			//Repeat 
-			for (int i = 0;i<3;i++){
+			//for (int i = 0;i<3;i++){
 				Evaluator evaluator = new Evaluator(chromosomeDouble, worldBase.get(0),parameters);
 				evaluator.setMaxSimulationTime(10);
 				double fitness = evaluator.evaluate();
 				System.out.println(fitness);
-			}
+			//}
 			
 
 		}
