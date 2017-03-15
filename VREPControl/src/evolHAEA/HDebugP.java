@@ -121,7 +121,7 @@ public class HDebugP extends OptimizationFunction<double[]> {
 			// if (sim.Connect()) {
 			sim.prepareSignals(robot);
 			sim.SendSignals();
-			sim.SendMaze(subenvperm[6], 0.8f);
+			sim.SendMaze(subenvperm[6], 0.7f);
 
 			try {
 				rfitness = sim.RunSimulation(alpha);
@@ -133,20 +133,32 @@ public class HDebugP extends OptimizationFunction<double[]> {
 			// sim.Disconnect();
 
 			if (rfitness[0] == -1) {
-				// sim.RestartSim(j, "MRun.ttt");
-				// continue;
-				long startTime = System.currentTimeMillis();
-				long stopTime = System.currentTimeMillis();
-				long elapsedTime = 0;
-
-				elapsedTime = stopTime - startTime;
-
-				while (elapsedTime < 60000) {
-					stopTime = System.currentTimeMillis();
-					elapsedTime = stopTime - startTime;
-				}
-
-				System.exit(0);
+				 sim.Disconnect();	
+				 sim.RestartSim(j, "MRun.ttt");
+				 boolean connected = false;
+				 for (int k =0;k<maxTries;k++){
+					 connected = sim.Connect();
+					 if(connected){
+						 break;
+					 }
+				 }	
+				 if (!connected){
+					 System.err.println("Fatal error: could not connect to simulator: "+sim.simnumber);
+					 System.exit(-1);
+				 }
+				 continue;
+//				long startTime = System.currentTimeMillis();
+//				long stopTime = System.currentTimeMillis();
+//				long elapsedTime = 0;
+//
+//				elapsedTime = stopTime - startTime;
+//
+//				while (elapsedTime < 60000) {
+//					stopTime = System.currentTimeMillis();
+//					elapsedTime = stopTime - startTime;
+//				}
+//
+//				System.exit(0);
 
 			}
 

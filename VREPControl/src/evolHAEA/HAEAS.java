@@ -100,18 +100,18 @@ public class HAEAS {
 		sim.Disconnect();
 
 		// kill all the v-rep processes
-//		try {
-//			ProcessBuilder qq = new ProcessBuilder("killall", "vrep" + 0);
-//			File log = new File("Simout/log");
-//			qq.redirectErrorStream(true);
-//			qq.redirectOutput(Redirect.appendTo(log));
-//			Process p = qq.start();
-//			int exitVal = p.waitFor();
-//			System.out.println("Terminated vrep" + 0 + " with error code " + exitVal);
-//		} catch (Exception e) {
-//			System.out.println(e.toString());
-//			e.printStackTrace();
-//		}
+		try {
+			ProcessBuilder qq = new ProcessBuilder("killall", "vrep" + 0);
+			File log = new File("Simout/log");
+			qq.redirectErrorStream(true);
+			qq.redirectOutput(Redirect.appendTo(log));
+			Process p = qq.start();
+			int exitVal = p.waitFor();
+			System.out.println("Terminated vrep" + 0 + " with error code " + exitVal);
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			e.printStackTrace();
+		}
 
 	}
 }

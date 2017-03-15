@@ -45,7 +45,7 @@ public class FFirstIntMutation extends Mutation{
             		k++;
             	}
                    delta[indices[i]] =  sigma*g.generate()*favorvector[k];
-                   System.out.println("Position= "+indices[i]+", k = "+k+", favorv = "+favorvector[k]);
+                   //System.out.println("Position= "+indices[i]+", k = "+k+", favorv = "+favorvector[k]);
             }
         }else{
         	if( delta == null ){

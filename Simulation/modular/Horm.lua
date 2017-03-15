@@ -121,6 +121,7 @@ end
 
 
 function integrate(hormones,count)
+	--may overflow
     for k=1,#hormones do
         if (hormones[k]~=-1) then
             count[k] = count[k]+1
@@ -135,13 +136,37 @@ function sortbycount(count)
     for i=1,#count do
         countcopy[i] = count[i]
     end
-    local countinv = {}
-    for k,v in pairs(count) do
-        countinv[v]=k
-    end
+
     table.sort(countcopy,function(a,b) return a>b end)
-    for i=1,#countcopy do
-        sorted[i]=countinv[countcopy[i]]
+    --print('countcopy')
+     --for k,v in pairs(countcopy) do print(k,v) end
+     
+     seq = {}
+     seq[1] = 1
+     k = 1
+     for i=2,#countcopy do
+       if (countcopy[i]~=countcopy[i-1]) then
+         k=k+1
+       end
+       seq[i] = k
+     end
+     --print('seq')
+     --for k,v in pairs(seq) do print(k,v) end
+
+    local countinv = {}
+    for k,v in pairs(countcopy) do
+
+        countinv[v]=k
+
     end
+  --print('countinv')
+    --for k,v in pairs(countinv) do print(k,v) end
+
+    for i=1,#count do
+      sorted[i] = seq[countinv[count[i]]]
+    end
+
+
     return sorted
+
 end
