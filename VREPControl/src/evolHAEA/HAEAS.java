@@ -3,6 +3,7 @@ package evolHAEA;
 import java.io.File;
 import java.lang.ProcessBuilder.Redirect;
 
+
 import simvrep.Simulation;
 import unalcol.descriptors.Descriptors;
 import unalcol.descriptors.WriteDescriptors;
@@ -16,8 +17,11 @@ import unalcol.optimization.real.HyperCube;
 import unalcol.optimization.real.mutation.AdaptMutationIntensity;
 import unalcol.optimization.real.mutation.GaussianMutation;
 import unalcol.optimization.real.mutation.IntensityMutation;
+import unalcol.optimization.real.mutation.Mutation;
 import unalcol.optimization.real.mutation.OneFifthRule;
+import unalcol.optimization.real.mutation.PickComponents;
 import unalcol.optimization.real.xover.LinearXOver;
+import unalcol.random.real.StandardGaussianGenerator;
 import unalcol.search.Goal;
 import unalcol.search.Solution;
 import unalcol.search.SolutionDescriptors;
@@ -53,10 +57,14 @@ public class HAEAS {
 		// Optimization function
 		OptimizationFunction<double[]> function = new HDebugP(0.7f, sim);
 		Goal<double[]> goal = new OptimizationGoal<double[]>(function);
-
+		
+		
+		
 		// Variation Definition
-		AdaptMutationIntensity adapt = new OneFifthRule(20, 0.9);
-		IntensityMutation variation = new GaussianMutation(0.1, null, adapt);
+		//AdaptMutationIntensity adapt = new OneFifthRule(20, 0.9);
+		//IntensityMutation variation = new GaussianMutation(0.1, null, adapt);
+		PickComponents favor = new FavorFirst(42,7,6,true);
+		Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,7,6);
 		ArityTwo<double[]> xover = new LinearXOver();
 
 		int POPSIZE = 2;
@@ -92,18 +100,18 @@ public class HAEAS {
 		sim.Disconnect();
 
 		// kill all the v-rep processes
-		try {
-			ProcessBuilder qq = new ProcessBuilder("killall", "vrep" + 0);
-			File log = new File("Simout/log");
-			qq.redirectErrorStream(true);
-			qq.redirectOutput(Redirect.appendTo(log));
-			Process p = qq.start();
-			int exitVal = p.waitFor();
-			System.out.println("Terminated vrep" + 0 + " with error code " + exitVal);
-		} catch (Exception e) {
-			System.out.println(e.toString());
-			e.printStackTrace();
-		}
+//		try {
+//			ProcessBuilder qq = new ProcessBuilder("killall", "vrep" + 0);
+//			File log = new File("Simout/log");
+//			qq.redirectErrorStream(true);
+//			qq.redirectOutput(Redirect.appendTo(log));
+//			Process p = qq.start();
+//			int exitVal = p.waitFor();
+//			System.out.println("Terminated vrep" + 0 + " with error code " + exitVal);
+//		} catch (Exception e) {
+//			System.out.println(e.toString());
+//			e.printStackTrace();
+//		}
 
 	}
 }
