@@ -87,8 +87,8 @@ public class HAEAS {
 		// Add tracer based on descriptors set
 		FileTracer tracer = new FileTracer("Evolresult.txt", ',');
 		ConsoleTracer tracer1 = new ConsoleTracer();
-		Tracer.addTracer(search, tracer1);
-		Tracer.addTracer(search, tracer);
+		Tracer.addTracer(goal, tracer1);
+		Tracer.addTracer(goal, tracer);
 
 		Solution<double[]> solution = search.apply(space, goal);
 
