@@ -7,14 +7,17 @@ import java.lang.ProcessBuilder.Redirect;
 import simvrep.Simulation;
 import unalcol.descriptors.Descriptors;
 import unalcol.descriptors.WriteDescriptors;
-import unalcol.evolution.haea.HAEA;
+import unalcol.evolution.EAFactory;
 import unalcol.evolution.haea.HaeaOperators;
+import unalcol.evolution.haea.HaeaStep;
+import unalcol.evolution.haea.HaeaStepDescriptors;
 import unalcol.evolution.haea.SimpleHaeaOperators;
+import unalcol.evolution.haea.SimpleHaeaOperatorsDescriptor;
+import unalcol.evolution.haea.WriteHaeaStep;
 import unalcol.io.Write;
 import unalcol.optimization.OptimizationFunction;
 import unalcol.optimization.OptimizationGoal;
 import unalcol.optimization.real.HyperCube;
-import unalcol.optimization.real.mutation.AdaptMutationIntensity;
 import unalcol.optimization.real.mutation.GaussianMutation;
 import unalcol.optimization.real.mutation.IntensityMutation;
 import unalcol.optimization.real.mutation.Mutation;
@@ -23,12 +26,14 @@ import unalcol.optimization.real.mutation.PickComponents;
 import unalcol.optimization.real.xover.LinearXOver;
 import unalcol.random.real.StandardGaussianGenerator;
 import unalcol.search.Goal;
-import unalcol.search.Solution;
-import unalcol.search.SolutionDescriptors;
-import unalcol.search.population.variation.ArityTwo;
-import unalcol.search.population.variation.Operator;
+import unalcol.search.population.Population;
+import unalcol.search.population.PopulationDescriptors;
+import unalcol.search.population.PopulationSearch;
+import unalcol.search.selection.Selection;
 import unalcol.search.selection.Tournament;
+import unalcol.search.solution.Solution;
 import unalcol.search.space.Space;
+import unalcol.search.variation.Variation;
 import unalcol.tracer.ConsoleTracer;
 import unalcol.tracer.FileTracer;
 import unalcol.tracer.Tracer;
@@ -56,45 +61,61 @@ public class HAEAS {
 
 		// Optimization function
 		OptimizationFunction<double[]> function = new HDebugP(0.7f, sim);
-		Goal<double[]> goal = new OptimizationGoal<double[]>(function);
+		OptimizationGoal<double[]> goal = new OptimizationGoal<double[]>(function);
 		
-		
+	
 		
 		// Variation Definition
 		//AdaptMutationIntensity adapt = new OneFifthRule(20, 0.9);
 		//IntensityMutation variation = new GaussianMutation(0.1, null, adapt);
 		PickComponents favor = new FavorFirst(42,7,6,true);
 		Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,7,6);
-		ArityTwo<double[]> xover = new LinearXOver();
+		LinearXOver xover = new LinearXOver();
 
 		int POPSIZE = 2;
 		int MAXITERS = 2;
-		Operator<double[]>[] opers = (Operator<double[]>[]) new Operator[2];
+		Variation[] opers = new Variation[2];
 		opers[0] = variation;
 		opers[1] = xover;
 
-		HaeaOperators<double[]> operators = new SimpleHaeaOperators<double[]>(opers);
-		HAEA<double[]> search = new HAEA<double[]>(POPSIZE, operators, new Tournament<double[]>(4), MAXITERS);
-
+		SimpleHaeaOperators operators = new SimpleHaeaOperators(opers);
+		Selection selection = new Tournament(4);
+		
+		//HAEA
+		EAFactory factory = new EAFactory();
+		PopulationSearch search = factory.HAEA(POPSIZE, operators,selection,MAXITERS);
+		//HAEA<double[]> search = new HAEA<double[]>(POPSIZE, operators, new Tournament<double[]>(4), MAXITERS);
+		
 		// Track Individuals and Goal Evaluations
-		SolutionDescriptors<double[]> desc = new SolutionDescriptors<double[]>();
-		Descriptors.set(Space.class, desc);
-		DoubleArrayPlainWrite write = new DoubleArrayPlainWrite(',');
-		Write.set(double[].class, write);
-		WriteDescriptors w_desc = new WriteDescriptors();
-		Write.set(Space.class, w_desc);
+		WriteDescriptors write_desc = new WriteDescriptors();
+		Write.set(double[].class, new DoubleArrayPlainWrite(false));
+		Write.set(HaeaStep.class, new WriteHaeaStep());
+		//Descriptors.set(Population.class, new PopulationDescriptors());
+		Descriptors.set(Population.class, new BestPopulationDescriptor());
+		Descriptors.set(HaeaStep.class, new HaeaStepDescriptors());
+		Descriptors.set(HaeaOperators.class, new SimpleHaeaOperatorsDescriptor());
+		Write.set(Population.class, write_desc);
+		Write.set(HaeaStep.class, write_desc);
+		Write.set(HaeaOperators.class, write_desc);
+//		SolutionDescriptors<double[]> desc = new SolutionDescriptors<double[]>();
+//		Descriptors.set(Space.class, desc);
+//		DoubleArrayPlainWrite write = new DoubleArrayPlainWrite(',');
+//		Write.set(double[].class, write);
+//		WriteDescriptors w_desc = new WriteDescriptors();
+//		Write.set(Space.class, w_desc);
 
 		// Add tracer based on descriptors set
-		FileTracer tracer = new FileTracer("Evolresult.txt", ',');
+		//FileTracer tracer = new FileTracer("Evolresult.txt", ',');
 		ConsoleTracer tracer1 = new ConsoleTracer();
-		Tracer.addTracer(goal, tracer1);
-		Tracer.addTracer(goal, tracer);
+		Tracer.addTracer(search, tracer1);
+		//Tracer.addTracer(search, tracer);
+		
+		System.out.println("WorstFitness BestFitness Median Average Variance SD BestIndividual FirstOperatorRate SecondOperatorRate");
+		Solution<double[]> solution = search.solve(space, goal);
 
-		Solution<double[]> solution = search.apply(space, goal);
+		System.out.println(solution.object());
 
-		System.out.println(solution.quality());
-
-		tracer.close();
+		//tracer.close();
 		tracer1.close();
 
 		sim.Disconnect();

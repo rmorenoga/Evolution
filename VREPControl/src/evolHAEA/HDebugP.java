@@ -179,4 +179,10 @@ public class HDebugP extends OptimizationFunction<double[]> {
 		return (double) rfitness[1];
 	}
 
+	@Override
+	public boolean isNonStationary() {
+		return true;
+	}
+	
+
 }

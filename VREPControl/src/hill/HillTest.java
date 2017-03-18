@@ -8,21 +8,23 @@ import unalcol.descriptors.WriteDescriptors;
 import unalcol.io.Write;
 import unalcol.optimization.OptimizationFunction;
 import unalcol.optimization.OptimizationGoal;
-import unalcol.optimization.hillclimbing.HillClimbing;
+import unalcol.optimization.method.OptimizationFactory;
 import unalcol.optimization.real.HyperCube;
-import unalcol.optimization.real.mutation.AdaptMutationIntensity;
 import unalcol.optimization.real.mutation.GaussianMutation;
 import unalcol.optimization.real.mutation.IntensityMutation;
 import unalcol.optimization.real.mutation.OneFifthRule;
 import unalcol.search.Goal;
-import unalcol.search.Solution;
-import unalcol.search.SolutionDescriptors;
+import unalcol.search.local.LocalSearch;
+import unalcol.search.solution.Solution;
+import unalcol.search.solution.SolutionDescriptors;
 import unalcol.search.space.Space;
 import unalcol.tracer.ConsoleTracer;
 import unalcol.tracer.FileTracer;
 import unalcol.tracer.Tracer;
 import unalcol.types.real.array.DoubleArray;
 import unalcol.types.real.array.DoubleArrayPlainWrite;
+
+
 
 public class HillTest {
 	
@@ -70,18 +72,19 @@ public class HillTest {
 	//Optimization function
 	//OptimizationFunction<double[]> function = new HillMazeRand3(simNumber, alpha);
 	OptimizationFunction<double[]> function = new HillMAS(simNumber, alpha);
-	Goal<double[]> goal = new OptimizationGoal<double[]>(function);
+	OptimizationGoal<double[]> goal = new OptimizationGoal<double[]>(function);
 	
 	
 	//Variation Definition
-	AdaptMutationIntensity adapt = new OneFifthRule(20,0.9);
-	IntensityMutation variation = new GaussianMutation(0.1,null,adapt);
+	OneFifthRule adapt = new OneFifthRule(20,0.9);
+	IntensityMutation variation = new GaussianMutation(0.1,null);
 	
 	//Search Method
 	int MAXITERS = 1000;
 	boolean neutral = true;
-	HillClimbing<double[]> search = new HillClimbing<double[]>(variation, neutral, MAXITERS);
-	
+	OptimizationFactory factory = new OptimizationFactory();
+	LocalSearch search = factory.hill_climbing(variation, neutral, MAXITERS);
+			
 	//Track Individuals and Goal Evaluations
 	SolutionDescriptors<double[]> desc = new SolutionDescriptors<double[]>();
 	Descriptors.set(Space.class,desc);
@@ -106,9 +109,9 @@ public class HillTest {
 	
 	
 	
-	Solution<double[]> solution = search.apply(space, goal);
+	Solution<double[]> solution = search.solve(space, goal);
 	
-	System.out.println(solution.quality());
+	System.out.println(solution.object());
 	
 	tracer.close();
 	tracer1.close();

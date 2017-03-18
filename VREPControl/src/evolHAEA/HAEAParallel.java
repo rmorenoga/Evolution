@@ -5,30 +5,41 @@ import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 import java.util.List;
 
+import emst.evolution.haea.HaeaFactory;
+import emst.evolution.search.multithread.MultithreadOptimizationGoal;
+import emst.evolution.search.selection.ModifiedElitism;
 import simvrep.Simulation;
 
 import hill.HillMAS;
 import unalcol.descriptors.Descriptors;
 import unalcol.descriptors.WriteDescriptors;
-import unalcol.evolution.haea.HAEA;
+
 import unalcol.evolution.haea.HaeaOperators;
+import unalcol.evolution.haea.HaeaStep;
+import unalcol.evolution.haea.HaeaStepDescriptors;
 import unalcol.evolution.haea.SimpleHaeaOperators;
+import unalcol.evolution.haea.SimpleHaeaOperatorsDescriptor;
+import unalcol.evolution.haea.WriteHaeaStep;
 import unalcol.io.Write;
 import unalcol.optimization.OptimizationFunction;
 import unalcol.optimization.OptimizationGoal;
 import unalcol.optimization.real.HyperCube;
-import unalcol.optimization.real.mutation.AdaptMutationIntensity;
+
 import unalcol.optimization.real.mutation.GaussianMutation;
 import unalcol.optimization.real.mutation.IntensityMutation;
 import unalcol.optimization.real.mutation.OneFifthRule;
 import unalcol.optimization.real.xover.LinearXOver;
 import unalcol.search.Goal;
-import unalcol.search.Solution;
-import unalcol.search.SolutionDescriptors;
-import unalcol.search.population.variation.ArityTwo;
-import unalcol.search.population.variation.Operator;
+
+
+import unalcol.search.population.Population;
+import unalcol.search.population.PopulationSearch;
+
+import unalcol.search.selection.Selection;
 import unalcol.search.selection.Tournament;
+import unalcol.search.solution.Solution;
 import unalcol.search.space.Space;
+import unalcol.search.variation.Variation;
 import unalcol.tracer.ConsoleTracer;
 import unalcol.tracer.FileTracer;
 import unalcol.tracer.Tracer;
@@ -65,7 +76,7 @@ public class HAEAParallel {
 		}
 
 		simulators = new ArrayList<Simulation>();
-
+		System.out.println(Nsim);
 		// Start Simulators
 		for (int j = 0; j < Nsim; j++) {
 
@@ -110,30 +121,37 @@ public class HAEAParallel {
 
 		// Optimization function
 		OptimizationFunction<double[]> function = new HDebugP(Nsim,simulators);
-		Goal<double[]> goal = new OptimizationGoal<double[]>(function);
-		goal.setMaxThreads(Nsim);
+		MultithreadOptimizationGoal<double[]> goal = new MultithreadOptimizationGoal<double[]>(function);
+		goal.setMax_threads(Nsim);
 
 		// Variation Definition
-		AdaptMutationIntensity adapt = new OneFifthRule(20, 0.9);
-		IntensityMutation variation = new GaussianMutation(0.1, null, adapt);
-		ArityTwo<double[]> xover = new LinearXOver();
+		//AdaptMutationIntensity adapt = new OneFifthRule(20, 0.9);
+		IntensityMutation variation = new GaussianMutation(0.1, null);
+		LinearXOver xover = new LinearXOver();
 
-		int POPSIZE = 10;
-		int MAXITERS = 10;
-		Operator<double[]>[] opers = (Operator<double[]>[]) new Operator[2];
+		int POPSIZE = 2;
+		int MAXITERS = 2;
+		Variation[] opers = new Variation[2];
 		opers[0] = variation;
 		opers[1] = xover;
 
-		HaeaOperators<double[]> operators = new SimpleHaeaOperators<double[]>(opers);
-		HAEA<double[]> search = new HAEA<double[]>(POPSIZE, operators, new Tournament<double[]>(4), MAXITERS);
+		SimpleHaeaOperators operators = new SimpleHaeaOperators(opers);
+		Selection selection = new Tournament(4,new ModifiedElitism(1.0,0.0));
+		
+		HaeaFactory factory = new HaeaFactory();
+		PopulationSearch search = factory.HAEA(POPSIZE, operators,selection,MAXITERS);
 
 		// Track Individuals and Goal Evaluations
-		SolutionDescriptors<double[]> desc = new SolutionDescriptors<double[]>();
-		Descriptors.set(Space.class, desc);
-		DoubleArrayPlainWrite write = new DoubleArrayPlainWrite(',');
-		Write.set(double[].class, write);
-		WriteDescriptors w_desc = new WriteDescriptors();
-		Write.set(Space.class, w_desc);
+				WriteDescriptors write_desc = new WriteDescriptors();
+				Write.set(double[].class, new DoubleArrayPlainWrite(false));
+				Write.set(HaeaStep.class, new WriteHaeaStep());
+				//Descriptors.set(Population.class, new PopulationDescriptors());
+				Descriptors.set(Population.class, new BestPopulationDescriptor());
+				Descriptors.set(HaeaStep.class, new HaeaStepDescriptors());
+				Descriptors.set(HaeaOperators.class, new SimpleHaeaOperatorsDescriptor());
+				Write.set(Population.class, write_desc);
+				Write.set(HaeaStep.class, write_desc);
+				Write.set(HaeaOperators.class, write_desc);
 
 		// Add tracer based on descriptors set
 		FileTracer tracer = new FileTracer("Evolresult.txt", ',');
@@ -141,9 +159,9 @@ public class HAEAParallel {
 		Tracer.addTracer(search, tracer1);
 		Tracer.addTracer(search, tracer);
 
-		Solution<double[]> solution = search.apply(space, goal);
+		Solution<double[]> solution = search.solve(space, goal);
 
-		System.out.println(solution.quality());
+		System.out.println(solution.object());
 
 		tracer.close();
 		tracer1.close();
