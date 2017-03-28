@@ -80,8 +80,8 @@ public class HDebugP extends OptimizationFunction<double[]> {
 		}
 
 		// Morphology Parameters
-		int Numberofmodules = 8;
-		int[] orientation = new int[] { 1, 0, 1, 0, 1, 0, 1, 0 };
+		int Numberofmodules = 4;
+		int[] orientation = new int[] { 1, 0, 1, 0};
 
 		// Simulation Parameters
 		// int MaxTime = 30;

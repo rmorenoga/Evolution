@@ -1,16 +1,27 @@
 package evolHAEA;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.simple.JSONObject;
+
 import emst.evolution.haea.HaeaFactory;
+import emst.evolution.haea.ModifiedHaeaStep;
+import emst.evolution.json.haea.JSONHaeaStepObject;
+import emst.evolution.json.haea.JSONHaeaStepObjectManager;
+import emst.evolution.json.setting.EvolutionryAlgorithmSetting;
 import emst.evolution.search.multithread.MultithreadOptimizationGoal;
 import emst.evolution.search.selection.ModifiedElitism;
 import simvrep.Simulation;
 
 import hill.HillMAS;
+import unalcol.algorithm.iterative.ForLoopCondition;
 import unalcol.descriptors.Descriptors;
 import unalcol.descriptors.WriteDescriptors;
 
@@ -30,8 +41,7 @@ import unalcol.optimization.real.mutation.IntensityMutation;
 import unalcol.optimization.real.mutation.OneFifthRule;
 import unalcol.optimization.real.xover.LinearXOver;
 import unalcol.search.Goal;
-
-
+import unalcol.search.population.IterativePopulationSearch;
 import unalcol.search.population.Population;
 import unalcol.search.population.PopulationSearch;
 
@@ -138,8 +148,9 @@ public class HAEAParallel {
 		SimpleHaeaOperators operators = new SimpleHaeaOperators(opers);
 		Selection selection = new Tournament(4,new ModifiedElitism(1.0,0.0));
 		
-		HaeaFactory factory = new HaeaFactory();
-		PopulationSearch search = factory.HAEA(POPSIZE, operators,selection,MAXITERS);
+		ModifiedHaeaStep step = new ModifiedHaeaStep(POPSIZE, selection, operators);
+		step.setJsonManager(new JSONHaeaStepObjectManager());
+		PopulationSearch search = new IterativePopulationSearch(step, new ForLoopCondition<Population>(MAXITERS));
 
 		// Track Individuals and Goal Evaluations
 				WriteDescriptors write_desc = new WriteDescriptors();
@@ -158,6 +169,9 @@ public class HAEAParallel {
 		ConsoleTracer tracer1 = new ConsoleTracer();
 		Tracer.addTracer(search, tracer1);
 		Tracer.addTracer(search, tracer);
+		
+		
+		EvolutionryAlgorithmSetting easetting = new EvolutionryAlgorithmSetting("testjson", POPSIZE, MAXITERS);
 
 		Solution<double[]> solution = search.solve(space, goal);
 
@@ -165,6 +179,20 @@ public class HAEAParallel {
 
 		tracer.close();
 		tracer1.close();
+		
+		JSONObject result = new JSONObject();
+		result.put("settings", easetting.encode());
+		result.put("evolution", step.getJsonManager().encode());
+		JSONObject jsonsolution = new JSONObject();
+		jsonsolution.put("best_individual", solution.object());
+		result.put("solution", jsonsolution);
+		String path="./";
+		try( Writer writer = new BufferedWriter(new OutputStreamWriter(
+		              new FileOutputStream(path + easetting.title + ".json"), "utf-8"))) {
+			writer.write(result.toString());
+		}catch(Exception e){
+			
+		}
 		
 		for (Simulation sim : simulators){
 			sim.Disconnect();

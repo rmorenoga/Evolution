@@ -30,5 +30,6 @@
 	<classpathentry kind="lib" path="lib/demo.jar"/>
 	<classpathentry kind="lib" path="lib/gui.jar"/>
 	<classpathentry kind="lib" path="lib/EMST.jar"/>
+	<classpathentry kind="lib" path="lib/json-simple.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
