@@ -1,3 +1,4 @@
+package Show;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.Arrays;
@@ -8,7 +9,7 @@ import coppelia.IntW;
 import coppelia.IntWA;
 import coppelia.FloatWA;
 
-public class ShowHaeaFitness {
+public class ShowHaeaFitBin {
 	public static void main(String[] args) {
 		long startTime = System.currentTimeMillis();
 		 int maxTries = 3;

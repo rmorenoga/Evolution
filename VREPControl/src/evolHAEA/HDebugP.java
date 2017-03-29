@@ -1,5 +1,6 @@
 package evolHAEA;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import represent.Robot;
@@ -13,11 +14,10 @@ public class HDebugP extends OptimizationFunction<double[]> {
 
 	protected List<Simulation> simulators;
 
-	protected Simulation sim;
-
+	
 	protected BitArray servers;
 	public float alpha = 0.7f;
-	protected boolean paralleleval = false;
+	//protected boolean paralleleval = false;
 
 	public HDebugP(int numberOfServers, List<Simulation> simulators) {
 		servers = new BitArray(numberOfServers, false);
@@ -25,7 +25,7 @@ public class HDebugP extends OptimizationFunction<double[]> {
 		if (DEBUG) {
 			System.out.println("Building HDebugP");
 		}
-		paralleleval = true;
+		//paralleleval = true;
 	}
 
 	public HDebugP(int numberOfServers, float alpha) {
@@ -34,13 +34,15 @@ public class HDebugP extends OptimizationFunction<double[]> {
 		}
 		servers = new BitArray(numberOfServers, false);
 		this.alpha = alpha;
-		paralleleval = true;
+		//paralleleval = true;
 	}
 
 	public HDebugP(float alpha, Simulation sim) {
 		this.alpha = alpha;
-		this.sim = sim;
-		paralleleval = false;
+		simulators = new ArrayList<Simulation>();
+		simulators.add(sim);
+		servers = new BitArray(1, false);
+		//paralleleval = false;
 	}
 
 	public synchronized int getSimNumber() {
@@ -70,14 +72,14 @@ public class HDebugP extends OptimizationFunction<double[]> {
 		if (DEBUG) {
 			System.out.println("Using apply()");
 		}
+		Simulation sim;
 
-		int simulator = 0;
 
-		if (paralleleval) {
-			simulator = -1;
+		//if (paralleleval) {
+		int	simulator = -1;
 			simulator = waitforsim();
 			System.out.println("Got sim: " + simulator);
-		}
+		//}
 
 		// Morphology Parameters
 		int Numberofmodules = 4;
@@ -108,9 +110,9 @@ public class HDebugP extends OptimizationFunction<double[]> {
 
 		Robot robot = new Robot(Numberofmodules, orientation, CP);
 
-		if (paralleleval) {
+		//if (paralleleval) {
 			sim = simulators.get(simulator);
-		}
+		//}
 
 		// Number of retries in case of simulator crash
 		int maxTries = 5;
@@ -133,14 +135,16 @@ public class HDebugP extends OptimizationFunction<double[]> {
 			// sim.Disconnect();
 
 			if (rfitness[0] == -1) {
-				 sim.Disconnect();	
+				 sim.Disconnect();
+				 try {
+					 Thread.sleep(3000);
+				 }catch(Exception e){
+					 
+				 }
 				 sim.RestartSim(j, "MRun.ttt");
 				 boolean connected = false;
-				 for (int k =0;k<maxTries;k++){
+			 for (int k =0;k<maxTries && !connected;k++){
 					 connected = sim.Connect();
-					 if(connected){
-						 break;
-					 }
 				 }	
 				 if (!connected){
 					 System.err.println("Fatal error: could not connect to simulator: "+sim.simnumber);
@@ -172,9 +176,9 @@ public class HDebugP extends OptimizationFunction<double[]> {
 			break;
 		}
 
-		if (paralleleval) {
+		//if (paralleleval) {
 			servers.set(simulator, false);
-		}
+		//}
 
 		return (double) rfitness[1];
 	}

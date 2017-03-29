@@ -305,7 +305,7 @@ public class Simulation {
 			System.out.println("Using RestartSim() in "+simnumber);
 		}
 
-		int simnumber = this.simnumber;
+		//int simnumber = this.simnumber;
 
 		// Create the command to open the corresponding simulator
 		String vrepcommand = new String("./vrep" + simnumber + ".sh");

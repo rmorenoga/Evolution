@@ -90,11 +90,11 @@ public class HAEAParallel {
 		// Start Simulators
 		for (int j = 0; j < Nsim; j++) {
 
-			/*String vrepcommand = new String("./vrep" + j + ".sh");
+			String vrepcommand = new String("./vrep" + j + ".sh");
 
 			// Initialize a v-rep simulator based on the Nsim parameter
 			try {
-				ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h", "scenes/Maze/MDebug.ttt");
+				ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h", "scenes/Maze/MRun.ttt");
 				qq.directory(new File("/home/rodr/V-REP/Vrep" + j + "/"));
 				File log = new File("Simout/log");
 				qq.redirectErrorStream(true);
@@ -104,7 +104,7 @@ public class HAEAParallel {
 			} catch (Exception e) {
 				System.out.println(e.toString());
 				e.printStackTrace();
-			}*/
+			}
 
 			Simulation sim = new Simulation(j, 12);
 			// Retry if there is a simulator crash
@@ -139,8 +139,8 @@ public class HAEAParallel {
 		IntensityMutation variation = new GaussianMutation(0.1, null);
 		LinearXOver xover = new LinearXOver();
 
-		int POPSIZE = 2;
-		int MAXITERS = 2;
+		int POPSIZE = 50;
+		int MAXITERS = 200;
 		Variation[] opers = new Variation[2];
 		opers[0] = variation;
 		opers[1] = xover;
