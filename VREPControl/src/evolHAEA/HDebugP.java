@@ -28,14 +28,14 @@ public class HDebugP extends OptimizationFunction<double[]> {
 		//paralleleval = true;
 	}
 
-	public HDebugP(int numberOfServers, float alpha) {
+/*	public HDebugP(int numberOfServers, float alpha) {
 		if (DEBUG) {
 			System.out.println("Building HDebugP");
 		}
 		servers = new BitArray(numberOfServers, false);
 		this.alpha = alpha;
 		//paralleleval = true;
-	}
+	}*/
 
 	public HDebugP(float alpha, Simulation sim) {
 		this.alpha = alpha;
