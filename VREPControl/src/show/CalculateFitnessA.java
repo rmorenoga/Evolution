@@ -1,4 +1,4 @@
-package Show;
+package show;
 
 
 import coppelia.CharWA;
