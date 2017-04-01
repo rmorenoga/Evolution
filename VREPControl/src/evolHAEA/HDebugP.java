@@ -97,7 +97,7 @@ public class HDebugP extends OptimizationFunction<double[]> {
 		}
 		// CPG step parameters for each hormone
 		for (int i = 21; i < 42; i++) {
-			CP[i] = (float) x[i] * 0.01f;
+			CP[i] = (float) x[i] * 0.001f;
 		}
 
 		// Array that receives fitness from the simulator or signals a crash
