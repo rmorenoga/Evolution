@@ -13,15 +13,15 @@ public class FavorFirst implements PickComponents{
 	
 
 	
-	public FavorFirst(int numberofparameters, int numberofmessages, int pack, boolean snake){
-		this.numberofparameters = numberofparameters;
+	public FavorFirst( int numberofmessages, int pack, boolean snake){
+		this.numberofparameters = pack*numberofmessages;
 		this.numberofmessages = numberofmessages;
 		this.pack = pack;
 		this.snake = snake;
 	}
 	
 	public FavorFirst(){
-		this(35,5,7,false);
+		this(5,7,false);
 	}
 	
 	public int[] get(int DIMENSION) {

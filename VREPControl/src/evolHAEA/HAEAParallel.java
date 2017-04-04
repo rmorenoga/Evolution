@@ -129,8 +129,11 @@ public class HAEAParallel {
 
 		Space<double[]> space = new HyperCube(min, max);
 
+		int nmodules = 4;
+		int[] ori = new int[]{1,0,1,0};
+		
 		// Optimization function
-		OptimizationFunction<double[]> function = new HDebugP(Nsim,simulators);
+		OptimizationFunction<double[]> function = new HDebugP(Nsim,simulators,false,nmodules,ori,7,6);
 		MultithreadOptimizationGoal<double[]> goal = new MultithreadOptimizationGoal<double[]>(function);
 		goal.setMax_threads(Nsim);
 

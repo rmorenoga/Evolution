@@ -13,15 +13,25 @@ public class HDebugP extends OptimizationFunction<double[]> {
 	boolean DEBUG = false;
 
 	protected List<Simulation> simulators;
+	protected boolean Indv;
+	protected int nmodules;
+	protected int[] ori;
+	protected int numberofmessages;
+	protected int pack;
 
 	
 	protected BitArray servers;
 	public float alpha = 0.7f;
 	//protected boolean paralleleval = false;
 
-	public HDebugP(int numberOfServers, List<Simulation> simulators) {
+	public HDebugP(int numberOfServers, List<Simulation> simulators, boolean Indv, int nmodules, int[] ori, int numberofmessages, int pack ) {
 		servers = new BitArray(numberOfServers, false);
 		this.simulators = simulators;
+		this.Indv = Indv;
+		this.nmodules = nmodules;
+		this.ori = ori;
+		this.numberofmessages = numberofmessages;
+		this.pack = pack;
 		if (DEBUG) {
 			System.out.println("Building HDebugP");
 		}
@@ -37,8 +47,13 @@ public class HDebugP extends OptimizationFunction<double[]> {
 		//paralleleval = true;
 	}*/
 
-	public HDebugP(float alpha, Simulation sim) {
+	public HDebugP(float alpha, Simulation sim, boolean Indv, int nmodules, int[] ori, int numberofmessages, int pack ) {
 		this.alpha = alpha;
+		this.Indv = Indv;
+		this.nmodules = nmodules;
+		this.ori = ori;
+		this.numberofmessages = numberofmessages;
+		this.pack = pack;
 		simulators = new ArrayList<Simulation>();
 		simulators.add(sim);
 		servers = new BitArray(1, false);
@@ -67,6 +82,7 @@ public class HDebugP extends OptimizationFunction<double[]> {
 		return sim;
 
 	}
+	
 
 	public Double apply(double[] x) {
 		if (DEBUG) {
@@ -82,23 +98,29 @@ public class HDebugP extends OptimizationFunction<double[]> {
 		//}
 
 		// Morphology Parameters
-		int Numberofmodules = 4;
-		int[] orientation = new int[] { 1, 0, 1, 0};
-
-		// Simulation Parameters
-		// int MaxTime = 30;
+		int Numberofmodules = nmodules;
+		int[] orientation = ori;
 
 		// Control Parameters
-		float[] CP = new float[42];
+		float[] CP;
+		if (Indv){
+			CP = new float[numberofmessages*pack*nmodules];
+			for (int i = 0; i< x.length; i++){
+				CP[i] = (float) x[i];
+			}
+		}else{
+			CP = new float[numberofmessages*pack];
 
-		// CPG set parameters for each hormone
-		for (int i = 0; i < 21; i++) {
-			CP[i] = (float) x[i];
+			// CPG set parameters for each hormone
+			for (int i = 0; i < 21; i++) {
+				CP[i] = (float) x[i];
+			}
+			// CPG step parameters for each hormone
+			for (int i = 21; i < 42; i++) {
+				CP[i] = (float) x[i] * 0.001f;
+			}
 		}
-		// CPG step parameters for each hormone
-		for (int i = 21; i < 42; i++) {
-			CP[i] = (float) x[i] * 0.001f;
-		}
+		
 
 		// Array that receives fitness from the simulator or signals a crash
 		float[] rfitness = new float[3];
