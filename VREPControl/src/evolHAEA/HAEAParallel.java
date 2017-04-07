@@ -30,6 +30,7 @@ import unalcol.evolution.haea.HaeaStep;
 import unalcol.evolution.haea.HaeaStepDescriptors;
 import unalcol.evolution.haea.SimpleHaeaOperators;
 import unalcol.evolution.haea.SimpleHaeaOperatorsDescriptor;
+import emst.evolution.search.population.PopulationDescriptors;
 import unalcol.evolution.haea.WriteHaeaStep;
 import unalcol.io.Write;
 import unalcol.optimization.OptimizationFunction;
@@ -106,7 +107,7 @@ public class HAEAParallel {
 				e.printStackTrace();
 			}
 
-			Simulation sim = new Simulation(j, 12);
+			Simulation sim = new Simulation(j, 30);
 			// Retry if there is a simulator crash
 			for (int i = 0; i < 5; i++) {
 				if (sim.Connect()) {
@@ -142,8 +143,8 @@ public class HAEAParallel {
 		IntensityMutation variation = new GaussianMutation(0.1, null);
 		LinearXOver xover = new LinearXOver();
 
-		int POPSIZE = 50;
-		int MAXITERS = 200;
+		int POPSIZE = 2;
+		int MAXITERS = 2;
 		Variation[] opers = new Variation[2];
 		opers[0] = variation;
 		opers[1] = xover;
@@ -160,7 +161,7 @@ public class HAEAParallel {
 				Write.set(double[].class, new DoubleArrayPlainWrite(false));
 				Write.set(HaeaStep.class, new WriteHaeaStep());
 				//Descriptors.set(Population.class, new PopulationDescriptors());
-				Descriptors.set(Population.class, new BestPopulationDescriptor());
+				Descriptors.set(Population.class, new PopulationDescriptors());
 				Descriptors.set(HaeaStep.class, new HaeaStepDescriptors());
 				Descriptors.set(HaeaOperators.class, new SimpleHaeaOperatorsDescriptor());
 				Write.set(Population.class, write_desc);
@@ -168,10 +169,10 @@ public class HAEAParallel {
 				Write.set(HaeaOperators.class, write_desc);
 
 		// Add tracer based on descriptors set
-		FileTracer tracer = new FileTracer("Evolresult.txt", ',');
+		//FileTracer tracer = new FileTracer("Evolresult.txt", ',');
 		ConsoleTracer tracer1 = new ConsoleTracer();
 		Tracer.addTracer(search, tracer1);
-		Tracer.addTracer(search, tracer);
+		//Tracer.addTracer(search, tracer);
 		
 		
 		EvolutionryAlgorithmSetting easetting = new EvolutionryAlgorithmSetting("testjson", POPSIZE, MAXITERS);
@@ -180,7 +181,7 @@ public class HAEAParallel {
 
 		System.out.println(solution.object());
 
-		tracer.close();
+		//tracer.close();
 		tracer1.close();
 		
 		JSONObject result = new JSONObject();
