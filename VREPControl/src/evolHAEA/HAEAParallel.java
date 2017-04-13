@@ -39,8 +39,11 @@ import unalcol.optimization.real.HyperCube;
 
 import unalcol.optimization.real.mutation.GaussianMutation;
 import unalcol.optimization.real.mutation.IntensityMutation;
+import unalcol.optimization.real.mutation.Mutation;
 import unalcol.optimization.real.mutation.OneFifthRule;
+import unalcol.optimization.real.mutation.PickComponents;
 import unalcol.optimization.real.xover.LinearXOver;
+import unalcol.random.real.StandardGaussianGenerator;
 import unalcol.search.Goal;
 import unalcol.search.population.IterativePopulationSearch;
 import unalcol.search.population.Population;
@@ -140,7 +143,9 @@ public class HAEAParallel {
 
 		// Variation Definition
 		//AdaptMutationIntensity adapt = new OneFifthRule(20, 0.9);
-		IntensityMutation variation = new GaussianMutation(0.1, null);
+		//IntensityMutation variation = new GaussianMutation(0.1, null);
+		PickComponents favor = new FavorFirst(7,6,true);
+		Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,7,6);
 		LinearXOver xover = new LinearXOver();
 
 		int POPSIZE = 2;
