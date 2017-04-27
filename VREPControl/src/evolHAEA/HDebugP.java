@@ -141,11 +141,13 @@ public class HDebugP extends OptimizationFunction<double[]> {
 
 		// Retry if there is a simulator crash
 		for (int j = 0; j < maxTries; j++) {
+			
+			float width = randomWithRange(0.6f, 0.8f);
 
 			// if (sim.Connect()) {
 			sim.prepareSignals(robot);
 			sim.SendSignals();
-			sim.SendMaze(subenvperm[6], 0.7f);
+			sim.SendMaze(subenvperm[6], width);
 
 			try {
 				rfitness = sim.RunSimulation(alpha);
@@ -210,5 +212,17 @@ public class HDebugP extends OptimizationFunction<double[]> {
 		return true;
 	}
 	
+	/**
+	 * Taken from http://stackoverflow.com/questions/7961788/math-random-explained and modified to use floats
+	 * @param min the minimum included value
+	 * @param max the maximum included value
+	 * @return a random float value within the range specified by min and max
+	 */
+	
+	float randomWithRange(float min, float max)
+	{
+	   double range = Math.abs(max - min);     
+	   return (float)(Math.random() * range) + (min <= max ? min : max);
+	}
 
 }
