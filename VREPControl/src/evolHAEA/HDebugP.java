@@ -112,15 +112,16 @@ public class HDebugP extends OptimizationFunction<double[]> {
 				CP[i] = (float) x[i];
 			}
 		}else{
-			CP = new float[numberofmessages*pack];
-
+			CP = new float[numberofmessages*pack+extraparam];
+			
+			
 			// CPG set parameters for each hormone
-			for (int i = 0; i < 21; i++) {
+			for (int i = 0; i < 21+extraparam; i++) {
 				CP[i] = (float) x[i];
 			}
 			// CPG step parameters for each hormone
 			for (int i = 21; i < 42; i++) {
-				CP[i] = (float) x[i] * 0.001f;
+				CP[i] = (float) x[i+extraparam] * 0.001f;
 			}
 		}
 		
