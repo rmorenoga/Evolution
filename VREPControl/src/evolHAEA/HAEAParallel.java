@@ -127,7 +127,7 @@ public class HAEAParallel {
 		}
 
 		// Search Space Definition
-		int DIM = 42;
+		int DIM = 169;
 		double[] min = DoubleArray.create(DIM, -1);
 		double[] max = DoubleArray.create(DIM, 1);
 
@@ -137,15 +137,15 @@ public class HAEAParallel {
 		int[] ori = new int[]{1,0,1,0};
 		
 		// Optimization function
-		OptimizationFunction<double[]> function = new HDebugP(Nsim,simulators,false,nmodules,ori,7,6);
+		OptimizationFunction<double[]> function = new HDebugP(Nsim,simulators,true,nmodules,ori,7,6,1);
 		MultithreadOptimizationGoal<double[]> goal = new MultithreadOptimizationGoal<double[]>(function);
 		goal.setMax_threads(Nsim);
 
 		// Variation Definition
 		//AdaptMutationIntensity adapt = new OneFifthRule(20, 0.9);
 		//IntensityMutation variation = new GaussianMutation(0.1, null);
-		PickComponents favor = new FavorFirst(7,6,true);
-		Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,7,6);
+		PickComponents favor = new FavorFirst(7,6,true,1);
+		Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,7,6,1);
 		LinearXOver xover = new LinearXOver();
 
 		int POPSIZE = 2;

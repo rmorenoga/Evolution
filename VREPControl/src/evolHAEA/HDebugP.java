@@ -18,13 +18,14 @@ public class HDebugP extends OptimizationFunction<double[]> {
 	protected int[] ori;
 	protected int numberofmessages;
 	protected int pack;
+	protected int extraparam;
 
 	
 	protected BitArray servers;
 	public float alpha = 0.7f;
 	//protected boolean paralleleval = false;
 
-	public HDebugP(int numberOfServers, List<Simulation> simulators, boolean Indv, int nmodules, int[] ori, int numberofmessages, int pack ) {
+	public HDebugP(int numberOfServers, List<Simulation> simulators, boolean Indv, int nmodules, int[] ori, int numberofmessages, int pack , int extraparam) {
 		servers = new BitArray(numberOfServers, false);
 		this.simulators = simulators;
 		this.Indv = Indv;
@@ -32,6 +33,7 @@ public class HDebugP extends OptimizationFunction<double[]> {
 		this.ori = ori;
 		this.numberofmessages = numberofmessages;
 		this.pack = pack;
+		this.extraparam = extraparam;
 		if (DEBUG) {
 			System.out.println("Building HDebugP");
 		}
@@ -47,7 +49,7 @@ public class HDebugP extends OptimizationFunction<double[]> {
 		//paralleleval = true;
 	}*/
 
-	public HDebugP(float alpha, Simulation sim, boolean Indv, int nmodules, int[] ori, int numberofmessages, int pack ) {
+	public HDebugP(float alpha, Simulation sim, boolean Indv, int nmodules, int[] ori, int numberofmessages, int pack , int extraparam) {
 		this.alpha = alpha;
 		this.Indv = Indv;
 		this.nmodules = nmodules;
@@ -57,6 +59,7 @@ public class HDebugP extends OptimizationFunction<double[]> {
 		simulators = new ArrayList<Simulation>();
 		simulators.add(sim);
 		servers = new BitArray(1, false);
+		this.extraparam = extraparam;
 		//paralleleval = false;
 	}
 
@@ -104,7 +107,7 @@ public class HDebugP extends OptimizationFunction<double[]> {
 		// Control Parameters
 		float[] CP;
 		if (Indv){
-			CP = new float[numberofmessages*pack*nmodules];
+			CP = new float[numberofmessages*pack*nmodules+extraparam];
 			for (int i = 0; i< x.length; i++){
 				CP[i] = (float) x[i];
 			}

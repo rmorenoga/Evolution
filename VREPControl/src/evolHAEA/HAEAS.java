@@ -63,7 +63,7 @@ public class HAEAS {
 		int[] ori = new int[]{1,0,1,0};
 
 		// Optimization function
-		OptimizationFunction<double[]> function = new HDebugP(0.7f, sim, false,nmodules,ori,7,6);
+		OptimizationFunction<double[]> function = new HDebugP(0.7f, sim, false,nmodules,ori,7,6,0);
 		OptimizationGoal<double[]> goal = new OptimizationGoal<double[]>(function);
 		
 	
@@ -71,8 +71,8 @@ public class HAEAS {
 		// Variation Definition
 		//AdaptMutationIntensity adapt = new OneFifthRule(20, 0.9);
 		//IntensityMutation variation = new GaussianMutation(0.1, null, adapt);
-		PickComponents favor = new FavorFirst(7,6,true);
-		Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,7,6);
+		PickComponents favor = new FavorFirst(7,6,true,0);
+		Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,7,6,0);
 		LinearXOver xover = new LinearXOver();
 
 		int POPSIZE = 2;

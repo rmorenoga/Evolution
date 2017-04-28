@@ -14,18 +14,24 @@ public class FFirstIntMutation extends Mutation{
 	private int pack = 7;
 	private int numberofmodules;
 	private double[] favorvector;
+	private int extraparam;
 	
 	public FFirstIntMutation( double sigma, DoubleGenerator g, 
-            PickComponents components, int numberofmessages, int pack){
+            PickComponents components, int numberofmessages, int pack, int extraparam){
 		super(components);
 		this.sigma = sigma;
 		this.g = g;
 		this.numberofmessages = numberofmessages;
 		this.pack = pack;
+		this.extraparam = extraparam;
 	}
 
 	protected double[] delta(int DIMENSION){
-		numberofmodules = DIMENSION/(numberofmessages*pack);
+		int d = DIMENSION-extraparam;
+		if(d%numberofmessages*pack!=0){
+			System.err.println("Warning: Genotype dimension does not match the number of modules");
+		}
+		numberofmodules = d/(numberofmessages*pack);
 		favorvector = new double[numberofmessages];
 		for (int i=0;i<favorvector.length;i++){
 			favorvector[i] = Math.exp(-i*0.5);
@@ -39,9 +45,13 @@ public class FFirstIntMutation extends Mutation{
                 delta = new double[DIMENSION];
             }
             indices = components.get(DIMENSION);
+            for (int i=0;i<extraparam;i++){
+            	delta[indices[i]]=sigma*g.generate();
+            	//System.out.println("Extra: Position= "+indices[i]);
+            }
             int k = 0;
-            for( int i=0; i<indices.length; i++ ){
-            	if (i>=numberofmodules*pack*(k+1)){
+            for( int i=extraparam; i<indices.length; i++ ){
+            	if (i>=numberofmodules*pack*(k+1)+extraparam){
             		k++;
             	}
                    delta[indices[i]] =  sigma*g.generate()*favorvector[k];
