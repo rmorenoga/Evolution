@@ -29,6 +29,10 @@ public class Simulation {
 	 */
 	public int clientID;
 
+	public int getClientID() {
+		return clientID;
+	}
+
 	/**
 	 * Object that implements all v-rep's remote api
 	 */
@@ -292,6 +296,10 @@ public class Simulation {
 
 	public void setSimnumber(int simnumber) {
 		this.simnumber = simnumber;
+	}
+	
+	public remoteApi getVrepApi(){
+		return vrep;
 	}
 
 	/**
