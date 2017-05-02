@@ -81,7 +81,7 @@ public class EvaluatorMT {
 						 }catch(Exception e){
 							 
 						 }
-						 sim.RestartSim(j, "defaultmh.ttt");
+						 sim.RestartSim(j, scene);
 						 boolean connected = false;
 					 for (int k =0;k<maxTries && !connected;k++){
 							 connected = sim.Connect();
