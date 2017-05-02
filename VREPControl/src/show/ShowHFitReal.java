@@ -31,7 +31,7 @@ public class ShowHFitReal {
 		
 		if (morpho != null && !morpho.equals("")) {
 			double[] morphoDouble = ChromoConversion.str2double(morpho);
-			EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmh.ttt", parameters, sim,0.7f);
+			EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmh.ttt", parameters, sim,0.7f,0);
 			fitness = evaluator.evaluate();
 		}
 		

@@ -18,13 +18,29 @@ public class EvaluatorMT {
 		this.maxSimulationTime = number;
 	}
 	
-	public EvaluatorMT(double[] cromo, String scene, float[] parameters, Simulation sim, float alpha) {
+	public EvaluatorMT(double[] cromo, String scene, float[] parameters, Simulation sim, float alpha, int extraparam) {
 		this.scene = scene;
 		this.sim = sim;
 		this.alpha = alpha;
 		if (scene == null || scene.isEmpty() || scene.equals("")) {
 			this.scene = SimulationConfiguration.getWorldsBase().get(0);
 		}
+		
+		float[] extrap = new float[extraparam];
+		float[] param = new float[parameters.length-extraparam];
+		
+		for(int i=0;i<extraparam;i++){
+			extrap[i]=parameters[i];
+			//System.out.println(i+" "+extrap[i]);
+		}
+		//System.out.println("extraparam: " + extrap.length);
+		for(int i=extraparam;i<parameters.length;i++){
+			param[i-extraparam]= parameters[i]; 
+			//System.out.println(i-extraparam+" "+param[i-extraparam]);
+		}
+		//System.out.println("param: " + param.length);
+		
+		//System.exit(0);
 		
 		this.chromosomeDouble = cromo;
 		
@@ -41,7 +57,7 @@ public class EvaluatorMT {
 		robot = new RobotBuilder(sim.getVrepApi(), sim.getClientID(), chromosomeDouble, this.scene);
 		robot.createRobot();
 		
-		controller = new RobotController(sim.getVrepApi(), sim.getClientID(),robot,parameters);
+		controller = new RobotController(sim.getVrepApi(), sim.getClientID(),robot,param,extrap);
 		controller.sendParameters();
 		
 		char[][] subenvperm = new char[][] { { 's', 'l', 's', 'b', 's', 'r', 's' },
@@ -52,6 +68,8 @@ public class EvaluatorMT {
 			float width = randomWithRange(0.6f, 0.8f);
 			
 			sim.SendMaze(subenvperm[6], width);
+			
+			sim.SendMaxTime();
 		
 	}
 	

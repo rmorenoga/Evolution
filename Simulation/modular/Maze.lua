@@ -1,6 +1,6 @@
-function getTPoints(mseq,Width)
+function getTPoints(mseq,Width,initangle)
     local TPoints={}
-    local angle = 0
+    local angle = initangle
     local pos = {0,0}
     local nextpos = {0,0}
 
@@ -97,7 +97,7 @@ function getTPoints(mseq,Width)
     return TPoints
 end
 
-function getDistance(CurrentTPart,TPoints,seqlength,position)
+function getDistance(CurrentTPart,TPoints,seqlength,position,initangle)
     local Goal = false
     local Dxo = 0
     local Dyo = 0
@@ -154,12 +154,26 @@ function getDistance(CurrentTPart,TPoints,seqlength,position)
         end
 
     else
+	
+	if(initangle == 0) then
+        	if(position[2]>=0) then
+            		CurrentTPart = CurrentTPart + 1
+        	end
+	elseif(initangle == math.pi or initangle == -math.pi) then
+		if(position[2]<=0) then
+            		CurrentTPart = CurrentTPart + 1
+        	end
+	elseif(initangle == math.pi/2) then
+		if(position[1]<=0) then
+            		CurrentTPart = CurrentTPart + 1
+        	end
+	elseif(initangle == -math.pi/2) then
+		if(position[1]>=0) then
+            		CurrentTPart = CurrentTPart + 1
+        	end
+    	end
 
-        if(position[2]>=0) then
-            CurrentTPart = CurrentTPart + 1
-        end
-    
-    end
+    end	
         
     if(CurrentTPart>=1) then
         if(CurrentTPart<=#mseq) then

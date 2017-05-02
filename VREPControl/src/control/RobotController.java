@@ -15,6 +15,7 @@ public class RobotController {
 	 * Signals to set in the simulator
 	 */
 	public CharWA strCP;
+	public CharWA strEP;
 	public CharWA strMH;
 	public CharWA strConn;
 	
@@ -29,6 +30,15 @@ public class RobotController {
 	protected int numberofModules;
 	protected int numberofParameters;
 	float[] parameters;
+	float[] extraparam;
+	int extrap = -1;
+	
+	public RobotController(remoteApi vrep, int clientID, RobotBuilder robot, float[] parameters, float[] extraparam) {
+		this(vrep, clientID, robot, parameters);
+		this.extraparam = extraparam;
+		this.extrap = extraparam.length;
+		//System.out.println("extrap "+extrap);
+	}
 
 	public RobotController(remoteApi vrep, int clientID, RobotBuilder robot, float[] parameters) {
 		this.vrep = vrep;
@@ -36,7 +46,7 @@ public class RobotController {
 		this.robot = robot;
 		moduleHandlers = robot.getModuleHandlersint();
 		this.numberofModules = moduleHandlers.length;
-		this.numberofParameters = SimulationConfiguration.getControllerparamnumber();
+		this.numberofParameters = SimulationConfiguration.getControllerparamnumber();	
 		connectedhandles = robot.getTree().getHandlerListint();
 		if (parameters.length >= numberofParameters*numberofModules){
 			this.parameters = parameters;
@@ -100,14 +110,26 @@ public void sendParameters() {
 		strMH = new CharWA(r.length);
 		System.arraycopy(r,0,strMH.getArray(),0,r.length);
 		
+		if(extrap>0){
+			FloatWA ExtraParam = new FloatWA(extraparam.length);
+			System.arraycopy(extraparam,0,ExtraParam.getArray(),0,extraparam.length);
+			char[] ep = ExtraParam.getCharArrayFromArray();
+			strEP = new CharWA(ep.length);
+			System.arraycopy(ep,0,strEP.getArray(),0,ep.length);
+		}
+		
 		//Pause communication
 		vrep.simxPauseCommunication(clientID, true);
 		// Set Simulator signal values
 		int result1 = vrep.simxSetStringSignal(clientID, "ControlParam", strCP, vrep.simx_opmode_oneshot);
 		int result2 = vrep.simxSetStringSignal(clientID, "ConnHandles", strConn, vrep.simx_opmode_oneshot);
 		int result3 = vrep.simxSetStringSignal(clientID, "ModHandles", strMH, vrep.simx_opmode_oneshot);
+		if(extrap>0){
+			int result4 = vrep.simxSetStringSignal(clientID, "ExtraParam", strEP, vrep.simx_opmode_oneshot);
+		}
 		//Unpause communication
 		vrep.simxPauseCommunication(clientID,false);
+		
 		
 	}
 	
