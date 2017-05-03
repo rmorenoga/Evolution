@@ -12,7 +12,7 @@ public class ShowHFitReal {
 		double fitness =0;
 		String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 3.0, 2.0, 1.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0 , 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
 		
-		float[] parameters = new float[211];
+		float[] parameters = new float[212];
 		
 		for (int i = 0;i<parameters.length;i++){
 			parameters[i]=0.5f;
@@ -31,7 +31,7 @@ public class ShowHFitReal {
 		
 		if (morpho != null && !morpho.equals("")) {
 			double[] morphoDouble = ChromoConversion.str2double(morpho);
-			EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmh.ttt", parameters, sim,0.7f,1);
+			EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmh.ttt", parameters, sim,0.7f,2);
 			fitness = evaluator.evaluate();
 		}
 		
