@@ -1,4 +1,4 @@
-function ghormone(connh,sensorR,sensorD)
+function ghormone(connh,sensorR,sensorD,baseprob)
     local hormones = {}
     --local sensed = false
     local r = math.random()	
@@ -21,13 +21,63 @@ function ghormone(connh,sensorR,sensorD)
   --  if not sensed then
     --    hormones[1] = 1
    -- end
-    if(r>0.25) then
+    if(r>baseprob) then
         hormones[1] = 1
     end
 
     return hormones               
 end
 
+function receptorsf(hormones,ampd,offd,phasediff,v,ampset,offsetset,phasediffset,vset,delta,count)
+    local sorted = sortbycount(count)
+    local ampdnew = ampd
+    local offdnew = offd
+    local vnew = v
+    local phasediffnew ={}      --Phasediff
+    for j=1,#phasediff do
+        phasediffnew[j] = phasediff[j]
+    end
+
+    for k=1,#hormones do
+        --print(hormones[k])
+        if (hormones[k]~=-1) then
+            --print('Received '..k)
+            if(ampdnew<ampset[sorted[k]]) then   --Amplitude
+                ampdnew = ampdnew + (delta*hormones[k])
+                if (ampdnew > 1) then ampdnew = 1 end
+            elseif (ampdnew>ampset[sorted[k]]) then
+                ampdnew = ampdnew - (delta*hormones[k])
+                if (ampdnew < -1) then ampdnew = -1 end
+            end    
+            if(offdnew<offsetset[sorted[k]]) then  --Offset
+                offdnew = offdnew + (delta*hormones[k])
+                if (offdnew > 1) then offdnew = 1 end
+            elseif (offdnew>offsetset[sorted[k]]) then
+                offdnew = offdnew - (delta*hormones[k])
+                if (offdnew < -1) then offdnew = -1 end
+            end    
+            for i=1,#phasediffset[sorted[k]] do
+                if (phasediffnew[i]<phasediffset[sorted[k]][i]) then
+                    phasediffnew[i] = phasediffnew[i] + (delta*hormones[k])
+                    if (phasediffnew[i] > math.pi) then phasediffnew[i] = math.pi end
+                elseif (phasediffnew[i]>phasediffset[sorted[k]][i]) then
+                    phasediffnew[i] = phasediffnew[i] - (delta*hormones[k])
+                    if (phasediffnew[i] < -math.pi) then phasediffnew[i] = -math.pi end
+                end
+            end
+            if(vnew<vset[sorted[k]]) then   --Frequency
+                vnew = vnew + (delta*hormones[k])
+                if (vnew >1) then vnew = 1 end
+            elseif (vnew>vset[sorted[k]]) then
+                vnew = vnew - (delta*hormones[k])
+                if (vnew <0) then vnew = 0 end
+            end
+        end
+    end
+
+    return ampdnew,offdnew,phasediffnew,vnew
+
+end
 
 function receptors(hormones,ampd,offd,phasediff,v,ampset,offsetset,phasediffset,vset,delta)
     local ampdnew = ampd
