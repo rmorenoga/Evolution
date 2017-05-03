@@ -1,13 +1,15 @@
 function ghormone(connh,sensorR,sensorD)
     local hormones = {}
-    local sensed = false
+    --local sensed = false
+    local r = math.random()	
     hormones[1] = -1
+
     for i=1,#connh do
         if (connh[i] == -1) then
             if (sensorR[i] == 1) then
             --print('Generated '..i+1)              
                 hormones[i+1] = 1-(sensorD[i]/0.2)
-                sensed = true
+                --sensed = true
             else
                 hormones[i+1] = -1
             end
@@ -16,7 +18,10 @@ function ghormone(connh,sensorR,sensorD)
         end
     end
 
-    if not sensed then
+  --  if not sensed then
+    --    hormones[1] = 1
+   -- end
+    if(r>0.25) then
         hormones[1] = 1
     end
 
@@ -75,7 +80,7 @@ end
 
 function propagate(prob)
     test = math.random()
-    if(test>prob) then --Threshold 0.25
+    if(test>prob) then --Threshold 0.75
         return true
     else
         return false
