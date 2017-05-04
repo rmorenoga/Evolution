@@ -98,7 +98,8 @@ public class HAEAParallel {
 
 			// Initialize a v-rep simulator based on the Nsim parameter
 			try {
-				ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h", "scenes/Maze/MRun.ttt");
+				//ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h", "scenes/Maze/MRun.ttt"); //Snake
+				ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h",  "scenes/Maze/defaultmh.ttt"); 
 				qq.directory(new File("/home/rodr/V-REP/Vrep" + j + "/"));
 				File log = new File("Simout/log");
 				qq.redirectErrorStream(true);
@@ -127,25 +128,32 @@ public class HAEAParallel {
 		}
 
 		// Search Space Definition
-		int DIM = 169;
+		//int DIM = 169; //Snake
+		int DIM = 211;
 		double[] min = DoubleArray.create(DIM, -1);
 		double[] max = DoubleArray.create(DIM, 1);
 
 		Space<double[]> space = new HyperCube(min, max);
 
-		int nmodules = 4;
-		int[] ori = new int[]{1,0,1,0};
+//		int nmodules = 4;
+//		int[] ori = new int[]{1,0,1,0}; //Snake
+		
+		String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 3.0, 2.0, 1.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0 , 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
+
 		
 		// Optimization function
-		OptimizationFunction<double[]> function = new HDebugP(Nsim,simulators,true,nmodules,ori,7,6,1);
+		//OptimizationFunction<double[]> function = new HDebugP(Nsim,simulators,true,nmodules,ori,7,6,1);
+		OptimizationFunction<double[]> function = new HEmP(Nsim,simulators,morpho,1);
 		MultithreadOptimizationGoal<double[]> goal = new MultithreadOptimizationGoal<double[]>(function);
 		goal.setMax_threads(Nsim);
 
 		// Variation Definition
 		//AdaptMutationIntensity adapt = new OneFifthRule(20, 0.9);
 		//IntensityMutation variation = new GaussianMutation(0.1, null);
-		PickComponents favor = new FavorFirst(7,6,true,1);
-		Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,7,6,1);
+//		PickComponents favor = new FavorFirst(7,6,true,1);
+//		Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,7,6,1); //Snake
+		PickComponents favor = new FavorFirst(5,7,false,1);
+		Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,5,7,1);
 		LinearXOver xover = new LinearXOver();
 
 		int POPSIZE = 2;

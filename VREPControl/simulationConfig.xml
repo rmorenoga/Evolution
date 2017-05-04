@@ -41,7 +41,7 @@
 
     <Control>
 
-    <Controller>CPGHF</Controller>
+    <Controller>CPGH</Controller>
 	    
 	<Amplitude>
             <MaxValue>1</MaxValue>

@@ -4,8 +4,8 @@ import control.RobotController;
 
 public class EvaluatorMT {
 	
-	private int nAttempts = 10;
-	private double maxSimulationTime = 60;
+	private char[] maze;
+	private float mazewitdth;
 	private String scene = null;
 	private double chromosomeDouble[];
 	private int nModules;
@@ -14,14 +14,14 @@ public class EvaluatorMT {
 	private Simulation sim;
 	private float alpha;
 
-	public void setMaxSimulationTime(double number) {
-		this.maxSimulationTime = number;
-	}
+
 	
-	public EvaluatorMT(double[] cromo, String scene, float[] parameters, Simulation sim, float alpha, int extraparam) {
+	public EvaluatorMT(double[] cromo, String scene, float[] parameters, Simulation sim, float alpha, int extraparam, char[] maze, float mazewidth) {
 		this.scene = scene;
 		this.sim = sim;
 		this.alpha = alpha;
+		this.maze = maze;
+		this.mazewitdth = mazewidth;
 		if (scene == null || scene.isEmpty() || scene.equals("")) {
 			this.scene = SimulationConfiguration.getWorldsBase().get(0);
 		}
@@ -52,7 +52,6 @@ public class EvaluatorMT {
 			System.exit(-1);
 		}
 		
-		this.getSimulationConfigurationParameters();
 		
 		robot = new RobotBuilder(sim.getVrepApi(), sim.getClientID(), chromosomeDouble, this.scene);
 		robot.createRobot();
@@ -60,16 +59,10 @@ public class EvaluatorMT {
 		controller = new RobotController(sim.getVrepApi(), sim.getClientID(),robot,param,extrap);
 		controller.sendParameters();
 		
-		char[][] subenvperm = new char[][] { { 's', 'l', 's', 'b', 's', 'r', 's' },
-			{ 's', 'l', 's', 's', 'r', 's', 'b' }, { 'b', 's', 'l', 's', 's', 'r', 's' },
-			{ 'b', 's', 'r', 's', 's', 'l', 's' }, { 's', 'r', 's', 's', 'l', 's', 'b' },
-			{ 's', 'r', 's', 'b', 's', 'l', 's' }, { 's', 's' } };
 			
-			float width = randomWithRange(0.6f, 0.8f);
+		sim.SendMaze(maze, mazewidth);
 			
-			sim.SendMaze(subenvperm[6], width);
-			
-			sim.SendMaxTime();
+		sim.SendMaxTime();
 		
 	}
 	
@@ -124,25 +117,7 @@ public class EvaluatorMT {
 	
 	
 	
-	private void getSimulationConfigurationParameters() {
-
-		try {
-
-			this.maxSimulationTime = SimulationConfiguration.getMaxSimulationTime();
-			this.nAttempts = SimulationConfiguration.getnAttempts();
-
-		} catch (Exception e) {
-			System.err.println("Error loading the control parameters of the simulation.");
-			System.out.println(e);
-			System.exit(-1);
-		}
-
-	}
 	
-	float randomWithRange(float min, float max)
-	{
-	   double range = Math.abs(max - min);     
-	   return (float)(Math.random() * range) + (min <= max ? min : max);
-	}
+	
 	
 }
