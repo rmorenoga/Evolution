@@ -111,7 +111,7 @@ public class HAEAParallel {
 				e.printStackTrace();
 			}
 
-			Simulation sim = new Simulation(j, 30);
+			Simulation sim = new Simulation(j, 60);
 			// Retry if there is a simulator crash
 			for (int i = 0; i < 5; i++) {
 				if (sim.Connect()) {
@@ -154,7 +154,8 @@ public class HAEAParallel {
 //		Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,7,6,1); //Snake
 		PickComponents favor = new FavorFirst(5,7,false,1);
 		Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,5,7,1);
-		LinearXOver xover = new LinearXOver();
+		//LinearXOver xover = new LinearXOver();
+		DEXOver xover = new DEXOver(0.9,0.9,new StandardGaussianGenerator(),DIM);
 
 		int POPSIZE = 2;
 		int MAXITERS = 2;
