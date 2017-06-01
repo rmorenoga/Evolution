@@ -6,6 +6,7 @@ import java.util.List;
 import simvrep.EvaluatorMT;
 import simvrep.Simulation;
 import unalcol.optimization.OptimizationFunction;
+import unalcol.random.integer.IntUniform;
 import unalcol.types.collection.bitarray.BitArray;
 import util.ChromoConversion;
 
@@ -17,6 +18,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 	protected int extraparam;
 	protected BitArray servers;
 	public float alpha = 0.7f;
+	protected IntUniform r = new IntUniform(5);
 	
 	
 	public HEmP(int numberOfServers, List<Simulation> simulators,String morpho,int extraparam){
@@ -91,7 +93,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 		
 		if (morpho != null && !morpho.equals("")) {
 			double[] morphoDouble = ChromoConversion.str2double(morpho);
-			EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmh.ttt", fullparam, sim,alpha,extraparam,subenvperm[6],width);
+			EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmh.ttt", fullparam, sim,alpha,extraparam,subenvperm[r.generate()],width);
 			fitness = evaluator.evaluate();
 		}
 		

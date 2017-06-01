@@ -44,6 +44,7 @@ import unalcol.optimization.real.mutation.OneFifthRule;
 import unalcol.optimization.real.mutation.PickComponents;
 import unalcol.optimization.real.xover.LinearXOver;
 import unalcol.random.real.StandardGaussianGenerator;
+import unalcol.random.real.StandardUniformGenerator;
 import unalcol.search.Goal;
 import unalcol.search.population.IterativePopulationSearch;
 import unalcol.search.population.Population;
@@ -138,8 +139,8 @@ public class HAEAParallel {
 //		int nmodules = 4;
 //		int[] ori = new int[]{1,0,1,0}; //Snake
 		
-		String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 3.0, 2.0, 1.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0 , 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
-
+		//String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 3.0, 2.0, 1.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0 , 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
+		String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0 , 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
 		
 		// Optimization function
 		//OptimizationFunction<double[]> function = new HDebugP(Nsim,simulators,true,nmodules,ori,7,6,1);
@@ -149,15 +150,15 @@ public class HAEAParallel {
 
 		// Variation Definition
 		//AdaptMutationIntensity adapt = new OneFifthRule(20, 0.9);
-		//IntensityMutation variation = new GaussianMutation(0.1, null);
+		IntensityMutation variation = new GaussianMutation(0.1, null);
 //		PickComponents favor = new FavorFirst(7,6,true,1);
 //		Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,7,6,1); //Snake
-		PickComponents favor = new FavorFirst(5,7,false,1);
-		Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,5,7,1);
+		//PickComponents favor = new FavorFirst(5,7,false,1);
+		//Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,5,7,1);
 		//LinearXOver xover = new LinearXOver();
-		DEXOver xover = new DEXOver(0.9,0.9,new StandardGaussianGenerator(),DIM);
+		DEXOver xover = new DEXOver(0.9,0.9,new StandardUniformGenerator(),DIM);
 
-		int POPSIZE = 2;
+		int POPSIZE = 4;
 		int MAXITERS = 2;
 		Variation[] opers = new Variation[2];
 		opers[0] = variation;

@@ -5,7 +5,7 @@
 
 
 
-for i in {0..3}
+for i in {0..1}
 do
 
 cp -r ./Maze /home/rodr/V-REP/Vrep$i/scenes/
