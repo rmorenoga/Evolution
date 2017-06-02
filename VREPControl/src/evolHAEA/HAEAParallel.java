@@ -144,7 +144,7 @@ public class HAEAParallel {
 		
 		// Optimization function
 		//OptimizationFunction<double[]> function = new HDebugP(Nsim,simulators,true,nmodules,ori,7,6,1);
-		OptimizationFunction<double[]> function = new HEmP(Nsim,simulators,morpho,1);
+		OptimizationFunction<double[]> function = new HEmP(Nsim,simulators,morpho,1,false);
 		MultithreadOptimizationGoal<double[]> goal = new MultithreadOptimizationGoal<double[]>(function);
 		goal.setMax_threads(Nsim);
 
