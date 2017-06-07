@@ -8,7 +8,7 @@ public class FavorFirst implements PickComponents{
 	private int numberofparameters;
 	private int numberofmessages;
 	private int pack;
-	private int numberofmodules;
+	private int numberofmodules = -1;
 	private boolean snake;
 	private int extraparam;
 	
@@ -69,7 +69,31 @@ public class FavorFirst implements PickComponents{
 		return indices;
 	}
 	
-	
+	public double[] getFavorVector(int DIMENSION, int[] indices){
+		d = DIMENSION-extraparam;
+		numberofmodules = d/numberofparameters;
+		double[] probvector = new double[numberofmessages];
+		for (int i=0;i<probvector.length;i++){
+			probvector[i] = Math.exp(-i*0.5);
+		}
+		
+		double[] favorvector = new double[indices.length];
+		
+		for (int i=0;i<extraparam;i++){
+        	favorvector[indices[i]]=1;
+        	System.out.println("Extra: Position= "+favorvector[i]);
+        }
+		int k = 0;
+        for( int i=extraparam; i<indices.length; i++ ){
+        	if (i>=numberofmodules*pack*(k+1)+extraparam){
+        		k++;
+        	}
+               favorvector[indices[i]] = probvector[k];
+               //System.out.println("Position= "+indices[i]+", k = "+k+", probv = "+probvector[k]);
+        }
+        
+        return favorvector;
+	}
 
 	/*public int[] get(int DIMENSION) {
 		d = DIMENSION;

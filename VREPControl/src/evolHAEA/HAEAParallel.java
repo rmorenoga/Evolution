@@ -130,7 +130,7 @@ public class HAEAParallel {
 
 		// Search Space Definition
 		//int DIM = 169; //Snake
-		int DIM = 211;
+		int DIM = 281;
 		double[] min = DoubleArray.create(DIM, -1);
 		double[] max = DoubleArray.create(DIM, 1);
 
@@ -150,13 +150,16 @@ public class HAEAParallel {
 
 		// Variation Definition
 		//AdaptMutationIntensity adapt = new OneFifthRule(20, 0.9);
-		IntensityMutation variation = new GaussianMutation(0.1, null);
-//		PickComponents favor = new FavorFirst(7,6,true,1);
-//		Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,7,6,1); //Snake
-		//PickComponents favor = new FavorFirst(5,7,false,1);
-		//Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,5,7,1);
+		//IntensityMutation variation = new GaussianMutation(0.1, null);
+		//FavorFirst favor = new FavorFirst(7,6,true,1);
+		//Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,7,6,1); //Snake
+		FavorFirst favor = new FavorFirst(5,7,false,1);
+		int[] indices = favor.get(DIM);
+		Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,5,7,1);
 		//LinearXOver xover = new LinearXOver();
-		DEXOver xover = new DEXOver(0.9,0.9,new StandardUniformGenerator(),DIM);
+		DEXOver xover = new DEXOver(0.9,favor.getFavorVector(DIM,indices),new StandardUniformGenerator(),DIM);
+		//DEXOver xover = new DEXOver(0.9,0.9,new StandardUniformGenerator(),DIM);
+		
 
 		int POPSIZE = 4;
 		int MAXITERS = 2;

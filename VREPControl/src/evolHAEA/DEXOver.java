@@ -62,7 +62,7 @@ public class DEXOver extends RealArityFour {
 
 				for (int i = 0; i < c1.length; i++) {
 					random = r.generate();
-					System.out.println("CRF value: " + CRF[i]);
+					//System.out.println("CRF value: " + CRF[i]);
 					if (random < CRF[i] || index == i) {
 						y[i] = c2[i] + F * (c3[i] - c4[i]);
 					} else {
