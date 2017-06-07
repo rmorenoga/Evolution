@@ -2,7 +2,6 @@ package evolHAEA;
 
 
 import unalcol.optimization.real.mutation.Mutation;
-import unalcol.optimization.real.mutation.PickComponents;
 import unalcol.random.real.DoubleGenerator;
 
 public class FFirstIntMutation extends Mutation{
@@ -17,7 +16,7 @@ public class FFirstIntMutation extends Mutation{
 	private int extraparam;
 	
 	public FFirstIntMutation( double sigma, DoubleGenerator g, 
-            PickComponents components, int numberofmessages, int pack, int extraparam){
+			FavorFirst components, int numberofmessages, int pack, int extraparam){
 		super(components);
 		this.sigma = sigma;
 		this.g = g;
@@ -32,10 +31,8 @@ public class FFirstIntMutation extends Mutation{
 			System.err.println("Warning: Genotype dimension does not match the number of modules");
 		}
 		numberofmodules = d/(numberofmessages*pack);
-		favorvector = new double[numberofmessages];
-		for (int i=0;i<favorvector.length;i++){
-			favorvector[i] = Math.exp(-i*0.5);
-		}
+		favorvector = ((FavorFirst)components).getProbvector();
+		
         if( components != null ){
             if( delta != null && delta.length == DIMENSION ){
                 for( int i=0; i<indices.length; i++){

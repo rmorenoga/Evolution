@@ -11,6 +11,7 @@ public class FavorFirst implements PickComponents{
 	private int numberofmodules = -1;
 	private boolean snake;
 	private int extraparam;
+	private double[] probvector;
 	
 
 	
@@ -20,6 +21,10 @@ public class FavorFirst implements PickComponents{
 		this.pack = pack;
 		this.snake = snake;
 		this.extraparam = extraparam;
+		probvector = new double[numberofmessages];
+		for (int i=0;i<probvector.length;i++){
+			probvector[i] = Math.exp(-i*0.5);
+		}
 	}
 	
 	public FavorFirst(){
@@ -72,11 +77,6 @@ public class FavorFirst implements PickComponents{
 	public double[] getFavorVector(int DIMENSION, int[] indices){
 		d = DIMENSION-extraparam;
 		numberofmodules = d/numberofparameters;
-		double[] probvector = new double[numberofmessages];
-		for (int i=0;i<probvector.length;i++){
-			probvector[i] = Math.exp(-i*0.5);
-		}
-		
 		double[] favorvector = new double[indices.length];
 		
 		for (int i=0;i<extraparam;i++){
@@ -94,26 +94,11 @@ public class FavorFirst implements PickComponents{
         
         return favorvector;
 	}
-
-	/*public int[] get(int DIMENSION) {
-		d = DIMENSION;
-		numberofmodules = d/numberofparameters;
-		int[] indices = new int[d]; 
-		int packsize = numberofmodules*pack;//Size of each pack of parameters times the number of modules
-		
-		for (int i=0;i<indices.length;i++){
-			indices[i]=0;
-		}	
-		
-		for (int j = 0; j < numberofmessages;j++ ){			
-			for (int i = 0; i < numberofmodules; i++) {
-				indices[i+(numberofmodules*j)] = (pack * i) + (packsize*j);
-			}
-		}
-		
-		
-		return indices;
-	}*/
+	
+	public double[] getProbvector() {
+		return probvector;
+	}
+	
 
 	
 
