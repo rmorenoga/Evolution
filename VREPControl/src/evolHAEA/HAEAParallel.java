@@ -150,15 +150,23 @@ public class HAEAParallel {
 
 		// Variation Definition
 		//AdaptMutationIntensity adapt = new OneFifthRule(20, 0.9);
+		
+		//Normal mutation and DEXover
 		//IntensityMutation variation = new GaussianMutation(0.1, null);
+		//DEXOver xover = new DEXOver(0.9,0.9,new StandardUniformGenerator(),DIM);
+		
+		//Favor mutation and DEXover for old modules in snake configuration
+		//Favor first contains the array defining the decrease in mutation probability
 		//FavorFirst favor = new FavorFirst(7,6,true,1);
 		//Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,7,6,1); //Snake
+		
+		//Favor Mutation and DEXover for EMeRGE modules in any configuration
+		//Favor first contains the array defining the decrease in mutation probability
 		FavorFirst favor = new FavorFirst(5,7,false,1);
 		int[] indices = favor.get(DIM);
 		Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,5,7,1);
-		//LinearXOver xover = new LinearXOver();
 		DEXOver xover = new DEXOver(0.9,favor.getFavorVector(DIM,indices),new StandardUniformGenerator(),DIM);
-		//DEXOver xover = new DEXOver(0.9,0.9,new StandardUniformGenerator(),DIM);
+		
 		
 
 		int POPSIZE = 4;
