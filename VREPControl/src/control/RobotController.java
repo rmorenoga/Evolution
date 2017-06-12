@@ -37,6 +37,7 @@ public class RobotController {
 		this(vrep, clientID, robot, parameters);
 		this.extraparam = extraparam;
 		this.extrap = extraparam.length;
+		adjustextraParam();
 		//System.out.println("extrap "+extrap);
 	}
 
@@ -58,6 +59,14 @@ public class RobotController {
 			adjustParam();
 	}
 	
+	private void adjustextraParam(){
+		float[] grownextra = new float[extraparam.length];
+		for (int i = 0; i <extraparam.length;i++){
+			grownextra[i] = ((extraparam[i] + 1)/2); 
+		}
+		extraparam = grownextra;
+	}
+	
 	private void adjustParam(){
 		float maxPhase = (float) SimulationConfiguration.getMaxPhase();
 		float minPhase = (float) SimulationConfiguration.getMinPhase();
@@ -68,22 +77,21 @@ public class RobotController {
 		float maxFreq = (float) SimulationConfiguration.getMaxAngularFreq();
 		float minFreq = (float) SimulationConfiguration.getMinAngularFreq();
 		
-		//Assuming min raw parameter is 0 and max is 1
-		
+		//Assuming min raw parameter is -1 and max is 1
+		//NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax - OldMin)) + NewMin
+		//NewValue = (((OldValue - (-1)) * (NewMax - NewMin)) / (1 - (-1))) + NewMin
 		float[] grownparam = new float[parameters.length];
 		for (int i = 0; i<parameters.length; i = i + numberofParameters){
 			for (int j = 0;j<5; j++){
-				grownparam[i+j] = (parameters[i+j]*(maxAmplitude-minAmplitude))+minAmplitude;
-				grownparam[i+j+5] = (parameters[i+j+5]*(maxOffset-minOffset))+minOffset;
-				grownparam[i+j+30] = (parameters[i+j+30]*(maxFreq-minFreq))+minFreq;
+				grownparam[i+j] = (((parameters[i+j] + 1)*(maxAmplitude-minAmplitude))/2)+minAmplitude;
+				grownparam[i+j+5] = (((parameters[i+j+5] + 1)*(maxOffset-minOffset))/2)+minOffset;
+				grownparam[i+j+30] = (((parameters[i+j+30] + 1)*(maxFreq-minFreq))/2)+minFreq;
 			}
 			for (int j = 0;j<20; j++){
-				grownparam[i+j+10] = (parameters[i+j+10]*(maxPhase-minPhase))+minPhase;
+				grownparam[i+j+10] = (((parameters[i+j+10] + 1)*(maxPhase-minPhase))/2)+minPhase;
 			}
-			
-			parameters = grownparam;
 		}
-		
+		parameters = grownparam;
 	}
 	
 public void sendParameters() {
