@@ -1,6 +1,6 @@
 function ghormone(connh,sensorR,sensorD,baseprob)
     local hormones = {}
-    --local sensed = false
+    local sensed = false
     local r = math.random()	
     hormones[1] = -1
 
@@ -9,7 +9,7 @@ function ghormone(connh,sensorR,sensorD,baseprob)
             if (sensorR[i] == 1) then
             --print('Generated '..i+1)              
                 hormones[i+1] = 1-(sensorD[i]/0.2)
-                --sensed = true
+                sensed = true
             else
                 hormones[i+1] = -1
             end
@@ -25,7 +25,7 @@ function ghormone(connh,sensorR,sensorD,baseprob)
         hormones[1] = 1
     end
 
-    return hormones               
+    return hormones,sensed               
 end
 
 function receptorsf(hormones,ampd,offd,phasediff,v,ampset,offsetset,phasediffset,vset,delta,count)
