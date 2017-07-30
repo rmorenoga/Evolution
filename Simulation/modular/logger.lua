@@ -13,6 +13,6 @@ function logCPG(Amp,Off,Ph,freq,tstep,file)
 	--for k in pairs(logtable) do print(logtable[k]) end
 	local str = json.encode (logtable)
 	file:write(str)
-	file:write(",")
+	file:write("\n")
 	--print(str)
 end

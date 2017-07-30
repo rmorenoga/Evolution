@@ -40,12 +40,12 @@ public class ShowHFitReal {
 		
 		for (int i = 1; i < parameters.length; i = i + 35) {
 			for (int j = 0; j < 5; j++) {
-				parameters[i + j] = 0.5;
-				parameters[i + j + 5] = 0;
-				parameters[i + j + 30] = 0;	
+				parameters[i + j] = 0.5;  // Amplitude
+				parameters[i + j + 5] = 0; // Offset
+				parameters[i + j + 30] = 0;	// Frequency (v)
 			}
 			for (int j = 0; j < 20; j++) {
-				parameters[i + j + 10] = 0.3;
+				parameters[i + j + 10] = 0.3; //Phase difference
 			}
 			
 		}
