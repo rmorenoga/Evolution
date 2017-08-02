@@ -177,12 +177,16 @@ end
 
 function integrate(hormones,count)
 	--may overflow
-    for k=1,#hormones do
-        if (hormones[k]~=-1) then
-            count[k] = count[k]+1
-        end
-    end
-    return count
+	local countcopy = {}
+    	for i=1,#count do
+        	countcopy[i] = count[i]
+    	end
+    	for k=1,#hormones do
+        	if (hormones[k]~=-1) then
+            	countcopy[k] = countcopy[k]+1
+        	end
+    	end
+    return countcopy
 end
 
 function sortbycount(count)
