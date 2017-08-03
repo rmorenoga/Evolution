@@ -33,6 +33,19 @@ function logSetP(Amp,Off,Ph,freq,file)
 	--print(str)
 end
 
+function logCPG(teta,ampli,dampli,off,doff,file)
+	local logtable = {
+		teta = teta[1],
+		amplitude = ampli,
+		damplitude = dampli,
+		offset = off,
+		doffset = doff
+	}
+
+	local str = json.encode(logtable)
+	file:write(",\"CPG\":"..str)
+end
+
 
 function logHorm(horm,file)
 

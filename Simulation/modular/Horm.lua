@@ -80,6 +80,7 @@ function receptorsf(hormones,ampd,offd,phasediff,v,ampset,offsetset,phasediffset
 end
 
 function receptors(hormones,ampd,offd,phasediff,v,ampset,offsetset,phasediffset,vset,delta)
+	--print(delta)
     local ampdnew = ampd
     local offdnew = offd
     local vnew = v
