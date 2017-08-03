@@ -88,7 +88,7 @@ public class RobotController {
 				}
 			}
 			
-		} else if(controltype.contentEquals("CPGH")||controltype.contentEquals("CPGHF")||controltype.contentEquals("CPGHLog")) {
+		} else if(controltype.contentEquals("CPGH")||controltype.contentEquals("CPGHF")||controltype.contentEquals("CPGHLog")||controltype.contentEquals("CPGHFLog")) {
 			float maxPhase = (float) SimulationConfiguration.getMaxPhase();
 			float minPhase = (float) SimulationConfiguration.getMinPhase();
 			float maxAmplitude = (float) SimulationConfiguration.getMaxAmplitude();

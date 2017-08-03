@@ -175,3 +175,30 @@ function logProp(receivtable,file)
 
 end
 
+function logHCount(count,file)
+	local logtable ={}
+
+	for i=1,#count do
+		logtable['h'..(i-1)] = count[i]
+	end
+
+	local str = json.encode(logtable)
+	--print(str)
+
+	file:write(",\"HCount\":"..str)
+end
+
+
+function logHCountE(count,file)
+	local logtable ={}
+
+	for i=1,#count do
+		logtable['h'..(i-1)] = count[i]
+	end
+
+	local str = json.encode(logtable)
+	--print(str)
+
+	file:write(",\"HCountE\":"..str)
+end
+

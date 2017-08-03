@@ -41,7 +41,7 @@
 
     <Control>
 
-    <Controller>CPGH</Controller>
+    <Controller>CPGHLog</Controller>
 	    
 	<Amplitude>
             <MaxValue>1</MaxValue>
