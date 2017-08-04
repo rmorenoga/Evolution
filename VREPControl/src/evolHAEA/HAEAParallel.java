@@ -112,7 +112,7 @@ public class HAEAParallel {
 				e.printStackTrace();
 			}
 
-			Simulation sim = new Simulation(j, 60);
+			Simulation sim = new Simulation(j, 30);
 			// Retry if there is a simulator crash
 			for (int i = 0; i < 5; i++) {
 				if (sim.Connect()) {
@@ -130,7 +130,8 @@ public class HAEAParallel {
 
 		// Search Space Definition
 		//int DIM = 169; //Snake
-		int DIM = 281;
+		//int DIM = 281; //CPGH
+		int DIM = 48;
 		double[] min = DoubleArray.create(DIM, -1);
 		double[] max = DoubleArray.create(DIM, 1);
 
@@ -144,7 +145,7 @@ public class HAEAParallel {
 		
 		// Optimization function
 		//OptimizationFunction<double[]> function = new HDebugP(Nsim,simulators,true,nmodules,ori,7,6,1);
-		OptimizationFunction<double[]> function = new HEmP(Nsim,simulators,morpho,1,false);
+		OptimizationFunction<double[]> function = new HEmP(Nsim,simulators,morpho,0,false);
 		MultithreadOptimizationGoal<double[]> goal = new MultithreadOptimizationGoal<double[]>(function);
 		goal.setMax_threads(Nsim);
 
@@ -152,8 +153,8 @@ public class HAEAParallel {
 		//AdaptMutationIntensity adapt = new OneFifthRule(20, 0.9);
 		
 		//Normal mutation and DEXover
-		//IntensityMutation variation = new GaussianMutation(0.1, null);
-		//DEXOver xover = new DEXOver(0.9,0.9,new StandardUniformGenerator(),DIM);
+		IntensityMutation variation = new GaussianMutation(0.1, null);
+		DEXOver xover = new DEXOver(0.9,0.9,new StandardUniformGenerator(),DIM);
 		
 		//Favor mutation and DEXover for old modules in snake configuration
 		//Favor first contains the array defining the decrease in mutation probability
@@ -162,10 +163,10 @@ public class HAEAParallel {
 		
 		//Favor Mutation and DEXover for EMeRGE modules in any configuration
 		//Favor first contains the array defining the decrease in mutation probability
-		FavorFirst favor = new FavorFirst(5,7,false,1);
-		int[] indices = favor.get(DIM);
-		Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,5,7,1);
-		DEXOver xover = new DEXOver(0.9,favor.getFavorVector(DIM,indices),new StandardUniformGenerator(),DIM);
+		//FavorFirst favor = new FavorFirst(5,7,false,1);
+		//int[] indices = favor.get(DIM);
+		//Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,5,7,1);
+		//DEXOver xover = new DEXOver(0.9,favor.getFavorVector(DIM,indices),new StandardUniformGenerator(),DIM);
 		
 		
 
