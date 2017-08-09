@@ -106,12 +106,10 @@ function getDistance(CurrentTPart,TPoints,seqlength,position,initangle)
     local Dout = 0
 
     if(CurrentTPart >= 1) then
-        
-        -- Check if robot got out of the last part
-        if(CurrentTPart>seqlength) then
-            Goal = true
-        else
-            -- Check if over output point taking into account output angle
+               
+        if(CurrentTPart<=seqlength) then
+	
+	-- Check if over output point taking into account output angle
             if(TPoints[CurrentTPart][6] == 0) then
                 if(position[2]>TPoints[CurrentTPart][4]) then
                     CurrentTPart = CurrentTPart + 1
@@ -129,10 +127,11 @@ function getDistance(CurrentTPart,TPoints,seqlength,position,initangle)
                     CurrentTPart = CurrentTPart + 1
                 end
             end
-        end
-        
-        
-        if(CurrentTPart<=seqlength) then
+
+	end
+
+	if(CurrentTPart<=seqlength) then
+
             -- Check if over input point taking into account input angle
             if(TPoints[CurrentTPart][5] == 0) then
                 if(position[2]<TPoints[CurrentTPart][2]) then
@@ -151,6 +150,11 @@ function getDistance(CurrentTPart,TPoints,seqlength,position,initangle)
                     CurrentTPart = CurrentTPart - 1
                 end
             end
+        end
+
+	-- Check if robot got out of the last part
+        if(CurrentTPart>seqlength) then
+            Goal = true
         end
 
     else

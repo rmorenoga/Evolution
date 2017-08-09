@@ -114,7 +114,8 @@ public class HEmP extends OptimizationFunction<double[]> {
 			char[] subshort = new char[]{'s','l'};
 
 			float width = randomWithRange(0.6f, 0.8f);
-
+			//width = 0.73128784f;
+			//System.out.println("Width = "+width);
 			if (morpho != null && !morpho.equals("")) {
 				double[] morphoDouble = ChromoConversion.str2double(morpho);
 				//EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmh.ttt", fullparam, sim, alpha,

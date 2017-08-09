@@ -277,7 +277,9 @@ public class Simulation {
 		}
 
 		fitnessout[0] = 0;
-
+		//for (int i=0;i<out2.getLength();i++){
+			//System.out.println("Out2["+i+"] = "+out2.getArray()[i]);
+		//}
 		float[] fitness = new float[2];
 		fitness = Calcfitness(out2, alpha);
 		fitnessout[1] = fitness[0];
