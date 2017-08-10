@@ -218,3 +218,103 @@ function getDistance(CurrentTPart,TPoints,seqlength,position,initangle)
 
     return CurrentTPart,Goal,Dout
 end
+
+
+function getTPointsS(mseq,Width,initangle)
+    local TPoints={}
+    local angle = initangle
+    local pos = {0,0}
+    local nextpos = {0,0}
+
+    for i=1,#mseq,1 do
+        TPoints[i] = {}
+        if(mseq[i]=='s') then
+            
+            TPoints[i][1] = pos[1] --Input X
+            TPoints[i][2] = pos[2] --Input Y
+        
+            nextpos[1] = 0*math.cos(angle)-1*math.sin(angle)        
+            nextpos[2] = 0*math.sin(angle)+1*math.cos(angle)
+            pos[1] = pos[1]+nextpos[1]
+            pos[2] = pos[2]+nextpos[2]
+
+            TPoints[i][3] = pos[1] --Output X
+            TPoints[i][4] = pos[2] --Output Y
+            TPoints[i][5] = angle --Input Angle
+            TPoints[i][6] = angle --Output Angle
+          
+            TPoints[i][7] = 1 --Distance added by the current part
+
+        elseif(mseq[i]=='b') then
+
+        TPoints[i][1] = pos[1] --Input X
+        TPoints[i][2] = pos[2] --Input Y    
+        
+            nextpos[1] = 0*math.cos(angle)-2*math.sin(angle)        
+            nextpos[2] = 0*math.sin(angle)+2*math.cos(angle)
+            pos[1] = pos[1]+nextpos[1]
+            pos[2] = pos[2]+nextpos[2]
+
+        TPoints[i][3] = pos[1] --Output X
+        TPoints[i][4] = pos[2] --Output Y
+        TPoints[i][5] = angle --Input Angle
+        TPoints[i][6] = angle --Output Angle
+
+        TPoints[i][7] = 2 --Distance added by the current part
+
+
+        elseif(mseq[i]=='r') then
+
+        TPoints[i][1] = pos[1] --Input X
+        TPoints[i][2] = pos[2] --Input Y       
+          
+    
+            xo = (Width/2)+0.075+0.125
+            yo = (Width/2) + 0.2
+            nextpos[1] = xo*math.cos(angle)-yo*math.sin(angle)        
+            nextpos[2] = xo*math.sin(angle)+yo*math.cos(angle)
+            pos[1] = pos[1]+nextpos[1]
+            pos[2] = pos[2]+nextpos[2]
+        
+         TPoints[i][3] = pos[1] --Output X
+         TPoints[i][4] = pos[2] --Output Y
+         TPoints[i][5] = angle --Input Angle
+
+         angle = angle - math.pi/2
+         if(angle < -math.pi) then
+            angle = math.pi/2
+         end
+    
+         TPoints[i][6] = angle --Output Angle
+         --TPoints[i][7] = 2 --Distance added by the current part
+         TPoints[i][7] = xo + yo
+
+        elseif(mseq[i]=='l') then
+
+            
+        TPoints[i][1] = pos[1] --Input X
+        TPoints[i][2] = pos[2] --Input Y
+            
+            xo = -(Width/2)-0.075-0.125
+            yo = (Width/2) + 0.2
+            nextpos[1] = xo*math.cos(angle)-yo*math.sin(angle)        
+            nextpos[2] = xo*math.sin(angle)+yo*math.cos(angle)
+            pos[1] = pos[1]+nextpos[1]
+            pos[2] = pos[2]+nextpos[2]
+
+        TPoints[i][3] = pos[1] --Output X
+        TPoints[i][4] = pos[2] --Output Y
+        TPoints[i][5] = angle --Input Angle
+
+            angle = angle + math.pi/2 
+            if(angle > math.pi) then
+                angle = -math.pi/2
+            end
+
+        TPoints[i][6] = angle --Output Angle
+        --TPoints[i][7] = 2 --Distance added by the current part
+        TPoints[i][7] = -xo + yo
+        end
+    end
+    return TPoints
+end
