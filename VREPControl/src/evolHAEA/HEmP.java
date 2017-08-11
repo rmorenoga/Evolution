@@ -3,6 +3,7 @@ package evolHAEA;
 import java.util.ArrayList;
 import java.util.List;
 
+import control.ParameterMask;
 import simvrep.EvaluatorMT;
 import simvrep.Simulation;
 import unalcol.optimization.OptimizationFunction;
@@ -85,6 +86,9 @@ public class HEmP extends OptimizationFunction<double[]> {
 		for (int i = 0; i < x.length; i++) {
 			fullparam[i] = (float) x[i];
 		}
+		//Parameter Mask: Allows control over which parameters are actually sent to the robot depending on its controller, ParameterMask class just sends everything adjusted for max and min values
+		ParameterMask parammask = new ParameterMask(extraparam);
+		parammask.setandsepParam(fullparam);
 
 		if (seq) {
 			char[][] subenv = new char[][] {{'s','l','s'},{'s','r','s'},{'b'}};
@@ -97,8 +101,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 
 				if (morpho != null && !morpho.equals("")) {
 					double[] morphoDouble = ChromoConversion.str2double(morpho);
-					EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmh.ttt", fullparam, sim, alpha,
-							extraparam, subenv[sequence[i]], width);
+					EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmh.ttt", parammask, sim, alpha, subenv[sequence[i]], width);
 					subfitness[i] = evaluator.evaluate();
 				}
 				
@@ -120,7 +123,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 				double[] morphoDouble = ChromoConversion.str2double(morpho);
 				//EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmh.ttt", fullparam, sim, alpha,
 						//extraparam, subenvperm[r.generate()], width);
-				EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmh.ttt", fullparam, sim, alpha, extraparam, subshort, width);
+				EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmh.ttt", parammask, sim, alpha, subshort, width);
 				fitness = evaluator.evaluate();
 			}
 		}

@@ -12,19 +12,50 @@ public class ParameterMask {
 	private int numberofParameters;
 	private int extrap = -1;
 
-	public ParameterMask() {
+	public ParameterMask(int extrap) {
+		this.extrap = extrap;
 		controltype = SimulationConfiguration.getController();
 		this.numberofParameters = SimulationConfiguration.getControllerparamnumber();
 	}
 
 	public void growParam(int numberofModules) {
+		if (parameters == null) {
+			System.err.println("ParameterMask");
+			System.err.println("Parameters have not been set yet");
+			System.exit(-1);
+		}
 		//float[] grownparam = new float[numberofParameters * numberofModules];
 		float[] grownparam = parameters;
 		maskedparameters = adjustParam(grownparam);
 
 	}
+	
+	public void setandsepParam(float[] fullparam){
+		float[] extraparam = new float[extrap];
+		float[] parameters = new float[fullparam.length-extrap];
+		
+		for(int i=0;i<extrap;i++){
+			extraparam[i]=fullparam[i];
+			//System.out.println(i+" "+extrap[i]);
+		}
+		//System.out.println("extraparam: " + extrap.length);
+		for(int i=extrap;i<fullparam.length;i++){
+			parameters[i-extrap]= fullparam[i]; 
+			//System.out.println(i-extraparam+" "+param[i-extraparam]);
+		}
+		//System.out.println("param: " + param.length);
+		
+		//System.exit(0);
+		this.extraparam = extraparam;
+		this.parameters = parameters;
+	}
 
 	public void growextraParam() {
+		if (extraparam == null) {
+			System.err.println("ParameterMask");
+			System.err.println("Extraparam have not been set yet");
+			System.exit(-1);
+		}
 		//float[] grownextra = new float[extrap];
 		float[] grownextra = extraparam;
 		maskextraparam =adjustextraParam(grownextra);
