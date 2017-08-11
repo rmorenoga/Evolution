@@ -39,6 +39,33 @@ public class RobotController {
 		adjustextraParam();
 		// System.out.println("extrap "+extrap);
 	}
+	
+	public RobotController(remoteApi vrep, int clientID, RobotBuilder robot, ParameterMask parammask){
+		this.vrep = vrep;
+		this.clientID = clientID;
+		this.robot = robot;
+		moduleHandlers = robot.getModuleHandlersint();
+		this.numberofModules = moduleHandlers.length;
+		this.numberofParameters = SimulationConfiguration.getControllerparamnumber();
+		connectedhandles = robot.getTree().getHandlerListint();
+		
+		parammask.growParam(numberofModules);
+		
+		if (parammask.getMaskedparameters().length >= numberofParameters * numberofModules) {
+			this.parameters = parammask.getMaskedparameters();
+		} else {
+			System.err.println("RobotController");
+			System.err.println("Error in the number of parameters, parameters lenght=" + parammask.getMaskedparameters().length);
+			System.exit(-1);
+		}
+		
+		if (parammask.getExtrap()>0){
+			this.extrap = parammask.getExtrap();
+			this.extraparam = parammask.getMaskextraparam();
+		}
+		
+		
+	}
 
 	public RobotController(remoteApi vrep, int clientID, RobotBuilder robot, float[] parameters) {
 		this.vrep = vrep;

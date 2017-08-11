@@ -216,6 +216,7 @@ public class HAEAParallel {
 		result.put("evolution", step.getJsonManager().encode());
 		JSONObject jsonsolution = new JSONObject();
 		jsonsolution.put("best_individual", solution.object());
+		jsonsolution.put("best_fitness", solution.info(Goal.GOAL_TEST));
 		result.put("solution", jsonsolution);
 		String path="./";
 		try( Writer writer = new BufferedWriter(new OutputStreamWriter(
