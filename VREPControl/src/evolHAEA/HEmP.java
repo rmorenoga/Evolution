@@ -114,16 +114,16 @@ public class HEmP extends OptimizationFunction<double[]> {
 					{ 's', 'l', 's', 's', 'r', 's', 'b' }, { 'b', 's', 'l', 's', 's', 'r', 's' },
 					{ 'b', 's', 'r', 's', 's', 'l', 's' }, { 's', 'r', 's', 's', 'l', 's', 'b' },
 					{ 's', 'r', 's', 'b', 's', 'l', 's' }, { 's', 's' } };
-			char[] subshort = new char[]{'s','l'};
+			char[] subshort = new char[]{'s','b'};
 
 			float width = randomWithRange(0.6f, 0.8f);
 			//width = 0.73128784f;
 			//System.out.println("Width = "+width);
 			if (morpho != null && !morpho.equals("")) {
 				double[] morphoDouble = ChromoConversion.str2double(morpho);
-				//EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmh.ttt", fullparam, sim, alpha,
-						//extraparam, subenvperm[r.generate()], width);
-				EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmh.ttt", parammask, sim, alpha, subshort, width);
+				//EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[r.generate()], width);
+				//EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[0], width);
+				EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subshort, width);
 				fitness = evaluator.evaluate();
 			}
 		}

@@ -4,13 +4,13 @@ import simvrep.SimulationConfiguration;
 
 public class ParameterMask {
 
-	private float[] parameters;
-	private float[] extraparam;
-	private float[] maskedparameters;
-	private float[] maskextraparam;
-	private String controltype;
-	private int numberofParameters;
-	private int extrap = -1;
+	protected float[] parameters;
+	protected float[] extraparam;
+	protected float[] maskedparameters;
+	protected float[] maskextraparam;
+	protected String controltype;
+	protected int numberofParameters;
+	protected int extrap = -1;
 
 	public ParameterMask(int extrap) {
 		this.extrap = extrap;
@@ -96,7 +96,7 @@ public class ParameterMask {
 		this.parameters = parameters;
 	}
 	
-	private float[] adjustextraParam(float[] extraparam) {
+	protected float[] adjustextraParam(float[] extraparam) {
 		float[] grownextra = new float[extraparam.length];
 		for (int i = 0; i < extraparam.length; i++) {
 			grownextra[i] = ((extraparam[i] + 1) / 2);
@@ -104,7 +104,7 @@ public class ParameterMask {
 		return grownextra;
 	}
 
-	private float[] adjustParam(float[] parameters) {
+	protected float[] adjustParam(float[] parameters) {
 		float[] grownparam = new float[parameters.length];
 		if (controltype.contentEquals("CPG")) {
 			float maxPhase = (float) SimulationConfiguration.getMaxPhase();

@@ -100,7 +100,7 @@ public class HAEAParallel {
 			// Initialize a v-rep simulator based on the Nsim parameter
 			try {
 				//ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h", "scenes/Maze/MRun.ttt"); //Snake
-				ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h",  "scenes/Maze/defaultmh.ttt"); 
+				ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h",  "scenes/Maze/defaultmhs.ttt"); 
 				qq.directory(new File("/home/rodr/V-REP/Vrep" + j + "/"));
 				File log = new File("Simout/log");
 				qq.redirectErrorStream(true);
