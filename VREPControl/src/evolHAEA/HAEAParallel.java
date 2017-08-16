@@ -131,7 +131,7 @@ public class HAEAParallel {
 		// Search Space Definition
 		//int DIM = 169; //Snake
 		//int DIM = 281; //CPGH
-		int DIM = 48;
+		int DIM = 6;
 		double[] min = DoubleArray.create(DIM, -1);
 		double[] max = DoubleArray.create(DIM, 1);
 

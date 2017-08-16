@@ -3,6 +3,7 @@ package evolHAEA;
 import java.util.ArrayList;
 import java.util.List;
 
+import control.CPGSingle;
 import control.ParameterMask;
 import simvrep.EvaluatorMT;
 import simvrep.Simulation;
@@ -87,7 +88,8 @@ public class HEmP extends OptimizationFunction<double[]> {
 			fullparam[i] = (float) x[i];
 		}
 		//Parameter Mask: Allows control over which parameters are actually sent to the robot depending on its controller, ParameterMask class just sends everything adjusted for max and min values
-		ParameterMask parammask = new ParameterMask(extraparam);
+		//ParameterMask parammask = new ParameterMask(extraparam);
+		CPGSingle parammask = new CPGSingle(extraparam,false);
 		parammask.setandsepParam(fullparam);
 
 		if (seq) {
