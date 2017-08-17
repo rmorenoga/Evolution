@@ -131,7 +131,7 @@ public class HAEAParallel {
 		// Search Space Definition
 		//int DIM = 169; //Snake
 		//int DIM = 281; //CPGH
-		int DIM = 6;
+		int DIM = 3;
 		double[] min = DoubleArray.create(DIM, -1);
 		double[] max = DoubleArray.create(DIM, 1);
 
@@ -153,7 +153,7 @@ public class HAEAParallel {
 		//AdaptMutationIntensity adapt = new OneFifthRule(20, 0.9);
 		
 		//Normal mutation and DEXover
-		IntensityMutation variation = new GaussianMutation(0.1, null);
+		//IntensityMutation variation = new GaussianMutation(0.1, null);
 		DEXOver xover = new DEXOver(0.9,0.9,new StandardUniformGenerator(),DIM);
 		
 		//Favor mutation and DEXover for old modules in snake configuration
@@ -172,9 +172,9 @@ public class HAEAParallel {
 
 		int POPSIZE = 4;
 		int MAXITERS = 2;
-		Variation[] opers = new Variation[2];
-		opers[0] = variation;
-		opers[1] = xover;
+		Variation[] opers = new Variation[1];
+		//opers[0] = variation;
+		opers[0] = xover;
 
 		SimpleHaeaOperators operators = new SimpleHaeaOperators(opers);
 		Selection selection = new Tournament(4,new ModifiedElitism(1.0,0.0));

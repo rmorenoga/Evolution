@@ -89,7 +89,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 		}
 		//Parameter Mask: Allows control over which parameters are actually sent to the robot depending on its controller, ParameterMask class just sends everything adjusted for max and min values
 		//ParameterMask parammask = new ParameterMask(extraparam);
-		CPGSingle parammask = new CPGSingle(extraparam,false);
+		CPGSingle parammask = new CPGSingle(extraparam,true);
 		parammask.setandsepParam(fullparam);
 
 		if (seq) {
@@ -118,7 +118,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 					{ 's', 'r', 's', 'b', 's', 'l', 's' }, { 's', 's' } };
 			char[] subshort = new char[]{'s','b'};
 
-			float width = randomWithRange(0.6f, 0.8f);
+			float width = randomWithRange(0.59f, 0.61f);
 			//width = 0.73128784f;
 			//System.out.println("Width = "+width);
 			if (morpho != null && !morpho.equals("")) {
