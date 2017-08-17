@@ -103,7 +103,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 
 				if (morpho != null && !morpho.equals("")) {
 					double[] morphoDouble = ChromoConversion.str2double(morpho);
-					EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmh.ttt", parammask, sim, alpha, subenv[sequence[i]], width);
+					EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenv[sequence[i]], width);
 					subfitness[i] = evaluator.evaluate();
 				}
 				

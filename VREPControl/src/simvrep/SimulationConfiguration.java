@@ -39,6 +39,7 @@ public class SimulationConfiguration {
     private static String vrepPath;
     private static int vrepStartingPort = 19997;
     private static Simulator vrep = null;
+    private static Simulation vrepsim = null;
     private static SceneBuilder scene = null;
     private static RobotBuilder robot = null;
     
@@ -287,9 +288,17 @@ public static SceneBuilder getScene() {
 	public static Simulator getVrep() {
 		return vrep;
 	}
+	
+	public static Simulation getVrepsim(){
+		return vrepsim;
+	}
 
 	public static void setVrep(Simulator vrep) {
 		SimulationConfiguration.vrep = vrep;
+	}
+	
+	public static void setVrepsim(Simulation vrepsim){
+		SimulationConfiguration.vrepsim = vrepsim;
 	}
 
 	public static String getModuleSet() {

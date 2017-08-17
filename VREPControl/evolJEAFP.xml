@@ -21,7 +21,7 @@
 		 <Size>5</Size>
 			<Individual>
 			<Class> es.udc.gii.common.eaf.algorithm.population.Individual</Class>
-			<Chromosome size="210">
+			<Chromosome size="3">
 			</Chromosome>
 			</Individual>
   </Population>
@@ -56,7 +56,7 @@
   <Objective>
     	<CheckBounds/>
     	<ObjectiveFunction>
-    	<Class>evolJEAF.EmCorrJEAF</Class>
+    	<Class>evolJEAF.JEmP</Class>
     	</ObjectiveFunction>
   </Objective>
   <StopTests>
@@ -69,12 +69,12 @@
      <Log>
      	<Class>es.udc.gii.common.eaf.log.parallel.ParallelBestMeanLogTool</Class>
      	<Folder>Testout</Folder>
-     	<Name>TestSeq</Name>
+     	<Name>Test</Name>
      </Log>
      <Log>
      	<Class>es.udc.gii.common.eaf.log.parallel.BestIndividualLogTool</Class>
      	<Folder>Testout</Folder>
-     	<Name>BestSeq</Name>
+     	<Name>Best</Name>
      	<Number>1</Number>
      </Log>
   </LogTool>

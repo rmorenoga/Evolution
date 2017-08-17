@@ -31,8 +31,8 @@ public class MainJEAF {
 				 //System.out.println("Argument "+j+" = "+args[j]);
 				 //}
 				if (SimulationConfiguration.isUseMPI()){
-					arg0 = 4;
-					arg1 = 5;
+					arg0 = 4;//4
+					arg1 = 5;//5
 				}else{
 					arg0 = 1;
 					arg1 = 2;
@@ -41,6 +41,7 @@ public class MainJEAF {
 					startNumber = Integer.parseInt(args[arg0-1]);//3
 					if (args.length >= arg1) {//5
 						xmlfile = args[arg1-1];
+						//System.out.println(xmlfile);
 					} else {
 						System.err.println("Provide a xml file");
 						System.exit(1);
@@ -63,7 +64,7 @@ public class MainJEAF {
 			System.exit(1);
 		}
 		// Get max simulation time from SimulationConfiguration
-		int simultime = (int) Math.ceil(SimulationConfiguration.getMaxSimulationTime());
+		//int simultime = (int) Math.ceil(SimulationConfiguration.getMaxSimulationTime());
 		// Check whether parallel evaluation will be used (Remember to change
 		// all xml files accordingly)
 		int myRank = 0;
@@ -74,6 +75,23 @@ public class MainJEAF {
 			myRank = MPI.COMM_WORLD.Rank();
 			myRank = myRank + startNumber;
 
+		}
+		
+		//Start Simulators
+		String vrepcommand = new String("./vrep" + myRank + ".sh");
+
+		try {
+			//ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h", "scenes/Maze/MRun.ttt"); //Snake
+			ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h",  "scenes/Maze/defaultmhs.ttt"); 
+			qq.directory(new File("/home/rodr/V-REP/Vrep" + myRank + "/"));
+			File log = new File("Simout/log");
+			qq.redirectErrorStream(true);
+			qq.redirectOutput(Redirect.appendTo(log));
+			qq.start();
+			Thread.sleep(10000);
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			e.printStackTrace();
 		}
 
 		// Initialize Random Number Generator
