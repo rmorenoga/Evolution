@@ -10,7 +10,7 @@ package evolHAEA;
  * @author Me
  * @version 1.0
  */
-public abstract class RealArityFour extends Variation_4_1<double[]>{
+public abstract class RealArityFive extends Variation_5_1<double[]>{
 	
 	
 	
