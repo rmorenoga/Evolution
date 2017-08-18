@@ -177,7 +177,7 @@ public class HAEAParallel {
 		opers[0] = xover;
 
 		SimpleHaeaOperators operators = new SimpleHaeaOperators(opers);
-		Selection selection = new Tournament(4,new ModifiedElitism(1.0,0.0));
+		Selection selection = new NUniqueIndividuals();
 		
 		ModifiedHaeaStep step = new ModifiedHaeaStep(POPSIZE, selection, operators);
 		step.setJsonManager(new JSONHaeaStepObjectManager());
