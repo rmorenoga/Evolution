@@ -154,7 +154,8 @@ public class HAEAParallel {
 		
 		//Normal mutation and DEXover
 		//IntensityMutation variation = new GaussianMutation(0.1, null);
-		DEXOver xover = new DEXOver(0.9,0.9,new StandardUniformGenerator(),DIM);
+		DEXOver xover = new DEXOver(0.9,0.9,new StandardUniformGenerator(),DIM); //Use NUniqueIndividuals() selection with the DE operator 
+		
 		
 		//Favor mutation and DEXover for old modules in snake configuration
 		//Favor first contains the array defining the decrease in mutation probability
