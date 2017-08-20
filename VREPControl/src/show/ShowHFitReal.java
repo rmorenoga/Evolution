@@ -59,7 +59,8 @@ public class ShowHFitReal {
 			}*/
 			
 		} else {
-			parameters = new double[280];
+			//parameters = new double[280];
+			parameters = new double[12];
 			System.out.println("Param length = " + parameters.length);
 			// char[][] subenvperm = new char[][] { { 's', 'l', 's', 'b', 's',
 			// 'r', 's' },
@@ -79,17 +80,37 @@ public class ShowHFitReal {
 			// }
 			// }
 
-			for (int i = 0; i < parameters.length; i = i + 35) {
-				for (int j = 0; j < 5; j++) {
-					parameters[i + j] = 0.5; // Amplitude
-					parameters[i + j + 5] = 0; // Offset
-					parameters[i + j + 30] = 0; // Frequency (v)
-				}
-				for (int j = 0; j < 20; j++) {
-					parameters[i + j + 10] = 0.3; // Phase difference
-				}
-
+//			for (int i = 0; i < parameters.length; i = i + 35) { //Only for use with individual module parameters
+//				for (int j = 0; j < 5; j++) {
+//					parameters[i + j] = 0.5; // Amplitude
+//					parameters[i + j + 5] = 0; // Offset
+//					parameters[i + j + 30] = 0; // Frequency (v)
+//				}
+//				for (int j = 0; j < 20; j++) {
+//					parameters[i + j + 10] = 0.3; // Phase difference
+//				}
+//
+//			}
+			
+			for (int j = 0; j < 4; j++) {
+				parameters[j] = 0.2; // Amplitude
+				parameters[j + 4] = 0; // Offset
+				//parameters[j + 12] = 0.1; // Frequency (v)
+				//parameters[j + 15] = 0; // Frequency (v)
 			}
+//			for (int j = 0; j < 10; j++) {
+//				parameters[j + 8] = 0.4; // Phase difference
+//			}
+//			for (int j = 0; j < 6; j++) {
+//				parameters[j + 18] = 0.5; // Phase difference
+//			}
+			parameters[8] =0.5;
+			parameters[9] =0.4;
+			parameters[10] =0.5;
+			parameters[11] =0.4;
+			//parameters[14] =0.5;
+			
+			
 		}
 
 		// for (int i = 0;i<parameters.length;i++ ){
