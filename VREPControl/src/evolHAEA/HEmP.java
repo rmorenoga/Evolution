@@ -93,8 +93,8 @@ public class HEmP extends OptimizationFunction<double[]> {
 		// Submask: Helper classes that fix certain parts of the controller
 		//ParameterMask parammask = new ParameterMask(extraparam);
 		CPGSingle parammask = new CPGSingle(extraparam,true);
-		//CPGHSBase submask = new CPGHSBase();
-		//CPGHSingle parammask = new CPGHSingle(extraparam,true,true,submask);
+		//CPGHSingle parammask = new CPGHSingle(extraparam,true,true);
+		//CPGHSBase parammask = new CPGHSBase(extraparam,true,true);
 		parammask.setandsepParam(fullparam);
 
 		if (seq) {

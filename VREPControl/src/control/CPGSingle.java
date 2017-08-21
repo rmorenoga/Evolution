@@ -40,13 +40,13 @@ public class CPGSingle extends ParameterMask {
 
 	public void growParam(int numberofModules) {
 		float[] grownparam;
-		if (parameters == null) {
+		if (getParameters() == null) {
 			System.err.println("CPGSingle");
 			System.err.println("Parameters have not been set yet");
 			System.exit(-1);
 		}
 		if (samePhaseDiff) {
-			if (parameters.length != 3) {
+			if (getParameters().length != 3) {
 				System.err.println("CPGSingle");
 				System.err.println("Parameters must be of size 3 since samePhaseDiff is " + samePhaseDiff);
 				System.exit(-1);
@@ -54,26 +54,26 @@ public class CPGSingle extends ParameterMask {
 			grownparam = new float[numberofParameters * numberofModules];
 
 			for (int i = 0; i < grownparam.length; i = i + numberofParameters) {
-				grownparam[i] = parameters[0];
-				grownparam[i + 1] = parameters[1];
+				grownparam[i] = getParameters()[0];
+				grownparam[i + 1] = getParameters()[1];
 				for (int j = 0; j < 4; j++) {
-					grownparam[i + j + 2] = parameters[2];
+					grownparam[i + j + 2] = getParameters()[2];
 				}
 
 			}
 
 		} else {
-			if (parameters.length != 6) {
+			if (getParameters().length != 6) {
 				System.err.println("CPGSingle");
 				System.err.println("Parameters must be of size 6 since samePhaseDiff is " + samePhaseDiff);
 				System.exit(-1);
 			}
 			grownparam = new float[numberofParameters * numberofModules];
 			for (int i = 0; i < grownparam.length; i = i + numberofParameters) {
-				grownparam[i] = parameters[0];
-				grownparam[i + 1] = parameters[1];
+				grownparam[i] = getParameters()[0];
+				grownparam[i + 1] = getParameters()[1];
 				for (int j = 0; j < 4; j++) {
-					grownparam[i + j + 2] = parameters[j + 2];
+					grownparam[i + j + 2] = getParameters()[j + 2];
 				}
 			}
 

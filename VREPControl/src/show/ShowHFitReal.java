@@ -96,7 +96,7 @@ public class ShowHFitReal {
 				parameters[j] = 0.2; // Amplitude
 				parameters[j + 4] = 0; // Offset
 				//parameters[j + 12] = 0.1; // Frequency (v)
-				//parameters[j + 15] = 0; // Frequency (v)
+				//parameters[j + 24] = 0; // Frequency (v)
 			}
 //			for (int j = 0; j < 10; j++) {
 //				parameters[j + 8] = 0.4; // Phase difference

@@ -4,7 +4,7 @@ import simvrep.SimulationConfiguration;
 
 public class ParameterMask {
 
-	protected float[] parameters;
+	private float[] parameters;
 	protected float[] extraparam;
 	protected float[] maskedparameters;
 	protected float[] maskextraparam;
@@ -154,6 +154,10 @@ public class ParameterMask {
 			}
 		}
 		return grownparam;
+	}
+
+	public float[] getParameters() {
+		return parameters;
 	}
 
 }
