@@ -63,7 +63,7 @@ public class JEmP extends ObjectiveFunction {
 		// sent to the robot depending on its controller, ParameterMask class
 		// just sends everything adjusted for max and min values
 		// ParameterMask parammask = new ParameterMask(extraparam);
-		CPGSingle parammask = new CPGSingle(extraparam, true);
+		CPGSingle parammask = new CPGSingle(extraparam, true,true);
 		parammask.setandsepParam(fullparam);
 
 		if (seq) {
@@ -94,7 +94,7 @@ public class JEmP extends ObjectiveFunction {
 			char[] subshort = new char[] { 's', 'b' };
 
 			float width = randomWithRange(0.59f, 0.61f);
-			// width = 0.73128784f;
+			 width = 0.5f;
 			// System.out.println("Width = "+width);
 			if (morpho != null && !morpho.equals("")) {
 				double[] morphoDouble = ChromoConversion.str2double(morpho);

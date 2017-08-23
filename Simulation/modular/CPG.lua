@@ -23,7 +23,7 @@ function dteta(teta,phasediff,v,wij)
     local comp = {} 
     for i=2,#teta do
         if (teta[i]~=-1) then
-            comp[i-1] = (wij[i-1]*math.sin(teta[i]-teta[1] - (phasediff[i-1])))
+            comp[i-1] = (wij[i-1]*math.sin(teta[i]-teta[1] + (phasediff[i-1])))
             --comp[i-1] = (wij[i-1]*math.sin(teta[i]-teta[1] + ((phasediff[i-1]) * (-1^(i-1))) )) 
             --[[if (i-1==1) then
                 comp[i-1] = (wij[i-1]*math.sin(teta[i]-teta[1] + (phasediff[i-1])  )) 

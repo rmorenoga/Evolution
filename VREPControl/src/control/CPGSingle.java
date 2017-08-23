@@ -16,6 +16,7 @@ import simvrep.SimulationConfiguration;
 public class CPGSingle extends ParameterMask {
 
 	private boolean samePhaseDiff;
+	private boolean snake = false;
 
 	/**
 	 * ParameterMask CPGSingle constructor
@@ -30,12 +31,26 @@ public class CPGSingle extends ParameterMask {
 		super(extrap);
 		this.samePhaseDiff = samePhaseDiff;
 		if (controltype.contentEquals("CPG")) {
-			
-		}else{
+
+		} else {
 			System.err.println("CPGSingle");
 			System.err.println("Controller must be of type CPG");
 			System.exit(-1);
 		}
+	}
+
+	/**
+	 * ParameterMask CPGSingle constructor
+	 * 
+	 * @param extrap
+	 *            indicates the number of extra parameters in the parameters
+	 *            coming from the external algorithm
+	 * @param samePhaseDiff
+	 *            if true only one phase difference will be used for all faces
+	 */
+	public CPGSingle(int extrap, boolean samePhaseDiff, boolean snake) {
+		this(extrap, samePhaseDiff);
+		this.snake = snake;
 	}
 
 	public void growParam(int numberofModules) {
@@ -56,8 +71,15 @@ public class CPGSingle extends ParameterMask {
 			for (int i = 0; i < grownparam.length; i = i + numberofParameters) {
 				grownparam[i] = getParameters()[0];
 				grownparam[i + 1] = getParameters()[1];
-				for (int j = 0; j < 4; j++) {
-					grownparam[i + j + 2] = getParameters()[2];
+				if (!snake) {
+					for (int j = 0; j < 4; j++) {
+						grownparam[i + j + 2] = getParameters()[2];
+					}
+				} else {
+					grownparam[i + 0 + 2] = getParameters()[2];
+					for (int j = 1; j < 4; j++) {
+						grownparam[i + j + 2] = -getParameters()[2];
+					}
 				}
 
 			}
