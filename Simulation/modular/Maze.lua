@@ -250,8 +250,8 @@ function getTPointsS(mseq,Width,initangle)
         TPoints[i][1] = pos[1] --Input X
         TPoints[i][2] = pos[2] --Input Y    
         
-            nextpos[1] = 0*math.cos(angle)-2*math.sin(angle)        
-            nextpos[2] = 0*math.sin(angle)+2*math.cos(angle)
+            nextpos[1] = 0*math.cos(angle)-0.5*math.sin(angle)        
+            nextpos[2] = 0*math.sin(angle)+0.5*math.cos(angle)
             pos[1] = pos[1]+nextpos[1]
             pos[2] = pos[2]+nextpos[2]
 
@@ -260,7 +260,7 @@ function getTPointsS(mseq,Width,initangle)
         TPoints[i][5] = angle --Input Angle
         TPoints[i][6] = angle --Output Angle
 
-        TPoints[i][7] = 2 --Distance added by the current part
+        TPoints[i][7] = 0.5 --Distance added by the current part
 
 
         elseif(mseq[i]=='r') then
