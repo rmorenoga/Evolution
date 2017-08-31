@@ -7,6 +7,7 @@ public class CPGHSingle extends ParameterMask {
 	private boolean samePhaseDiff;
 	private boolean blockfrequency;
 	private float freq = 0.4f;
+	private boolean snake = false;
 
 	/**
 	 * ParameterMask CPGHSingle constructor
@@ -33,8 +34,26 @@ public class CPGHSingle extends ParameterMask {
 			System.exit(-1);
 		}
 	}
-	
-	
+
+	/**
+	 * ParameterMask CPGHSingle constructor
+	 * 
+	 * @param extrap
+	 *            indicates the number of extra parameters in the parameters
+	 *            coming from the external algorithm
+	 * @param samePhaseDiff
+	 *            if true only one phase difference will be used for all faces
+	 * @param blockfrequency
+	 *            if true a preset value of frequency specified by the attribute
+	 *            freq will be used the default value is 0.4f
+	 * @param snake
+	 *            if true the first phasediff in samePhaseDiff cases will use an
+	 *            opposite sign from the rest
+	 */
+	public CPGHSingle(int extrap, boolean samePhaseDiff, boolean blockfrequency, boolean snake) {
+		this(extrap, samePhaseDiff, blockfrequency);
+		this.snake = snake;
+	}
 
 	/**
 	 * ParameterMask CPGHSingle constructor
@@ -55,7 +74,29 @@ public class CPGHSingle extends ParameterMask {
 		this(extrap, samePhaseDiff, blockfrequency);
 		this.freq = freq;
 	}
-	
+
+	/**
+	 * ParameterMask CPGHSingle constructor
+	 * 
+	 * @param extrap
+	 *            indicates the number of extra parameters in the parameters
+	 *            coming from the external algorithm
+	 * @param freq
+	 *            the prespecified frequency in case blockfrequency is true the
+	 *            default value is 0.4f
+	 * @param samePhaseDiff
+	 *            if true only one phase difference will be used for all faces
+	 * @param blockfrequency
+	 *            if true a preset value of frequency specified by the attribute
+	 *            freq will be used
+	 * @param snake
+	 *            if true the first phasediff in samePhaseDiff cases will use an
+	 *            opposite sign from the rest
+	 */
+	public CPGHSingle(int extrap, float freq, boolean samePhaseDiff, boolean blockfrequency, boolean snake) {
+		this(extrap, freq, samePhaseDiff, blockfrequency);
+		this.snake = snake;
+	}
 
 	public void growParam(int numberofModules) {
 
@@ -65,7 +106,6 @@ public class CPGHSingle extends ParameterMask {
 			System.err.println("Parameters have not been set yet");
 			System.exit(-1);
 		}
-
 
 		if (blockfrequency) {
 			// parameters.length <= 30
@@ -87,12 +127,27 @@ public class CPGHSingle extends ParameterMask {
 								+ " and blockfrequency is " + blockfrequency);
 						System.exit(-1);
 					}
-					for (int j = 0; j < 4; j++) {
-						grownparam[i + j + 10] = getParameters()[10];
-						grownparam[i + j + 14] = getParameters()[11];
-						grownparam[i + j + 18] = getParameters()[12];
-						grownparam[i + j + 22] = getParameters()[13];
-						grownparam[i + j + 26] = getParameters()[14];
+					if (!snake) {
+						for (int j = 0; j < 4; j++) {
+							grownparam[i + j + 10] = getParameters()[10];
+							grownparam[i + j + 14] = getParameters()[11];
+							grownparam[i + j + 18] = getParameters()[12];
+							grownparam[i + j + 22] = getParameters()[13];
+							grownparam[i + j + 26] = getParameters()[14];
+						}
+					} else {
+						grownparam[i + 10] = getParameters()[10];
+						grownparam[i + 14] = getParameters()[11];
+						grownparam[i + 18] = getParameters()[12];
+						grownparam[i + 22] = getParameters()[13];
+						grownparam[i + 26] = getParameters()[14];
+						for (int j = 1; j < 4; j++) {
+							grownparam[i + j + 10] = -getParameters()[10];
+							grownparam[i + j + 14] = -getParameters()[11];
+							grownparam[i + j + 18] = -getParameters()[12];
+							grownparam[i + j + 22] = -getParameters()[13];
+							grownparam[i + j + 26] = -getParameters()[14];
+						}
 					}
 				} else {
 					// parameters.length = 30
@@ -139,12 +194,27 @@ public class CPGHSingle extends ParameterMask {
 				}
 				if (samePhaseDiff) {
 					// parameters.length = 20
-					for (int j = 0; j < 4; j++) {
-						grownparam[i + j + 10] = getParameters()[10];
-						grownparam[i + j + 14] = getParameters()[11];
-						grownparam[i + j + 18] = getParameters()[12];
-						grownparam[i + j + 22] = getParameters()[13];
-						grownparam[i + j + 26] = getParameters()[14];
+					if (!snake) {
+						for (int j = 0; j < 4; j++) {
+							grownparam[i + j + 10] = getParameters()[10];
+							grownparam[i + j + 14] = getParameters()[11];
+							grownparam[i + j + 18] = getParameters()[12];
+							grownparam[i + j + 22] = getParameters()[13];
+							grownparam[i + j + 26] = getParameters()[14];
+						}
+					} else {
+						grownparam[i + 10] = getParameters()[10];
+						grownparam[i + 14] = getParameters()[11];
+						grownparam[i + 18] = getParameters()[12];
+						grownparam[i + 22] = getParameters()[13];
+						grownparam[i + 26] = getParameters()[14];
+						for (int j = 1; j < 4; j++) {
+							grownparam[i + j + 10] = -getParameters()[10];
+							grownparam[i + j + 14] = -getParameters()[11];
+							grownparam[i + j + 18] = -getParameters()[12];
+							grownparam[i + j + 22] = -getParameters()[13];
+							grownparam[i + j + 26] = -getParameters()[14];
+						}
 					}
 				} else {
 					// parameters.length = 35

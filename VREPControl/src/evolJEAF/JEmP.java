@@ -2,6 +2,7 @@ package evolJEAF;
 
 import java.util.logging.Logger;
 
+import control.CPGHSBase;
 import control.CPGSingle;
 import simvrep.EvaluatorMT;
 import simvrep.Simulation;
@@ -63,7 +64,8 @@ public class JEmP extends ObjectiveFunction {
 		// sent to the robot depending on its controller, ParameterMask class
 		// just sends everything adjusted for max and min values
 		// ParameterMask parammask = new ParameterMask(extraparam);
-		CPGSingle parammask = new CPGSingle(extraparam, true,true);
+		//CPGSingle parammask = new CPGSingle(extraparam, true,true);
+		CPGHSBase parammask = new CPGHSBase(extraparam,true,true,true);
 		parammask.setandsepParam(fullparam);
 
 		if (seq) {
@@ -91,7 +93,7 @@ public class JEmP extends ObjectiveFunction {
 					{ 's', 'l', 's', 's', 'r', 's', 'b' }, { 'b', 's', 'l', 's', 's', 'r', 's' },
 					{ 'b', 's', 'r', 's', 's', 'l', 's' }, { 's', 'r', 's', 's', 'l', 's', 'b' },
 					{ 's', 'r', 's', 'b', 's', 'l', 's' }, { 's', 's' } };
-			char[] subshort = new char[] { 's', 'b' };
+			char[] subshort = new char[] { 's', 'l','b','r' };
 
 			float width = randomWithRange(0.59f, 0.61f);
 			 width = 0.5f;
