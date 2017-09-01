@@ -82,7 +82,8 @@ public class MainJEAF {
 
 		try {
 			//ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h", "scenes/Maze/MRun.ttt"); //Snake
-			ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h",  "scenes/Maze/defaultmhs.ttt"); 
+			//ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h",  "scenes/Maze/defaultmhs.ttt"); 
+			ProcessBuilder qq = new ProcessBuilder("xvfb-run","-a",vrepcommand, "-h",  "scenes/Maze/defaultmhs.ttt"); 
 			qq.directory(new File("/home/rodr/V-REP/Vrep" + myRank + "/"));
 			File log = new File("Simout/log");
 			qq.redirectErrorStream(true);
@@ -108,14 +109,7 @@ public class MainJEAF {
 		// Start the evolutionary process
 		facade.resolve(stopTest, algorithm);
 
-		// If I am the process 0 signal the end of the process
-		if (SimulationConfiguration.isUseMPI()) {
-			if (myRank == 0) {
-				System.out.println("Finished");
-			}
-		} else {
-			System.out.println("Finished");
-		}
+		
 
 		// Terminate the corresponding simulator
 		try {
@@ -130,11 +124,35 @@ public class MainJEAF {
 			System.out.println(e.toString());
 			e.printStackTrace();
 		}
+		
+		// If I am the process 0 signal the end of the process
+				if (SimulationConfiguration.isUseMPI()) {
+					if (myRank == 0) {
+						System.out.println("Finished");
+					}
+					// Terminate the corresponding simulator
+					try {
+						ProcessBuilder qq = new ProcessBuilder("killall", "Xvfb");
+						File log = new File("Simout/log");
+						qq.redirectErrorStream(true);
+						qq.redirectOutput(Redirect.appendTo(log));
+						Process p = qq.start();
+						int exitVal = p.waitFor();
+						System.out.println("Terminated xvfb with error code " + exitVal);
+					} catch (Exception e) {
+						System.out.println(e.toString());
+						e.printStackTrace();
+					}
+				} else {
+					System.out.println("Finished");
+				}
 
 		if (SimulationConfiguration.isUseMPI()) {
 			// Terminate Parallel Environment
 			MPI.Finalize();
 		}
+		
+		
 	}
 
 }
