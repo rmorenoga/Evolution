@@ -93,7 +93,7 @@ public class JEmP extends ObjectiveFunction {
 					{ 's', 'l', 's', 's', 'r', 's', 'b' }, { 'b', 's', 'l', 's', 's', 'r', 's' },
 					{ 'b', 's', 'r', 's', 's', 'l', 's' }, { 's', 'r', 's', 's', 'l', 's', 'b' },
 					{ 's', 'r', 's', 'b', 's', 'l', 's' }, { 's', 's' } };
-			char[] subshort = new char[] { 's', 'l','b','r' };
+			char[] subshort = new char[] { 's', 'b','l','r' };
 
 			float width = randomWithRange(0.59f, 0.61f);
 			 width = 0.5f;
