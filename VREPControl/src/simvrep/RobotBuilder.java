@@ -107,7 +107,7 @@ public class RobotBuilder {
 	 * Creates the robot in the Vrep simulator based on the chromosome array.
 	 * <p>
 	 */
-	public void createRobot() {
+	public int createRobot() {
 
 		// load a new scene
 		//loadScene();
@@ -118,7 +118,8 @@ public class RobotBuilder {
 		// dimensions
 		// of the robot, the center of mass and other useful features of the
 		// robot
-		robotAssembly();
+		int returncode = robotAssembly();
+		return returncode;
 	}
 
 	public void loadScene() {
@@ -154,7 +155,7 @@ public class RobotBuilder {
 		System.exit(-1);
 	}
 
-	private void robotAssembly() {
+	private int robotAssembly() {
 		List<RobotNode> nodes = tree.getNodeList();
 		Vector3D[] modulePosition = robotFeatures.getModulePosition();
 		Rotation[] moduleRotation = robotFeatures.getModuleRotation();
@@ -162,12 +163,18 @@ public class RobotBuilder {
 		forceSensorHandlers = new ArrayList<Integer>();
 
 		int rootModuleHandler = addModule(0);
+		if(rootModuleHandler ==-1){
+			return -1;
+		}
 		moduleHandlers.add(rootModuleHandler);
 		nodes.get(0).setHandler(rootModuleHandler);
 
 		for (int module = 1; module < robotFeatures.getnModules(); module++) {
 
 			int moduleHandler = addModule(module);
+			if(moduleHandler ==-1){
+				return -1;
+			}
 			moduleHandlers.add(moduleHandler);
 			nodes.get(module).setHandler(moduleHandler);
 
@@ -198,6 +205,10 @@ public class RobotBuilder {
 
 			// Add Force Sensor in Vrep
 			int forceSensor = addForceSensor();
+			if(forceSensor == -1){
+				return -1;
+			}
+			
 			forceSensorHandlers.add(forceSensor);
 
 			if (normalParentFace.getZ() == 0) {
@@ -232,6 +243,7 @@ public class RobotBuilder {
 				setObjectParent(moduleHandler + 1, moduleHandler + 2);
 				setObjectParent(moduleHandler, moduleHandler + 1);
 			}
+			
 		}
 
 		double initialHeight = (Math.abs(robotFeatures.getMinPos().z) + 0.001);
@@ -250,6 +262,8 @@ public class RobotBuilder {
 		// Move the robot up
 		double[] posIni = { 0, 0, initialHeight };
 		moveModule(moduleHandlers.get(0), -1, posIni);
+		
+		return 1;
 		
 		
 	}
@@ -276,7 +290,7 @@ public class RobotBuilder {
 					ret);
 			System.err
 					.println("VrepCreateRobot, addModule Function: Check that the model path is correct: " + modelPath);
-			System.exit(-1);
+			//System.exit(-1);
 			return -1;
 		}
 
@@ -300,7 +314,7 @@ public class RobotBuilder {
 					ret);
 			System.err.println("VrepCreateRobot, addForceSensor Function: Check that the force sensor path is correct: "
 					+ modelPath);
-			System.exit(-1);
+			//System.exit(-1);
 			return -1;
 		}
 

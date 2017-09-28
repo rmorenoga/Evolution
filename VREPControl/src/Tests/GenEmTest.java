@@ -20,8 +20,10 @@ public class GenEmTest {
 		String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0 , 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
 
 		
-		double[][] indiv = new double[][]{{
-			1.0, 1.0, -0.031110454104099072, -0.9947166406861332, -0.9255484041619079, -0.15386625909293, -0.8, 0.9384261329287366, -1.0, -1.0, -1.0, 1.0}};
+		//double[][] indiv = new double[][]{{
+			//1.0, 1.0, -0.031110454104099072, -0.9947166406861332, -0.9255484041619079, -0.15386625909293, -0.8, 0.9384261329287366, -1.0, -1.0, -1.0, 1.0},{0.7760164602688042, -0.3909846388463969, -0.8641055969947993, -1.0, -1.0, -0.5551028030994317, -1.0, 1.0, -1.0, -0.708158144366758, -0.7679504678050293, 0.9746661541360532}};
+		double[][] indiv = new double[][]{{0.8,0.5,0.5,0.5,-0.9,0,0,0,-0.7,-0.3,-0.3,-0.3}};	
+			
 			
 			for (int i = 0; i < 5; i++) {
 				if (sim.Connect()) {
@@ -61,17 +63,16 @@ public class GenEmTest {
 		//ParameterMask parammask = new ParameterMask(extraparam);
 		//CPGSingle parammask = new CPGSingle(extraparam,true,true);
 		//CPGHSingle parammask = new CPGHSingle(extraparam,true,true);
-		CPGHSBase parammask;
+		CPGHSBase parammask = new CPGHSBase(extraparam,true,true,true);
+		parammask.setandsepParam(fullparam);
 		
-		char[] subshort = new char[]{'s','b','l','r'};
+		char[] subshort = new char[]{'s','b','r','l'};
 		float width = 0.5f;
 		
 		double[] morphoDouble = ChromoConversion.str2double(morpho);
 		EvaluatorMT evaluator;
 		
-		for (int i= 0;i<res.length;i++){
-			parammask = new CPGHSBase(extraparam,true,true,true);
-			parammask.setandsepParam(fullparam);
+		for (int i= 0;i<res.length;i++){	
 			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subshort, width);
 			res[i] = evaluator.evaluate();
 		}
