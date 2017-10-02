@@ -21,9 +21,9 @@ function ghormone(connh,sensorR,sensorD,baseprob)
   --  if not sensed then
     --    hormones[1] = 1
    -- end
-    if(r>baseprob) then
+    --if(r>baseprob) then
         hormones[1] = 1
-    end
+    --end
 
     return hormones,sensed               
 end
@@ -137,6 +137,29 @@ function propagate(prob)
         return false
     end
 end
+
+function attenuate(horm)
+    --Attenuates all components of a hormone by an attenuation factor
+    --factor must be less than 1 for attenuation
+    local hormnew={}
+    local factor = 0.2
+    local active = false
+    for i=1,#horm do
+	hormnew[i] = horm[i]
+    end
+  
+    
+    for i=1,#hormnew do
+        if(hormnew[i]~=-1) then
+            hormnew[i]=hormnew[i]*factor
+	    if (hormnew[i] > 0.001) then
+		active = true
+	    end
+        end
+    end
+    return hormnew,active
+end
+
 
 
 function receptorsdelt(hormones,ampd,offd,phasediff,v,ampset,offsetset,phasediffset,vset)

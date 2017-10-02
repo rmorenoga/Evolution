@@ -92,9 +92,9 @@ public class ParameterMask {
 		return maskextraparam;
 	}
 
-	public void setParameters(float[] parameters) {
-		this.parameters = parameters;
-	}
+//	public void setParameters(float[] parameters) {
+//		this.parameters = parameters;
+//	}
 	
 	protected float[] adjustextraParam(float[] extraparam) {
 		float[] grownextra = new float[extraparam.length];

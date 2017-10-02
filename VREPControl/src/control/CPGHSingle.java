@@ -97,15 +97,22 @@ public class CPGHSingle extends ParameterMask {
 		this(extrap, freq, samePhaseDiff, blockfrequency);
 		this.snake = snake;
 	}
-
-	public void growParam(int numberofModules) {
-
+	
+	public void growParam(int numberofModules){
 		float[] grownparam;
 		if (getParameters() == null) {
 			System.err.println("CPGSingle");
 			System.err.println("Parameters have not been set yet");
 			System.exit(-1);
 		}
+		grownparam = organize(numberofModules,getParameters()); 
+		maskedparameters = adjustParam(grownparam);
+		
+	}
+
+	public float[] organize(int numberofModules, float[] parameters) {
+
+		float[] grownparam;
 
 		if (blockfrequency) {
 			// parameters.length <= 30
@@ -114,14 +121,14 @@ public class CPGHSingle extends ParameterMask {
 
 			for (int i = 0; i < grownparam.length; i = i + numberofParameters) {
 				for (int j = 0; j < 5; j++) {
-					grownparam[i + j] = getParameters()[j];
-					grownparam[i + j + 5] = getParameters()[j + 5];
+					grownparam[i + j] = parameters[j];
+					grownparam[i + j + 5] = parameters[j + 5];
 					grownparam[i + j + 30] = freq;
 				}
 
 				if (samePhaseDiff) {
 					// parameters.length = 15
-					if (getParameters().length != 15) {
+					if (parameters.length != 15) {
 						System.err.println("CPGHSingle");
 						System.err.println("Parameters must be of size 15 since samePhaseDiff is " + samePhaseDiff
 								+ " and blockfrequency is " + blockfrequency);
@@ -129,36 +136,36 @@ public class CPGHSingle extends ParameterMask {
 					}
 					if (!snake) {
 						for (int j = 0; j < 4; j++) {
-							grownparam[i + j + 10] = getParameters()[10];
-							grownparam[i + j + 14] = getParameters()[11];
-							grownparam[i + j + 18] = getParameters()[12];
-							grownparam[i + j + 22] = getParameters()[13];
-							grownparam[i + j + 26] = getParameters()[14];
+							grownparam[i + j + 10] = parameters[10];
+							grownparam[i + j + 14] = parameters[11];
+							grownparam[i + j + 18] = parameters[12];
+							grownparam[i + j + 22] = parameters[13];
+							grownparam[i + j + 26] = parameters[14];
 						}
 					} else {
-						grownparam[i + 10] = getParameters()[10];
-						grownparam[i + 14] = getParameters()[11];
-						grownparam[i + 18] = getParameters()[12];
-						grownparam[i + 22] = getParameters()[13];
-						grownparam[i + 26] = getParameters()[14];
+						grownparam[i + 10] = parameters[10];
+						grownparam[i + 14] = parameters[11];
+						grownparam[i + 18] = parameters[12];
+						grownparam[i + 22] = parameters[13];
+						grownparam[i + 26] = parameters[14];
 						for (int j = 1; j < 4; j++) {
-							grownparam[i + j + 10] = -getParameters()[10];
-							grownparam[i + j + 14] = -getParameters()[11];
-							grownparam[i + j + 18] = -getParameters()[12];
-							grownparam[i + j + 22] = -getParameters()[13];
-							grownparam[i + j + 26] = -getParameters()[14];
+							grownparam[i + j + 10] = -parameters[10];
+							grownparam[i + j + 14] = -parameters[11];
+							grownparam[i + j + 18] = -parameters[12];
+							grownparam[i + j + 22] = -parameters[13];
+							grownparam[i + j + 26] = -parameters[14];
 						}
 					}
 				} else {
 					// parameters.length = 30
-					if (getParameters().length != 30) {
+					if (parameters.length != 30) {
 						System.err.println("CPGHSingle");
 						System.err.println("Parameters must be of size 30 since samePhaseDiff is " + samePhaseDiff
 								+ " and blockfrequency is " + blockfrequency);
 						System.exit(-1);
 					}
 					for (int j = 0; j < 20; j++) {
-						grownparam[i + j + 10] = getParameters()[j + 10];
+						grownparam[i + j + 10] = parameters[j + 10];
 					}
 				}
 
@@ -170,63 +177,63 @@ public class CPGHSingle extends ParameterMask {
 			grownparam = new float[numberofParameters * numberofModules];
 			for (int i = 0; i < grownparam.length; i = i + numberofParameters) {
 				for (int j = 0; j < 5; j++) {
-					grownparam[i + j] = getParameters()[j];
-					grownparam[i + j + 5] = getParameters()[j + 5];
+					grownparam[i + j] = parameters[j];
+					grownparam[i + j + 5] = parameters[j + 5];
 					if (samePhaseDiff) {
 						// parameters.length = 20
-						if (getParameters().length != 20) {
+						if (parameters.length != 20) {
 							System.err.println("CPGHSingle");
 							System.err.println("Parameters must be of size 20 since samePhaseDiff is " + samePhaseDiff
 									+ " and blockfrequency is " + blockfrequency);
 							System.exit(-1);
 						}
-						grownparam[i + j + 30] = getParameters()[j + 15];
+						grownparam[i + j + 30] = parameters[j + 15];
 					} else {
 						// parameters.length = 35
-						if (getParameters().length != 35) {
+						if (parameters.length != 35) {
 							System.err.println("CPGHSingle");
 							System.err.println("Parameters must be of size 35 since samePhaseDiff is " + samePhaseDiff
 									+ " and blockfrequency is " + blockfrequency);
 							System.exit(-1);
 						}
-						grownparam[i + j + 30] = getParameters()[j + 30];
+						grownparam[i + j + 30] = parameters[j + 30];
 					}
 				}
 				if (samePhaseDiff) {
 					// parameters.length = 20
 					if (!snake) {
 						for (int j = 0; j < 4; j++) {
-							grownparam[i + j + 10] = getParameters()[10];
-							grownparam[i + j + 14] = getParameters()[11];
-							grownparam[i + j + 18] = getParameters()[12];
-							grownparam[i + j + 22] = getParameters()[13];
-							grownparam[i + j + 26] = getParameters()[14];
+							grownparam[i + j + 10] = parameters[10];
+							grownparam[i + j + 14] = parameters[11];
+							grownparam[i + j + 18] = parameters[12];
+							grownparam[i + j + 22] = parameters[13];
+							grownparam[i + j + 26] = parameters[14];
 						}
 					} else {
-						grownparam[i + 10] = getParameters()[10];
-						grownparam[i + 14] = getParameters()[11];
-						grownparam[i + 18] = getParameters()[12];
-						grownparam[i + 22] = getParameters()[13];
-						grownparam[i + 26] = getParameters()[14];
+						grownparam[i + 10] = parameters[10];
+						grownparam[i + 14] = parameters[11];
+						grownparam[i + 18] = parameters[12];
+						grownparam[i + 22] = parameters[13];
+						grownparam[i + 26] = parameters[14];
 						for (int j = 1; j < 4; j++) {
-							grownparam[i + j + 10] = -getParameters()[10];
-							grownparam[i + j + 14] = -getParameters()[11];
-							grownparam[i + j + 18] = -getParameters()[12];
-							grownparam[i + j + 22] = -getParameters()[13];
-							grownparam[i + j + 26] = -getParameters()[14];
+							grownparam[i + j + 10] = -parameters[10];
+							grownparam[i + j + 14] = -parameters[11];
+							grownparam[i + j + 18] = -parameters[12];
+							grownparam[i + j + 22] = -parameters[13];
+							grownparam[i + j + 26] = -parameters[14];
 						}
 					}
 				} else {
 					// parameters.length = 35
 					for (int j = 0; j < 20; j++) {
-						grownparam[i + j + 10] = getParameters()[j + 10];
+						grownparam[i + j + 10] = parameters[j + 10];
 					}
 				}
 
 			}
 		}
-		maskedparameters = adjustParam(grownparam);
-
+		
+		return grownparam;
 	}
 
 	public boolean isSamePhaseDiff() {
