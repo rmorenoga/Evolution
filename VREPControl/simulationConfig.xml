@@ -18,7 +18,7 @@
 	<MaxSimulationTime>30</MaxSimulationTime>
         <TimeStartSimulation>5</TimeStartSimulation>
         <NMaxModulos>16</NMaxModulos>
-	<UseMPI>true</UseMPI>
+	<UseMPI>false</UseMPI>
 	<PoseUpdateRate>0.1</PoseUpdateRate>
         <Vrep>
             <!-- Example of the Vrep´s Path

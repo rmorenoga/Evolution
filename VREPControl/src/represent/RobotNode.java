@@ -245,7 +245,7 @@ public class RobotNode {
     		}
     		int selfori = dad.getConnection(this).getChildrenOrientation();
     		connectedori.add((dadf*10)+selfori);
-    		for(int face = 0;face<nFaces;face++){
+    		for(int face = 1;face<nFaces;face++){
     			ori=-1;
     			for(int index=0;index<connections.size();index++){
     				if (face == connections.get(index).getDadFace()){

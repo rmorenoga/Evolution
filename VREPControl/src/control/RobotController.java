@@ -18,6 +18,7 @@ public class RobotController {
 	public CharWA strEP;
 	public CharWA strMH;
 	public CharWA strConn;
+	public CharWA strConnori;
 
 	int[] connectedhandles;
 	int[] connectedori;
@@ -171,6 +172,12 @@ public class RobotController {
 		char[] q = Connhandles.getCharArrayFromArray();
 		strConn = new CharWA(q.length);
 		System.arraycopy(q, 0, strConn.getArray(), 0, q.length);
+		
+		IntWA Connori = new IntWA(connectedori.length);
+		System.arraycopy(connectedori, 0, Connori.getArray(), 0, connectedori.length);
+		char[] s = Connori.getCharArrayFromArray();
+		strConnori = new CharWA(s.length);
+		System.arraycopy(s, 0, strConnori.getArray(), 0, s.length);
 
 		IntWA Modhandles = new IntWA(moduleHandlers.length);
 		System.arraycopy(moduleHandlers, 0, Modhandles.getArray(), 0, moduleHandlers.length);
@@ -192,8 +199,9 @@ public class RobotController {
 		int result1 = vrep.simxSetStringSignal(clientID, "ControlParam", strCP, vrep.simx_opmode_oneshot);
 		int result2 = vrep.simxSetStringSignal(clientID, "ConnHandles", strConn, vrep.simx_opmode_oneshot);
 		int result3 = vrep.simxSetStringSignal(clientID, "ModHandles", strMH, vrep.simx_opmode_oneshot);
+		int result4 = vrep.simxSetStringSignal(clientID, "ConnOri", strConnori, vrep.simx_opmode_oneshot);
 		if (extrap > 0) {
-			int result4 = vrep.simxSetStringSignal(clientID, "ExtraParam", strEP, vrep.simx_opmode_oneshot);
+			int result5 = vrep.simxSetStringSignal(clientID, "ExtraParam", strEP, vrep.simx_opmode_oneshot);
 		}
 		// Unpause communication
 		vrep.simxPauseCommunication(clientID, false);
