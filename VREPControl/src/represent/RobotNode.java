@@ -19,6 +19,7 @@ public class RobotNode {
 	private RobotNode dad;
 	private List<RobotNode> children = new ArrayList<RobotNode>();
 	private List<Integer> connectedhandlers;
+	private List<Integer> connectedori;
 	private List<Connection> connections = new ArrayList<Connection>();
 	private List<Integer> usedFaces = new ArrayList<Integer>();
 	private int nModulesSubTree = 1;
@@ -221,10 +222,50 @@ public class RobotNode {
     	
     	
     }
+    
+    public void askfororientations(){
+    	connectedori = new ArrayList<Integer>();
+    	int ori;
+    	if(dad == null){
+    		connectedori.add(-1);
+    		for(int face = 0;face<nFaces;face++){
+    			ori=-1;
+    			for(int index=0;index<connections.size();index++){
+    				if (face == connections.get(index).getDadFace()){
+    					ori = connections.get(index).getChildrenOrientation();
+    					children.get(index).askfororientations();
+    				}
+    			}
+    			connectedori.add(ori);
+    		}
+    	}else{
+    		int dadf = dad.getConnection(this).getDadFace();
+    		if(dad.getDad()==null){
+    			dadf = dadf +1;
+    		}
+    		int selfori = dad.getConnection(this).getChildrenOrientation();
+    		connectedori.add((dadf*10)+selfori);
+    		for(int face = 0;face<nFaces;face++){
+    			ori=-1;
+    			for(int index=0;index<connections.size();index++){
+    				if (face == connections.get(index).getDadFace()){
+    					ori = connections.get(index).getChildrenOrientation();
+    					children.get(index).askfororientations();
+    				}
+    			}
+    			connectedori.add(ori);
+    		}
+    	}
+    	System.out.println(connectedori);
+    }
 
 
 	public List<Integer> getConnectedhandlers() {
 		return connectedhandlers;
+	}
+	
+	public List<Integer> getConnectedori(){
+		return connectedori;
 	}
 
 

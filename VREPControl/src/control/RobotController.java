@@ -20,6 +20,7 @@ public class RobotController {
 	public CharWA strConn;
 
 	int[] connectedhandles;
+	int[] connectedori;
 
 	protected String controllerName;
 	protected remoteApi vrep;
@@ -48,6 +49,7 @@ public class RobotController {
 		this.numberofModules = moduleHandlers.length;
 		this.numberofParameters = SimulationConfiguration.getControllerparamnumber();
 		connectedhandles = robot.getTree().getHandlerListint();
+		connectedori = robot.getTree().getOriListint();
 		
 		parammask.growParam(numberofModules);
 		
@@ -75,6 +77,7 @@ public class RobotController {
 		this.numberofModules = moduleHandlers.length;
 		this.numberofParameters = SimulationConfiguration.getControllerparamnumber();
 		connectedhandles = robot.getTree().getHandlerListint();
+		connectedori = robot.getTree().getOriListint();
 		if (parameters.length >= numberofParameters * numberofModules) {
 			this.parameters = parameters;
 		} else {
