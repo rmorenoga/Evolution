@@ -50,7 +50,8 @@ public class EmergeModuleSet extends ModuleSet {
         
         //The name of the different modules (they have to match with the name of
         //the file to load in the simulator)
-        moduleName[0] = "initialemergeModule";
+        //moduleName[0] = "initialemergeModule";
+        moduleName[0] = "emergeModule";
         moduleName[1] = "emergeModule";
         //define the different properties
         //number of faces for each type of module
@@ -104,8 +105,8 @@ public class EmergeModuleSet extends ModuleSet {
         //Rodrigo´s module
         originFaceVector[1][0] = new Vector3D(-0.0385, 0, 0);   //Face 0
         originFaceVector[1][1] = new Vector3D( 0.0385, 0, 0);       //Face 1
-        originFaceVector[1][2] = new Vector3D(0.008, 0, 0.0305);  //Face 2
-        originFaceVector[1][3] = new Vector3D(0.008, 0, -0.0305);  //Face 3
+        originFaceVector[1][2] = new Vector3D(0.008, -0.0305, 0);  //Face 2
+        originFaceVector[1][3] = new Vector3D(0.008, 0.0305, 0);  //Face 3
         
         /**********************************************************************/
         /************************** normalFaceVector **************************/
@@ -120,8 +121,8 @@ public class EmergeModuleSet extends ModuleSet {
         //Rodrigo´s module
         normalFaceVector[1][0] = new Vector3D(-1, 0, 0);     //Face 0
         normalFaceVector[1][1] = new Vector3D(1,0,0);     //Face 1
-        normalFaceVector[1][2] = new Vector3D(0, 0, 1);    //Face 2
-        normalFaceVector[1][3] = new Vector3D(0, 0, -1);     //Face 3
+        normalFaceVector[1][2] = new Vector3D(0, -1, 0);    //Face 2
+        normalFaceVector[1][3] = new Vector3D(0, 1, 0);     //Face 3
         
         /**********************************************************************/
         /************************** boundingBox **************************/
@@ -132,7 +133,8 @@ public class EmergeModuleSet extends ModuleSet {
         boundingBox[0] = new Vector3D(0.061,0.055,0.077);
         
         //Rodrigo´s module
-        boundingBox[1] = new Vector3D(0.055,0.061,0.077);
+        //boundingBox[1] = new Vector3D(0.055,0.061,0.077);
+        boundingBox[1] = new Vector3D(0.061,0.055,0.077);
         
         /**********************************************************************/
         /*************************** symmetricFace  ***************************/
