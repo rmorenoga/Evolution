@@ -160,6 +160,12 @@ public class RobotController {
 			connectedhandles[i] = connectedhandles[i] + 1;
 			}
 		}
+		
+		for (int i = 0; i < connectedori.length; i++) {
+			if(connectedori[i] != -1){
+			connectedori[i] = connectedori[i] + 1;
+			}
+		}
 
 		FloatWA ControlParam = new FloatWA(parameters.length);
 		System.arraycopy(parameters, 0, ControlParam.getArray(), 0, parameters.length);
