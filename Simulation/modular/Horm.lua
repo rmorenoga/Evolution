@@ -18,11 +18,11 @@ function ghormone(connh,sensorR,sensorD,baseprob)
         end
     end
 
-  --  if not sensed then
-    --    hormones[1] = 1
-   -- end
-    --if(r>baseprob) then
+    --if not sensed then
         hormones[1] = 1
+    --end
+    --if(r>baseprob) then
+        --hormones[1] = 1
     --end
 
     return hormones,sensed               

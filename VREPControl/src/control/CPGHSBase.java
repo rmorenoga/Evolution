@@ -2,8 +2,9 @@ package control;
 
 public class CPGHSBase extends CPGHSingle{
 	
-	private float[] fixed = new float[] { -1.0f, -0.05675713991376258f, -0.2704007348336987f, 0.3f, 0.3f, 0.3f, 0.4f };
-
+	//private float[] fixed = new float[] { -1.0f, -0.05675713991376258f, -0.2704007348336987f, 0.3f, 0.3f, 0.3f, 0.4f };
+	private float[] fixed = new float[] { 0.5f, 0.0f, 0.3f, 0.3f, 0.3f, 0.3f, 0.4f };
+	
 	public CPGHSBase(int extrap, boolean samePhaseDiff, boolean blockfrequency) {
 		super(extrap, samePhaseDiff, blockfrequency);
 	}
