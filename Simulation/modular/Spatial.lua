@@ -50,3 +50,15 @@ function getTransDictionary()
 
 	return dictionary
 end
+
+function hsptransform(horm,face,ori,model)
+  local thorm = {}
+  if(model == 1) then
+    local horms = {}
+    for i = 1,6 do 
+      horms[i] = horm[i+1]
+    end
+    thorm  = sptransform(horms,face,ori)
+  end
+  return thorm
+end
