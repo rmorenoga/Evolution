@@ -1,4 +1,18 @@
-function ghormone(connh,sensorR,sensorD,baseprob)
+function ghormone(connh,sensorR,sensorD,sensorO,Genmodel)
+	local hormones = {}
+	local sendhorm = false
+
+	if (Genmodel=='baseHormone') then
+		baseprob = 0.75
+		hormones,sendhorm = ghormonebase(connh,sensorR,sensorD,baseprob)
+	else
+		print('General Hormone Generation Model is not recognized')
+	end
+
+	return hormones,sendhorm
+end
+
+function ghormonebase(connh,sensorR,sensorD,baseprob)
     local hormones = {}
     local sensed = false
     local r = math.random()	
@@ -26,6 +40,25 @@ function ghormone(connh,sensorR,sensorD,baseprob)
     --end
 
     return hormones,sensed               
+end
+
+function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltaparam,GenModel)
+	local hormnew = {}
+	local ampdnew = 0
+	local offdnew = 0
+	local phasediffnew = {}
+	local vnew = 0
+
+	if(GenModel == 'baseHormone') then
+		for i=1,#hormones do
+			hormnew[i] = hormones[i]
+		ampdnew,offdnew,phasediffnew,vnew = receptors(hormones,ampd,offd,phasediff,v,ampset,offsetset,phasediffset,vset,delta)
+	else
+		print('General Hormone Generation Model is not recognized')
+	end
+
+
+	return hormnew,ampdnew,offdnew,phasediffnew,vnew
 end
 
 function receptorsf(hormones,ampd,offd,phasediff,v,ampset,offsetset,phasediffset,vset,delta,count)
@@ -129,7 +162,27 @@ function receptors(hormones,ampd,offd,phasediff,v,ampset,offsetset,phasediffset,
     return ampdnew,offdnew,phasediffnew,vnew
 end
 
-function propagate(prob)
+function propagate(rhorm,Propmodel,Direction)
+	local phorm ={}
+
+ 
+ 	if(Propmodel == 'Attenuate') then
+ 		hormnew,active = attenuate(horm)
+ 	elseif(Propmodel=='Probability') then
+ 		for i=1,#horm do
+ 			hormnew[i] = horm[i]
+ 		end
+ 		active = propagateprob(0.25)
+ 	else 
+ 		print('Hormone propagation Model not recognized')
+ 	end
+
+
+ 	return phorm
+end
+
+
+function propagateprob(prob)
     test = math.random()
     if(test>prob) then --Threshold 0.75
         return true
@@ -253,3 +306,5 @@ function sortbycount(count)
     return sorted
 
 end
+
+
