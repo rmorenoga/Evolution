@@ -62,3 +62,86 @@ function hsptransform(horm,face,ori,model)
   end
   return thorm
 end
+
+
+function orientation(sensorO)
+	local ori = -1
+	local sensorOm ={}
+	local index = 0
+	local sign = 0
+
+	for i=1,#sensorO do
+		sensorOm[i] = sensorO[i]*100
+	end
+
+	index,sign = findmax(sensorOm)
+
+	if (index == 3 and sign == -1) then
+		ori = 1
+		elseif (index == 2 and sign == 1) then
+			ori = 2
+			elseif (index == 3 and sign == 1) then
+				ori = 3
+				elseif (index == 2 and sign == -1) then
+					ori = 4
+					elseif (index == 1 and sign ==-1) then
+						ori = 5
+						elseif (index == 1 and sign == 1) then
+							ori = 6
+						end
+
+	return ori
+
+end
+
+
+
+function findmax(vector)
+	local maxitem = -1
+	local index = 0
+	local vectorabs = {}
+	local vectorsign = {}
+
+	for i=1,#vector do
+		vectorabs[i] = math.abs(vector[i])
+	end
+
+	for i=1,#vector do
+		vectorsign[i] = vector[i]/vectorabs[i]
+	end
+
+	for i=1,#vectorabs do
+		if (vectorabs[i]>maxitem) then
+			maxitem = vectorabs[i]
+			index = i
+		end
+	end
+
+	maxitem = vectorabs[index]*vectorsign[index]
+
+	sign = vectorsign[index]
+
+	return index,sign,maxitem
+
+end
+
+function groundsen(ori)
+	local ground = 0
+	if (ori == 1) then
+		ground = 0
+		elseif (ori == 2) then
+			ground = 4
+			elseif (ori == 3) then
+				ground = 0
+				elseif (ori == 4) then
+					ground = 3
+				elseif (ori == 5) then
+					ground = 1
+					elseif (ori == 6) then
+						ground = 2
+					end
+
+	return ground
+end
+
+

@@ -1,17 +1,24 @@
 require('lua/modular/GenHormone')
 require('lua/modular/PropagateH')
 require('lua/modular/ReceptorsH')
+require('lua/modular/Spatial')
 
 function ghormone(connh,sensorR,sensorD,sensorO,Genmodel)
 	local hormones = {}
 	local sendhorm = false
+	local ori = 0
 
 	--Returns the generated hormone based on the activated sensors, the orientation of the model: sensorO
 	--according to the the GenModel
-
+	--Extract pointing down information and use it to prevent the generation of the down hormone
+	print('**************')
+	for k,v in pairs(sensorR) do print(k,v) end
+	ori = orientation(sensorO)
+	print(ori)
 	if (Genmodel=='baseHormone') then
 		baseprob = 0.75
-		hormones,sendhorm = ghormonebase(connh,sensorR,sensorD,baseprob)
+		hormones,sendhorm = ghormonebase(connh,sensorR,sensorD,baseprob,ori)
+		for k,v in pairs(hormones) do print(k,v) end
 	else
 		print('General Hormone Generation Model is not recognized')
 	end
@@ -32,6 +39,8 @@ function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltapar
 	--Must update the CPG parameters by acting on the generated hormone: hormones and on the received hormones: rhorm
 	--taking into account the connori orientations and the orientation of the module
 	--Modifies the generated hormone according to the GenModel
+
+	--Apply spatial transformation to incoming messages and extract orientation information before applying receptors
 
 	if(GenModel == 'baseHormone') then
 		local delta = 0.01
