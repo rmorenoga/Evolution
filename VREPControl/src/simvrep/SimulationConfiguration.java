@@ -147,7 +147,7 @@ public static SceneBuilder getScene() {
             if (SimulationConfiguration.controller.contentEquals("CPG")){
             	SimulationConfiguration.controllerparamnumber = 6;
             }else if (SimulationConfiguration.controller.contentEquals("CPGH") || SimulationConfiguration.controller.contentEquals("CPGHF") || SimulationConfiguration.controller.contentEquals("CPGHLog")|| SimulationConfiguration.controller.contentEquals("CPGHFLog")){
-            	SimulationConfiguration.controllerparamnumber = 35;
+            	SimulationConfiguration.controllerparamnumber = 49;
             }
             
             

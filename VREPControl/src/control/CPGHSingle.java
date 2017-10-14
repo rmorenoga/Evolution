@@ -120,113 +120,125 @@ public class CPGHSingle extends ParameterMask {
 			grownparam = new float[numberofParameters * numberofModules];
 
 			for (int i = 0; i < grownparam.length; i = i + numberofParameters) {
-				for (int j = 0; j < 5; j++) {
+				for (int j = 0; j < 7; j++) {
 					grownparam[i + j] = parameters[j];
-					grownparam[i + j + 5] = parameters[j + 5];
-					grownparam[i + j + 30] = freq;
+					grownparam[i + j + 7] = parameters[j + 7];
+					grownparam[i + j + 42] = freq;
 				}
 
 				if (samePhaseDiff) {
-					// parameters.length = 15
-					if (parameters.length != 15) {
+					// parameters.length = 21
+					if (parameters.length != 21) {
 						System.err.println("CPGHSingle");
-						System.err.println("Parameters must be of size 15 since samePhaseDiff is " + samePhaseDiff
+						System.err.println("Parameters must be of size 21 since samePhaseDiff is " + samePhaseDiff
 								+ " and blockfrequency is " + blockfrequency);
 						System.exit(-1);
 					}
 					if (!snake) {
 						for (int j = 0; j < 4; j++) {
-							grownparam[i + j + 10] = parameters[10];
-							grownparam[i + j + 14] = parameters[11];
-							grownparam[i + j + 18] = parameters[12];
-							grownparam[i + j + 22] = parameters[13];
-							grownparam[i + j + 26] = parameters[14];
+							grownparam[i + j + 14] = parameters[14];
+							grownparam[i + j + 18] = parameters[15];
+							grownparam[i + j + 22] = parameters[16];
+							grownparam[i + j + 26] = parameters[17];
+							grownparam[i + j + 30] = parameters[18];
+							grownparam[i + j + 34] = parameters[19];
+							grownparam[i + j + 38] = parameters[20];
 						}
 					} else {
-						grownparam[i + 10] = parameters[10];
-						grownparam[i + 14] = parameters[11];
-						grownparam[i + 18] = parameters[12];
-						grownparam[i + 22] = parameters[13];
-						grownparam[i + 26] = parameters[14];
+						grownparam[i + 14] = parameters[14];
+						grownparam[i + 18] = parameters[15];
+						grownparam[i + 22] = parameters[16];
+						grownparam[i + 26] = parameters[17];
+						grownparam[i + 30] = parameters[18];
+						grownparam[i + 34] = parameters[19];
+						grownparam[i + 38] = parameters[20];
 						for (int j = 1; j < 4; j++) {
-							grownparam[i + j + 10] = -parameters[10];
-							grownparam[i + j + 14] = -parameters[11];
-							grownparam[i + j + 18] = -parameters[12];
-							grownparam[i + j + 22] = -parameters[13];
-							grownparam[i + j + 26] = -parameters[14];
+							grownparam[i + j + 14] = -parameters[14];
+							grownparam[i + j + 18] = -parameters[15];
+							grownparam[i + j + 22] = -parameters[16];
+							grownparam[i + j + 26] = -parameters[17];
+							grownparam[i + j + 30] = -parameters[18];
+							grownparam[i + j + 34] = -parameters[19];
+							grownparam[i + j + 38] = -parameters[20];
 						}
 					}
 				} else {
 					// parameters.length = 30
-					if (parameters.length != 30) {
+					if (parameters.length != 42) {
 						System.err.println("CPGHSingle");
-						System.err.println("Parameters must be of size 30 since samePhaseDiff is " + samePhaseDiff
+						System.err.println("Parameters must be of size 42 since samePhaseDiff is " + samePhaseDiff
 								+ " and blockfrequency is " + blockfrequency);
 						System.exit(-1);
 					}
-					for (int j = 0; j < 20; j++) {
-						grownparam[i + j + 10] = parameters[j + 10];
+					for (int j = 0; j < 28; j++) {
+						grownparam[i + j + 14] = parameters[j + 14];
 					}
 				}
 
 			}
 
 		} else {
-			// parameters.length <= 35
+			// parameters.length <= 49
 
 			grownparam = new float[numberofParameters * numberofModules];
 			for (int i = 0; i < grownparam.length; i = i + numberofParameters) {
-				for (int j = 0; j < 5; j++) {
+				for (int j = 0; j < 7; j++) {
 					grownparam[i + j] = parameters[j];
-					grownparam[i + j + 5] = parameters[j + 5];
+					grownparam[i + j + 7] = parameters[j + 7];
 					if (samePhaseDiff) {
-						// parameters.length = 20
-						if (parameters.length != 20) {
+						// parameters.length = 28
+						if (parameters.length != 28) {
 							System.err.println("CPGHSingle");
-							System.err.println("Parameters must be of size 20 since samePhaseDiff is " + samePhaseDiff
+							System.err.println("Parameters must be of size 28 since samePhaseDiff is " + samePhaseDiff
 									+ " and blockfrequency is " + blockfrequency);
 							System.exit(-1);
 						}
-						grownparam[i + j + 30] = parameters[j + 15];
+						grownparam[i + j + 42] = parameters[j + 21];
 					} else {
-						// parameters.length = 35
-						if (parameters.length != 35) {
+						// parameters.length = 49
+						if (parameters.length != 49) {
 							System.err.println("CPGHSingle");
-							System.err.println("Parameters must be of size 35 since samePhaseDiff is " + samePhaseDiff
+							System.err.println("Parameters must be of size 49 since samePhaseDiff is " + samePhaseDiff
 									+ " and blockfrequency is " + blockfrequency);
 							System.exit(-1);
 						}
-						grownparam[i + j + 30] = parameters[j + 30];
+						grownparam[i + j + 42] = parameters[j + 42];
 					}
 				}
 				if (samePhaseDiff) {
-					// parameters.length = 20
+					// parameters.length = 28
 					if (!snake) {
 						for (int j = 0; j < 4; j++) {
-							grownparam[i + j + 10] = parameters[10];
-							grownparam[i + j + 14] = parameters[11];
-							grownparam[i + j + 18] = parameters[12];
-							grownparam[i + j + 22] = parameters[13];
-							grownparam[i + j + 26] = parameters[14];
+							grownparam[i + j + 14] = parameters[14];
+							grownparam[i + j + 18] = parameters[15];
+							grownparam[i + j + 22] = parameters[16];
+							grownparam[i + j + 26] = parameters[17];
+							grownparam[i + j + 30] = parameters[18];
+							grownparam[i + j + 34] = parameters[19];
+							grownparam[i + j + 38] = parameters[20];
 						}
 					} else {
-						grownparam[i + 10] = parameters[10];
-						grownparam[i + 14] = parameters[11];
-						grownparam[i + 18] = parameters[12];
-						grownparam[i + 22] = parameters[13];
-						grownparam[i + 26] = parameters[14];
+						grownparam[i + 14] = parameters[14];
+						grownparam[i + 18] = parameters[15];
+						grownparam[i + 22] = parameters[16];
+						grownparam[i + 26] = parameters[17];
+						grownparam[i + 30] = parameters[18];
+						grownparam[i + 34] = parameters[19];
+						grownparam[i + 38] = parameters[20];
 						for (int j = 1; j < 4; j++) {
-							grownparam[i + j + 10] = -parameters[10];
-							grownparam[i + j + 14] = -parameters[11];
-							grownparam[i + j + 18] = -parameters[12];
-							grownparam[i + j + 22] = -parameters[13];
-							grownparam[i + j + 26] = -parameters[14];
+							grownparam[i + j + 14] = -parameters[14];
+							grownparam[i + j + 18] = -parameters[15];
+							grownparam[i + j + 22] = -parameters[16];
+							grownparam[i + j + 26] = -parameters[17];
+							grownparam[i + j + 30] = -parameters[18];
+							grownparam[i + j + 34] = -parameters[19];
+							grownparam[i + j + 38] = -parameters[20];
 						}
 					}
 				} else {
-					// parameters.length = 35
-					for (int j = 0; j < 20; j++) {
-						grownparam[i + j + 10] = parameters[j + 10];
+					// parameters.length = 49
+					for (int j = 0; j < 28; j++) {
+						grownparam[i + j + 14] = parameters[j + 14];
 					}
 				}
 

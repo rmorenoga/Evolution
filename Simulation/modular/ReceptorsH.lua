@@ -8,15 +8,16 @@ function receptorsbase(hormones,ampd,offd,phasediff,v,deltaparam,delta)
         phasediffnew[j] = phasediff[j]
     end
 
+
     local ampset = {}
     local offsetset = {}
     local vset = {}
     local phasediffset = {}
 
-    for i=1,5 do
+    for i=1,7 do
         ampset[i] = deltaparam[i]
-        offsetset[i] = deltaparam[i+5]
-        vset[i] = deltaparam[i+30]
+        offsetset[i] = deltaparam[i+7]
+        vset[i] = deltaparam[i+42]
     end
 
     phasediffset[1]={}
@@ -24,14 +25,18 @@ function receptorsbase(hormones,ampd,offd,phasediff,v,deltaparam,delta)
     phasediffset[3]={}
     phasediffset[4]={}
     phasediffset[5]={}
+    phasediffset[6]={}
+    phasediffset[7]={}
 
 
     for i=1,4 do
-        phasediffset[1][i] = deltaparam[i+10]
-        phasediffset[2][i] = deltaparam[i+14]
-        phasediffset[3][i] = deltaparam[i+18]
-        phasediffset[4][i] = deltaparam[i+22]
-        phasediffset[5][i] = deltaparam[i+26]
+        phasediffset[1][i] = deltaparam[i+14]
+        phasediffset[2][i] = deltaparam[i+18]
+        phasediffset[3][i] = deltaparam[i+22]
+        phasediffset[4][i] = deltaparam[i+26]
+        phasediffset[5][i] = deltaparam[i+30]
+        phasediffset[6][i] = deltaparam[i+34]
+        phasediffset[7][i] = deltaparam[i+38]
     end
 
 

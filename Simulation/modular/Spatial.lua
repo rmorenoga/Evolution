@@ -1,12 +1,12 @@
-function sptransform(horm,face,ori)
+function sptransform(horm,face,connori)
   local thorm ={}
-	local transdiction = getTransDictionary();
+	local transdiction = getTransDictionary()
   --for k,v in pairs(transdiction[1][1][1]) do print(k,v) end
-  if (face == 1) then --If message comming from male face two numbers are expected in ori
-    dadface = math.floor(ori/10)
-    myori = ori - (dadface*10)
-    print(dadface)
-    print(myori)
+  if (face == 1) then --If message comming from male face two numbers are expected in connori
+    dadface = math.floor(connori/10)
+    myori = connori - (dadface*10)
+    --print(dadface)
+    --print(myori)
     local entry = transdiction[face][dadface][myori]
     --for k,v in pairs(entry) do print(k,v) end
     for i=1,#entry do
@@ -14,9 +14,9 @@ function sptransform(horm,face,ori)
       --thorm = {horm[entry[1]],horm[entry[2]],horm[entry[3]],horm[entry[4]],horm[entry[5]],horm[entry[6]]}
     end
     
-  else --If message comes from female face one number is expected in ori
-    print(ori)
-    local entry = transdiction[face][ori]
+  else --If message comes from female face one number is expected in connori
+    --print(connori)
+    local entry = transdiction[face][connori]
     for i=1,#entry do
       thorm[i] = horm[entry[i]]
       --thorm = {horm[entry[1]],horm[entry[2]],horm[entry[3]],horm[entry[4]],horm[entry[5]],horm[entry[6]]}
@@ -51,16 +51,22 @@ function getTransDictionary()
 	return dictionary
 end
 
-function hsptransform(horm,face,ori,model)
-  local thorm = {}
-  if(model == 1) then
-    local horms = {}
+function baseHsptransform(horm,face,connori)
+	local thorm = {}
+	local thormb = {}
+	local horms = {}
     for i = 1,6 do 
       horms[i] = horm[i+1]
     end
-    thorm  = sptransform(horms,face,ori)
-  end
-  return thorm
+
+    thorm  = sptransform(horms,face,connori)
+
+    thormb[1] = horm[1]
+    for i=1,6 do
+    	thormb[i+1] = thorm[i]
+    end
+
+    return thormb
 end
 
 

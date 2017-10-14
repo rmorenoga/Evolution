@@ -21,6 +21,8 @@ function ghormonebase(connh,sensorR,sensorD,baseprob,ori)
         end
     end
 
+    hormones[#connh+2] = -1
+    hormones[#connh+3] = -1
     --if not sensed then
         hormones[1] = 1
     --end

@@ -143,13 +143,13 @@ public class ParameterMask {
 			// + NewMin
 
 			for (int i = 0; i < parameters.length; i = i + numberofParameters) {
-				for (int j = 0; j < 5; j++) {
+				for (int j = 0; j < 7; j++) {
 					grownparam[i + j] = (((parameters[i + j] + 1) * (maxAmplitude - minAmplitude)) / 2) + minAmplitude;
-					grownparam[i + j + 5] = (((parameters[i + j + 5] + 1) * (maxOffset - minOffset)) / 2) + minOffset;
-					grownparam[i + j + 30] = (((parameters[i + j + 30] + 1) * (maxFreq - minFreq)) / 2) + minFreq;
+					grownparam[i + j + 7] = (((parameters[i + j + 7] + 1) * (maxOffset - minOffset)) / 2) + minOffset;
+					grownparam[i + j + 42] = (((parameters[i + j + 42] + 1) * (maxFreq - minFreq)) / 2) + minFreq;
 				}
-				for (int j = 0; j < 20; j++) {
-					grownparam[i + j + 10] = (((parameters[i + j + 10] + 1) * (maxPhase - minPhase)) / 2) + minPhase;
+				for (int j = 0; j < 28; j++) {
+					grownparam[i + j + 14] = (((parameters[i + j + 14] + 1) * (maxPhase - minPhase)) / 2) + minPhase;
 				}
 			}
 		}

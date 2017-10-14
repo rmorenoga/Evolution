@@ -9,16 +9,12 @@ function ghormone(connh,sensorR,sensorD,sensorO,Genmodel)
 	local ori = 0
 
 	--Returns the generated hormone based on the activated sensors, the orientation of the model: sensorO
-	--according to the the GenModel
-	--Extract pointing down information and use it to prevent the generation of the down hormone
-	print('**************')
-	for k,v in pairs(sensorR) do print(k,v) end
+	-- and according to the the GenModel
 	ori = orientation(sensorO)
-	print(ori)
+
 	if (Genmodel=='baseHormone') then
 		baseprob = 0.75
 		hormones,sendhorm = ghormonebase(connh,sensorR,sensorD,baseprob,ori)
-		for k,v in pairs(hormones) do print(k,v) end
 	else
 		print('General Hormone Generation Model is not recognized')
 	end
@@ -35,12 +31,16 @@ function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltapar
         phasediffnew[j] = phasediff[j]
     end
 	local vnew = v
+	local ori = 0
 
 	--Must update the CPG parameters by acting on the generated hormone: hormones and on the received hormones: rhorm
 	--taking into account the connori orientations and the orientation of the module
 	--Modifies the generated hormone according to the GenModel
 
 	--Apply spatial transformation to incoming messages and extract orientation information before applying receptors
+
+	--ori = orientation(sensorO)
+
 
 	if(GenModel == 'baseHormone') then
 		local delta = 0.01
@@ -55,7 +55,10 @@ function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltapar
 			if (#rhorm[i] > 0) then
 				for j=1,#rhorm[i] do
 					local exhorm = simUnpackFloatTable(rhorm[i][j])
-					ampdnew,offdnew,phasediffnew,vnew = receptorsbase(exhorm,ampdnew,offdnew,phasediffnew,vnew,deltaparam,delta)	
+					local exthorm = baseHsptransform(exhorm,i,connori[i])
+					    print('*************')
+    					for k,v in pairs(exhorm) do print(k,v) end
+					ampdnew,offdnew,phasediffnew,vnew = receptorsbase(exthorm,ampdnew,offdnew,phasediffnew,vnew,deltaparam,delta)	
 				end
 			end
 		end
