@@ -1,4 +1,4 @@
-function sptransform(horm,face,connori)
+function sphormonetransform(horm,face,connori)
   local thorm ={}
 	local transdiction = getTransDictionary()
   --for k,v in pairs(transdiction[1][1][1]) do print(k,v) end
@@ -59,7 +59,7 @@ function baseHsptransform(horm,face,connori)
       horms[i] = horm[i+1]
     end
 
-    thorm  = sptransform(horms,face,connori)
+    thorm  = sphormonetransform(horms,face,connori)
 
     thormb[1] = horm[1]
     for i=1,6 do
@@ -149,5 +149,9 @@ function groundsen(ori)
 
 	return ground
 end
+
+
+
+
 
 

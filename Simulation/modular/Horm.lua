@@ -3,6 +3,7 @@ require('lua/modular/PropagateH')
 require('lua/modular/ReceptorsH')
 require('lua/modular/Spatial')
 
+
 function ghormone(connh,sensorR,sensorD,sensorO,Genmodel)
 	local hormones = {}
 	local sendhorm = false
@@ -55,10 +56,8 @@ function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltapar
 			if (#rhorm[i] > 0) then
 				for j=1,#rhorm[i] do
 					local exhorm = simUnpackFloatTable(rhorm[i][j])
-					local exthorm = baseHsptransform(exhorm,i,connori[i])
-					    print('*************')
-    					for k,v in pairs(exhorm) do print(k,v) end
-					ampdnew,offdnew,phasediffnew,vnew = receptorsbase(exthorm,ampdnew,offdnew,phasediffnew,vnew,deltaparam,delta)	
+					--local exthorm = baseHsptransform(exhorm,i,connori[i])
+					ampdnew,offdnew,phasediffnew,vnew = receptorsbase(exhorm,ampdnew,offdnew,phasediffnew,vnew,deltaparam,delta)	
 				end
 			end
 		end
@@ -104,6 +103,41 @@ function propagate(rhorm,connh,Propmodel,Direction)
  	return phorm
 end
 
+function spatialtr(rhorm,connori,Genmodel)
+	local rhormnew = {}
+	for i=1,#rhorm do
+		rhormnew[i]={}
+	end
+	local hormnew = {}
+
+
+	print('***************')
+
+	for i=1,#rhorm do
+		print(i)
+		if (#rhorm[i] > 0) then
+			print('++++++++++++++++++')
+			print(#rhorm[i])
+			print(connori[i])
+			for j=1,#rhorm[i] do
+				print('zzzzzzzzzzzz')
+				local exhorm = simUnpackFloatTable(rhorm[i][j])
+				for k,v in pairs(exhorm) do print(k,v) end
+				if(Genmodel == 'baseHormone') then
+					hormnew = baseHsptransform(exhorm,i,connori[i])
+					for k,v in pairs(hormnew) do print(k,v) end
+				else
+					print('General Hormone Generation Model is not recognized')
+				end
+				rhormnew[i][j] =  simPackFloatTable(hormnew)
+			end
+		end
+	end
+
+
+	return rhormnew
+
+end
 
 
 
