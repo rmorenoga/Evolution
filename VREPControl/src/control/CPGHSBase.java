@@ -5,20 +5,20 @@ public class CPGHSBase extends CPGHSingle{
 	//private float[] fixed = new float[] { -1.0f, -0.05675713991376258f, -0.2704007348336987f, 0.3f, 0.3f, 0.3f, 0.4f };
 	private float[] fixed = new float[] { 0.5f, 0.0f, 0.3f, 0.3f, 0.3f, 0.3f, 0.4f };
 	
-	public CPGHSBase(int extrap, boolean samePhaseDiff, boolean blockfrequency) {
-		super(extrap, samePhaseDiff, blockfrequency);
+	public CPGHSBase(boolean samePhaseDiff, boolean blockfrequency) {
+		super(samePhaseDiff, blockfrequency);
 	}
 
-	public CPGHSBase(int extrap, boolean samePhaseDiff, boolean blockfrequency,boolean snake) {
-		super(extrap, samePhaseDiff, blockfrequency,snake);
+	public CPGHSBase(boolean samePhaseDiff, boolean blockfrequency,boolean snake) {
+		super(samePhaseDiff, blockfrequency,snake);
 	}
 	
-	public CPGHSBase(int extrap, float freq, boolean samePhaseDiff, boolean blockfrequency) {
-		super(extrap, freq, samePhaseDiff, blockfrequency);
+	public CPGHSBase(float freq, boolean samePhaseDiff, boolean blockfrequency) {
+		super(freq, samePhaseDiff, blockfrequency);
 	}
 	
-	public CPGHSBase(int extrap, float freq, boolean samePhaseDiff, boolean blockfrequency,boolean snake) {
-		super(extrap, freq, samePhaseDiff, blockfrequency,snake);
+	public CPGHSBase(float freq, boolean samePhaseDiff, boolean blockfrequency,boolean snake) {
+		super(freq, samePhaseDiff, blockfrequency,snake);
 	}
 
 	public void growParam(int numberofModules){

@@ -25,7 +25,6 @@ public class JEmP extends ObjectiveFunction {
 
 		Simulation sim;
 		String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0 , 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
-		int extraparam = 0;
 		float alpha = 0.7f;
 		IntUniform r = new IntUniform(5);
 		double fitness = 1000;
@@ -63,10 +62,10 @@ public class JEmP extends ObjectiveFunction {
 		// Parameter Mask: Allows control over which parameters are actually
 		// sent to the robot depending on its controller, ParameterMask class
 		// just sends everything adjusted for max and min values
-		// ParameterMask parammask = new ParameterMask(extraparam);
-		//CPGSingle parammask = new CPGSingle(extraparam, true,true);
-		CPGHSBase parammask = new CPGHSBase(extraparam,true,true,true);
-		parammask.setandsepParam(fullparam);
+		// ParameterMask parammask = new ParameterMask();
+		//CPGSingle parammask = new CPGSingle(true,true);
+		CPGHSBase parammask = new CPGHSBase(true,true,true);
+		parammask.setParameters(fullparam);
 
 		if (seq) {
 			char[][] subenv = new char[][] { { 's', 'l', 's' }, { 's', 'r', 's' }, { 'b' } };

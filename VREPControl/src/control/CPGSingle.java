@@ -21,14 +21,10 @@ public class CPGSingle extends ParameterMask {
 	/**
 	 * ParameterMask CPGSingle constructor
 	 * 
-	 * @param extrap
-	 *            indicates the number of extra parameters in the parameters
-	 *            coming from the external algorithm
 	 * @param samePhaseDiff
 	 *            if true only one phase difference will be used for all faces
 	 */
-	public CPGSingle(int extrap, boolean samePhaseDiff) {
-		super(extrap);
+	public CPGSingle(boolean samePhaseDiff) {
 		this.samePhaseDiff = samePhaseDiff;
 		if (controltype.contentEquals("CPG")) {
 
@@ -42,14 +38,11 @@ public class CPGSingle extends ParameterMask {
 	/**
 	 * ParameterMask CPGSingle constructor
 	 * 
-	 * @param extrap
-	 *            indicates the number of extra parameters in the parameters
-	 *            coming from the external algorithm
 	 * @param samePhaseDiff
 	 *            if true only one phase difference will be used for all faces
 	 */
-	public CPGSingle(int extrap, boolean samePhaseDiff, boolean snake) {
-		this(extrap, samePhaseDiff);
+	public CPGSingle(boolean samePhaseDiff, boolean snake) {
+		this(samePhaseDiff);
 		this.snake = snake;
 	}
 
@@ -103,6 +96,32 @@ public class CPGSingle extends ParameterMask {
 
 		maskedparameters = adjustParam(grownparam);
 
+	}
+
+	protected float[] adjustParam(float[] parameters) {
+		float[] grownparam = new float[parameters.length];
+
+		if (controltype.contentEquals("CPG")) {
+			float maxPhase = (float) SimulationConfiguration.getMaxPhase();
+			float minPhase = (float) SimulationConfiguration.getMinPhase();
+			float maxAmplitude = (float) SimulationConfiguration.getMaxAmplitude();
+			float minAmplitude = (float) SimulationConfiguration.getMinAmplitude();
+			float maxOffset = (float) SimulationConfiguration.getMaxOffset();
+			float minOffset = (float) SimulationConfiguration.getMinOffset();
+			// Assuming min raw parameter is -1 and max is 1
+						// NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax -
+						// OldMin)) + NewMin
+						// NewValue = (((OldValue - (-1)) * (NewMax - NewMin)) / (1 - (-1)))
+						// + NewMin
+			for (int i = 0; i < parameters.length; i = i + numberofParameters) {	
+					grownparam[i] = (((parameters[i] + 1) * (maxAmplitude - minAmplitude)) / 2) + minAmplitude;
+					grownparam[i+1] = (((parameters[i+1] + 1) * (maxOffset - minOffset)) / 2) + minOffset;
+				for (int j = 0; j < 4; j++) {
+					grownparam[i + j + 2] = (((parameters[i + j + 2] + 1) * (maxPhase - minPhase)) / 2) + minPhase;
+				}
+			}
+		}
+		return grownparam;
 	}
 
 }

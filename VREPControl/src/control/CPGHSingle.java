@@ -12,17 +12,13 @@ public class CPGHSingle extends ParameterMask {
 	/**
 	 * ParameterMask CPGHSingle constructor
 	 * 
-	 * @param extrap
-	 *            indicates the number of extra parameters in the parameters
-	 *            coming from the external algorithm
 	 * @param samePhaseDiff
 	 *            if true only one phase difference will be used for all faces
 	 * @param blockfrequency
 	 *            if true a preset value of frequency specified by the attribute
 	 *            freq will be used the default value is 0.4f
 	 */
-	public CPGHSingle(int extrap, boolean samePhaseDiff, boolean blockfrequency) {
-		super(extrap);
+	public CPGHSingle(boolean samePhaseDiff, boolean blockfrequency) {
 		this.samePhaseDiff = samePhaseDiff;
 		this.blockfrequency = blockfrequency;
 		if (controltype.contentEquals("CPGH") || controltype.contentEquals("CPGHF")
@@ -38,9 +34,6 @@ public class CPGHSingle extends ParameterMask {
 	/**
 	 * ParameterMask CPGHSingle constructor
 	 * 
-	 * @param extrap
-	 *            indicates the number of extra parameters in the parameters
-	 *            coming from the external algorithm
 	 * @param samePhaseDiff
 	 *            if true only one phase difference will be used for all faces
 	 * @param blockfrequency
@@ -50,17 +43,14 @@ public class CPGHSingle extends ParameterMask {
 	 *            if true the first phasediff in samePhaseDiff cases will use an
 	 *            opposite sign from the rest
 	 */
-	public CPGHSingle(int extrap, boolean samePhaseDiff, boolean blockfrequency, boolean snake) {
-		this(extrap, samePhaseDiff, blockfrequency);
+	public CPGHSingle(boolean samePhaseDiff, boolean blockfrequency, boolean snake) {
+		this(samePhaseDiff, blockfrequency);
 		this.snake = snake;
 	}
 
 	/**
 	 * ParameterMask CPGHSingle constructor
 	 * 
-	 * @param extrap
-	 *            indicates the number of extra parameters in the parameters
-	 *            coming from the external algorithm
 	 * @param freq
 	 *            the prespecified frequency in case blockfrequency is true the
 	 *            default value is 0.4f
@@ -70,17 +60,14 @@ public class CPGHSingle extends ParameterMask {
 	 *            if true a preset value of frequency specified by the attribute
 	 *            freq will be used
 	 */
-	public CPGHSingle(int extrap, float freq, boolean samePhaseDiff, boolean blockfrequency) {
-		this(extrap, samePhaseDiff, blockfrequency);
+	public CPGHSingle(float freq, boolean samePhaseDiff, boolean blockfrequency) {
+		this(samePhaseDiff, blockfrequency);
 		this.freq = freq;
 	}
 
 	/**
 	 * ParameterMask CPGHSingle constructor
 	 * 
-	 * @param extrap
-	 *            indicates the number of extra parameters in the parameters
-	 *            coming from the external algorithm
 	 * @param freq
 	 *            the prespecified frequency in case blockfrequency is true the
 	 *            default value is 0.4f
@@ -93,8 +80,8 @@ public class CPGHSingle extends ParameterMask {
 	 *            if true the first phasediff in samePhaseDiff cases will use an
 	 *            opposite sign from the rest
 	 */
-	public CPGHSingle(int extrap, float freq, boolean samePhaseDiff, boolean blockfrequency, boolean snake) {
-		this(extrap, freq, samePhaseDiff, blockfrequency);
+	public CPGHSingle(float freq, boolean samePhaseDiff, boolean blockfrequency, boolean snake) {
+		this(freq, samePhaseDiff, blockfrequency);
 		this.snake = snake;
 	}
 	
@@ -108,6 +95,38 @@ public class CPGHSingle extends ParameterMask {
 		grownparam = organize(numberofModules,getParameters()); 
 		maskedparameters = adjustParam(grownparam);
 		
+	}
+
+	protected float[] adjustParam(float[] parameters) {
+		float[] grownparam = new float[parameters.length];
+		if(controltype.contentEquals("CPGH")||controltype.contentEquals("CPGHF")||controltype.contentEquals("CPGHLog")||controltype.contentEquals("CPGHFLog")) {
+			float maxPhase = (float) SimulationConfiguration.getMaxPhase();
+			float minPhase = (float) SimulationConfiguration.getMinPhase();
+			float maxAmplitude = (float) SimulationConfiguration.getMaxAmplitude();
+			float minAmplitude = (float) SimulationConfiguration.getMinAmplitude();
+			float maxOffset = (float) SimulationConfiguration.getMaxOffset();
+			float minOffset = (float) SimulationConfiguration.getMinOffset();
+			float maxFreq = (float) SimulationConfiguration.getMaxAngularFreq();
+			float minFreq = (float) SimulationConfiguration.getMinAngularFreq();
+
+			// Assuming min raw parameter is -1 and max is 1
+			// NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax -
+			// OldMin)) + NewMin
+			// NewValue = (((OldValue - (-1)) * (NewMax - NewMin)) / (1 - (-1)))
+			// + NewMin
+
+			for (int i = 0; i < parameters.length; i = i + numberofParameters) {
+				for (int j = 0; j < 7; j++) {
+					grownparam[i + j] = (((parameters[i + j] + 1) * (maxAmplitude - minAmplitude)) / 2) + minAmplitude;
+					grownparam[i + j + 7] = (((parameters[i + j + 7] + 1) * (maxOffset - minOffset)) / 2) + minOffset;
+					grownparam[i + j + 42] = (((parameters[i + j + 42] + 1) * (maxFreq - minFreq)) / 2) + minFreq;
+				}
+				for (int j = 0; j < 28; j++) {
+					grownparam[i + j + 14] = (((parameters[i + j + 14] + 1) * (maxPhase - minPhase)) / 2) + minPhase;
+				}
+			}
+		}
+		return grownparam;
 	}
 
 	public float[] organize(int numberofModules, float[] parameters) {
