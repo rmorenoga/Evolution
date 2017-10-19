@@ -63,7 +63,9 @@
             <MaxValue>100</MaxValue>
             <MinValue>0</MinValue>
         </Weighing>
-    </Control>
+        <Genmodel>baseHormone</Genmodel>
+        <Propmodel>Attenuate</Propmodel>
+        <PropDirection>Forward</PropDirection></Control>
 
     <Tree>
     	<MaxModules>141</MaxModules>

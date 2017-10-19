@@ -21,12 +21,12 @@ public class CPGHSingle extends ParameterMask {
 	public CPGHSingle(boolean samePhaseDiff, boolean blockfrequency) {
 		this.samePhaseDiff = samePhaseDiff;
 		this.blockfrequency = blockfrequency;
-		if (controltype.contentEquals("CPGH") || controltype.contentEquals("CPGHF")
-				|| controltype.contentEquals("CPGHLog") || controltype.contentEquals("CPGHFLog")) {
+		if ((controltype.contentEquals("CPGH") || controltype.contentEquals("CPGHF")
+				|| controltype.contentEquals("CPGHLog") || controltype.contentEquals("CPGHFLog"))&& Genmodel.contentEquals("baseHormone")) {
 
 		} else {
 			System.err.println("CPGHSingle");
-			System.err.println("Controller must be of type CPGH or CPGHF");
+			System.err.println("Controller must be of type CPGH or CPGHF and Genmodel should be of type baseHormone");
 			System.exit(-1);
 		}
 	}

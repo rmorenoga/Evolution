@@ -7,11 +7,18 @@ public abstract class ParameterMask {
 	private float[] parameters;
 	protected float[] maskedparameters;
 	protected String controltype;
+	protected String Genmodel;
+	protected String Propmodel;
+	protected String PropDirection;
 	protected int numberofParameters;
+
 
 	public ParameterMask() {
 		controltype = SimulationConfiguration.getController();
-		this.numberofParameters = SimulationConfiguration.getControllerparamnumber();
+		Genmodel = SimulationConfiguration.getGenmodel();
+		Propmodel = SimulationConfiguration.getPropmodel();
+		PropDirection = SimulationConfiguration.getPropdirection();
+		numberofParameters = SimulationConfiguration.getControllerparamnumber();
 	}
 
 	/*
@@ -45,6 +52,14 @@ public abstract class ParameterMask {
 
 	public float[] getParameters() {
 		return parameters;
+	}
+	
+	public int getNumberofParameters() {
+		return numberofParameters;
+	}
+
+	public void setNumberofParameters(int numberofParameters) {
+		this.numberofParameters = numberofParameters;
 	}
 
 }

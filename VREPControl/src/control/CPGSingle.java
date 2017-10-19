@@ -26,11 +26,11 @@ public class CPGSingle extends ParameterMask {
 	 */
 	public CPGSingle(boolean samePhaseDiff) {
 		this.samePhaseDiff = samePhaseDiff;
-		if (controltype.contentEquals("CPG")) {
+		if (controltype.contentEquals("CPG") && Genmodel.contentEquals("baseHormone")) {
 
 		} else {
 			System.err.println("CPGSingle");
-			System.err.println("Controller must be of type CPG");
+			System.err.println("Controller must be of type CPG and Genmodel should be of type baseHormone");
 			System.exit(-1);
 		}
 	}

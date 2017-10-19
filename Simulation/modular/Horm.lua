@@ -111,23 +111,23 @@ function spatialtr(rhorm,connori,Genmodel)
 	local hormnew = {}
 
 
-	print('***************')
+	--print('***************')
 
 	for i=1,#rhorm do
-		print(i)
+		--print(i)
 		if (#rhorm[i] > 0) then
-			print('++++++++++++++++++')
-			print(#rhorm[i])
-			print(connori[i])
+			--print('++++++++++++++++++')
+			--print(#rhorm[i])
+			--print(connori[i])
 			for j=1,#rhorm[i] do
-				print('zzzzzzzzzzzz')
+				--print('zzzzzzzzzzzz')
 				local exhorm = simUnpackFloatTable(rhorm[i][j])
-				for k,v in pairs(exhorm) do print(k,v) end
+				--for k,v in pairs(exhorm) do print(k,v) end
 				if(Genmodel == 'baseHormone') then
 					hormnew = baseHsptransform(exhorm,i,connori[i])
-					for k,v in pairs(hormnew) do print(k,v) end
+					--for k,v in pairs(hormnew) do print(k,v) end
 				else
-					print('General Hormone Generation Model is not recognized')
+					--print('General Hormone Generation Model is not recognized')
 				end
 				rhormnew[i][j] =  simPackFloatTable(hormnew)
 			end

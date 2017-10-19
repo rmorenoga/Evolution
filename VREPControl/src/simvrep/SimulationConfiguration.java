@@ -87,6 +87,9 @@ public static SceneBuilder getScene() {
     private static double minAngularFreq;
     private static double maxOffset;
     private static double minOffset;
+    private static String genmodel;
+    private static String propmodel;
+    private static String propdirection;
 
     
     private static double maxWeighing;
@@ -159,6 +162,10 @@ public static SceneBuilder getScene() {
             SimulationConfiguration.minAngularFreq = config.getDouble("Control.AngularFreq.MinValue");
             SimulationConfiguration.maxOffset = config.getDouble("Control.Offset.MaxValue");
             SimulationConfiguration.minOffset = config.getDouble("Control.Offset.MinValue");
+            SimulationConfiguration.genmodel = config.getString("Control.Genmodel");
+            SimulationConfiguration.propmodel = config.getString("Control.Propmodel");
+            SimulationConfiguration.propdirection = config.getString("Control.PropDirection");
+            
             
             SimulationConfiguration.maxWeighing = config.getDouble("Control.Weighing.MaxValue");
             SimulationConfiguration.minWeighing = config.getDouble("Control.Weighing.MinValue");
@@ -308,7 +315,7 @@ public static SceneBuilder getScene() {
 	public static void setModuleSet(String moduleSet) {
 		SimulationConfiguration.moduleSet = moduleSet;
 	}
-
+	
 	public static int getnMaxModulesIni() {
 		return nMaxModulesIni;
 	}
@@ -365,13 +372,29 @@ public static SceneBuilder getScene() {
 		SimulationConfiguration.nMaxConnections = nMaxConnections;
 	}
 
-	
+	public static String getGenmodel() {
+		return genmodel;
+	}
 
-	
+	public static void setGenmodel(String genmodel) {
+		SimulationConfiguration.genmodel = genmodel;
+	}
 
+	public static String getPropmodel() {
+		return propmodel;
+	}
 
+	public static void setPropmodel(String propmodel) {
+		SimulationConfiguration.propmodel = propmodel;
+	}
 
+	public static String getPropdirection() {
+		return propdirection;
+	}
 
+	public static void setPropdirection(String propdirection) {
+		SimulationConfiguration.propdirection = propdirection;
+	}
 
 	public static double getMaxWeighing() {
 		return maxWeighing;

@@ -19,6 +19,9 @@ public class RobotController {
 	public CharWA strMH;
 	public CharWA strConn;
 	public CharWA strConnori;
+	public CharWA strGenmodel;
+	public CharWA strPropmodel;
+	public CharWA strPropDirection;
 
 	int[] connectedhandles;
 	int[] connectedori;
@@ -31,6 +34,9 @@ public class RobotController {
 	protected int numberofModules;
 	protected int numberofParameters;
 	float[] parameters;
+	private String Genmodel;
+	private String Propmodel;
+	private String PropDirection;
 
 	
 	public RobotController(remoteApi vrep, int clientID, RobotBuilder robot, ParameterMask parammask){
@@ -39,9 +45,12 @@ public class RobotController {
 		this.robot = robot;
 		moduleHandlers = robot.getModuleHandlersint();
 		this.numberofModules = moduleHandlers.length;
-		this.numberofParameters = SimulationConfiguration.getControllerparamnumber();
+		this.numberofParameters = parammask.getNumberofParameters();
 		connectedhandles = robot.getTree().getHandlerListint();
 		connectedori = robot.getTree().getOriListint();
+		Genmodel = SimulationConfiguration.getGenmodel();
+		Propmodel = SimulationConfiguration.getPropmodel();
+		PropDirection = SimulationConfiguration.getPropdirection();
 		
 		parammask.growParam(numberofModules);
 		
@@ -64,6 +73,10 @@ public class RobotController {
 		this.numberofParameters = SimulationConfiguration.getControllerparamnumber();
 		connectedhandles = robot.getTree().getHandlerListint();
 		connectedori = robot.getTree().getOriListint();
+		Genmodel = SimulationConfiguration.getGenmodel();
+		Propmodel = SimulationConfiguration.getPropmodel();
+		PropDirection = SimulationConfiguration.getPropdirection();		
+		
 		if (parameters.length >= numberofParameters * numberofModules) {
 			this.parameters = parameters;
 		} else {
@@ -115,8 +128,11 @@ public class RobotController {
 		char[] r = Modhandles.getCharArrayFromArray();
 		strMH = new CharWA(r.length);
 		System.arraycopy(r, 0, strMH.getArray(), 0, r.length);
-
-
+		
+		strGenmodel = new CharWA(Genmodel);
+		strPropmodel = new CharWA(Propmodel);
+		strPropDirection = new CharWA(PropDirection);
+		
 		// Pause communication
 		vrep.simxPauseCommunication(clientID, true);
 		
@@ -125,6 +141,11 @@ public class RobotController {
 		int result2 = vrep.simxSetStringSignal(clientID, "ConnHandles", strConn, vrep.simx_opmode_oneshot);
 		int result3 = vrep.simxSetStringSignal(clientID, "ModHandles", strMH, vrep.simx_opmode_oneshot);
 		int result4 = vrep.simxSetStringSignal(clientID, "ConnOri", strConnori, vrep.simx_opmode_oneshot);
+		int result5 = vrep.simxSetStringSignal(clientID, "Genmodel", strGenmodel, vrep.simx_opmode_oneshot);
+		int result6 = vrep.simxSetStringSignal(clientID, "Propmodel", strPropmodel, vrep.simx_opmode_oneshot);
+		int result7 = vrep.simxSetStringSignal(clientID, "PropDirection", strPropDirection, vrep.simx_opmode_oneshot);
+		int result8 = vrep.simxSetIntegerSignal(clientID, "Nparameters", numberofParameters, vrep.simx_opmode_oneshot);
+		
 		
 		// Unpause communication
 		vrep.simxPauseCommunication(clientID, false);
