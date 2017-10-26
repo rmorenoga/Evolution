@@ -8,6 +8,7 @@ public abstract class ParameterMask {
 	protected float[] maskedparameters;
 	protected String controltype;
 	protected String Genmodel;
+	protected String Recmodel;
 	protected String Propmodel;
 	protected String PropDirection;
 	protected int numberofParameters;
@@ -16,6 +17,7 @@ public abstract class ParameterMask {
 	public ParameterMask() {
 		controltype = SimulationConfiguration.getController();
 		Genmodel = SimulationConfiguration.getGenmodel();
+		Recmodel = SimulationConfiguration.getRecmodel();
 		Propmodel = SimulationConfiguration.getPropmodel();
 		PropDirection = SimulationConfiguration.getPropdirection();
 		numberofParameters = SimulationConfiguration.getControllerparamnumber();

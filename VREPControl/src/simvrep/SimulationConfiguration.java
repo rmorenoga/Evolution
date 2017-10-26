@@ -88,6 +88,7 @@ public static SceneBuilder getScene() {
     private static double maxOffset;
     private static double minOffset;
     private static String genmodel;
+    private static String recmodel;
     private static String propmodel;
     private static String propdirection;
 
@@ -163,6 +164,7 @@ public static SceneBuilder getScene() {
             SimulationConfiguration.maxOffset = config.getDouble("Control.Offset.MaxValue");
             SimulationConfiguration.minOffset = config.getDouble("Control.Offset.MinValue");
             SimulationConfiguration.genmodel = config.getString("Control.Genmodel");
+            SimulationConfiguration.recmodel = config.getString("Control.Recmodel");
             SimulationConfiguration.propmodel = config.getString("Control.Propmodel");
             SimulationConfiguration.propdirection = config.getString("Control.PropDirection");
             
@@ -378,6 +380,14 @@ public static SceneBuilder getScene() {
 
 	public static void setGenmodel(String genmodel) {
 		SimulationConfiguration.genmodel = genmodel;
+	}
+
+	public static String getRecmodel() {
+		return recmodel;
+	}
+
+	public static void setRecmodel(String recmodel) {
+		SimulationConfiguration.recmodel = recmodel;
 	}
 
 	public static String getPropmodel() {

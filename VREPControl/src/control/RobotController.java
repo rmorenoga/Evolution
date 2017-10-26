@@ -20,6 +20,7 @@ public class RobotController {
 	public CharWA strConn;
 	public CharWA strConnori;
 	public CharWA strGenmodel;
+	public CharWA strRecmodel;
 	public CharWA strPropmodel;
 	public CharWA strPropDirection;
 
@@ -35,6 +36,7 @@ public class RobotController {
 	protected int numberofParameters;
 	float[] parameters;
 	private String Genmodel;
+	private String Recmodel;
 	private String Propmodel;
 	private String PropDirection;
 
@@ -49,6 +51,7 @@ public class RobotController {
 		connectedhandles = robot.getTree().getHandlerListint();
 		connectedori = robot.getTree().getOriListint();
 		Genmodel = SimulationConfiguration.getGenmodel();
+		Recmodel = SimulationConfiguration.getRecmodel();
 		Propmodel = SimulationConfiguration.getPropmodel();
 		PropDirection = SimulationConfiguration.getPropdirection();
 		
@@ -74,6 +77,7 @@ public class RobotController {
 		connectedhandles = robot.getTree().getHandlerListint();
 		connectedori = robot.getTree().getOriListint();
 		Genmodel = SimulationConfiguration.getGenmodel();
+		Recmodel = SimulationConfiguration.getRecmodel();
 		Propmodel = SimulationConfiguration.getPropmodel();
 		PropDirection = SimulationConfiguration.getPropdirection();		
 		
@@ -130,6 +134,7 @@ public class RobotController {
 		System.arraycopy(r, 0, strMH.getArray(), 0, r.length);
 		
 		strGenmodel = new CharWA(Genmodel);
+		strRecmodel = new CharWA(Recmodel);
 		strPropmodel = new CharWA(Propmodel);
 		strPropDirection = new CharWA(PropDirection);
 		
@@ -142,9 +147,10 @@ public class RobotController {
 		int result3 = vrep.simxSetStringSignal(clientID, "ModHandles", strMH, vrep.simx_opmode_oneshot);
 		int result4 = vrep.simxSetStringSignal(clientID, "ConnOri", strConnori, vrep.simx_opmode_oneshot);
 		int result5 = vrep.simxSetStringSignal(clientID, "Genmodel", strGenmodel, vrep.simx_opmode_oneshot);
-		int result6 = vrep.simxSetStringSignal(clientID, "Propmodel", strPropmodel, vrep.simx_opmode_oneshot);
-		int result7 = vrep.simxSetStringSignal(clientID, "PropDirection", strPropDirection, vrep.simx_opmode_oneshot);
-		int result8 = vrep.simxSetIntegerSignal(clientID, "Nparameters", numberofParameters, vrep.simx_opmode_oneshot);
+		int result6 = vrep.simxSetStringSignal(clientID, "Recmodel", strRecmodel, vrep.simx_opmode_oneshot);
+		int result7 = vrep.simxSetStringSignal(clientID, "Propmodel", strPropmodel, vrep.simx_opmode_oneshot);
+		int result8 = vrep.simxSetStringSignal(clientID, "PropDirection", strPropDirection, vrep.simx_opmode_oneshot);
+		int result9 = vrep.simxSetIntegerSignal(clientID, "Nparameters", numberofParameters, vrep.simx_opmode_oneshot);
 		
 		
 		// Unpause communication

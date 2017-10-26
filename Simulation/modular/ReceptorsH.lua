@@ -80,92 +80,57 @@ function receptorsbase(hormones,ampd,offd,phasediff,v,deltaparam,delta)
     return ampdnew,offdnew,phasediffnew,vnew
 end
 
-function receptorsdelt(hormones,ampd,offd,phasediff,v,ampset,offsetset,phasediffset,vset)
-    local ampdnew = ampd
-    local offdnew = offd
-    local vnew = v
-    local phasediffnew ={}      
-    for j=1,#phasediff do
-        phasediffnew[j] = phasediff[j]
-    end
 
-    for k=1,#hormones do
-        if (hormones[k]~=-1) then
-            ampdnew = ampdnew + (ampset[k]*hormones[k])
-            if (ampdnew > 1) then ampdnew = 1 end
-            if (ampdnew < -1) then ampdnew = -1 end 
+function receptorsANNB(hormsum,ampd,offd,phasediff,v,ori,deltaparam)
 
-            
-            offdnew = offdnew + (offsetset[k]*hormones[k])
-            if (offdnew > 1) then offdnew = 1 end
-            if (offdnew < -1) then offdnew = -1 end
-
-
-            for i=1,#phasediffset[k] do
-                phasediffnew[i] = phasediffnew[i] + (phasediffset[k][i]*hormones[k])
-                if (phasediffnew[i] > math.pi) then phasediffnew[i] = math.pi end
-                if (phasediffnew[i] < -math.pi) then phasediffnew[i] = -math.pi end
-            end
-            
-            vnew = vnew + (vset[k]*hormones[k])
-            if (vnew >1) then vnew = 1 end
-            if (vnew <0) then vnew = 0 end
-        end
-    end
-
-    return ampdnew,offdnew,phasediffnew,vnew
-end
-
-function receptorsf(hormones,ampd,offd,phasediff,v,ampset,offsetset,phasediffset,vset,delta,count)
-    local sorted = sortbycount(count)
     local ampdnew = ampd
     local offdnew = offd
     local vnew = v
     local phasediffnew ={}      --Phasediff
+
     for j=1,#phasediff do
         phasediffnew[j] = phasediff[j]
     end
 
-    for k=1,#hormones do
-        --print(hormones[k])
-        if (hormones[k]~=-1) then
-            --print('Received '..k)
-            if(ampdnew<ampset[sorted[k]]) then   --Amplitude
-                ampdnew = ampdnew + (delta*hormones[k])
-                if (ampdnew > 1) then ampdnew = 1 end
-            elseif (ampdnew>ampset[sorted[k]]) then
-                ampdnew = ampdnew - (delta*hormones[k])
-                if (ampdnew < -1) then ampdnew = -1 end
-            end    
-            if(offdnew<offsetset[sorted[k]]) then  --Offset
-                offdnew = offdnew + (delta*hormones[k])
-                if (offdnew > 1) then offdnew = 1 end
-            elseif (offdnew>offsetset[sorted[k]]) then
-                offdnew = offdnew - (delta*hormones[k])
-                if (offdnew < -1) then offdnew = -1 end
-            end    
-            for i=1,#phasediffset[sorted[k]] do
-                if (phasediffnew[i]<phasediffset[sorted[k]][i]) then
-                    phasediffnew[i] = phasediffnew[i] + (delta*hormones[k])
-                    if (phasediffnew[i] > math.pi) then phasediffnew[i] = math.pi end
-                elseif (phasediffnew[i]>phasediffset[sorted[k]][i]) then
-                    phasediffnew[i] = phasediffnew[i] - (delta*hormones[k])
-                    if (phasediffnew[i] < -math.pi) then phasediffnew[i] = -math.pi end
-                end
-            end
-            if(vnew<vset[sorted[k]]) then   --Frequency
-                vnew = vnew + (delta*hormones[k])
-                if (vnew >1) then vnew = 1 end
-            elseif (vnew>vset[sorted[k]]) then
-                vnew = vnew - (delta*hormones[k])
-                if (vnew <0) then vnew = 0 end
-            end
-        end
+    local annLayers = {13,7,6}
+    local ann = createANNfromWeightsList(annLayers,deltaparam)
+
+    local oriinputs = getAnnInputsfromOri(ori)
+
+    local inputs = {} -- {ori inputs, hormone inputs}
+
+    for i=1,#oriinputs do
+        table.insert(inputs,oriinputs[i])
+    end
+
+    for i=1,#hormsum do
+        table.insert(inputs,hormsum[i])
+    end
+
+    local outputs = propagateANN(ann,inputs) --{ampdnew,offdnew,phasediffnew}
+
+    ampdnew = outputs[1]
+    offdnew = outputs[2]
+    for j=1,#phasediff do
+        phasediffnew[j] = outputs[j+2]
     end
 
     return ampdnew,offdnew,phasediffnew,vnew
 
 end
+
+function getAnnInputsfromOri(ori)
+
+    local inputs = {}
+    for i=1,6 do
+        inputs = 0.1
+    end
+
+    inputs[ori] = 0.9
+
+    return inputs
+
+end    
 
 function integrate(hormones,count)
     --may overflow
@@ -219,5 +184,44 @@ function sortbycount(count)
 
 
     return sorted
+
+end
+
+function normalizedHSum(hormones,rhorm)
+
+    local hormsum = {}
+    local hormnorm = {}
+    local count = {}
+
+    for i=1,#hormones do
+        count[i] = 0
+        if (hormones[i]==-1) then
+            hormsum[i] = 0
+        else
+            hormsum[i] = hormones[i]
+        end
+    end
+
+    count = integrate(hormones,count)
+   
+    for i=1,#rhorm do
+        if (#rhorm[i] > 0) then
+            for j=1,#rhorm[i] do
+                local exhorm = simUnpackFloatTable(rhorm[i][j]) 
+                count = integrate(exhorm,count)
+                for k=1,#exhorm do
+                    if (exhorm[k]~=-1) then
+                        hormsum[k] = hormsum[k] + exhorm[k]
+                    end
+                end
+            end
+        end
+    end
+
+    for i=1,#hormsum do
+        hormnorm[i] = hormsum[i]/count[i]
+    end
+      
+    return hormnorm
 
 end

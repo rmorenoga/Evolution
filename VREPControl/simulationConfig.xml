@@ -65,7 +65,8 @@
         </Weighing>
         <Genmodel>baseHormone</Genmodel>
         <Propmodel>Attenuate</Propmodel>
-        <PropDirection>Forward</PropDirection></Control>
+        <PropDirection>Forward</PropDirection>
+        <Recmodel>BasicSum</Recmodel></Control>
 
     <Tree>
     	<MaxModules>141</MaxModules>

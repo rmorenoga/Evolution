@@ -23,7 +23,7 @@ function ghormone(connh,sensorR,sensorD,sensorO,Genmodel)
 	return hormones,sendhorm
 end
 
-function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltaparam,GenModel)
+function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltaparam,RecModel,Genmodel)
 	local hormnew = {}
 	local ampdnew = ampd
 	local offdnew = offd
@@ -40,10 +40,10 @@ function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltapar
 
 	--Apply spatial transformation to incoming messages and extract orientation information before applying receptors
 
-	--ori = orientation(sensorO)
+	ori = orientation(sensorO)
 
 
-	if(GenModel == 'baseHormone') then
+	if(Recmodel == 'BasicSum') then
 		local delta = 0.01
 		for i=1,#hormones do
 			hormnew[i] = hormones[i]
@@ -51,7 +51,10 @@ function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltapar
 		
 		ampdnew,offdnew,phasediffnew,vnew = receptorsbase(hormnew,ampdnew,offdnew,phasediffnew,vnew,deltaparam,delta)
 		
-		hormnew[1]=-1
+		if (Genmodel=='baseHormone') then
+			hormnew[1]=-1
+		end
+
 		for i=1,#rhorm do
 			if (#rhorm[i] > 0) then
 				for j=1,#rhorm[i] do
@@ -61,8 +64,23 @@ function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltapar
 				end
 			end
 		end
+
+
+	elseif (Recmodel == 'ANNBasic') then
+		for i=1,#hormones do
+			hormnew[i] = hormones[i]
+		end
+		local hormsum = normalizedHSum(hormones,rhorm)
+
+		if (Genmodel=='baseHormone') then
+			hormnew[1]=-1
+		end
+
+		ampdnew,offdnew,phasediffnew,vnew = receptorsANNB(hormsum,ampdnew,offdnew,phasediffnew,vnew,ori,deltaparam)
+
 	else
-		print('General Hormone Generation Model is not recognized')
+
+		print('General Hormone Reception Model is not recognized')
 	end
 
 
@@ -112,7 +130,7 @@ function spatialtr(rhorm,connori,Genmodel)
 
 
 	--print('***************')
-
+	
 	for i=1,#rhorm do
 		--print(i)
 		if (#rhorm[i] > 0) then
