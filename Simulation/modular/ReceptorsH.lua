@@ -1,3 +1,7 @@
+require('lua/modular/ANN')
+require('lua/modular/ANNTrainEvol')
+
+
 function receptorsbase(hormones,ampd,offd,phasediff,v,deltaparam,delta)
 	--print(delta)
     local ampdnew = ampd
@@ -86,13 +90,14 @@ function receptorsANNB(hormsum,ampd,offd,phasediff,v,ori,deltaparam)
     local ampdnew = ampd
     local offdnew = offd
     local vnew = v
-    local phasediffnew ={}      --Phasediff
+    local phasediffnew ={}  --Phasediff
 
     for j=1,#phasediff do
         phasediffnew[j] = phasediff[j]
     end
 
     local annLayers = {13,7,6}
+
     local ann = createANNfromWeightsList(annLayers,deltaparam)
 
     local oriinputs = getAnnInputsfromOri(ori)
@@ -123,7 +128,7 @@ function getAnnInputsfromOri(ori)
 
     local inputs = {}
     for i=1,6 do
-        inputs = 0.1
+        inputs[i] = 0.1
     end
 
     inputs[ori] = 0.9

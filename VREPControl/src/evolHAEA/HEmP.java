@@ -3,6 +3,7 @@ package evolHAEA;
 import java.util.ArrayList;
 import java.util.List;
 
+import control.CPGHANN;
 import control.CPGHSBase;
 import control.CPGHSingle;
 import control.CPGSingle;
@@ -91,7 +92,8 @@ public class HEmP extends OptimizationFunction<double[]> {
 		//ParameterMask parammask = new ParameterMask();
 		//CPGSingle parammask = new CPGSingle(true,true);
 		//CPGHSingle parammask = new CPGHSingle(true,true);
-		CPGHSBase parammask = new CPGHSBase(true,true,true);
+		//CPGHSBase parammask = new CPGHSBase(true,true,true);
+		CPGHANN parammask = new CPGHANN();
 		parammask.setParameters(fullparam);
 
 		if (seq) {

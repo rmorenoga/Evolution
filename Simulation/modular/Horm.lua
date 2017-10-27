@@ -70,6 +70,7 @@ function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltapar
 		for i=1,#hormones do
 			hormnew[i] = hormones[i]
 		end
+		
 		local hormsum = normalizedHSum(hormones,rhorm)
 
 		if (Genmodel=='baseHormone') then
