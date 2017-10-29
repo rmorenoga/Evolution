@@ -1,5 +1,6 @@
 require('lua/modular/ANN')
 require('lua/modular/ANNTrainEvol')
+require('lua/modular/Convert')
 
 
 function receptorsbase(hormones,ampd,offd,phasediff,v,deltaparam,delta)
@@ -96,7 +97,7 @@ function receptorsANNB(hormsum,ampd,offd,phasediff,v,ori,deltaparam)
         phasediffnew[j] = phasediff[j]
     end
 
-    local annLayers = {13,7,6}
+    local annLayers = {13,8,6}
 
     local ann = createANNfromWeightsList(annLayers,deltaparam)
 
@@ -114,11 +115,7 @@ function receptorsANNB(hormsum,ampd,offd,phasediff,v,ori,deltaparam)
 
     local outputs = propagateANN(ann,inputs) --{ampdnew,offdnew,phasediffnew}
 
-    ampdnew = outputs[1]
-    offdnew = outputs[2]
-    for j=1,#phasediff do
-        phasediffnew[j] = outputs[j+2]
-    end
+    ampdnew,offdnew,phasediffnew = ConvertAnnOutputstoCPGParameters(outputs,#phasediff)
 
     return ampdnew,offdnew,phasediffnew,vnew
 
@@ -224,7 +221,11 @@ function normalizedHSum(hormones,rhorm)
     end
 
     for i=1,#hormsum do
-        hormnorm[i] = hormsum[i]/count[i]
+        if count[i] == 0 then
+            hormnorm[i] = 0
+        else
+            hormnorm[i] = hormsum[i]/count[i]
+        end
     end
       
     return hormnorm
