@@ -256,7 +256,7 @@ public class RobotNode {
     			connectedori.add(ori);
     		}
     	}
-    	System.out.println(connectedori);
+    	//System.out.println(connectedori);
     }
 
 

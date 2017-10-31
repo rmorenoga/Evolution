@@ -77,7 +77,8 @@ function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltapar
 			hormnew[1]=-1
 		end
 
-		ampdnew,offdnew,phasediffnew,vnew = receptorsANNB(hormsum,ampdnew,offdnew,phasediffnew,vnew,ori,deltaparam)
+		--ampdnew,offdnew,phasediffnew,vnew = receptorsANNB(hormsum,ampdnew,offdnew,phasediffnew,vnew,ori,deltaparam)
+		ampdnew,offdnew,phasediffnew,vnew = receptorsANNLastTime(hormsum,ampdnew,offdnew,phasediffnew,vnew,ori,deltaparam)
 
 	else
 

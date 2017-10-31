@@ -59,11 +59,11 @@ public class ShowHFitReal {
 			}*/
 			
 		} else {
-			//parameters = new double[280];
+			parameters = new double[250];
 			//parameters = new double[12];
 			//parameters = new double[]{1.0, 1.0, -0.031110454104099072, -0.9947166406861332, -0.9255484041619079, -0.15386625909293, -0.8, 0.9384261329287366, -1.0, -1.0, -1.0, 1.0};
 			//parameters = new double[]{0.7760164602688042, -0.3909846388463969, -0.8641055969947993, -1.0, -1.0, -0.5551028030994317, -1.0, 1.0, -1.0, -0.708158144366758, -0.7679504678050293, 0.9746661541360532};
-			parameters = new double[]{0.5,0.5,-0.5,-0.5,0.5,0.5,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.3,0.3,0.3,0.3,0.3};
+			//parameters = new double[]{0.5,0.5,-0.5,-0.5,0.5,0.5,0.0,0.0,0.0,0.0,0.0,0.0,0.3,0.3,0.3,0.3,0.3,0.3};
 			System.out.println("Param length = " + parameters.length);
 			// char[][] subenvperm = new char[][] { { 's', 'l', 's', 'b', 's',
 			// 'r', 's' },
@@ -75,43 +75,10 @@ public class ShowHFitReal {
 			//
 			// float width = 0.7f;
 
-			// for (int i = 1; i < parameters.length; i = i + 6) {
-			// parameters[i] = 0.5;
-			// parameters[i+1] = 0;
-			// for (int j = 0; j < 4; j++) {
-			// parameters[i + j + 2] = -1;
-			// }
-			// }
-
-//			for (int i = 0; i < parameters.length; i = i + 35) { //Only for use with individual module parameters
-//				for (int j = 0; j < 5; j++) {
-//					parameters[i + j] = 0.5; // Amplitude
-//					parameters[i + j + 5] = 0; // Offset
-//					parameters[i + j + 30] = 0; // Frequency (v)
-//				}
-//				for (int j = 0; j < 20; j++) {
-//					parameters[i + j + 10] = 0.3; // Phase difference
-//				}
-//
-//			}
 			
-//			for (int j = 0; j < 4; j++) {
-//				parameters[j] = 0.2; // Amplitude
-//				parameters[j + 4] = 0; // Offset
-				//parameters[j + 12] = 0.1; // Frequency (v)
-				//parameters[j + 24] = 0; // Frequency (v)
-//			}
-//			for (int j = 0; j < 10; j++) {
-//				parameters[j + 8] = 0.4; // Phase difference
-//			}
-//			for (int j = 0; j < 6; j++) {
-//				parameters[j + 18] = 0.5; // Phase difference
-//			}
-//			parameters[8] =0.5;
-//			parameters[9] =0.4;
-//			parameters[10] =0.5;
-//			parameters[11] =0.4;
-			//parameters[14] =0.5;
+			for (int i=0;i<parameters.length;i++){
+				parameters[i] = 0.05;
+			}
 			
 			
 		}

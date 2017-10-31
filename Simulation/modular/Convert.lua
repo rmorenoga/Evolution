@@ -31,11 +31,35 @@ function ConvertAnnOutputstoCPGParameters(outputs,faces)
 
 end
 
+function ConvertCPGParameterstoAnnInputs(amp,offset,phasediff)
+
+	local inputs = {}
+
+	inputs[1] = ConvertFromRangetoUnit(amp,MAX_AMPLITUDE,MIN_AMPLITUDE)
+	inputs[2] = ConvertFromRangetoUnit(offset,MAX_OFFSET,MIN_OFFSET)
+
+	for i=1,#phasediff do
+		inputs[i+2] = ConvertFromRangetoUnit(phasediff[i],MAX_PHASE,MIN_PHASE)
+	end
+
+	return inputs
+
+end
+
 
 function ConvertFromUnitToRange(value,maxvalue,minvalue)
 
 	local converted = (((value)*(maxvalue-minvalue))) + minvalue
 
+	return converted 
+
+end
+
+function ConvertFromRangetoUnit(value,maxvalue,minvalue)
+
+	local converted = (value-minvalue)/(maxvalue-minvalue)
+
 	return converted
 
 end
+

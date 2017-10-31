@@ -121,6 +121,49 @@ function receptorsANNB(hormsum,ampd,offd,phasediff,v,ori,deltaparam)
 
 end
 
+function receptorsANNLastTime(hormsum,ampd,offd,phasediff,v,ori,deltaparam)
+
+    local ampdnew = ampd
+    local offdnew = offd
+    local vnew = v
+    local phasediffnew ={}  --Phasediff
+
+    for j=1,#phasediff do
+        phasediffnew[j] = phasediff[j]
+    end
+
+    local annLayers = {19,10,6}
+
+    local ann = createANNfromWeightsList(annLayers,deltaparam)
+
+    local oriinputs = getAnnInputsfromOri(ori)
+
+    local cpgInputs = ConvertCPGParameterstoAnnInputs(ampdnew,offdnew,phasediffnew)
+
+    local inputs = {} -- {ori inputs, hormone inputs}
+
+    for i=1,#oriinputs do
+        table.insert(inputs,oriinputs[i])
+    end
+
+    for i=1,#hormsum do
+        table.insert(inputs,hormsum[i])
+    end
+
+    for i=1,#cpgInputs do
+        table.insert(inputs,cpgInputs[i])
+    end
+
+    print(#deltaparam)
+
+    local outputs = propagateANN(ann,inputs) --{ampdnew,offdnew,phasediffnew}
+
+    ampdnew,offdnew,phasediffnew = ConvertAnnOutputstoCPGParameters(outputs,#phasediff)
+
+    return ampdnew,offdnew,phasediffnew,vnew    
+
+end
+
 function getAnnInputsfromOri(ori)
 
     local inputs = {}
