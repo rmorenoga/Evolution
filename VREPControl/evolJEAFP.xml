@@ -21,7 +21,7 @@
 		 <Size>5</Size>
 			<Individual>
 			<Class> es.udc.gii.common.eaf.algorithm.population.Individual</Class>
-			<Chromosome size="3">
+			<Chromosome size="152">
 			</Chromosome>
 			</Individual>
   </Population>

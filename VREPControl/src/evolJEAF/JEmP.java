@@ -59,6 +59,7 @@ public class JEmP extends ObjectiveFunction {
 
 		for (int i = 0; i < values.length; i++) {
 			fullparam[i] = (float) values[i];
+			//System.out.print(fullparam[i]+",");
 		}
 		// Parameter Mask: Allows control over which parameters are actually
 		// sent to the robot depending on its controller, ParameterMask class

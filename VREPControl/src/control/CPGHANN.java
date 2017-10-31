@@ -39,7 +39,7 @@ public class CPGHANN extends ParameterMask{
 		
 		for(int i=0;i<grownparam.length;i=i+numberofParameters){
 			for (int j=0;j<parameters.length;j++){
-				grownparam[i+j] = parameters[j];
+				grownparam[i+j] = parameters[j]*10;
 			}
 		}
 		
