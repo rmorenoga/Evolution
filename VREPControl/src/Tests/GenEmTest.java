@@ -22,7 +22,7 @@ public class GenEmTest {
 		
 		//double[][] indiv = new double[][]{{
 			//1.0, 1.0, -0.031110454104099072, -0.9947166406861332, -0.9255484041619079, -0.15386625909293, -0.8, 0.9384261329287366, -1.0, -1.0, -1.0, 1.0},{0.7760164602688042, -0.3909846388463969, -0.8641055969947993, -1.0, -1.0, -0.5551028030994317, -1.0, 1.0, -1.0, -0.708158144366758, -0.7679504678050293, 0.9746661541360532}};
-		double[][] indiv = new double[][]{{0.7760164602688042, -0.3909846388463969, -0.8641055969947993, -1.0, -1.0, -0.5551028030994317, -1.0, 1.0, -1.0, -0.708158144366758, -0.7679504678050293, 0.9746661541360532}};	
+		double[][] indiv = new double[][]{{0.7024865546066392, 0.9850216852631118, -0.6715535756854729, 0.5348559683760927, -1.0, -0.5947228662110366, -0.7452768034527459, 0.5925849760134492, -0.4274520652598218, -0.6524461730865592, -0.5845883019057112, 0.04152589272770979}};	
 			
 			
 			for (int i = 0; i < 5; i++) {
@@ -38,7 +38,7 @@ public class GenEmTest {
 		for (int i = 0; i < indiv.length ;i++ ){
 				
 		result = RunTest(indiv[i],morpho,0,sim);
-		//WResultsFile(indiv[i],result);
+		WResultsFile(indiv[i],result);
 				
 		}
 		
@@ -49,7 +49,6 @@ public class GenEmTest {
 	static double[] RunTest(double[] param,String morpho, int extraparam, Simulation sim) {
 		
 		float alpha = 0.7f;
-		double[] res  = new double[10];
 		
 		float[] fullparam = new float[param.length];
 		for (int i = 0; i < param.length; i++) {
@@ -66,14 +65,26 @@ public class GenEmTest {
 		CPGHSBase parammask = new CPGHSBase(extraparam,true,true,true);
 		parammask.setandsepParam(fullparam);
 		
-		char[] subshort = new char[]{'s','b','l','r'};
+		//char[] subshort = new char[]{'s','b','l','r'};
+		char[][] subenvperm = new char[][] { { 's', 'l', 'b', 'r'},
+			{ 's', 'l', 'r', 'b' }, { 's', 'b', 'l', 'r'},
+			{ 's', 'b', 'r', 'l' }, { 's', 'r', 'l', 'b'},
+			{ 's', 'r', 'b', 'l'}};
 		float width = 0.5f;
 		
 		double[] morphoDouble = ChromoConversion.str2double(morpho);
 		EvaluatorMT evaluator;
 		
+		//double[] res  = new double[10];
+//		for (int i= 0;i<res.length;i++){	
+//			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subshort, width);
+//			res[i] = evaluator.evaluate();
+//			System.out.println("Fitness: " +res[i]);
+//		}
+		
+		double[] res  = new double[subenvperm.length];
 		for (int i= 0;i<res.length;i++){	
-			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subshort, width);
+			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[i], width);
 			res[i] = evaluator.evaluate();
 			System.out.println("Fitness: " +res[i]);
 		}
