@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import control.CPGHSBase;
 import control.CPGSingle;
+import control.CPGHANN;
 import simvrep.EvaluatorMT;
 import simvrep.Simulation;
 import simvrep.SimulationConfiguration;
@@ -64,7 +65,8 @@ public class JEmP extends ObjectiveFunction {
 		// just sends everything adjusted for max and min values
 		// ParameterMask parammask = new ParameterMask();
 		//CPGSingle parammask = new CPGSingle(true,true);
-		CPGHSBase parammask = new CPGHSBase(true,true,true);
+		//CPGHSBase parammask = new CPGHSBase(true,true,true);
+		CPGHANN parammask = new CPGHANN(fullparam.length);
 		parammask.setParameters(fullparam);
 
 		if (seq) {
