@@ -104,4 +104,27 @@ public class RobotTree {
 		   return dummyint;
 		   
 	   }
+	   
+	   public List<Integer> getOriList(){
+		   rootNode.askfororientations();
+		   List<RobotNode> nodes = createNodeList();
+		   List<Integer> orilist = new ArrayList<Integer>();
+		   for (int i= 0;i<nodes.size();i++){
+			   orilist.addAll(nodes.get(i).getConnectedori());
+		   }
+		 //System.out.println(orilist);
+		   return orilist;
+	   }
+	   
+	   public int[] getOriListint(){
+		   List<Integer> orilist = getOriList();
+		   Integer[] dummy = new Integer[orilist.size()];
+		   int[] dummyint = new int[orilist.size()];
+		   orilist.toArray(dummy);
+		   for (int i = 0; i<orilist.size();i++){
+			   dummyint[i] = dummy[i];
+			   //System.out.println(dummyint[i]);
+		   }
+		   return dummyint;
+	   }
 }

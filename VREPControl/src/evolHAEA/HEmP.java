@@ -3,6 +3,7 @@ package evolHAEA;
 import java.util.ArrayList;
 import java.util.List;
 
+import control.CPGHANN;
 import control.CPGHSBase;
 import control.CPGHSingle;
 import control.CPGSingle;
@@ -19,31 +20,28 @@ public class HEmP extends OptimizationFunction<double[]> {
 	boolean DEBUG = false;
 	protected List<Simulation> simulators;
 	protected String morpho;
-	protected int extraparam;
 	protected BitArray servers;
 	public float alpha = 0.7f;
 	protected IntUniform r = new IntUniform(5);
 	protected boolean seq;
 
-	public HEmP(int numberOfServers, List<Simulation> simulators, String morpho, int extraparam, boolean seq) {
+	public HEmP(int numberOfServers, List<Simulation> simulators, String morpho, boolean seq) {
 		servers = new BitArray(numberOfServers, false);
 		this.simulators = simulators;
 		this.morpho = morpho;
-		this.extraparam = extraparam;
 		this.seq = seq;
 		if (DEBUG) {
 			System.out.println("Building HEmP");
 		}
 	}
 
-	public HEmP(float alpha, Simulation sim, String morpho, int extraparam, boolean seq) {
+	public HEmP(float alpha, Simulation sim, String morpho, boolean seq) {
 		this.alpha = alpha;
 		simulators = new ArrayList<Simulation>();
 		simulators.add(sim);
 		servers = new BitArray(1, false);
 		this.morpho = morpho;
 		this.seq = seq;
-		this.extraparam = extraparam;
 	}
 
 	public synchronized int getSimNumber() {
@@ -91,11 +89,12 @@ public class HEmP extends OptimizationFunction<double[]> {
 		}
 		//Parameter Mask: Allows control over which parameters are actually sent to the robot depending on its controller, ParameterMask class just sends everything adjusted for max and min values
 		// Submask: Helper classes that fix certain parts of the controller
-		//ParameterMask parammask = new ParameterMask(extraparam);
-		//CPGSingle parammask = new CPGSingle(extraparam,true,true);
-		//CPGHSingle parammask = new CPGHSingle(extraparam,true,true);
-		CPGHSBase parammask = new CPGHSBase(extraparam,true,true,true);
-		parammask.setandsepParam(fullparam);
+		//ParameterMask parammask = new ParameterMask();
+		//CPGSingle parammask = new CPGSingle(true,true);
+		//CPGHSingle parammask = new CPGHSingle(true,true);
+		//CPGHSBase parammask = new CPGHSBase(true,true,true);
+		CPGHANN parammask = new CPGHANN(fullparam.length);
+		parammask.setParameters(fullparam);
 
 		if (seq) {
 			char[][] subenv = new char[][] {{'s','l','s'},{'s','r','s'},{'b'}};

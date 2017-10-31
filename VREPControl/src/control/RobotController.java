@@ -18,8 +18,14 @@ public class RobotController {
 	public CharWA strEP;
 	public CharWA strMH;
 	public CharWA strConn;
+	public CharWA strConnori;
+	public CharWA strGenmodel;
+	public CharWA strRecmodel;
+	public CharWA strPropmodel;
+	public CharWA strPropDirection;
 
 	int[] connectedhandles;
+	int[] connectedori;
 
 	protected String controllerName;
 	protected remoteApi vrep;
@@ -29,16 +35,11 @@ public class RobotController {
 	protected int numberofModules;
 	protected int numberofParameters;
 	float[] parameters;
-	float[] extraparam;
-	int extrap = -1;
+	private String Genmodel;
+	private String Recmodel;
+	private String Propmodel;
+	private String PropDirection;
 
-	public RobotController(remoteApi vrep, int clientID, RobotBuilder robot, float[] parameters, float[] extraparam) {
-		this(vrep, clientID, robot, parameters);
-		this.extraparam = extraparam;
-		this.extrap = extraparam.length;
-		adjustextraParam();
-		// System.out.println("extrap "+extrap);
-	}
 	
 	public RobotController(remoteApi vrep, int clientID, RobotBuilder robot, ParameterMask parammask){
 		this.vrep = vrep;
@@ -46,8 +47,13 @@ public class RobotController {
 		this.robot = robot;
 		moduleHandlers = robot.getModuleHandlersint();
 		this.numberofModules = moduleHandlers.length;
-		this.numberofParameters = SimulationConfiguration.getControllerparamnumber();
+		this.numberofParameters = parammask.getNumberofParameters();
 		connectedhandles = robot.getTree().getHandlerListint();
+		connectedori = robot.getTree().getOriListint();
+		Genmodel = SimulationConfiguration.getGenmodel();
+		Recmodel = SimulationConfiguration.getRecmodel();
+		Propmodel = SimulationConfiguration.getPropmodel();
+		PropDirection = SimulationConfiguration.getPropdirection();
 		
 		parammask.growParam(numberofModules);
 		
@@ -59,12 +65,6 @@ public class RobotController {
 			System.exit(-1);
 		}
 		
-		if (parammask.getExtrap()>0){
-			this.extrap = parammask.getExtrap();
-			this.extraparam = parammask.getMaskextraparam();
-		}
-		
-		
 	}
 
 	public RobotController(remoteApi vrep, int clientID, RobotBuilder robot, float[] parameters) {
@@ -75,6 +75,12 @@ public class RobotController {
 		this.numberofModules = moduleHandlers.length;
 		this.numberofParameters = SimulationConfiguration.getControllerparamnumber();
 		connectedhandles = robot.getTree().getHandlerListint();
+		connectedori = robot.getTree().getOriListint();
+		Genmodel = SimulationConfiguration.getGenmodel();
+		Recmodel = SimulationConfiguration.getRecmodel();
+		Propmodel = SimulationConfiguration.getPropmodel();
+		PropDirection = SimulationConfiguration.getPropdirection();		
+		
 		if (parameters.length >= numberofParameters * numberofModules) {
 			this.parameters = parameters;
 		} else {
@@ -82,68 +88,8 @@ public class RobotController {
 			System.err.println("Error in the number of parameters, parameters lenght=" + parameters.length);
 			System.exit(-1);
 		}
-		adjustParam(SimulationConfiguration.getController());
 	}
 
-	private void adjustextraParam() {
-		float[] grownextra = new float[extraparam.length];
-		for (int i = 0; i < extraparam.length; i++) {
-			grownextra[i] = ((extraparam[i] + 1) / 2);
-		}
-		extraparam = grownextra;
-	}
-
-	private void adjustParam(String controltype) {
-		float[] grownparam = new float[parameters.length];
-		if (controltype.contentEquals("CPG")) {
-			float maxPhase = (float) SimulationConfiguration.getMaxPhase();
-			float minPhase = (float) SimulationConfiguration.getMinPhase();
-			float maxAmplitude = (float) SimulationConfiguration.getMaxAmplitude();
-			float minAmplitude = (float) SimulationConfiguration.getMinAmplitude();
-			float maxOffset = (float) SimulationConfiguration.getMaxOffset();
-			float minOffset = (float) SimulationConfiguration.getMinOffset();
-			// Assuming min raw parameter is -1 and max is 1
-						// NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax -
-						// OldMin)) + NewMin
-						// NewValue = (((OldValue - (-1)) * (NewMax - NewMin)) / (1 - (-1)))
-						// + NewMin
-			for (int i = 0; i < parameters.length; i = i + numberofParameters) {	
-					grownparam[i] = (((parameters[i] + 1) * (maxAmplitude - minAmplitude)) / 2) + minAmplitude;
-					grownparam[i+1] = (((parameters[i+1] + 1) * (maxOffset - minOffset)) / 2) + minOffset;
-				for (int j = 0; j < 4; j++) {
-					grownparam[i + j + 2] = (((parameters[i + j + 2] + 1) * (maxPhase - minPhase)) / 2) + minPhase;
-				}
-			}
-			
-		} else if(controltype.contentEquals("CPGH")||controltype.contentEquals("CPGHF")||controltype.contentEquals("CPGHLog")||controltype.contentEquals("CPGHFLog")) {
-			float maxPhase = (float) SimulationConfiguration.getMaxPhase();
-			float minPhase = (float) SimulationConfiguration.getMinPhase();
-			float maxAmplitude = (float) SimulationConfiguration.getMaxAmplitude();
-			float minAmplitude = (float) SimulationConfiguration.getMinAmplitude();
-			float maxOffset = (float) SimulationConfiguration.getMaxOffset();
-			float minOffset = (float) SimulationConfiguration.getMinOffset();
-			float maxFreq = (float) SimulationConfiguration.getMaxAngularFreq();
-			float minFreq = (float) SimulationConfiguration.getMinAngularFreq();
-
-			// Assuming min raw parameter is -1 and max is 1
-			// NewValue = (((OldValue - OldMin) * (NewMax - NewMin)) / (OldMax -
-			// OldMin)) + NewMin
-			// NewValue = (((OldValue - (-1)) * (NewMax - NewMin)) / (1 - (-1)))
-			// + NewMin
-
-			for (int i = 0; i < parameters.length; i = i + numberofParameters) {
-				for (int j = 0; j < 5; j++) {
-					grownparam[i + j] = (((parameters[i + j] + 1) * (maxAmplitude - minAmplitude)) / 2) + minAmplitude;
-					grownparam[i + j + 5] = (((parameters[i + j + 5] + 1) * (maxOffset - minOffset)) / 2) + minOffset;
-					grownparam[i + j + 30] = (((parameters[i + j + 30] + 1) * (maxFreq - minFreq)) / 2) + minFreq;
-				}
-				for (int j = 0; j < 20; j++) {
-					grownparam[i + j + 10] = (((parameters[i + j + 10] + 1) * (maxPhase - minPhase)) / 2) + minPhase;
-				}
-			}
-		}
-		parameters = grownparam;
-	}
 
 	public void sendParameters() {
 
@@ -154,6 +100,12 @@ public class RobotController {
 		for (int i = 0; i < connectedhandles.length; i++) {
 			if(connectedhandles[i] != -1){
 			connectedhandles[i] = connectedhandles[i] + 1;
+			}
+		}
+		
+		for (int i = 0; i < connectedori.length; i++) {
+			if(connectedori[i] != -1){
+			connectedori[i] = connectedori[i] + 1;
 			}
 		}
 
@@ -168,30 +120,39 @@ public class RobotController {
 		char[] q = Connhandles.getCharArrayFromArray();
 		strConn = new CharWA(q.length);
 		System.arraycopy(q, 0, strConn.getArray(), 0, q.length);
+		
+		IntWA Connori = new IntWA(connectedori.length);
+		System.arraycopy(connectedori, 0, Connori.getArray(), 0, connectedori.length);
+		char[] s = Connori.getCharArrayFromArray();
+		strConnori = new CharWA(s.length);
+		System.arraycopy(s, 0, strConnori.getArray(), 0, s.length);
 
 		IntWA Modhandles = new IntWA(moduleHandlers.length);
 		System.arraycopy(moduleHandlers, 0, Modhandles.getArray(), 0, moduleHandlers.length);
 		char[] r = Modhandles.getCharArrayFromArray();
 		strMH = new CharWA(r.length);
 		System.arraycopy(r, 0, strMH.getArray(), 0, r.length);
-
-		if (extrap > 0) {
-			FloatWA ExtraParam = new FloatWA(extraparam.length);
-			System.arraycopy(extraparam, 0, ExtraParam.getArray(), 0, extraparam.length);
-			char[] ep = ExtraParam.getCharArrayFromArray();
-			strEP = new CharWA(ep.length);
-			System.arraycopy(ep, 0, strEP.getArray(), 0, ep.length);
-		}
-
+		
+		strGenmodel = new CharWA(Genmodel);
+		strRecmodel = new CharWA(Recmodel);
+		strPropmodel = new CharWA(Propmodel);
+		strPropDirection = new CharWA(PropDirection);
+		
 		// Pause communication
 		vrep.simxPauseCommunication(clientID, true);
+		
 		// Set Simulator signal values
 		int result1 = vrep.simxSetStringSignal(clientID, "ControlParam", strCP, vrep.simx_opmode_oneshot);
 		int result2 = vrep.simxSetStringSignal(clientID, "ConnHandles", strConn, vrep.simx_opmode_oneshot);
 		int result3 = vrep.simxSetStringSignal(clientID, "ModHandles", strMH, vrep.simx_opmode_oneshot);
-		if (extrap > 0) {
-			int result4 = vrep.simxSetStringSignal(clientID, "ExtraParam", strEP, vrep.simx_opmode_oneshot);
-		}
+		int result4 = vrep.simxSetStringSignal(clientID, "ConnOri", strConnori, vrep.simx_opmode_oneshot);
+		int result5 = vrep.simxSetStringSignal(clientID, "Genmodel", strGenmodel, vrep.simx_opmode_oneshot);
+		int result6 = vrep.simxSetStringSignal(clientID, "Recmodel", strRecmodel, vrep.simx_opmode_oneshot);
+		int result7 = vrep.simxSetStringSignal(clientID, "Propmodel", strPropmodel, vrep.simx_opmode_oneshot);
+		int result8 = vrep.simxSetStringSignal(clientID, "PropDirection", strPropDirection, vrep.simx_opmode_oneshot);
+		int result9 = vrep.simxSetIntegerSignal(clientID, "Nparameters", numberofParameters, vrep.simx_opmode_oneshot);
+		
+		
 		// Unpause communication
 		vrep.simxPauseCommunication(clientID, false);
 

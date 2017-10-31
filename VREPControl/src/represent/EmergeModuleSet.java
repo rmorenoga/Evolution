@@ -35,7 +35,7 @@ public class EmergeModuleSet extends ModuleSet {
     /*Constructor for the RodrigoModuleSet class*/
     public EmergeModuleSet() {
         //two types of module with four connection faces and 2 orientations
-        this(2, 4, 2); 
+        this(2, 4, 4); 
     }
     /**
      * This is the general constructor for derived classes 
@@ -50,7 +50,8 @@ public class EmergeModuleSet extends ModuleSet {
         
         //The name of the different modules (they have to match with the name of
         //the file to load in the simulator)
-        moduleName[0] = "initialemergeModule";
+        //moduleName[0] = "initialemergeModule";
+        moduleName[0] = "emergeModule";
         moduleName[1] = "emergeModule";
         //define the different properties
         //number of faces for each type of module
@@ -63,14 +64,18 @@ public class EmergeModuleSet extends ModuleSet {
         modulesBaseFacesNumber[1] = 1; //Number of faces in the base for Rodrigo´s module (all)
         
         //number of possible orientations when a module is joined to other module
-        moduleOrientations[0] = 2; //Number of orientations of the module base
-        moduleOrientations[1] = 2; //Number of orientations of Rodrigo´s module
+        moduleOrientations[0] = 4; //Number of orientations of the module base
+        moduleOrientations[1] = 4; //Number of orientations of Rodrigo´s module
         
         connectionFaceForEachOrientation[1][0] = 0;        //connected in face 0
         connectionFaceForEachOrientation[1][1] = 0;        //connected in face 0
+        connectionFaceForEachOrientation[1][2] = 0;        //connected in face 0
+        connectionFaceForEachOrientation[1][3] = 0;        //connected in face 0
         
         rotationAboutTheNormalForEachOrientation[1][0] = 0;          //0 degrees
         rotationAboutTheNormalForEachOrientation[1][1] = Math.PI*0.5;//90 degrees
+        rotationAboutTheNormalForEachOrientation[1][2] = Math.PI;//180 degrees
+        rotationAboutTheNormalForEachOrientation[1][3] = -Math.PI*0.5;//-90 degrees
         
         //mass of each module in Kg
         modulesMass[0] = 0.06;  //Mass of the base module
@@ -94,14 +99,14 @@ public class EmergeModuleSet extends ModuleSet {
         //Base module:
         
         originFaceVector[0][0] = new Vector3D(0.0385,0,0);       //Face 1
-        originFaceVector[0][1] = new Vector3D(0.008, 0.0305, 0);  //Face 2
-        originFaceVector[0][2] = new Vector3D(0.008, -0.0305, 0);  //Face 3
+        originFaceVector[0][1] = new Vector3D(0.008, -0.0305, 0);  //Face 2
+        originFaceVector[0][2] = new Vector3D(0.008, 0.0305, 0);  //Face 3
         
         //Rodrigo´s module
         originFaceVector[1][0] = new Vector3D(-0.0385, 0, 0);   //Face 0
         originFaceVector[1][1] = new Vector3D( 0.0385, 0, 0);       //Face 1
-        originFaceVector[1][2] = new Vector3D(0.008, 0, 0.0305);  //Face 2
-        originFaceVector[1][3] = new Vector3D(0.008, 0, -0.0305);  //Face 3
+        originFaceVector[1][2] = new Vector3D(0.008, -0.0305, 0);  //Face 2
+        originFaceVector[1][3] = new Vector3D(0.008, 0.0305, 0);  //Face 3
         
         /**********************************************************************/
         /************************** normalFaceVector **************************/
@@ -110,14 +115,14 @@ public class EmergeModuleSet extends ModuleSet {
         // for each face and module type
         //Base module:
         normalFaceVector[0][0] = new Vector3D(1,0,0);     //Face 1
-        normalFaceVector[0][1] = new Vector3D(0, 1, 0);    //Face 2
-        normalFaceVector[0][2] = new Vector3D(0, -1, 0);     //Face 3
+        normalFaceVector[0][1] = new Vector3D(0, -1, 0);    //Face 2
+        normalFaceVector[0][2] = new Vector3D(0, 1, 0);     //Face 3
         
         //Rodrigo´s module
         normalFaceVector[1][0] = new Vector3D(-1, 0, 0);     //Face 0
         normalFaceVector[1][1] = new Vector3D(1,0,0);     //Face 1
-        normalFaceVector[1][2] = new Vector3D(0, 0, 1);    //Face 2
-        normalFaceVector[1][3] = new Vector3D(0, 0, -1);     //Face 3
+        normalFaceVector[1][2] = new Vector3D(0, -1, 0);    //Face 2
+        normalFaceVector[1][3] = new Vector3D(0, 1, 0);     //Face 3
         
         /**********************************************************************/
         /************************** boundingBox **************************/
@@ -128,7 +133,8 @@ public class EmergeModuleSet extends ModuleSet {
         boundingBox[0] = new Vector3D(0.061,0.055,0.077);
         
         //Rodrigo´s module
-        boundingBox[1] = new Vector3D(0.055,0.061,0.077);
+        //boundingBox[1] = new Vector3D(0.055,0.061,0.077);
+        boundingBox[1] = new Vector3D(0.061,0.055,0.077);
         
         /**********************************************************************/
         /*************************** symmetricFace  ***************************/

@@ -87,6 +87,10 @@ public static SceneBuilder getScene() {
     private static double minAngularFreq;
     private static double maxOffset;
     private static double minOffset;
+    private static String genmodel;
+    private static String recmodel;
+    private static String propmodel;
+    private static String propdirection;
 
     
     private static double maxWeighing;
@@ -147,7 +151,7 @@ public static SceneBuilder getScene() {
             if (SimulationConfiguration.controller.contentEquals("CPG")){
             	SimulationConfiguration.controllerparamnumber = 6;
             }else if (SimulationConfiguration.controller.contentEquals("CPGH") || SimulationConfiguration.controller.contentEquals("CPGHF") || SimulationConfiguration.controller.contentEquals("CPGHLog")|| SimulationConfiguration.controller.contentEquals("CPGHFLog")){
-            	SimulationConfiguration.controllerparamnumber = 35;
+            	SimulationConfiguration.controllerparamnumber = 49;
             }
             
             
@@ -159,6 +163,11 @@ public static SceneBuilder getScene() {
             SimulationConfiguration.minAngularFreq = config.getDouble("Control.AngularFreq.MinValue");
             SimulationConfiguration.maxOffset = config.getDouble("Control.Offset.MaxValue");
             SimulationConfiguration.minOffset = config.getDouble("Control.Offset.MinValue");
+            SimulationConfiguration.genmodel = config.getString("Control.Genmodel");
+            SimulationConfiguration.recmodel = config.getString("Control.Recmodel");
+            SimulationConfiguration.propmodel = config.getString("Control.Propmodel");
+            SimulationConfiguration.propdirection = config.getString("Control.PropDirection");
+            
             
             SimulationConfiguration.maxWeighing = config.getDouble("Control.Weighing.MaxValue");
             SimulationConfiguration.minWeighing = config.getDouble("Control.Weighing.MinValue");
@@ -308,7 +317,7 @@ public static SceneBuilder getScene() {
 	public static void setModuleSet(String moduleSet) {
 		SimulationConfiguration.moduleSet = moduleSet;
 	}
-
+	
 	public static int getnMaxModulesIni() {
 		return nMaxModulesIni;
 	}
@@ -365,13 +374,37 @@ public static SceneBuilder getScene() {
 		SimulationConfiguration.nMaxConnections = nMaxConnections;
 	}
 
-	
+	public static String getGenmodel() {
+		return genmodel;
+	}
 
-	
+	public static void setGenmodel(String genmodel) {
+		SimulationConfiguration.genmodel = genmodel;
+	}
 
+	public static String getRecmodel() {
+		return recmodel;
+	}
 
+	public static void setRecmodel(String recmodel) {
+		SimulationConfiguration.recmodel = recmodel;
+	}
 
+	public static String getPropmodel() {
+		return propmodel;
+	}
 
+	public static void setPropmodel(String propmodel) {
+		SimulationConfiguration.propmodel = propmodel;
+	}
+
+	public static String getPropdirection() {
+		return propdirection;
+	}
+
+	public static void setPropdirection(String propdirection) {
+		SimulationConfiguration.propdirection = propdirection;
+	}
 
 	public static double getMaxWeighing() {
 		return maxWeighing;

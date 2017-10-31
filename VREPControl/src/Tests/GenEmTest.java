@@ -37,7 +37,7 @@ public class GenEmTest {
 			
 		for (int i = 0; i < indiv.length ;i++ ){
 				
-		result = RunTest(indiv[i],morpho,0,sim);
+		result = RunTest(indiv[i],morpho,sim);
 		WResultsFile(indiv[i],result);
 				
 		}
@@ -46,7 +46,7 @@ public class GenEmTest {
 			
 	}
 
-	static double[] RunTest(double[] param,String morpho, int extraparam, Simulation sim) {
+	static double[] RunTest(double[] param,String morpho, Simulation sim) {
 		
 		float alpha = 0.7f;
 		
@@ -62,8 +62,8 @@ public class GenEmTest {
 		//ParameterMask parammask = new ParameterMask(extraparam);
 		//CPGSingle parammask = new CPGSingle(extraparam,true,true);
 		//CPGHSingle parammask = new CPGHSingle(extraparam,true,true);
-		CPGHSBase parammask = new CPGHSBase(extraparam,true,true,true);
-		parammask.setandsepParam(fullparam);
+		CPGHSBase parammask = new CPGHSBase(true,true,true);
+		parammask.setParameters(fullparam);
 		
 		//char[] subshort = new char[]{'s','b','l','r'};
 		char[][] subenvperm = new char[][] { { 's', 'l', 'b', 'r'},

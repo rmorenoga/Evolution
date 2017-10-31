@@ -2,22 +2,23 @@ package control;
 
 public class CPGHSBase extends CPGHSingle{
 	
-	private float[] fixed = new float[] { -1.0f, -0.05675713991376258f, -0.2704007348336987f, 0.3f, 0.3f, 0.3f, 0.4f };
-
-	public CPGHSBase(int extrap, boolean samePhaseDiff, boolean blockfrequency) {
-		super(extrap, samePhaseDiff, blockfrequency);
+	//private float[] fixed = new float[] { -1.0f, -0.05675713991376258f, -0.2704007348336987f, 0.3f, 0.3f, 0.3f, 0.4f };
+	private float[] fixed = new float[] { 0.5f, 0.0f, 0.3f, 0.3f, 0.3f, 0.3f, 0.4f };
+	
+	public CPGHSBase(boolean samePhaseDiff, boolean blockfrequency) {
+		super(samePhaseDiff, blockfrequency);
 	}
 
-	public CPGHSBase(int extrap, boolean samePhaseDiff, boolean blockfrequency,boolean snake) {
-		super(extrap, samePhaseDiff, blockfrequency,snake);
+	public CPGHSBase(boolean samePhaseDiff, boolean blockfrequency,boolean snake) {
+		super(samePhaseDiff, blockfrequency,snake);
 	}
 	
-	public CPGHSBase(int extrap, float freq, boolean samePhaseDiff, boolean blockfrequency) {
-		super(extrap, freq, samePhaseDiff, blockfrequency);
+	public CPGHSBase(float freq, boolean samePhaseDiff, boolean blockfrequency) {
+		super(freq, samePhaseDiff, blockfrequency);
 	}
 	
-	public CPGHSBase(int extrap, float freq, boolean samePhaseDiff, boolean blockfrequency,boolean snake) {
-		super(extrap, freq, samePhaseDiff, blockfrequency,snake);
+	public CPGHSBase(float freq, boolean samePhaseDiff, boolean blockfrequency,boolean snake) {
+		super(freq, samePhaseDiff, blockfrequency,snake);
 	}
 
 	public void growParam(int numberofModules){
@@ -37,104 +38,104 @@ public class CPGHSBase extends CPGHSingle{
 		float[] MaskedParameters;
 		if (isBlockfrequency()) {
 			if (isSamePhaseDiff()){
-				// rawParameters.length = 12
-				// MaskedParameters.length = 15
-				if (parameters.length != 12) {
+				// rawParameters.length = 18
+				// MaskedParameters.length = 21
+				if (parameters.length != 18) {
 					System.err.println("CPGHSBase");
-					System.err.println("Parameters must be of size 12 since samePhaseDiff is " + isSamePhaseDiff() + " and blockfrequency is " + isBlockfrequency());
+					System.err.println("Parameters must be of size 18 since samePhaseDiff is " + isSamePhaseDiff() + " and blockfrequency is " + isBlockfrequency());
 					System.exit(-1);
 				}
 				
-				MaskedParameters = new float[15];
+				MaskedParameters = new float[21];
 
 				MaskedParameters[0] = fixed[0];
-				MaskedParameters[5] = fixed[1];
-				MaskedParameters[10] = fixed[2];
+				MaskedParameters[7] = fixed[1];
+				MaskedParameters[14] = fixed[2];
 
-				for (int j = 1; j < 5; j++) {
+				for (int j = 1; j < 7; j++) {
 					MaskedParameters[j] = parameters[j - 1]; // Amplitude
-					MaskedParameters[j + 5] = parameters[j - 1 + 4]; // Offset
-					MaskedParameters[j + 10] = parameters[j - 1 + 8]; // Phase difference												
+					MaskedParameters[j + 7] = parameters[j - 1 + 6]; // Offset
+					MaskedParameters[j + 14] = parameters[j - 1 + 12]; // Phase difference												
 				}
 			}else{
+				// rawParameters.length = 36
+				// MaskedParameters.length = 42
+				if (parameters.length != 36) {
+					System.err.println("CPGHSBase");
+					System.err.println("Parameters must be of size 36 since samePhaseDiff is " + isSamePhaseDiff() + " and blockfrequency is " + isBlockfrequency());
+					System.exit(-1);
+				}
+				
+				MaskedParameters = new float[42];
+
+				MaskedParameters[0] = fixed[0];
+				MaskedParameters[7] = fixed[1];
+				MaskedParameters[14] = fixed[2];
+				MaskedParameters[15] = fixed[3];
+				MaskedParameters[16] = fixed[4];
+				MaskedParameters[17] = fixed[5];
+
+
+				for (int j = 1; j < 7; j++) {
+					MaskedParameters[j] = parameters[j - 1]; // Amplitude
+					MaskedParameters[j + 7] = parameters[j - 1 + 6]; // Offset
+				}
+				for (int j = 4; j < 28; j++) {
+					MaskedParameters[j + 14] = parameters[j - 4 + 12]; // Phase
+																			// difference
+				}
+			}		
+		}else{
+			if (isSamePhaseDiff()){
 				// rawParameters.length = 24
-				// MaskedParameters.length = 30
+				// MaskedParameters.length = 28
 				if (parameters.length != 24) {
 					System.err.println("CPGHSBase");
 					System.err.println("Parameters must be of size 24 since samePhaseDiff is " + isSamePhaseDiff() + " and blockfrequency is " + isBlockfrequency());
 					System.exit(-1);
 				}
 				
-				MaskedParameters = new float[30];
+				MaskedParameters = new float[28];
 
 				MaskedParameters[0] = fixed[0];
-				MaskedParameters[5] = fixed[1];
-				MaskedParameters[10] = fixed[2];
-				MaskedParameters[11] = fixed[3];
-				MaskedParameters[12] = fixed[4];
-				MaskedParameters[13] = fixed[5];
+				MaskedParameters[7] = fixed[1];
+				MaskedParameters[14] = fixed[2];
+				MaskedParameters[21] = fixed[6];
 
-
-				for (int j = 1; j < 5; j++) {
+				for (int j = 1; j < 7; j++) {
 					MaskedParameters[j] = parameters[j - 1]; // Amplitude
-					MaskedParameters[j + 5] = parameters[j - 1 + 4]; // Offset
-				}
-				for (int j = 4; j < 20; j++) {
-					MaskedParameters[j + 10] = parameters[j - 4 + 8]; // Phase
-																			// difference
-				}
-			}		
-		}else{
-			if (isSamePhaseDiff()){
-				// rawParameters.length = 16
-				// MaskedParameters.length = 20
-				if (parameters.length != 16) {
-					System.err.println("CPGHSBase");
-					System.err.println("Parameters must be of size 16 since samePhaseDiff is " + isSamePhaseDiff() + " and blockfrequency is " + isBlockfrequency());
-					System.exit(-1);
-				}
-				
-				MaskedParameters = new float[20];
-
-				MaskedParameters[0] = fixed[0];
-				MaskedParameters[5] = fixed[1];
-				MaskedParameters[10] = fixed[2];
-				MaskedParameters[15] = fixed[6];
-
-				for (int j = 1; j < 5; j++) {
-					MaskedParameters[j] = parameters[j - 1]; // Amplitude
-					MaskedParameters[j + 5] = parameters[j - 1 + 4]; // Offset
-					MaskedParameters[j + 10] = parameters[j - 1 + 8]; // Phase difference
-					MaskedParameters[j + 15] = parameters[j - 1 + 12]; // Frequency (v)														
+					MaskedParameters[j + 7] = parameters[j - 1 + 6]; // Offset
+					MaskedParameters[j + 14] = parameters[j - 1 + 12]; // Phase difference
+					MaskedParameters[j + 21] = parameters[j - 1 + 18]; // Frequency (v)														
 				}
 						
 			}else{
-				// rawParameters.length = 28
-				// MaskedParameters.length = 35
-				if (parameters.length != 28) {
+				// rawParameters.length = 42
+				// MaskedParameters.length = 49
+				if (parameters.length != 42) {
 					System.err.println("CPGHSBase");
-					System.err.println("Parameters must be of size 28 since samePhaseDiff is " + isSamePhaseDiff() + " and blockfrequency is " + isBlockfrequency());
+					System.err.println("Parameters must be of size 42 since samePhaseDiff is " + isSamePhaseDiff() + " and blockfrequency is " + isBlockfrequency());
 					System.exit(-1);
 				}
 				
-				MaskedParameters = new float[35];
+				MaskedParameters = new float[49];
 
 				MaskedParameters[0] = fixed[0];
-				MaskedParameters[5] = fixed[1];
-				MaskedParameters[10] = fixed[2];
-				MaskedParameters[11] = fixed[3];
-				MaskedParameters[12] = fixed[4];
-				MaskedParameters[13] = fixed[5];
-				MaskedParameters[30] = fixed[6];
+				MaskedParameters[7] = fixed[1];
+				MaskedParameters[14] = fixed[2];
+				MaskedParameters[15] = fixed[3];
+				MaskedParameters[16] = fixed[4];
+				MaskedParameters[17] = fixed[5];
+				MaskedParameters[42] = fixed[6];
 
-				for (int j = 1; j < 5; j++) {
+				for (int j = 1; j < 7; j++) {
 					MaskedParameters[j] = parameters[j - 1]; // Amplitude
-					MaskedParameters[j + 5] = parameters[j - 1 + 4]; // Offset
-					MaskedParameters[j + 30] = parameters[j - 1 + 24]; // Frequency
+					MaskedParameters[j + 7] = parameters[j - 1 + 6]; // Offset
+					MaskedParameters[j + 42] = parameters[j - 1 + 36]; // Frequency
 																			// (v)
 				}
-				for (int j = 4; j < 20; j++) {
-					MaskedParameters[j + 10] = parameters[j - 4 + 8]; // Phase
+				for (int j = 4; j < 28; j++) {
+					MaskedParameters[j + 14] = parameters[j - 4 + 12]; // Phase
 																			// difference
 				}
 			}		
