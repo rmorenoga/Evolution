@@ -2,7 +2,7 @@ package control;
 
 import simvrep.SimulationConfiguration;
 
-public abstract class ParameterMask {
+public abstract class ParameterMask implements OrientationDiscovery{
 
 	private float[] parameters;
 	protected float[] maskedparameters;
@@ -62,6 +62,24 @@ public abstract class ParameterMask {
 
 	public void setNumberofParameters(int numberofParameters) {
 		this.numberofParameters = numberofParameters;
+	}
+	
+	@Override
+	public int[] getConnectedOriList(int numberofmodules) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void generateConnectedOrifromRepresentation() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int[] getOrientationSetForIndividualModuleFromRepresentation() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

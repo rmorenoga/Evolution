@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import control.CPGHANN;
+import control.CPGHANNOriD;
 import control.CPGHSBase;
 import control.CPGHSingle;
 import control.CPGSingle;
@@ -93,7 +94,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 		//CPGSingle parammask = new CPGSingle(true,true);
 		//CPGHSingle parammask = new CPGHSingle(true,true);
 		//CPGHSBase parammask = new CPGHSBase(true,true,true);
-		CPGHANN parammask = new CPGHANN(fullparam.length);
+		CPGHANN parammask = new CPGHANNOriD(fullparam.length);
 		parammask.setParameters(fullparam);
 
 		if (seq) {

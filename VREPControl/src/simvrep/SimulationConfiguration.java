@@ -91,6 +91,7 @@ public static SceneBuilder getScene() {
     private static String recmodel;
     private static String propmodel;
     private static String propdirection;
+    private static boolean orientationdiscovery;
 
     
     private static double maxWeighing;
@@ -167,6 +168,7 @@ public static SceneBuilder getScene() {
             SimulationConfiguration.recmodel = config.getString("Control.Recmodel");
             SimulationConfiguration.propmodel = config.getString("Control.Propmodel");
             SimulationConfiguration.propdirection = config.getString("Control.PropDirection");
+            SimulationConfiguration.orientationdiscovery = config.getBoolean("Control.OrientationDiscovery");
             
             
             SimulationConfiguration.maxWeighing = config.getDouble("Control.Weighing.MaxValue");
@@ -485,6 +487,15 @@ public static SceneBuilder getScene() {
 
 	public static void setMinOffset(double minOffset) {
 		SimulationConfiguration.minOffset = minOffset;
+	}
+	
+
+	public static boolean isOrientationdiscovery() {
+		return orientationdiscovery;
+	}
+
+	public static void setOrientationdiscovery(boolean orientationdiscovery) {
+		SimulationConfiguration.orientationdiscovery = orientationdiscovery;
 	}
 
 	public static boolean isDebug() {

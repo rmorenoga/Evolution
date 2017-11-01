@@ -154,8 +154,6 @@ function receptorsANNLastTime(hormsum,ampd,offd,phasediff,v,ori,deltaparam)
         table.insert(inputs,cpgInputs[i])
     end
 
-    print(#deltaparam)
-
     local outputs = propagateANN(ann,inputs) --{ampdnew,offdnew,phasediffnew}
 
     ampdnew,offdnew,phasediffnew = ConvertAnnOutputstoCPGParameters(outputs,#phasediff)

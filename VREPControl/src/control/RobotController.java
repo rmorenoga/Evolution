@@ -49,7 +49,15 @@ public class RobotController {
 		this.numberofModules = moduleHandlers.length;
 		this.numberofParameters = parammask.getNumberofParameters();
 		connectedhandles = robot.getTree().getHandlerListint();
-		connectedori = robot.getTree().getOriListint();
+		
+		
+		if(SimulationConfiguration.isOrientationdiscovery()){
+			connectedori = parammask.getConnectedOriList(numberofModules);
+		}else{
+			connectedori = robot.getTree().getOriListint();
+		}
+		
+		
 		Genmodel = SimulationConfiguration.getGenmodel();
 		Recmodel = SimulationConfiguration.getRecmodel();
 		Propmodel = SimulationConfiguration.getPropmodel();
