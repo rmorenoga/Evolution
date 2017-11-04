@@ -24,7 +24,7 @@ public class CPGHANN extends ParameterMask{
 //		
 		float[] grownparam;
 		if (getParameters() == null) {
-			System.err.println("CPGSingle");
+			System.err.println("CPGHANN");
 			System.err.println("Parameters have not been set yet");
 			System.exit(-1);
 		}
@@ -37,10 +37,14 @@ public class CPGHANN extends ParameterMask{
 		
 		float[] grownparam = new float[numberofModules*numberofParameters];
 		
-		for(int i=0;i<grownparam.length;i=i+numberofParameters){
-			for (int j=0;j<parameters.length;j++){
-				grownparam[i+j] = parameters[j]*10;
-			}
+//		for(int i=0;i<grownparam.length;i=i+numberofParameters){ //The same for all
+//			for (int j=0;j<parameters.length;j++){  
+//				grownparam[i+j] = parameters[j]*10;
+//			}
+//		}
+		
+		for (int i = 0;i<grownparam.length;i++){  //Individual parameters per module
+			grownparam[i] = parameters[i]*10;
 		}
 		
 		return grownparam;
