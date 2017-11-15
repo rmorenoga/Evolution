@@ -11,7 +11,7 @@ function attenuate(horm)
     --Attenuates all components of a hormone by an attenuation factor
     --factor must be less than 1 for attenuation
     local hormnew={}
-    local factor = 0.2
+    local factor = 0.5--0.2
     local active = false
     for i=1,#horm do
 	hormnew[i] = horm[i]

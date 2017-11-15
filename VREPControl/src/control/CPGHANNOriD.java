@@ -6,8 +6,8 @@ public class CPGHANNOriD extends CPGHANN{
 	private int numberofModules;
 	
 	
-	public CPGHANNOriD(int numberofParameters){
-		super(numberofParameters);
+	public CPGHANNOriD(int numberofParameters, boolean individual){
+		super(numberofParameters, individual);
 	}
 	
 	@Override

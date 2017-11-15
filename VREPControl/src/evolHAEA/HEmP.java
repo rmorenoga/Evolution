@@ -94,7 +94,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 		//CPGSingle parammask = new CPGSingle(true,true);
 		//CPGHSingle parammask = new CPGHSingle(true,true);
 		//CPGHSBase parammask = new CPGHSBase(true,true,true);
-		CPGHANN parammask = new CPGHANNOriD(fullparam.length);
+		CPGHANN parammask = new CPGHANN(fullparam.length,true);
 		parammask.setParameters(fullparam);
 
 		if (seq) {

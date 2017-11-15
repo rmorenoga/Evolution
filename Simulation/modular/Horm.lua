@@ -73,18 +73,22 @@ function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltapar
 		
 		local hormsum = normalizedHSum(hormones,rhorm)
 
+		--print('******************************************')
+		--print(ori)
+		--for k,v in pairs(hormsum) do print(k,v) end
+
 		if (Genmodel=='baseHormone') then
 			hormnew[1]=-1
 		end
 
-		--ampdnew,offdnew,phasediffnew,vnew = receptorsANNB(hormsum,ampdnew,offdnew,phasediffnew,vnew,ori,deltaparam)
-		ampdnew,offdnew,phasediffnew,vnew = receptorsANNLastTime(hormsum,ampdnew,offdnew,phasediffnew,vnew,ori,deltaparam)
+		ampdnew,offdnew,phasediffnew,vnew = receptorsANNB(hormsum,ampdnew,offdnew,phasediffnew,vnew,ori,deltaparam)
+		--ampdnew,offdnew,phasediffnew,vnew = receptorsANNLastTime(hormsum,ampdnew,offdnew,phasediffnew,vnew,ori,deltaparam)
 
 	else
 
 		print('General Hormone Reception Model is not recognized')
 	end
-
+	
 
 	return hormnew,ampdnew,offdnew,phasediffnew,vnew
 end

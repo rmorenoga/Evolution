@@ -67,7 +67,7 @@ public class JEmP extends ObjectiveFunction {
 		// ParameterMask parammask = new ParameterMask();
 		//CPGSingle parammask = new CPGSingle(true,true);
 		//CPGHSBase parammask = new CPGHSBase(true,true,true);
-		CPGHANN parammask = new CPGHANN(fullparam.length);
+		CPGHANN parammask = new CPGHANN(fullparam.length,true);
 		parammask.setParameters(fullparam);
 
 		if (seq) {

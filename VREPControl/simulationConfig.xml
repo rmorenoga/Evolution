@@ -67,7 +67,7 @@
         <Propmodel>Attenuate</Propmodel>
         <PropDirection>Forward</PropDirection>
         <Recmodel>ANNBasic</Recmodel>
-        <OrientationDiscovery>true</OrientationDiscovery></Control>
+        <OrientationDiscovery>false</OrientationDiscovery></Control>
 
     <Tree>
     	<MaxModules>141</MaxModules>
