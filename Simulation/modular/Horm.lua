@@ -74,6 +74,7 @@ function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltapar
 		local hormsum = normalizedHSum(hormones,rhorm)
 
 		--print('******************************************')
+		--print(#deltaparam)
 		--print(ori)
 		--for k,v in pairs(hormsum) do print(k,v) end
 

@@ -1,5 +1,5 @@
-require('lua/modular/ANN')
-require('lua/modular/ANNTrainEvol')
+require('lua/modular/ANNBias')
+require('lua/modular/ANNBiasEvol')
 require('lua/modular/Convert')
 
 
@@ -103,8 +103,8 @@ function receptorsANNB(hormsum,ampd,offd,phasediff,v,ori,deltaparam)
 
     local oriinputs = getAnnInputsfromOri(ori)
 
-    print('************************************')
-    print(ori)
+    --print('************************************')
+    --print(ori)
 
     local inputs = {} -- {ori inputs, hormone inputs}
 
