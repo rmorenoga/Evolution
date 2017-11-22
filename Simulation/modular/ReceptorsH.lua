@@ -120,10 +120,10 @@ function receptorsANNB(hormsum,ampd,offd,phasediff,v,ori,deltaparam)
 
     ampdnew,offdnew,phasediffnew = ConvertAnnOutputstoCPGParameters(outputs,#phasediff)
 
-    print(ampdnew)
-    print(offdnew)
-    print(vnew)
-    for k,v in pairs(phasediffnew) do print(k,v) end
+    --print(ampdnew)
+    --print(offdnew)
+    --print(vnew)
+    --for k,v in pairs(phasediffnew) do print(k,v) end
 
     return ampdnew,offdnew,phasediffnew,vnew
 

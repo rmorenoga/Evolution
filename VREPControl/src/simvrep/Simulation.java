@@ -235,7 +235,7 @@ public class Simulation {
 				stopTime = System.currentTimeMillis();
 				elapsedTime = stopTime - startTime;
 
-				if (elapsedTime > 120000) {
+				if (elapsedTime > 600000) {
 					System.out.println("Too much time has passed attempting to restart simulator in "+simnumber);
 					fitnessout[0] = -1; // This signals that the output is not
 					// ok and the simulator should be

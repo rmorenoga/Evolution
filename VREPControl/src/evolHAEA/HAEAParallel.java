@@ -43,6 +43,7 @@ import unalcol.optimization.real.mutation.Mutation;
 import unalcol.optimization.real.mutation.OneFifthRule;
 import unalcol.optimization.real.mutation.PickComponents;
 import unalcol.optimization.real.xover.LinearXOver;
+import unalcol.optimization.real.xover.SimpleXOver;
 import unalcol.random.real.StandardGaussianGenerator;
 import unalcol.random.real.StandardUniformGenerator;
 import unalcol.search.Goal;
@@ -112,7 +113,7 @@ public class HAEAParallel {
 				e.printStackTrace();
 			}
 
-			Simulation sim = new Simulation(j, 30);
+			Simulation sim = new Simulation(j, 300);
 			// Retry if there is a simulator crash
 			for (int i = 0; i < 5; i++) {
 				if (sim.Connect()) {
@@ -131,9 +132,9 @@ public class HAEAParallel {
 		// Search Space Definition
 		//int DIM = 169; //Snake
 		//int DIM = 281; //CPGH
-		int DIM = 250;
-		double[] min = DoubleArray.create(DIM, -1);
-		double[] max = DoubleArray.create(DIM, 1);
+		int DIM = 234;
+		double[] min = DoubleArray.create(DIM, -20);
+		double[] max = DoubleArray.create(DIM, 20);
 
 		Space<double[]> space = new HyperCube(min, max);
 
@@ -153,8 +154,9 @@ public class HAEAParallel {
 		//AdaptMutationIntensity adapt = new OneFifthRule(20, 0.9);
 		
 		//Normal mutation and DEXover
-		//IntensityMutation variation = new GaussianMutation(0.1, null);
-		DEXOver xover = new DEXOver(0.9,0.9,new StandardUniformGenerator(),DIM); //Use NUniqueIndividuals() selection with the DE operator 
+		IntensityMutation variation = new GaussianMutation(0.1, null);
+		SimpleXOver xover = new SimpleXOver(); 
+		//DEXOver xover = new DEXOver(0.9,0.9,new StandardUniformGenerator(),DIM); //Use NUniqueIndividuals() selection with the DE operator 
 		
 		
 		//Favor mutation and DEXover for old modules in snake configuration
@@ -173,9 +175,9 @@ public class HAEAParallel {
 
 		int POPSIZE = 4;
 		int MAXITERS = 2;
-		Variation[] opers = new Variation[1];
-		//opers[0] = variation;
-		opers[0] = xover;
+		Variation[] opers = new Variation[2];
+		opers[0] = variation;
+		opers[1] = xover;
 
 		SimpleHaeaOperators operators = new SimpleHaeaOperators(opers);
 		Selection selection = new NUniqueIndividuals();
