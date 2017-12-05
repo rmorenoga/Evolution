@@ -67,9 +67,9 @@ function logHorm(horm,file)
 
 end
 
-function logRecH(phorm,file)
+function logRecH(rhorm,file)
 	local receivtable={}
-	for i=1,#phorm do
+	for i=1,#rhorm do
         	receivtable[i] = {}
     	end	
 	--local proptable = {false,false,false,false}
@@ -82,9 +82,9 @@ function logRecH(phorm,file)
 	--print(str)
 
 	str = str .."\"f1\":["
-	for j = 1,#phorm[1] do 
+	for j = 1,#rhorm[1] do 
 		table.insert(receivtable[1],{false,false,false,false}) 
-		local str2 = json.encode(simUnpackFloatTable(phorm[1][j]))
+		local str2 = json.encode(simUnpackFloatTable(rhorm[1][j]))
 		if(j == 1) then
 			str = str..str2
 		else
@@ -94,14 +94,14 @@ function logRecH(phorm,file)
 
 	str = str.."]"
 	
-	for i =2, #phorm do
+	for i =2, #rhorm do
 		local str1 = ",\"f"..i.."\":["
 		--logtable['f'..(i)] = simUnpackFloatTable(phorm[i])
 		--print(json.encode(simUnpackFloatTable(phorm[i])))
 		--print('++++++++++++++++++++++++'..i)
-		for j = 1,#phorm[i] do
+		for j = 1,#rhorm[i] do
 			table.insert(receivtable[i],{false,false,false,false}) 
-			local str2 = json.encode(simUnpackFloatTable(phorm[i][j]))
+			local str2 = json.encode(simUnpackFloatTable(rhorm[i][j]))
 			if(j == 1) then
 				str1 = str1..str2
 			else

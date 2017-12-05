@@ -125,7 +125,7 @@ function propagate(rhorm,connh,Propmodel,Direction)
  	end
 
 
- 	return phorm
+ 	return phorm,active -- With active and Rhorm we can make receivtable in the logger so that it shows which hormone was propagated through which face
 end
 
 function spatialtr(rhorm,connori,Genmodel)
