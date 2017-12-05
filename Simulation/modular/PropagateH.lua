@@ -79,14 +79,16 @@ function forwarddir(rhorm,active,connh)
     end
 
     for i=1,#connh do
-        for j=1,#connh do
-            if (j~=i and connh[j]~=-1 and #rhorm[j]>0) then
-                for k=1,#rhorm[j] do
-                    if(active[j][k]) then
-                        table.insert(phorm[i],rhorm[j][k])
-                    end
-                end
-            end
+	if (connh[i]~=-1) then
+        	for j=1,#connh do
+            		if (j~=i and connh[j]~=-1 and #rhorm[j]>0) then
+                		for k=1,#rhorm[j] do
+                    			if(active[j][k]) then
+                        			table.insert(phorm[i],rhorm[j][k])
+                    			end
+                		end
+			end
+            	end
         end
     end
 
