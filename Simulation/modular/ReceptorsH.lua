@@ -97,7 +97,7 @@ function receptorsANNB(hormsum,ampd,offd,phasediff,v,ori,deltaparam)
         phasediffnew[j] = phasediff[j]
     end
 
-    local annLayers = {12,12,6}
+    local annLayers = {12,12,4}
 
     local ann = createANNfromWeightsList(annLayers,deltaparam)
 
@@ -118,8 +118,12 @@ function receptorsANNB(hormsum,ampd,offd,phasediff,v,ori,deltaparam)
 
     local outputs = propagateANN(ann,inputs) --{ampdnew,offdnew,phasediffnew}
 
-    ampdnew,offdnew,phasediffnew = ConvertAnnOutputstoCPGParameters(outputs,#phasediff)
+    ampdnew,offdnew,phasediffnew = ConvertAnnOutputstoCPGParameters(outputs,2)
 
+    table.insert(phasediffnew,0.65)
+    table.insert(phasediffnew,0.65)
+
+    --print('+++++++++++++++++++++++++++++++++++')
     --print(ampdnew)
     --print(offdnew)
     --print(vnew)
