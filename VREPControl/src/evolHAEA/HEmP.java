@@ -24,25 +24,25 @@ public class HEmP extends OptimizationFunction<double[]> {
 	protected BitArray servers;
 	public float alpha = 0.7f;
 	protected IntUniform r = new IntUniform(5);
-	protected boolean seq;
+	protected String mode;
 
-	public HEmP(int numberOfServers, List<Simulation> simulators, String morpho, boolean seq) {
+	public HEmP(int numberOfServers, List<Simulation> simulators, String morpho, String mode) {
 		servers = new BitArray(numberOfServers, false);
 		this.simulators = simulators;
 		this.morpho = morpho;
-		this.seq = seq;
+		this.mode = mode;
 		if (DEBUG) {
 			System.out.println("Building HEmP");
 		}
 	}
 
-	public HEmP(float alpha, Simulation sim, String morpho, boolean seq) {
+	public HEmP(float alpha, Simulation sim, String morpho, String mode) {
 		this.alpha = alpha;
 		simulators = new ArrayList<Simulation>();
 		simulators.add(sim);
 		servers = new BitArray(1, false);
 		this.morpho = morpho;
-		this.seq = seq;
+		this.mode = mode;
 	}
 
 	public synchronized int getSimNumber() {
@@ -97,7 +97,8 @@ public class HEmP extends OptimizationFunction<double[]> {
 		CPGHANN parammask = new CPGHANN(fullparam.length,false);
 		parammask.setParameters(fullparam);
 
-		if (seq) {
+		switch (mode) {
+		case "sequence":
 			char[][] subenv = new char[][] {{'s','l','s'},{'s','r','s'},{'b'}};
 			int[] sequence = getSequence(); 
 			
@@ -105,17 +106,18 @@ public class HEmP extends OptimizationFunction<double[]> {
 			
 			for (int i = 0; i<sequence.length ;i++){
 				float width = randomWithRange(0.6f, 0.8f);
+				float height = 0.088f;
 
 				if (morpho != null && !morpho.equals("")) {
 					double[] morphoDouble = ChromoConversion.str2double(morpho);
-					EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenv[sequence[i]], width);
+					EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenv[sequence[i]], width, height);
 					subfitness[i] = evaluator.evaluate();
 				}
 				
 				fitness  = average(subfitness);
 			}
-
-		} else {
+			break;
+		case "fixed":
 
 			char[][] subenvperm = new char[][] { { 's', 'l', 's', 'b', 's', 'r', 's' },
 					{ 's', 'l', 's', 's', 'r', 's', 'b' }, { 'b', 's', 'l', 's', 's', 'r', 's' },
@@ -125,14 +127,48 @@ public class HEmP extends OptimizationFunction<double[]> {
 
 			float width = randomWithRange(0.59f, 0.61f);
 			width = 0.5f;
+			float height = 0.2f;
 			//System.out.println("Width = "+width);
 			if (morpho != null && !morpho.equals("")) {
 				double[] morphoDouble = ChromoConversion.str2double(morpho);
 				//EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[r.generate()], width);
 				//EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[0], width);
-				EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subshort, width);
+				EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subshort, width,height);
 				fitness = evaluator.evaluate();
 			}
+			break;
+		case "incrementalbump":	
+			
+			char[] subbump = new char[]{'s','b','s'};
+			width = 0.5f;
+			float[] heights = new float[]{0.02f,0.06f,0.08f};
+			double[] partialfitness = new double[3];
+			
+			
+			double[] morphoDouble = ChromoConversion.str2double(morpho);
+			EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subbump, width,heights[0]);
+			partialfitness[0] = evaluator.evaluate();
+			
+			if (partialfitness[0]<0.3) {
+				
+				evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subbump, width,heights[1]);
+				partialfitness[1] = evaluator.evaluate();
+				
+				if(partialfitness[1]<0.3){
+					
+					evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subbump, width,heights[2]);
+					partialfitness[2] = evaluator.evaluate();
+					
+					fitness = partialfitness[2];
+					
+				}else {
+					fitness = partialfitness[1] + 5;
+				}
+			}else{
+				fitness = partialfitness[0] + 10;
+			}
+			break;
+			
 		}
 
 		// System.out.println("Fitness in "+ simulator+ " = "+fitness);

@@ -71,6 +71,7 @@ public class GenEmTest {
 			{ 's', 'b', 'r', 'l' }, { 's', 'r', 'l', 'b'},
 			{ 's', 'r', 'b', 'l'}};
 		float width = 0.5f;
+		float height = 0.088f;
 		
 		double[] morphoDouble = ChromoConversion.str2double(morpho);
 		EvaluatorMT evaluator;
@@ -84,7 +85,7 @@ public class GenEmTest {
 		
 		double[] res  = new double[subenvperm.length];
 		for (int i= 0;i<res.length;i++){	
-			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[i], width);
+			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[i], width,height);
 			res[i] = evaluator.evaluate();
 			System.out.println("Fitness: " +res[i]);
 		}

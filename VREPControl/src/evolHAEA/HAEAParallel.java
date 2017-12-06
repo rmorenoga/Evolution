@@ -132,7 +132,7 @@ public class HAEAParallel {
 		// Search Space Definition
 		//int DIM = 169; //Snake
 		//int DIM = 281; //CPGH
-		int DIM = 234;
+		int DIM = 208;
 		double[] min = DoubleArray.create(DIM, -20);
 		double[] max = DoubleArray.create(DIM, 20);
 
@@ -146,7 +146,7 @@ public class HAEAParallel {
 		
 		// Optimization function
 		//OptimizationFunction<double[]> function = new HDebugP(Nsim,simulators,true,nmodules,ori,7,6,1);
-		OptimizationFunction<double[]> function = new HEmP(Nsim,simulators,morpho,false);
+		OptimizationFunction<double[]> function = new HEmP(Nsim,simulators,morpho,"incrementalbump");
 		MultithreadOptimizationGoal<double[]> goal = new MultithreadOptimizationGoal<double[]>(function);
 		goal.setMax_threads(Nsim);
 

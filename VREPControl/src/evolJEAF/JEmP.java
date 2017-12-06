@@ -78,11 +78,12 @@ public class JEmP extends ObjectiveFunction {
 
 			for (int i = 0; i < sequence.length; i++) {
 				float width = randomWithRange(0.6f, 0.8f);
+				float height = 0.088f;
 
 				if (morpho != null && !morpho.equals("")) {
 					double[] morphoDouble = ChromoConversion.str2double(morpho);
 					EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha,
-							subenv[sequence[i]], width);
+							subenv[sequence[i]], width, height);
 					subfitness[i] = evaluator.evaluate();
 				}
 
@@ -99,6 +100,7 @@ public class JEmP extends ObjectiveFunction {
 
 			float width = randomWithRange(0.59f, 0.61f);
 			 width = 0.5f;
+			 float height = 0.088f;
 			// System.out.println("Width = "+width);
 			if (morpho != null && !morpho.equals("")) {
 				double[] morphoDouble = ChromoConversion.str2double(morpho);
@@ -109,7 +111,7 @@ public class JEmP extends ObjectiveFunction {
 				// "defaultmhs.ttt", parammask, sim, alpha, subenvperm[0],
 				// width);
 				EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subshort,
-						width);
+						width, height);
 				fitness = evaluator.evaluate();
 			}
 		}
