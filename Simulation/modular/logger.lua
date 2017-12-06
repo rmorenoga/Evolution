@@ -67,24 +67,16 @@ function logHorm(horm,file)
 
 end
 
-function logRecH(phorm,file)
-	local receivtable={}
-	for i=1,#phorm do
-        	receivtable[i] = {}
-    	end	
-	--local proptable = {false,false,false,false}
+function logRecH(rhorm,file)
 
-	--print('*************************')
+	
 	local str = ""
-	--for k,v in pairs(phorm) do print(k,v) end
-
 	str = str..",\"HRec\":{"
-	--print(str)
 
 	str = str .."\"f1\":["
-	for j = 1,#phorm[1] do 
-		table.insert(receivtable[1],{false,false,false,false}) 
-		local str2 = json.encode(simUnpackFloatTable(phorm[1][j]))
+
+	for j = 1,#rhorm[1] do 
+		local str2 = json.encode(simUnpackFloatTable(rhorm[1][j]))
 		if(j == 1) then
 			str = str..str2
 		else
@@ -92,16 +84,12 @@ function logRecH(phorm,file)
 		end
 	end
 
-	str = str.."]"
-	
-	for i =2, #phorm do
+	str = str.."]"	
+
+	for i =2, #rhorm do
 		local str1 = ",\"f"..i.."\":["
-		--logtable['f'..(i)] = simUnpackFloatTable(phorm[i])
-		--print(json.encode(simUnpackFloatTable(phorm[i])))
-		--print('++++++++++++++++++++++++'..i)
-		for j = 1,#phorm[i] do
-			table.insert(receivtable[i],{false,false,false,false}) 
-			local str2 = json.encode(simUnpackFloatTable(phorm[i][j]))
+		for j = 1,#rhorm[i] do
+			local str2 = json.encode(simUnpackFloatTable(rhorm[i][j]))
 			if(j == 1) then
 				str1 = str1..str2
 			else
@@ -113,32 +101,88 @@ function logRecH(phorm,file)
 		--print(str1)
 		
 	end
-	str = str.."}"
-	--print(str)
-	--for i=1,#receivtable do
-		--print('++++++++++++++++++++++++'..i)
-		--for j = 1,#receivtable[i] do
-			--print('--------------------'..j)
-			--for k,v in pairs(receivtable[i][j]) do print(k,v) end 
-		--end
-	--end
-	
-	file:write(str)
 
-	return receivtable
+	str = str.."}"
 	
+	file:write(str)			
 
 end
 
-function logProp(receivtable,file)
-	--print('*************************')
-	--for i=1,#receivtable do
-		--print('++++++++++++++++++++++++'..i)
-		--for j = 1,#receivtable[i] do
-			--print('--------------------'..j)
-			--for k,v in pairs(receivtable[i][j]) do print(k,v) end 
-		--end
-	--end
+function logRecHTr(rhormtr,file)
+
+	local str = ""
+	str = str..",\"HRecTr\":{"
+
+	str = str .."\"f1\":["
+	for j = 1,#rhormtr[1] do 
+		local str2 = json.encode(simUnpackFloatTable(rhormtr[1][j]))
+		if(j == 1) then
+			str = str..str2
+		else
+			str = str..","..str2
+		end
+	end
+
+	str = str.."]"	
+
+	for i =2, #rhormtr do
+		local str1 = ",\"f"..i.."\":["
+		for j = 1,#rhormtr[i] do
+			local str2 = json.encode(simUnpackFloatTable(rhormtr[i][j]))
+			if(j == 1) then
+				str1 = str1..str2
+			else
+				str1 = str1..","..str2
+			end
+		end
+		str1 = str1.."]"
+		str = str .. str1
+		--print(str1)
+		
+	end
+
+	str = str.."}"
+	file:write(str)	
+
+end
+
+function logOri(sensorO,file)
+	
+	local ori = orientation(sensorO)
+
+	local str = ""
+	str = str..",\"Ori\":"..ori
+	file:write(str)	
+
+	
+end
+
+function logProp(active,connh,file)
+
+	local receivtable = {}
+	for i=1,#active do
+		receivtable[i]={}
+	end
+
+
+	for i=1,#active do
+		for j=1,#active[i] do
+			table.insert(receivtable[i],{false,false,false,false}) 
+		end
+	end
+
+	for i=1,#connh do
+		if (connh[i]~=-1) then
+			for j=1,#connh do
+				if (j~=i and connh[j]~=-1 and #active[j]>0) then
+					for k=1,#active[j] do
+						receivtable[j][k][i] = active[j][k]
+					end
+				end
+			end
+		end
+	end
+	
 
 	local str = ""
 	str = str..",\"HProp\":{"
