@@ -41,6 +41,7 @@ import unalcol.optimization.real.mutation.GaussianMutation;
 import unalcol.optimization.real.mutation.IntensityMutation;
 import unalcol.optimization.real.mutation.Mutation;
 import unalcol.optimization.real.mutation.OneFifthRule;
+import unalcol.optimization.real.mutation.PermutationPick;
 import unalcol.optimization.real.mutation.PickComponents;
 import unalcol.optimization.real.xover.LinearXOver;
 import unalcol.optimization.real.xover.SimpleXOver;
@@ -154,8 +155,8 @@ public class HAEAParallel {
 		//AdaptMutationIntensity adapt = new OneFifthRule(20, 0.9);
 		
 		//Normal mutation and DEXover
-		IntensityMutation variation = new GaussianMutation(0.1, null);
-		SimpleXOver xover = new SimpleXOver(); 
+		IntensityMutation variation = new GaussianMutation(0.05, new PermutationPick(10));
+		LinearXOver xover = new LinearXOver(); 
 		//DEXOver xover = new DEXOver(0.9,0.9,new StandardUniformGenerator(),DIM); //Use NUniqueIndividuals() selection with the DE operator 
 		
 		

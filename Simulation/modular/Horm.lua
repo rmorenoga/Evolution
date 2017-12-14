@@ -2,6 +2,9 @@ require('lua/modular/GenHormone')
 require('lua/modular/PropagateH')
 require('lua/modular/ReceptorsH')
 require('lua/modular/Spatial')
+require('lua/modular/Filter')
+
+simstep = 0
 
 
 function ghormone(connh,sensorR,sensorD,sensorO,Genmodel)
@@ -11,14 +14,25 @@ function ghormone(connh,sensorR,sensorD,sensorO,Genmodel)
 
 	--Returns the generated hormone based on the activated sensors, the orientation of the model: sensorO
 	-- and according to the the GenModel
+
 	ori = orientation(sensorO)
+
+	orifiltered = filterori(ori,simstep)
+
+	--print('***************************')
+	--print(simstep)
+	--print(ori)
+	--print(orifiltered)
+
 
 	if (Genmodel=='baseHormone') then
 		baseprob = 0.75
-		hormones,sendhorm = ghormonebase(connh,sensorR,sensorD,baseprob,ori)
+		hormones,sendhorm = ghormonebase(connh,sensorR,sensorD,baseprob,orifiltered)
 	else
 		print('General Hormone Generation Model is not recognized')
 	end
+
+	simstep = simstep + 1
 
 	return hormones,sendhorm
 end
@@ -40,8 +54,7 @@ function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltapar
 
 	--Apply spatial transformation to incoming messages and extract orientation information before applying receptors
 
-	ori = orientation(sensorO)
-
+	--ori = orientation(sensorO)
 
 	if(Recmodel == 'BasicSum') then
 		local delta = 0.01
@@ -82,8 +95,12 @@ function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltapar
 			hormnew[1]=-1
 		end
 
-		ampdnew,offdnew,phasediffnew,vnew = receptorsANNB(hormsum,ampdnew,offdnew,phasediffnew,vnew,ori,deltaparam)
-		--ampdnew,offdnew,phasediffnew,vnew = receptorsANNLastTime(hormsum,ampdnew,offdnew,phasediffnew,vnew,ori,deltaparam)
+		--print('***************************')
+		--print(simstep)
+		--print(orifiltered)
+
+		ampdnew,offdnew,phasediffnew,vnew = receptorsANNB(hormsum,ampdnew,offdnew,phasediffnew,vnew,orifiltered,deltaparam)
+		--ampdnew,offdnew,phasediffnew,vnew = receptorsANNLastTime(hormsum,ampdnew,offdnew,phasediffnew,vnew,orifiltered,deltaparam)
 
 	else
 

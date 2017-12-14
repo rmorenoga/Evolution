@@ -127,7 +127,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 
 			float width = randomWithRange(0.59f, 0.61f);
 			width = 0.5f;
-			float height = 0.2f;
+			float height = 0.08f;
 			//System.out.println("Width = "+width);
 			if (morpho != null && !morpho.equals("")) {
 				double[] morphoDouble = ChromoConversion.str2double(morpho);
