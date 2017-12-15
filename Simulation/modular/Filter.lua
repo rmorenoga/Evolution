@@ -1,8 +1,11 @@
 
-oriwindow  = 10
+oriwindow  = 12--15
 oricount = {0,0,0,0,0,0}
 orifiltered = 1
 
+hormsumwindow = 7--8
+hormsumfiltered = {}
+hormsumarrived = {}
 
 
 function filterori(ori,simstep)
@@ -39,3 +42,49 @@ function findmaxcount(count)
     
   return index,maxcount
 end
+
+function filterhorm(hormsum,simstep)
+
+	if (simstep==0) then
+		hormsumfiltered = hormsum
+	end
+
+	table.insert(hormsumarrived,hormsum)
+
+	if(simstep%hormsumwindow == 0) then
+		local hormcount = #hormsumarrived
+
+		local hormsumtotal = {}
+		for i=1,#hormsum do
+			hormsumtotal[i] = 0
+		end
+
+		for i=1,#hormsumarrived do
+			hormsumtotal  = sumhormones(hormsumtotal,hormsumarrived[i])
+		end
+
+		for i=1,#hormsumtotal do
+			hormsumfiltered[i] = hormsumtotal[i]/hormcount
+		end
+
+		hormsumarrived = {}
+	end
+
+	return hormsumfiltered
+
+end
+
+function sumhormones(hormone1,hormone2)
+	--Assumes both hormones have the same size
+	local hormtotal = {}
+	for i=1,#hormone1 do
+		hormtotal[i] = hormone1[i]+hormone2[i]
+	end
+
+	return hormtotal
+
+end	
+
+
+
+

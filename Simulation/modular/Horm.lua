@@ -32,7 +32,7 @@ function ghormone(connh,sensorR,sensorD,sensorO,Genmodel)
 		print('General Hormone Generation Model is not recognized')
 	end
 
-	simstep = simstep + 1
+	
 
 	return hormones,sendhorm
 end
@@ -86,6 +86,20 @@ function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltapar
 		
 		local hormsum = normalizedHSum(hormones,rhorm)
 
+		local hormfiltered = filterhorm(hormsum,simstep)
+
+
+
+		
+		--if(simstep<=5) then
+			--print('*****************************')
+			--for k,v in pairs(hormfiltered) do print(k,v) end
+		--end
+		--print(simstep)
+		--for k,v in pairs(hormsum) do print(k,v) end
+		--print('++++++++++++++++++++++++++++++++')
+		--for k,v in pairs(hormfiltered) do print(k,v) end
+
 		--print('******************************************')
 		--print(#deltaparam)
 		--print(ori)
@@ -99,7 +113,7 @@ function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltapar
 		--print(simstep)
 		--print(orifiltered)
 
-		ampdnew,offdnew,phasediffnew,vnew = receptorsANNB(hormsum,ampdnew,offdnew,phasediffnew,vnew,orifiltered,deltaparam)
+		ampdnew,offdnew,phasediffnew,vnew = receptorsANNB(hormfiltered,ampdnew,offdnew,phasediffnew,vnew,orifiltered,deltaparam)
 		--ampdnew,offdnew,phasediffnew,vnew = receptorsANNLastTime(hormsum,ampdnew,offdnew,phasediffnew,vnew,orifiltered,deltaparam)
 
 	else
@@ -141,7 +155,7 @@ function propagate(rhorm,connh,Propmodel,Direction)
  		print('Hormone propagation direction Model not recognized')
  	end
 
-
+ 	simstep = simstep + 1
  	return phorm,active -- With active and Rhorm we can make receivtable in the logger so that it shows which hormone was propagated through which face
 end
 
