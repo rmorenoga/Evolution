@@ -63,7 +63,7 @@
             <MaxValue>100</MaxValue>
             <MinValue>0</MinValue>
         </Weighing>
-        <Genmodel>baseHormone</Genmodel>
+        <Genmodel>connHormone</Genmodel>
         <Propmodel>Attenuate</Propmodel>
         <PropDirection>Forward</PropDirection>
         <Recmodel>ANNBasic</Recmodel>

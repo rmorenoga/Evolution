@@ -112,9 +112,14 @@ function receptorsANNB(hormsum,ampd,offd,phasediff,v,ori,deltaparam)
         table.insert(inputs,oriinputs[i])
     end
 
-    for i=2,#hormsum do--1
+    --print('+++++++++++++++++++++++++++++++++++')
+    --print(#hormsum)
+
+    for i=1,#hormsum do--1
         table.insert(inputs,hormsum[i])
     end
+
+    --print(#inputs)
 
     local outputs = propagateANN(ann,inputs) --{ampdnew,offdnew,phasediffnew}
 

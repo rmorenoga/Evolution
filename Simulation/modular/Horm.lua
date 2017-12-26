@@ -13,7 +13,7 @@ function ghormone(connh,sensorR,sensorD,sensorO,Genmodel)
 	local ori = 0
 
 	--Returns the generated hormone based on the activated sensors, the orientation of the model: sensorO
-	-- and according to the the GenModel
+	-- and according to the the Genmodel
 
 	ori = orientation(sensorO)
 
@@ -25,15 +25,16 @@ function ghormone(connh,sensorR,sensorD,sensorO,Genmodel)
 	--print(orifiltered)
 
 
-	if (Genmodel=='baseHormone') then
+	if (Genmodel=='baseHormone') then -- Contains a base hormone that is always triggered but not sent
 		baseprob = 0.75
 		hormones,sendhorm = ghormonebase(connh,sensorR,sensorD,baseprob,orifiltered)
+	elseif (Genmodel == 'connHormone') then -- Contains hormones generated only by diconnected faces and the two extra empty ones
+		hormones,sendhorm = ghormoneconn(connh,sensorR,sensorD,orifiltered)
 	else
 		print('General Hormone Generation Model is not recognized')
 	end
 
 	
-
 	return hormones,sendhorm
 end
 
