@@ -174,6 +174,8 @@ public class HEmP extends OptimizationFunction<double[]> {
 		// System.out.println("Fitness in "+ simulator+ " = "+fitness);
 
 		servers.set(simulator, false);
+		
+		System.out.println("Fitness = "+fitness);
 
 		return fitness;
 
