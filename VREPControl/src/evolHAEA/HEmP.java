@@ -13,6 +13,7 @@ import simvrep.EvaluatorMT;
 import simvrep.Simulation;
 import unalcol.optimization.OptimizationFunction;
 import unalcol.random.integer.IntUniform;
+import unalcol.tracer.Tracer;
 import unalcol.types.collection.bitarray.BitArray;
 import util.ChromoConversion;
 
@@ -176,6 +177,15 @@ public class HEmP extends OptimizationFunction<double[]> {
 		servers.set(simulator, false);
 		
 		System.out.println("Fitness = "+fitness);
+		
+		
+		String tr = new String("Indv = "+fullparam[0]);
+		
+		for (int i=1;i<fullparam.length;i++) {
+			tr = tr +", "+ fullparam[i];
+		}
+		
+        Tracer.trace(this,tr);
 
 		return fitness;
 

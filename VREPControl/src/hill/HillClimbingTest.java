@@ -76,23 +76,25 @@ public class HillClimbingTest {
 		IntensityMutation variation = new GaussianMutation(0.05, new PermutationPick(10));
 
 		// Search Method
-		int MAXITERS = 1;
+		int MAXITERS = 2;
 		boolean neutral = true;
-		OptimizationFactory factory = new OptimizationFactory();
-		LocalSearch search = factory.hill_climbing(variation, neutral, MAXITERS);
+		OptimizationFactory<double[]> factory = new OptimizationFactory<double[]>();
+		LocalSearch<double[],Double> search = factory.hill_climbing(variation, neutral, MAXITERS);
 
 		// Track Individuals and Goal Evaluations
 		SolutionDescriptors<double[]> desc = new SolutionDescriptors<double[]>();
 		Descriptors.set(Space.class, desc);
-		DoubleArrayPlainWrite write = new DoubleArrayPlainWrite(',');
+		DoubleArrayPlainWrite write = new DoubleArrayPlainWrite(',',false);
+		Write.set(double[].class, write);
 		WriteDescriptors write_desc = new WriteDescriptors();
-		Write.set(double[].class, new DoubleArrayPlainWrite(false));
+		Write.set(Space.class, write_desc);
 
 		// Add tracer based on descriptors set
 		FileTracer tracer = new FileTracer("HillClimbTest.txt", ',');
 		ConsoleTracer tracer1 = new ConsoleTracer();
 
 		Tracer.addTracer(search, tracer);
+		Tracer.addTracer(HEmP.class,tracer);
 		Tracer.addTracer(search, tracer1);
 
 		Solution<double[]> solution = search.solve(space, goal);
