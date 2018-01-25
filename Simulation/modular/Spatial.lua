@@ -28,6 +28,51 @@ function sphormonetransform(horm,face,connori)
 
 end
 
+function SpHormTransform(horm,face,connori)
+	local thorm ={}
+	local transdiction = getTransDictionary()
+
+	if (face==1) then
+		dadface = math.floor(connori/10)
+		myori = connori - dadface*10
+
+		local entry = transdiction[face][dadface][myori]
+
+		for i=1,#horm do
+			if (i<=#entry) then
+				--if (horm[entry[i]]~=nil)
+				--print(horm[entry[i]])
+					thorm[i] = horm[entry[i]]
+				--else
+				--	thorm[i] = -1
+				--end
+			else
+				thorm[i] = -1
+			end
+		end
+
+	else
+
+		local entry = transdiction[face][connori]
+		for i=1,#horm do
+			if (i<=entry) then
+				--if (horm[entry[i]]~=nil)
+					thorm[i] = horm[entry[i]]
+				--else
+				--	thorm[i] = -1
+				--end
+			else
+				thorm[i] = -1
+			end
+		end
+	end
+
+	--print(#thorm)
+
+	return thorm
+
+end
+
 
 function getTransDictionary()
 	local dictionary ={}
@@ -67,6 +112,32 @@ function baseHsptransform(horm,face,connori)
     end
 
     return thormb
+end
+
+function connHSpTransform(horm,face,connori)
+	local thorm = {}
+	local horms = {}
+
+	for i =1,6 do
+		horms[i] = horm[i]
+	end
+
+	thorm = sphormonetransform(horms,face,connori)
+
+	return thorm
+end
+
+function HSpTransform(horm,face,connori)
+	local thorm = {}
+	local horms = {}
+
+	for i = 1,#horm do
+		horms[i] = horm[i]
+	end
+
+	thorm = SpHormTransform(horms,face,connori)
+
+	return thorm
 end
 
 

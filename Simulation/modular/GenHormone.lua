@@ -60,3 +60,27 @@ function ghormoneconn(connh,sensorR,sensorD,ori)
     return hormones,sensed
 
 end
+
+function ghormonefront(connh,sensorR,sensorD,ori)
+
+    local hormones = {}
+    local sensed = false
+    local ground = 0
+
+    ground  = groundsen(ori)
+
+    if (connh[1] == -1 and ground ~= 1) then
+        if (sensorR[1] == 1) then
+            hormones[1] =  1-(sensorD[1]/0.2)
+            sensed = true
+        else
+            hormones[1]= -1
+        end
+    else
+        hormones[1] = -1
+
+    end
+
+    return hormones,sensed
+
+end

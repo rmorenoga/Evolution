@@ -97,7 +97,8 @@ function receptorsANNB(hormsum,ampd,offd,phasediff,v,ori,deltaparam)
         phasediffnew[j] = phasediff[j]
     end
 
-    local annLayers = {12,12,4}
+    --local annLayers = {12,12,4}
+    local annLayers = {7,12,4}
 
     local ann = createANNfromWeightsList(annLayers,deltaparam)
 
@@ -113,7 +114,7 @@ function receptorsANNB(hormsum,ampd,offd,phasediff,v,ori,deltaparam)
     end
 
     --print('+++++++++++++++++++++++++++++++++++')
-    --print(#hormsum)
+    --print(#oriinputs)
 
     for i=1,#hormsum do--1
         table.insert(inputs,hormsum[i])

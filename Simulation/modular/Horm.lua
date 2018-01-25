@@ -30,6 +30,8 @@ function ghormone(connh,sensorR,sensorD,sensorO,Genmodel)
 		hormones,sendhorm = ghormonebase(connh,sensorR,sensorD,baseprob,orifiltered)
 	elseif (Genmodel == 'connHormone') then -- Contains hormones generated only by diconnected faces and the two extra empty ones
 		hormones,sendhorm = ghormoneconn(connh,sensorR,sensorD,orifiltered)
+	elseif (Genmodel == 'frontHormone') then -- Contains hormones generated only by the front sensor (sensor 1)
+		hormones,sendhorm = ghormonefront(connh,sensorR,sensorD,orifiltered)
 	else
 		print('General Hormone Generation Model is not recognized')
 	end
@@ -88,6 +90,7 @@ function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltapar
 		local hormsum = normalizedHSum(hormones,rhorm)
 
 		local hormfiltered = filterhorm(hormsum,simstep)
+
 
 
 
@@ -183,8 +186,14 @@ function spatialtr(rhorm,connori,Genmodel)
 				if(Genmodel == 'baseHormone') then
 					hormnew = baseHsptransform(exhorm,i,connori[i])
 					--for k,v in pairs(hormnew) do print(k,v) end
-				else
-					--print('General Hormone Generation Model is not recognized')
+				elseif (Genmodel == 'connHormone') then
+					hormnew = connHSpTransform(exhorm,i,connori[i])
+				elseif (Genmodel == 'frontHormone') then
+					hormnew = HSpTransform(exhorm,i,connori[i])
+					--print('+++++++++++++++++++++++++++')
+					--print(exhorm[1])
+					--print(hormnew[1])
+					--print('General Hormone Generation Model is not recognized in spatial transformation')
 				end
 				rhormnew[i][j] =  simPackFloatTable(hormnew)
 			end
