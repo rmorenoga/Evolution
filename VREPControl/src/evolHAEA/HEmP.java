@@ -26,6 +26,13 @@ public class HEmP extends OptimizationFunction<double[]> {
 	public float alpha = 0.7f;
 	protected IntUniform r = new IntUniform(5);
 	protected String mode;
+	
+	
+
+	@Override
+	public boolean isNonStationary() {
+		return true;
+	}
 
 	public HEmP(int numberOfServers, List<Simulation> simulators, String morpho, String mode) {
 		servers = new BitArray(numberOfServers, false);
@@ -170,6 +177,15 @@ public class HEmP extends OptimizationFunction<double[]> {
 			}
 			break;
 			
+		case "turnleft":
+			
+			char[] subturn = new char[]{'s','l','s'};
+			width = 0.5f;
+			height = 0.08f;
+			morphoDouble = ChromoConversion.str2double(morpho);
+			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn, width,height);
+			fitness = evaluator.evaluate();
+			
 		}
 
 		// System.out.println("Fitness in "+ simulator+ " = "+fitness);
@@ -184,6 +200,8 @@ public class HEmP extends OptimizationFunction<double[]> {
 		for (int i=1;i<fullparam.length;i++) {
 			tr = tr +", "+ fullparam[i];
 		}
+		
+		tr = tr +", "+ fitness;
 		
         Tracer.trace(this,tr);
 
