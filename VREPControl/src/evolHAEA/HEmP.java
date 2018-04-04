@@ -190,8 +190,26 @@ public class HEmP extends OptimizationFunction<double[]> {
 			break;
 			
 		case "turnleft":
-			
-			char[] subturn = new char[]{'s','l','s'};
+
+			char[] subturn = new char[] { 's', 'l', 's' };
+			width = 0.5f;
+			height = 0.08f;
+			morphoDouble = ChromoConversion.str2double(morpho);
+			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn, width, height);
+			fitness = evaluator.evaluate();
+
+		case "turnright":
+
+			subturn = new char[] { 's', 'r', 's' };
+			width = 0.5f;
+			height = 0.08f;
+			morphoDouble = ChromoConversion.str2double(morpho);
+			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn, width, height);
+			fitness = evaluator.evaluate();
+
+		case "simplebump":
+
+			subturn = new char[] { 's', 'b', 's' };
 			width = 0.5f;
 			height = 0.08f;
 			morphoDouble = ChromoConversion.str2double(morpho);
