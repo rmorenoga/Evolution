@@ -27,8 +27,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 	protected IntUniform r = new IntUniform(5);
 	protected String mode;
 	protected int fixednum = 0;
-	
-	
+
 	@Override
 	public boolean isNonStationary() {
 		return true;
@@ -43,9 +42,9 @@ public class HEmP extends OptimizationFunction<double[]> {
 			System.out.println("Building HEmP");
 		}
 	}
-	
+
 	public HEmP(int numberOfServers, List<Simulation> simulators, String morpho, String mode, int fixednum) {
-		this(numberOfServers,simulators,morpho,mode);
+		this(numberOfServers, simulators, morpho, mode);
 		this.fixednum = fixednum;
 	}
 
@@ -57,12 +56,11 @@ public class HEmP extends OptimizationFunction<double[]> {
 		this.morpho = morpho;
 		this.mode = mode;
 	}
-	
+
 	public HEmP(float alpha, Simulation sim, String morpho, String mode, int fixednum) {
-		this(alpha,sim,morpho,mode);
+		this(alpha, sim, morpho, mode);
 		this.fixednum = fixednum;
 	}
-	
 
 	public synchronized int getSimNumber() {
 		if (DEBUG) {
@@ -107,33 +105,36 @@ public class HEmP extends OptimizationFunction<double[]> {
 		for (int i = 0; i < x.length; i++) {
 			fullparam[i] = (float) x[i];
 		}
-		//Parameter Mask: Allows control over which parameters are actually sent to the robot depending on its controller, ParameterMask class just sends everything adjusted for max and min values
+		// Parameter Mask: Allows control over which parameters are actually
+		// sent to the robot depending on its controller, ParameterMask class
+		// just sends everything adjusted for max and min values
 		// Submask: Helper classes that fix certain parts of the controller
-		//ParameterMask parammask = new ParameterMask();
-		//CPGSingle parammask = new CPGSingle(true,true);
-		//CPGHSingle parammask = new CPGHSingle(true,true);
-		//CPGHSBase parammask = new CPGHSBase(true,true,true);
-		CPGHANN parammask = new CPGHANN(fullparam.length,false);
+		// ParameterMask parammask = new ParameterMask();
+		// CPGSingle parammask = new CPGSingle(true,true);
+		// CPGHSingle parammask = new CPGHSingle(true,true);
+		// CPGHSBase parammask = new CPGHSBase(true,true,true);
+		CPGHANN parammask = new CPGHANN(fullparam.length, false);
 		parammask.setParameters(fullparam);
 
 		switch (mode) {
 		case "sequence":
-			char[][] subenv = new char[][] {{'s','l','s'},{'s','r','s'},{'b'}};
-			int[] sequence = getSequence(); 
-			
+			char[][] subenv = new char[][] { { 's', 'l', 's' }, { 's', 'r', 's' }, { 'b' } };
+			int[] sequence = getSequence();
+
 			double[] subfitness = new double[sequence.length];
-			
-			for (int i = 0; i<sequence.length ;i++){
+
+			for (int i = 0; i < sequence.length; i++) {
 				float width = randomWithRange(0.6f, 0.8f);
 				float height = 0.088f;
 
 				if (morpho != null && !morpho.equals("")) {
 					double[] morphoDouble = ChromoConversion.str2double(morpho);
-					EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenv[sequence[i]], width, height);
+					EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha,
+							subenv[sequence[i]], width, height);
 					subfitness[i] = evaluator.evaluate();
 				}
-				
-				fitness  = average(subfitness);
+
+				fitness = average(subfitness);
 			}
 			break;
 		case "fixed":
@@ -142,53 +143,60 @@ public class HEmP extends OptimizationFunction<double[]> {
 					{ 's', 'l', 's', 's', 'r', 's', 'b' }, { 'b', 's', 'l', 's', 's', 'r', 's' },
 					{ 'b', 's', 'r', 's', 's', 'l', 's' }, { 's', 'r', 's', 's', 'l', 's', 'b' },
 					{ 's', 'r', 's', 'b', 's', 'l', 's' }, { 's', 's' } };
-			//char[] subshort = new char[]{'s','b','l','r'};
+			// char[] subshort = new char[]{'s','b','l','r'};
 
 			float width = randomWithRange(0.59f, 0.61f);
 			width = 0.5f;
 			float height = 0.08f;
-			//System.out.println("Width = "+width);
+			// System.out.println("Width = "+width);
 			if (morpho != null && !morpho.equals("")) {
 				double[] morphoDouble = ChromoConversion.str2double(morpho);
-				//EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[r.generate()], width);
-				//EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[0], width);
-				EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[fixednum], width,height);
+				// EvaluatorMT evaluator = new EvaluatorMT(morphoDouble,
+				// "defaultmhs.ttt", parammask, sim, alpha,
+				// subenvperm[r.generate()], width);
+				// EvaluatorMT evaluator = new EvaluatorMT(morphoDouble,
+				// "defaultmhs.ttt", parammask, sim, alpha, subenvperm[0],
+				// width);
+				EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha,
+						subenvperm[fixednum], width, height);
 				fitness = evaluator.evaluate();
 			}
 			break;
-			
-		case "incrementalbump":	
-			
-			char[] subbump = new char[]{'s','b','s'};
+
+		case "incrementalbump":
+
+			char[] subbump = new char[] { 's', 'b', 's' };
 			width = 0.5f;
-			float[] heights = new float[]{0.02f,0.06f,0.08f};
+			float[] heights = new float[] { 0.02f, 0.06f, 0.08f };
 			double[] partialfitness = new double[3];
-			
-			
+
 			double[] morphoDouble = ChromoConversion.str2double(morpho);
-			EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, new char[]{'s','s','s'}, width,heights[0]);
+			EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha,
+					new char[] { 's', 's', 's' }, width, heights[0]);
 			partialfitness[0] = evaluator.evaluate();
-			
-			if (partialfitness[0]<0.3) {
-				
-				evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subbump, width,heights[1]);
+
+			if (partialfitness[0] < 0.3) {
+
+				evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subbump, width,
+						heights[1]);
 				partialfitness[1] = evaluator.evaluate();
-				
-				if(partialfitness[1]<0.3){
-					
-					evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subbump, width,heights[2]);
+
+				if (partialfitness[1] < 0.3) {
+
+					evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subbump, width,
+							heights[2]);
 					partialfitness[2] = evaluator.evaluate();
-					
+
 					fitness = partialfitness[2];
-					
-				}else {
+
+				} else {
 					fitness = partialfitness[1] + 5;
 				}
-			}else{
+			} else {
 				fitness = partialfitness[0] + 10;
 			}
 			break;
-			
+
 		case "turnleft":
 
 			char[] subturn = new char[] { 's', 'l', 's' };
@@ -213,38 +221,37 @@ public class HEmP extends OptimizationFunction<double[]> {
 			width = 0.5f;
 			height = 0.08f;
 			morphoDouble = ChromoConversion.str2double(morpho);
-			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn, width,height);
+			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn, width, height);
 			fitness = evaluator.evaluate();
-			
+
 		case "GeneralTest":
-				
-			subenvperm = new char[][] { { 's', 'l', 'b', 'r'}, { 's', 'l', 'r', 'b'},{ 's', 'r', 'b', 'l'},{ 's', 'r', 'l', 'b'},{ 's', 'b', 'l', 'r'},{ 's', 'b', 'r', 'l'}};
+
+			subenvperm = new char[][] { { 's', 'l', 'b', 'r' }, { 's', 'l', 'r', 'b' }, { 's', 'r', 'b', 'l' },
+					{ 's', 'r', 'l', 'b' }, { 's', 'b', 'l', 'r' }, { 's', 'b', 'r', 'l' } };
 			width = 0.5f;
 			height = 0.08f;
 			morphoDouble = ChromoConversion.str2double(morpho);
-			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[fixednum], width,height);
+			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[fixednum],
+					width, height);
 			fitness = evaluator.evaluate();
-			
-			
-			
+
 		}
 
 		// System.out.println("Fitness in "+ simulator+ " = "+fitness);
 
 		servers.set(simulator, false);
-		
-		System.out.println("Fitness = "+fitness);
-		
-		
-		String tr = new String("Indv = "+fullparam[0]);
-		
-		for (int i=1;i<fullparam.length;i++) {
-			tr = tr +", "+ fullparam[i];
+
+		System.out.println("Fitness = " + fitness);
+
+		String tr = new String("Indv = " + fullparam[0]);
+
+		for (int i = 1; i < fullparam.length; i++) {
+			tr = tr + ", " + fullparam[i];
 		}
-		
-		tr = tr +", "+ fitness;
-		
-        Tracer.trace(this,tr);
+
+		tr = tr + ", " + fitness;
+
+		Tracer.trace(this, tr);
 
 		return fitness;
 
@@ -252,20 +259,25 @@ public class HEmP extends OptimizationFunction<double[]> {
 
 	/**
 	 * Returns a random floating point number between min and max
-	 * @param min the min of the interval
-	 * @param max the max of the interval
+	 * 
+	 * @param min
+	 *            the min of the interval
+	 * @param max
+	 *            the max of the interval
 	 * @return a random floating point number
 	 */
 	float randomWithRange(float min, float max) {
 		double range = Math.abs(max - min);
 		return (float) (Math.random() * range) + (min <= max ? min : max);
 	}
-	
+
 	/**
 	 * Returns a random sequence of three different integer numbers from 0 to 3
-	 * @return an array containing a sequence of three different integer numbers from 0 to 3  
+	 * 
+	 * @return an array containing a sequence of three different integer numbers
+	 *         from 0 to 3
 	 */
-	int[] getSequence(){
+	int[] getSequence() {
 		IntUniform r = new IntUniform(3);
 		int[] seq = r.generate(3);
 		while (seq[1] == seq[0]) {
@@ -274,13 +286,13 @@ public class HEmP extends OptimizationFunction<double[]> {
 		seq[2] = 5 - ((seq[0] + 1) + (seq[1] + 1));
 		return seq;
 	}
-	
-	double average(double[] array){
+
+	double average(double[] array) {
 		double sum = 0;
-		for(int i=0;i<array.length;i++){
+		for (int i = 0; i < array.length; i++) {
 			sum = sum + array[i];
 		}
-		return sum/array.length;
+		return sum / array.length;
 	}
 
 }
