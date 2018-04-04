@@ -26,9 +26,9 @@ public class HEmP extends OptimizationFunction<double[]> {
 	public float alpha = 0.7f;
 	protected IntUniform r = new IntUniform(5);
 	protected String mode;
+	protected int fixednum = 0;
 	
 	
-
 	@Override
 	public boolean isNonStationary() {
 		return true;
@@ -43,6 +43,11 @@ public class HEmP extends OptimizationFunction<double[]> {
 			System.out.println("Building HEmP");
 		}
 	}
+	
+	public HEmP(int numberOfServers, List<Simulation> simulators, String morpho, String mode, int fixednum) {
+		this(numberOfServers,simulators,morpho,mode);
+		this.fixednum = fixednum;
+	}
 
 	public HEmP(float alpha, Simulation sim, String morpho, String mode) {
 		this.alpha = alpha;
@@ -52,6 +57,12 @@ public class HEmP extends OptimizationFunction<double[]> {
 		this.morpho = morpho;
 		this.mode = mode;
 	}
+	
+	public HEmP(float alpha, Simulation sim, String morpho, String mode, int fixednum) {
+		this(alpha,sim,morpho,mode);
+		this.fixednum = fixednum;
+	}
+	
 
 	public synchronized int getSimNumber() {
 		if (DEBUG) {
@@ -131,7 +142,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 					{ 's', 'l', 's', 's', 'r', 's', 'b' }, { 'b', 's', 'l', 's', 's', 'r', 's' },
 					{ 'b', 's', 'r', 's', 's', 'l', 's' }, { 's', 'r', 's', 's', 'l', 's', 'b' },
 					{ 's', 'r', 's', 'b', 's', 'l', 's' }, { 's', 's' } };
-			char[] subshort = new char[]{'s','b','l','r'};
+			//char[] subshort = new char[]{'s','b','l','r'};
 
 			float width = randomWithRange(0.59f, 0.61f);
 			width = 0.5f;
@@ -141,10 +152,11 @@ public class HEmP extends OptimizationFunction<double[]> {
 				double[] morphoDouble = ChromoConversion.str2double(morpho);
 				//EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[r.generate()], width);
 				//EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[0], width);
-				EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subshort, width,height);
+				EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[fixednum], width,height);
 				fitness = evaluator.evaluate();
 			}
 			break;
+			
 		case "incrementalbump":	
 			
 			char[] subbump = new char[]{'s','b','s'};
@@ -185,6 +197,17 @@ public class HEmP extends OptimizationFunction<double[]> {
 			morphoDouble = ChromoConversion.str2double(morpho);
 			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn, width,height);
 			fitness = evaluator.evaluate();
+			
+		case "GeneralTest":
+				
+			subenvperm = new char[][] { { 's', 'l', 'b', 'r'}, { 's', 'l', 'r', 'b'},{ 's', 'r', 'b', 'l'},{ 's', 'r', 'l', 'b'},{ 's', 'b', 'l', 'r'},{ 's', 'b', 'r', 'l'}};
+			width = 0.5f;
+			height = 0.08f;
+			morphoDouble = ChromoConversion.str2double(morpho);
+			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[fixednum], width,height);
+			fitness = evaluator.evaluate();
+			
+			
 			
 		}
 
