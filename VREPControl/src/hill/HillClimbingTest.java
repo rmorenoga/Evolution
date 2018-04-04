@@ -33,29 +33,51 @@ import unalcol.types.real.array.DoubleArrayPlainWrite;
 public class HillClimbingTest {
 
 	public static void main(String[] args) {
+		
+		int process = 0;
+		
+		if (args.length > 0) {
+			try {
+				// for(int j=0;j<args.length;j++){
+				// System.out.println("Argument "+j+" = "+args[j]);
+				// }
+				if (args.length >= 1) {
+					process = Integer.parseInt(args[0]);
+				} else {
+					System.err.println("Provide a process number");
+					System.exit(1);
+				}
+			} catch (NumberFormatException e) {
+				System.err.println("Nsim " + args[0] + " must be an integer.");
+				System.exit(1);
+			}
+		} else {
+			System.err.println("Missing arguments");
+			System.exit(1);
+		}
 
-		String vrepcommand = new String("./vrep" + 0 + ".sh");
+		String vrepcommand = new String("./vrep" + process + ".sh");
 
-		for (int iter = 0; iter < 2; iter++) {
+		for (int iter = 10*process; iter < (10*process)+10; iter++) {
 
 			// // Initialize a v-rep simulator based on the Nsim parameter
-			// try {
-			// // ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h",
-			// // "scenes/Maze/MRun.ttt"); //Snake
-			// ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h",
-			// "scenes/Maze/defaultmhs.ttt");
-			// qq.directory(new File("/home/rodr/V-REP/Vrep" + 0 + "/"));
-			// File log = new File("Simout/log");
-			// qq.redirectErrorStream(true);
-			// qq.redirectOutput(Redirect.appendTo(log));
-			// qq.start();
-			// Thread.sleep(10000);
-			// } catch (Exception e) {
-			// System.out.println(e.toString());
-			// e.printStackTrace();
-			// }
+			 try {
+			 // ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h",
+			 // "scenes/Maze/MRun.ttt"); //Snake
+			 ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h",
+			 "scenes/Maze/defaultmhs.ttt");
+			 qq.directory(new File("/home/rodr/V-REP/Vrep" + process + "/"));
+			 File log = new File("Simout/log");
+			 qq.redirectErrorStream(true);
+			 qq.redirectOutput(Redirect.appendTo(log));
+			 qq.start();
+			 Thread.sleep(10000);
+			 } catch (Exception e) {
+			 System.out.println(e.toString());
+			 e.printStackTrace();
+			 }
 
-			Simulation sim = new Simulation(0, 180);
+			Simulation sim = new Simulation(process, 180);
 			// Retry if there is a simulator crash
 			for (int i = 0; i < 5; i++) {
 				if (sim.Connect()) {
@@ -63,7 +85,7 @@ public class HillClimbingTest {
 				} else {
 					// No connection could be established
 					System.out.println("Failed connecting to remote API server");
-					System.out.println("Trying again for the " + i + " time in " + 0);
+					System.out.println("Trying again for the " + i + " time in " + process);
 				}
 			}
 
@@ -76,7 +98,7 @@ public class HillClimbingTest {
 
 			String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
 
-			OptimizationFunction<double[]> function = new HEmP(0.7f, sim, morpho, "turnleft");
+			OptimizationFunction<double[]> function = new HEmP(0.7f, sim, morpho, "simplebump");
 
 			OptimizationGoal<double[]> goal = new OptimizationGoal<double[]>(function);
 
@@ -128,19 +150,19 @@ public class HillClimbingTest {
 
 			// // Stop Simulators
 			// // kill all the v-rep processes
-			// try {
-			// ProcessBuilder qq = new ProcessBuilder("killall", "vrep" + 0);
-			// File log = new File("Simout/log");
-			// qq.redirectErrorStream(true);
-			// qq.redirectOutput(Redirect.appendTo(log));
-			// Process p = qq.start();
-			// int exitVal = p.waitFor();
-			// System.out.println("Terminated vrep" + 0 + " with error code " +
-			// exitVal);
-			// } catch (Exception e) {
-			// System.out.println(e.toString());
-			// e.printStackTrace();
-			// }
+			 try {
+			 ProcessBuilder qq = new ProcessBuilder("killall", "vrep" + process);
+			 File log = new File("Simout/log");
+			 qq.redirectErrorStream(true);
+			 qq.redirectOutput(Redirect.appendTo(log));
+			 Process p = qq.start();
+			 int exitVal = p.waitFor();
+			 System.out.println("Terminated vrep" + process + " with error code " +
+			 exitVal);
+			 } catch (Exception e) {
+			 System.out.println(e.toString());
+			 e.printStackTrace();
+			 }
 
 		}
 
