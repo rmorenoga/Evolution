@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import coppelia.CharWA;
@@ -19,11 +20,15 @@ import coppelia.remoteApi;
 import evolHAEA.HEmP;
 import simvrep.Simulation;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.*;
+
 public class GeneralizationTest {
 
 	// public float alpha = 0.7f;// Look into the Run simulation method to set
 	// alpha
-	static int numberofindividuals = 30;
+	static int numberofindividuals = 10;
 	static int individuallength = 132;
 	static double maxrandomval = 1;
 	static double minrandomval = -1;
@@ -48,11 +53,15 @@ public class GeneralizationTest {
 		
 		
 		
-		String filename = "GenResult.txt";
+		String filename = "GenResultHAEA.txt";
 		double[] result = new double[6];
+		
+//		Data process = new Data("GenResultRand.txt","TableRand.csv",30,"C:/Users/golde_000/Desktop",",");
+//		
+//		process.GenerateCSV("Rand");
 
-		 double [][] indiv=ReadFiles("G:/My Drive/2018/Thesis/Results/UbuntuHome/HillClimbing/TurnLeft","HillClimbingResult",numberofindividuals,individuallength);
-		 
+		 //double [][] indiv=ReadTXTFiles("G:/My Drive/2018/Thesis/Results/UbuntuHome/HillClimbing/TurnLeft","HillClimbingResult",numberofindividuals,individuallength);
+		double [][] indiv=ReadJsonFiles("G:/My Drive/2018/Thesis/Results/UbuntuHome/HAEA/lbr","testjson",numberofindividuals,individuallength);
 			for (int i = 0; i < indiv.length; i++) {
 		 
 		 			result = RunTest(indiv[i],morpho, sim);
@@ -63,20 +72,20 @@ public class GeneralizationTest {
 		 			System.out.println("+++++++++++++++++++++++++++++++++++++");
 		 
 		 		}
-		 indiv  = null;
-		 indiv = GenerateRandomIndividuals(numberofindividuals,individuallength, maxrandomval,minrandomval);
-		 
-
-		for (int i = 0; i < indiv.length; i++) {
-
-			result = RunTest(indiv[i],morpho, sim);
-			WResultsFile(indiv[i], result, filename);
-			for (int j = 0;j<6;j++){
-				System.out.println(result[j]);
-			}
-			System.out.println("+++++++++++++++++++++++++++++++++++++");
-
-		}
+//		 indiv  = null;
+//		 indiv = GenerateRandomIndividuals(numberofindividuals,individuallength, maxrandomval,minrandomval);
+//		 
+//
+//		for (int i = 0; i < indiv.length; i++) {
+//
+//			result = RunTest(indiv[i],morpho, sim);
+//			WResultsFile(indiv[i], result, filename);
+//			for (int j = 0;j<6;j++){
+//				System.out.println(result[j]);
+//			}
+//			System.out.println("+++++++++++++++++++++++++++++++++++++");
+//
+//		}
 		
 
 	}
@@ -111,8 +120,43 @@ public class GeneralizationTest {
 		}
 
 	}
+	
+	private static double[][] ReadJsonFiles(String Folderpath, String fileheader, int numberoffiles, int indivlength) {
 
-	private static double[][] ReadFiles(String Folderpath, String fileheader, int numberoffiles, int indivlength) {
+		double[][] individuals = new double[numberoffiles][indivlength];
+		
+		for (int i=0;i<numberoffiles;i++){
+			try {
+				 Object obj = new JSONParser().parse(new FileReader(Folderpath+"/"+fileheader+i+".json"));
+				 JSONObject jo = (JSONObject) obj;
+				 JSONObject best = (JSONObject)jo.get("solution");
+				 //double fitness = (double) bestO.get("best_fitness");
+				 //System.out.println(fitness); 
+				 JSONArray ja = (JSONArray) best.get("best_individual");
+				 
+				 Iterator itr = ja.iterator();
+				 
+				 int j=0;
+				 while (itr.hasNext()) 
+			        {
+					 		individuals[i][j] = (double)itr.next();
+					 		//System.out.println(individuals[i][j]);
+					 		j++;
+			        }
+				 
+				// System.out.println(individuals[i].length);
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		
+		}
+		//System.out.println(individuals.length);
+		return individuals;
+		
+	}
+
+	private static double[][] ReadTXTFiles(String Folderpath, String fileheader, int numberoffiles, int indivlength) {
 		
 		List<String> list = new ArrayList<String>();
 		for (int i=0;i<numberoffiles;i++){
