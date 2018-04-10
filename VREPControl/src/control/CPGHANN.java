@@ -5,7 +5,7 @@ public class CPGHANN extends ParameterMask{
 	private boolean individual;
 	
 	public CPGHANN(int numberofParameters, boolean individual){
-		this.numberofParameters = 208;
+		this.numberofParameters = numberofParameters;
 		this.individual = individual;
 		//this.numberofParameters = numberofParameters;
 	}

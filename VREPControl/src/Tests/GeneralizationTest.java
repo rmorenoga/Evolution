@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import coppelia.CharWA;
@@ -19,14 +20,18 @@ import coppelia.remoteApi;
 import evolHAEA.HEmP;
 import simvrep.Simulation;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.*;
+
 public class GeneralizationTest {
 
 	// public float alpha = 0.7f;// Look into the Run simulation method to set
 	// alpha
 	static int numberofindividuals = 10;
 	static int individuallength = 132;
-	static double maxrandomval = 3;
-	static double minrandomval = -3;
+	static double maxrandomval = 1;
+	static double minrandomval = -1;
 
 	public static void main(String[] args) {
 		
@@ -48,39 +53,60 @@ public class GeneralizationTest {
 		
 		
 		
-
+		String filename = "GenResultHAEA.txt";
 		double[] result = new double[6];
-
-		// float[][] indiv=ReadFile("IndivGen.txt");
-
-		double[][] indiv = GenerateRandomIndividuals(numberofindividuals,individuallength, maxrandomval,minrandomval);
-	//new double[][] { { -1.0f, -0.34856381681107756f, -0.7018207570662021f }, };
-
-		for (int i = 0; i < indiv.length; i++) {
-
-			result = RunTest(indiv[0],morpho, sim);
-			//WResultsFile(indiv[i], result);
-			for (int j = 0;j<6;j++){
-				System.out.println(result[j]);
-			}
-			System.out.println("+++++++++++++++++++++++++++++++++++++");
-
-		}
 		
-		for (int i = 0;i<6;i++){
-			System.out.println(result[i]);
-		}
+//		Data process = new Data("GenResultRand.txt","TableRand.csv",30,"C:/Users/golde_000/Desktop",",");
+//		
+//		process.GenerateCSV("Rand");
+
+		 //double [][] indiv=ReadTXTFiles("G:/My Drive/2018/Thesis/Results/UbuntuHome/HillClimbing/TurnLeft","HillClimbingResult",numberofindividuals,individuallength);
+		double [][] indiv=ReadJsonFiles("G:/My Drive/2018/Thesis/Results/UbuntuHome/HAEA/lbr","testjson",numberofindividuals,individuallength);
+			for (int i = 0; i < indiv.length; i++) {
+		 
+		 			result = RunTest(indiv[i],morpho, sim);
+		 			WResultsFile(indiv[i], result, filename);
+		 			for (int j = 0;j<6;j++){
+		 				System.out.println(result[j]);
+		 			}
+		 			System.out.println("+++++++++++++++++++++++++++++++++++++");
+		 
+		 		}
+//		 indiv  = null;
+//		 indiv = GenerateRandomIndividuals(numberofindividuals,individuallength, maxrandomval,minrandomval);
+//		 
+//
+//		for (int i = 0; i < indiv.length; i++) {
+//
+//			result = RunTest(indiv[i],morpho, sim);
+//			WResultsFile(indiv[i], result, filename);
+//			for (int j = 0;j<6;j++){
+//				System.out.println(result[j]);
+//			}
+//			System.out.println("+++++++++++++++++++++++++++++++++++++");
+//
+//		}
+		
 
 	}
 
-	private static void WResultsFile(float[] indiv, float[] result) {
+	private static void WResultsFile(double[] indiv, double[] result,String filename) {
 		FileWriter file = null;
 		PrintWriter pw = null;
 		try {
-			file = new FileWriter("IndGenResult.txt", true);
+			file = new FileWriter(filename, true);
 			pw = new PrintWriter(file);
-
-			// pw.println(indiv[0]+","+indiv[1]+","+indiv[2]+","+result[0]+","+result[1]+","+result[2]+","+result[3]+","+result[4]+","+result[5]);
+			
+			for (int i=0;i<indiv.length;i++){
+				if (i==indiv.length-1){
+					pw.print(indiv[i]+";  ");
+				}else{
+					pw.print(indiv[i]+",");
+				}
+				
+			}
+			
+			pw.println(result[0]+","+result[1]+","+result[2]+","+result[3]+","+result[4]+","+result[5]);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -94,36 +120,78 @@ public class GeneralizationTest {
 		}
 
 	}
+	
+	private static double[][] ReadJsonFiles(String Folderpath, String fileheader, int numberoffiles, int indivlength) {
 
-	private static float[][] ReadFile(String filepath) {
+		double[][] individuals = new double[numberoffiles][indivlength];
+		
+		for (int i=0;i<numberoffiles;i++){
+			try {
+				 Object obj = new JSONParser().parse(new FileReader(Folderpath+"/"+fileheader+i+".json"));
+				 JSONObject jo = (JSONObject) obj;
+				 JSONObject best = (JSONObject)jo.get("solution");
+				 //double fitness = (double) bestO.get("best_fitness");
+				 //System.out.println(fitness); 
+				 JSONArray ja = (JSONArray) best.get("best_individual");
+				 
+				 Iterator itr = ja.iterator();
+				 
+				 int j=0;
+				 while (itr.hasNext()) 
+			        {
+					 		individuals[i][j] = (double)itr.next();
+					 		//System.out.println(individuals[i][j]);
+					 		j++;
+			        }
+				 
+				// System.out.println(individuals[i].length);
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		
+		}
+		//System.out.println(individuals.length);
+		return individuals;
+		
+	}
 
+	private static double[][] ReadTXTFiles(String Folderpath, String fileheader, int numberoffiles, int indivlength) {
+		
 		List<String> list = new ArrayList<String>();
+		for (int i=0;i<numberoffiles;i++){
+			
+			try {
+				BufferedReader in = new BufferedReader(new FileReader(Folderpath+"/"+fileheader+i+".txt"));
+				String str;
 
-		try {
-			BufferedReader in = new BufferedReader(new FileReader(filepath));
-			String str;
+				while ((str = in.readLine()) != null) {
+					list.add(str);
+				}
 
-			while ((str = in.readLine()) != null) {
-				list.add(str);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			
+			//System.out.println(list.get(i));
+			
 		}
-		float[][] values = new float[list.size()][3];
-		for (int i = 0; i < list.size(); i++) {
-			System.out.println(list.get(i));
+		
+		
+		double[][] individuals = new double[list.size()][indivlength];
+		
+		for (int i = 0;i<list.size();i++){
+			//System.out.println(list.get(i));
 			String[] sep = list.get(i).split(",");
-			values[i][0] = Float.parseFloat(sep[0]);
-			values[i][1] = Float.parseFloat(sep[1]);
-			values[i][2] = Float.parseFloat(sep[2]);
+			for (int j=0;j<indivlength;j++){
+				individuals[i][j] = Double.parseDouble(sep[j]); //How to ensure that the last (blank) element is not used?
+				//System.out.print(individuals[i][j]+",");
+			}
+			//System.out.println(individuals[i].length);
 		}
 
-		// for (int i = 0; i < values.length ;i++ ){
-		// System.out.println(values[i][0]+"*"+values[i][1]+"*"+values[i][2]);
-		// }
-		return values;
+		return individuals;
 	}
 	
 	
