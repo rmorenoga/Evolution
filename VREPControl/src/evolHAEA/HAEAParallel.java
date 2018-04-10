@@ -92,162 +92,177 @@ public class HAEAParallel {
 			System.exit(1);
 		}
 
-		simulators = new ArrayList<Simulation>();
-		System.out.println(Nsim);
-		// Start Simulators
-		for (int j = 0; j < Nsim; j++) {
+		for (int k = 0; k < 10; k++) {
 
-			String vrepcommand = new String("./vrep" + j + ".sh");
+			simulators = new ArrayList<Simulation>();
+			System.out.println(Nsim);
+			// Start Simulators
+			for (int j = 0; j < Nsim; j++) {
 
-			// Initialize a v-rep simulator based on the Nsim parameter
-			try {
-				//ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h", "scenes/Maze/MRun.ttt"); //Snake
-				ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h",  "scenes/Maze/defaultmhs.ttt"); 
-				qq.directory(new File("/home/rodr/V-REP/Vrep" + j + "/"));
-				File log = new File("Simout/log");
-				qq.redirectErrorStream(true);
-				qq.redirectOutput(Redirect.appendTo(log));
-				qq.start();
-				Thread.sleep(10000);
-			} catch (Exception e) {
-				System.out.println(e.toString());
-				e.printStackTrace();
-			}
+				String vrepcommand = new String("./vrep" + j + ".sh");
 
-			Simulation sim = new Simulation(j, 300);
-			// Retry if there is a simulator crash
-			for (int i = 0; i < 5; i++) {
-				if (sim.Connect()) {
-					simulators.add(sim);
-				} else {
-					// No connection could be established
-					System.out.println("Failed connecting to remote API server");
-					System.out.println("Trying again for the " + i + " time in " + j);
-					continue;
+				// Initialize a v-rep simulator based on the Nsim parameter
+				try {
+					// ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h",
+					// "scenes/Maze/MRun.ttt"); //Snake
+					ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h", "scenes/Maze/defaultmhs.ttt");
+					qq.directory(new File("/home/rodr/V-REP/Vrep" + j + "/"));
+					File log = new File("Simout/log");
+					qq.redirectErrorStream(true);
+					qq.redirectOutput(Redirect.appendTo(log));
+					qq.start();
+					Thread.sleep(10000);
+				} catch (Exception e) {
+					System.out.println(e.toString());
+					e.printStackTrace();
 				}
-				break;
+
+				Simulation sim = new Simulation(j, 200);
+				// Retry if there is a simulator crash
+				for (int i = 0; i < 5; i++) {
+					if (sim.Connect()) {
+						simulators.add(sim);
+					} else {
+						// No connection could be established
+						System.out.println("Failed connecting to remote API server");
+						System.out.println("Trying again for the " + i + " time in " + j);
+						continue;
+					}
+					break;
+				}
+
 			}
 
-		}
+			// Search Space Definition
+			// int DIM = 169; //Snake
+			// int DIM = 281; //CPGH
+			int DIM = 132;
+			double[] min = DoubleArray.create(DIM, -20);
+			double[] max = DoubleArray.create(DIM, 20);
 
-		// Search Space Definition
-		//int DIM = 169; //Snake
-		//int DIM = 281; //CPGH
-		int DIM = 208;
-		double[] min = DoubleArray.create(DIM, -20);
-		double[] max = DoubleArray.create(DIM, 20);
+			Space<double[]> space = new HyperCube(min, max);
 
-		Space<double[]> space = new HyperCube(min, max);
+			// int nmodules = 4;
+			// int[] ori = new int[]{1,0,1,0}; //Snake
 
-//		int nmodules = 4;
-//		int[] ori = new int[]{1,0,1,0}; //Snake
-		
-		//String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 3.0, 2.0, 1.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0 , 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
-		String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
-		
-		// Optimization function
-		//OptimizationFunction<double[]> function = new HDebugP(Nsim,simulators,true,nmodules,ori,7,6,1);
-		OptimizationFunction<double[]> function = new HEmP(Nsim,simulators,morpho,"incrementalbump");
-		MultithreadOptimizationGoal<double[]> goal = new MultithreadOptimizationGoal<double[]>(function);
-		goal.setMax_threads(Nsim);
+			// String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0,
+			// 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0,
+			// 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 3.0, 2.0, 1.0,
+			// 2.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0 , 0.0,
+			// 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+			// 0.0]";
+			String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
 
-		// Variation Definition
-		//AdaptMutationIntensity adapt = new OneFifthRule(20, 0.9);
-		
-		//Normal mutation and DEXover
-		IntensityMutation variation = new GaussianMutation(0.05, new PermutationPick(10));
-		LinearXOver xover = new LinearXOver(); 
-		//DEXOver xover = new DEXOver(0.9,0.9,new StandardUniformGenerator(),DIM); //Use NUniqueIndividuals() selection with the DE operator 
-		
-		
-		//Favor mutation and DEXover for old modules in snake configuration
-		//Favor first contains the array defining the decrease in mutation probability
-		//FavorFirst favor = new FavorFirst(7,6,true,1);
-		//Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,7,6,1); //Snake
-		
-		//Favor Mutation and DEXover for EMeRGE modules in any configuration
-		//Favor first contains the array defining the decrease in mutation probability
-		//FavorFirst favor = new FavorFirst(5,7,false,1);
-		//int[] indices = favor.get(DIM);
-		//Mutation variation = new FFirstIntMutation(0.1,new StandardGaussianGenerator(),favor,5,7,1);
-		//DEXOver xover = new DEXOver(0.9,favor.getFavorVector(DIM,indices),new StandardUniformGenerator(),DIM);
-		
-		
+			// Optimization function
+			// OptimizationFunction<double[]> function = new
+			// HDebugP(Nsim,simulators,true,nmodules,ori,7,6,1);
+			OptimizationFunction<double[]> function = new HEmP(Nsim, simulators, morpho, "fixed", 7);
+			MultithreadOptimizationGoal<double[]> goal = new MultithreadOptimizationGoal<double[]>(function);
+			goal.setMax_threads(Nsim);
 
-		int POPSIZE = 4;
-		int MAXITERS = 2;
-		Variation[] opers = new Variation[2];
-		opers[0] = variation;
-		opers[1] = xover;
+			// Variation Definition
+			// AdaptMutationIntensity adapt = new OneFifthRule(20, 0.9);
 
-		SimpleHaeaOperators operators = new SimpleHaeaOperators(opers);
-		Selection selection = new NUniqueIndividuals();
-		
-		ModifiedHaeaStep step = new ModifiedHaeaStep(POPSIZE, selection, operators);
-		step.setJsonManager(new JSONHaeaStepObjectManager());
-		PopulationSearch search = new IterativePopulationSearch(step, new ForLoopCondition<Population>(MAXITERS));
+			// Normal mutation and DEXover
+			IntensityMutation variation = new GaussianMutation(0.05, new PermutationPick(10));
+			LinearXOver xover = new LinearXOver();
+			// DEXOver xover = new DEXOver(0.9,0.9,new
+			// StandardUniformGenerator(),DIM); //Use NUniqueIndividuals()
+			// selection with the DE operator
 
-		// Track Individuals and Goal Evaluations
-				WriteDescriptors write_desc = new WriteDescriptors();
-				Write.set(double[].class, new DoubleArrayPlainWrite(false));
-				Write.set(HaeaStep.class, new WriteHaeaStep());
-				//Descriptors.set(Population.class, new PopulationDescriptors());
-				Descriptors.set(Population.class, new PopulationDescriptors());
-				Descriptors.set(HaeaStep.class, new HaeaStepDescriptors());
-				Descriptors.set(HaeaOperators.class, new SimpleHaeaOperatorsDescriptor());
-				Write.set(Population.class, write_desc);
-				Write.set(HaeaStep.class, write_desc);
-				Write.set(HaeaOperators.class, write_desc);
+			// Favor mutation and DEXover for old modules in snake configuration
+			// Favor first contains the array defining the decrease in mutation
+			// probability
+			// FavorFirst favor = new FavorFirst(7,6,true,1);
+			// Mutation variation = new FFirstIntMutation(0.1,new
+			// StandardGaussianGenerator(),favor,7,6,1); //Snake
 
-		// Add tracer based on descriptors set
-		//FileTracer tracer = new FileTracer("Evolresult.txt", ',');
-		ConsoleTracer tracer1 = new ConsoleTracer();
-		Tracer.addTracer(search, tracer1);
-		//Tracer.addTracer(search, tracer);
-		
-		
-		EvolutionryAlgorithmSetting easetting = new EvolutionryAlgorithmSetting("testjson", POPSIZE, MAXITERS);
+			// Favor Mutation and DEXover for EMeRGE modules in any
+			// configuration
+			// Favor first contains the array defining the decrease in mutation
+			// probability
+			// FavorFirst favor = new FavorFirst(5,7,false,1);
+			// int[] indices = favor.get(DIM);
+			// Mutation variation = new FFirstIntMutation(0.1,new
+			// StandardGaussianGenerator(),favor,5,7,1);
+			// DEXOver xover = new
+			// DEXOver(0.9,favor.getFavorVector(DIM,indices),new
+			// StandardUniformGenerator(),DIM);
 
-		Solution<double[]> solution = search.solve(space, goal);
+			int POPSIZE = 10;
+			int MAXITERS = 100;
+			Variation[] opers = new Variation[2];
+			opers[0] = variation;
+			opers[1] = xover;
 
-		System.out.println(solution.object());
+			SimpleHaeaOperators operators = new SimpleHaeaOperators(opers);
+			Selection selection = new NUniqueIndividuals();
 
-		//tracer.close();
-		tracer1.close();
-		
-		JSONObject result = new JSONObject();
-		result.put("settings", easetting.encode());
-		result.put("evolution", step.getJsonManager().encode());
-		JSONObject jsonsolution = new JSONObject();
-		jsonsolution.put("best_individual", solution.object());
-		jsonsolution.put("best_fitness", solution.info(Goal.GOAL_TEST));
-		result.put("solution", jsonsolution);
-		String path="./";
-		try( Writer writer = new BufferedWriter(new OutputStreamWriter(
-		              new FileOutputStream(path + easetting.title + ".json"), "utf-8"))) {
-			writer.write(result.toString());
-		}catch(Exception e){
-			
-		}
-		
-		for (Simulation sim : simulators){
-			sim.Disconnect();
-		}
+			ModifiedHaeaStep step = new ModifiedHaeaStep(POPSIZE, selection, operators);
+			step.setJsonManager(new JSONHaeaStepObjectManager());
+			PopulationSearch search = new IterativePopulationSearch(step, new ForLoopCondition<Population>(MAXITERS));
 
-		// Stop Simulators
-		for (int j = 0; j < Nsim; j++) {
-			// kill all the v-rep processes
-			try {
-				ProcessBuilder qq = new ProcessBuilder("killall", "vrep" + j);
-				File log = new File("Simout/log");
-				qq.redirectErrorStream(true);
-				qq.redirectOutput(Redirect.appendTo(log));
-				Process p = qq.start();
-				int exitVal = p.waitFor();
-				System.out.println("Terminated vrep" + j + " with error code " + exitVal);
+			// Track Individuals and Goal Evaluations
+			WriteDescriptors write_desc = new WriteDescriptors();
+			Write.set(double[].class, new DoubleArrayPlainWrite(false));
+			Write.set(HaeaStep.class, new WriteHaeaStep());
+			// Descriptors.set(Population.class, new PopulationDescriptors());
+			Descriptors.set(Population.class, new PopulationDescriptors());
+			Descriptors.set(HaeaStep.class, new HaeaStepDescriptors());
+			Descriptors.set(HaeaOperators.class, new SimpleHaeaOperatorsDescriptor());
+			Write.set(Population.class, write_desc);
+			Write.set(HaeaStep.class, write_desc);
+			Write.set(HaeaOperators.class, write_desc);
+
+			// Add tracer based on descriptors set
+			// FileTracer tracer = new FileTracer("Evolresult.txt", ',');
+			ConsoleTracer tracer1 = new ConsoleTracer();
+			Tracer.addTracer(search, tracer1);
+			// Tracer.addTracer(search, tracer);
+
+			EvolutionryAlgorithmSetting easetting = new EvolutionryAlgorithmSetting("testjson" + k, POPSIZE, MAXITERS);
+
+			Solution<double[]> solution = search.solve(space, goal);
+
+			System.out.println(solution.object());
+
+			// tracer.close();
+			tracer1.close();
+
+			JSONObject result = new JSONObject();
+			result.put("settings", easetting.encode());
+			result.put("evolution", step.getJsonManager().encode());
+			JSONObject jsonsolution = new JSONObject();
+			jsonsolution.put("best_individual", solution.object());
+			jsonsolution.put("best_fitness", solution.info(Goal.GOAL_TEST));
+			result.put("solution", jsonsolution);
+			String path = "./";
+			try (Writer writer = new BufferedWriter(
+					new OutputStreamWriter(new FileOutputStream(path + easetting.title + ".json"), "utf-8"))) {
+				writer.write(result.toString());
 			} catch (Exception e) {
-				System.out.println(e.toString());
-				e.printStackTrace();
+
+			}
+
+			for (Simulation sim : simulators) {
+				sim.Disconnect();
+			}
+
+			// Stop Simulators
+			for (int j = 0; j < Nsim; j++) {
+				// kill all the v-rep processes
+				try {
+					ProcessBuilder qq = new ProcessBuilder("killall", "vrep" + j);
+					File log = new File("Simout/log");
+					qq.redirectErrorStream(true);
+					qq.redirectOutput(Redirect.appendTo(log));
+					Process p = qq.start();
+					int exitVal = p.waitFor();
+					System.out.println("Terminated vrep" + j + " with error code " + exitVal);
+				} catch (Exception e) {
+					System.out.println(e.toString());
+					e.printStackTrace();
+				}
 			}
 		}
 
