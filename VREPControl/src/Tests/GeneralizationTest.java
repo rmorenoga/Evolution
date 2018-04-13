@@ -29,9 +29,9 @@ public class GeneralizationTest {
 	// public float alpha = 0.7f;// Look into the Run simulation method to set
 	// alpha
 	static int numberofindividuals = 10;
-	static int individuallength = 132;
-	static double maxrandomval = 1;
-	static double minrandomval = -1;
+	static int individuallength = 234;
+	static double maxrandomval = 10;
+	static double minrandomval = -10;
 
 	public static void main(String[] args) {
 		
@@ -53,7 +53,7 @@ public class GeneralizationTest {
 		
 		
 		
-		String filename = "GenResultHAEA.txt";
+		String filename = "GenResultFit.txt";
 		double[] result = new double[6];
 		
 //		Data process = new Data("GenResultRand.txt","TableRand.csv",30,"C:/Users/golde_000/Desktop",",");
@@ -61,31 +61,31 @@ public class GeneralizationTest {
 //		process.GenerateCSV("Rand");
 
 		 //double [][] indiv=ReadTXTFiles("G:/My Drive/2018/Thesis/Results/UbuntuHome/HillClimbing/TurnLeft","HillClimbingResult",numberofindividuals,individuallength);
-		double [][] indiv=ReadJsonFiles("G:/My Drive/2018/Thesis/Results/UbuntuHome/HAEA/lbr","testjson",numberofindividuals,individuallength);
-			for (int i = 0; i < indiv.length; i++) {
-		 
-		 			result = RunTest(indiv[i],morpho, sim);
-		 			WResultsFile(indiv[i], result, filename);
-		 			for (int j = 0;j<6;j++){
-		 				System.out.println(result[j]);
-		 			}
-		 			System.out.println("+++++++++++++++++++++++++++++++++++++");
-		 
-		 		}
-//		 indiv  = null;
-//		 indiv = GenerateRandomIndividuals(numberofindividuals,individuallength, maxrandomval,minrandomval);
+//		double [][] indiv=ReadJsonFiles("G:/My Drive/2018/Thesis/Results/UbuntuHome/HAEA/lbr","testjson",numberofindividuals,individuallength);
+//			for (int i = 0; i < indiv.length; i++) {
 //		 
-//
-//		for (int i = 0; i < indiv.length; i++) {
-//
-//			result = RunTest(indiv[i],morpho, sim);
-//			WResultsFile(indiv[i], result, filename);
-//			for (int j = 0;j<6;j++){
-//				System.out.println(result[j]);
-//			}
-//			System.out.println("+++++++++++++++++++++++++++++++++++++");
-//
-//		}
+//		 			result = RunTest(indiv[i],morpho, sim);
+//		 			WResultsFile(indiv[i], result, filename);
+//		 			for (int j = 0;j<6;j++){
+//		 				System.out.println(result[j]);
+//		 			}
+//		 			System.out.println("+++++++++++++++++++++++++++++++++++++");
+//		 
+//		 		}
+//		 indiv  = null;
+		 double [][] indiv = GenerateRandomIndividuals(numberofindividuals,individuallength, maxrandomval,minrandomval);
+		 
+
+		for (int i = 0; i < indiv.length; i++) {
+
+			result = RunTest(indiv[i],morpho, sim);
+			WResultsFile(indiv[i], result, filename);
+			for (int j = 0;j<6;j++){
+				System.out.println(result[j]);
+			}
+			System.out.println("+++++++++++++++++++++++++++++++++++++");
+
+		}
 		
 
 	}

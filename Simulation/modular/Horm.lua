@@ -121,7 +121,6 @@ function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltapar
 		--ampdnew,offdnew,phasediffnew,vnew = receptorsANNLastTime(hormsum,ampdnew,offdnew,phasediffnew,vnew,orifiltered,deltaparam)
 
 	else
-
 		print('General Hormone Reception Model is not recognized')
 	end
 	
@@ -141,7 +140,6 @@ function propagate(rhorm,connh,Propmodel,Direction)
 
  	--Returns a table indicating wich hormones should be propagated through which faces
  	--according to the Propmodel and Direction
-
 
  	if(Propmodel == 'Attenuate') then
  		rhormnew,active = attenuateprop(rhorm) 

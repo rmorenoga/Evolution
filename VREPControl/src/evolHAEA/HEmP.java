@@ -146,7 +146,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 			//char[] subshort = new char[]{'s','b','l','r'};
 
 			float width = randomWithRange(0.59f, 0.61f);
-			width = 0.5f;
+			width = 0.35f;
 			float height = 0.08f;
 			// System.out.println("Width = "+width);
 			if (morpho != null && !morpho.equals("")) {

@@ -90,7 +90,7 @@ public class HillClimbingTest {
 			}
 
 			// Search Space Definition
-			int DIM = 132;
+			int DIM = 234;
 			double[] min = DoubleArray.create(DIM, -1);
 			double[] max = DoubleArray.create(DIM, 1);
 
@@ -98,7 +98,7 @@ public class HillClimbingTest {
 
 			String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
 
-			OptimizationFunction<double[]> function = new HEmP(0.7f, sim, morpho, "simplebump");
+			OptimizationFunction<double[]> function = new HEmP(0.7f, sim, morpho, "fixed",6);
 
 			OptimizationGoal<double[]> goal = new OptimizationGoal<double[]>(function);
 
