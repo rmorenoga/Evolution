@@ -22,6 +22,7 @@ function getTPoints(mseq,Width,initangle)
             TPoints[i][6] = angle --Output Angle
           
             TPoints[i][7] = 2 --Distance added by the current part
+            TPoints[i][8] = 's'
 
         elseif(mseq[i]=='b') then
 
@@ -39,7 +40,7 @@ function getTPoints(mseq,Width,initangle)
         TPoints[i][6] = angle --Output Angle
 
         TPoints[i][7] = 4 --Distance added by the current part
-
+        TPoints[i][8] = 'b'
 
         elseif(mseq[i]=='r') then
 
@@ -66,6 +67,7 @@ function getTPoints(mseq,Width,initangle)
          TPoints[i][6] = angle --Output Angle
          --TPoints[i][7] = 2 --Distance added by the current part
          TPoints[i][7] = xo + yo
+         TPoints[i][8] = 'r'
 
         elseif(mseq[i]=='l') then
 
@@ -92,6 +94,7 @@ function getTPoints(mseq,Width,initangle)
         TPoints[i][6] = angle --Output Angle
         --TPoints[i][7] = 2 --Distance added by the current part
         TPoints[i][7] = -xo + yo
+        TPoints[i][8] = 'l'
         end
     end
     return TPoints
@@ -181,9 +184,12 @@ function getDistance(CurrentTPart,TPoints,seqlength,position,initangle)
         
     if(CurrentTPart>=1) then
         if(CurrentTPart<=#mseq) then
-            Dxo =  TPoints[CurrentTPart][3]-position[1]
-            Dyo =  TPoints[CurrentTPart][4]-position[2]
-            Do = math.sqrt((Dxo*Dxo)+(Dyo*Dyo))
+
+            Do = GetPartManhattanDistance(TPoints,CurrentTPart,position)
+
+            --Dxo =  TPoints[CurrentTPart][3]-position[1]
+            --Dyo =  TPoints[CurrentTPart][4]-position[2]
+            --Do = math.sqrt((Dxo*Dxo)+(Dyo*Dyo))
             
             sum = 0
             for i=CurrentTPart+1,#mseq,1 do
@@ -196,7 +202,8 @@ function getDistance(CurrentTPart,TPoints,seqlength,position,initangle)
     else
         Dxo =  0-position[1]
         Dyo =  0-position[2]
-        Do = math.sqrt((Dxo*Dxo)+(Dyo*Dyo))
+        --Do = math.sqrt((Dxo*Dxo)+(Dyo*Dyo))
+        Do = Dxo + Dyo
             
         sum = 0
         for i=1,#mseq,1 do
@@ -244,6 +251,7 @@ function getTPointsS(mseq,Width,initangle)
             TPoints[i][6] = angle --Output Angle
           
             TPoints[i][7] = 1 --Distance added by the current part
+            TPoints[i][8] = 's'
 
         elseif(mseq[i]=='b') then
 
@@ -261,7 +269,7 @@ function getTPointsS(mseq,Width,initangle)
         TPoints[i][6] = angle --Output Angle
 
         TPoints[i][7] = 0.5 --Distance added by the current part
-
+        TPoints[i][8] = 'b'
 
         elseif(mseq[i]=='r') then
 
@@ -288,6 +296,7 @@ function getTPointsS(mseq,Width,initangle)
          TPoints[i][6] = angle --Output Angle
          --TPoints[i][7] = 2 --Distance added by the current part
          TPoints[i][7] = xo + yo
+         TPoints[i][8] = 'r'
 
         elseif(mseq[i]=='l') then
 
@@ -314,7 +323,57 @@ function getTPointsS(mseq,Width,initangle)
         TPoints[i][6] = angle --Output Angle
         --TPoints[i][7] = 2 --Distance added by the current part
         TPoints[i][7] = -xo + yo
+        TPoints[i][8] = 'l'
         end
     end
     return TPoints
+end
+
+
+function GetPartManhattanDistance(TPoints,CurrentPart,position)
+
+    if (TPoints[CurrentPart][8]=='s' or TPoints[CurrentPart][8] == 'b') then
+        
+            Dyo = math.abs(TPoints[CurrentPart][4]-position[2])
+            Dxo = math.abs(TPoints[CurrentPart][3]-position[1])
+            Do = Dxo+Dyo;        
+
+    elseif (TPoints[CurrentPart][8]=='r' or TPoints[CurrentPart][8]=='l') then
+        --Take into account output angle
+        angle = TPoints[CurrentPart][6]
+        outputX = TPoints[CurrentPart][3]
+        outputY = TPoints[CurrentPart][4]
+        inputX = TPoints[CurrentPart][1]
+        inputY = TPoints[CurrentPart][1]
+        if(angle == 0 or angle == math.pi or angle == -math.pi) then
+            Dxoinputline = math.abs(inputX-position[1])
+            Dyooutputline = math.abs(outputY-position[2])
+            if (Dxoinputline<Dyooutputline) then
+                outputLine = math.abs(outputX-inputX)
+                rInputLine = math.abs(outputY-position[2])
+                Do = outputLine + rInputLine + Dxoinputline 
+            else
+                routputLine = math.abs(outputX-position[1])
+                Do = routputLine + Dyooutputline
+            end
+        elseif(angle == math.pi/2 or angle == -math.pi/2) then
+            DyoinputLine = math.abs(inputY-position[2])
+            DxoouputLine = math.abs(outputX-position[1])
+            if (DyoinputLine<DxoouputLine) then
+                outputLine = math.abs(outputY-inputY)
+                rInputLine = math.abs(outputX-position[1])
+                Do = outputLine + rInputLine + DyoinputLine
+            else
+                routputLine = math.abs(outputY-position[2])
+                Do = routputLine + DxoouputLine
+            end
+        end
+
+
+
+
+
+
+
+
 end
