@@ -126,11 +126,11 @@ public class HEmP extends OptimizationFunction<double[]> {
 			for (int i = 0; i < sequence.length; i++) {
 				float width = randomWithRange(0.6f, 0.8f);
 				float height = 0.088f;
-
+				int nBSteps = 2;
 				if (morpho != null && !morpho.equals("")) {
 					double[] morphoDouble = ChromoConversion.str2double(morpho);
 					EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha,
-							subenv[sequence[i]], width, height);
+							subenv[sequence[i]], width, height,nBSteps);
 					subfitness[i] = evaluator.evaluate();
 				}
 
@@ -142,12 +142,13 @@ public class HEmP extends OptimizationFunction<double[]> {
 			char[][] subenvperm = new char[][] { { 's', 'l', 's', 'b', 's', 'r', 's' },
 					{ 's', 'l', 's', 's', 'r', 's', 'b' }, { 'b', 's', 'l', 's', 's', 'r', 's' },
 					{ 'b', 's', 'r', 's', 's', 'l', 's' }, { 's', 'r', 's', 's', 'l', 's', 'b' },
-					{ 's', 'r', 's', 'b', 's', 'l', 's' }, { 's', 's' } ,{'s','l','b','r','b','s','s','r','b','s','r','b'}};
+					{ 's', 'r', 's', 'b', 's', 'l', 's' }, { 's', 's' } ,{'s','l','b','r'}};
 			//char[] subshort = new char[]{'s','b','l','r'};
 
 			float width = randomWithRange(0.59f, 0.61f);
 			width = 0.35f;
 			float height = 0.08f;
+			int nBSteps = 2;
 			// System.out.println("Width = "+width);
 			if (morpho != null && !morpho.equals("")) {
 				double[] morphoDouble = ChromoConversion.str2double(morpho);
@@ -158,7 +159,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 				// "defaultmhs.ttt", parammask, sim, alpha, subenvperm[0],
 				// width);
 				EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha,
-						subenvperm[fixednum], width, height);
+						subenvperm[fixednum], width, height,nBSteps);
 				fitness = evaluator.evaluate();
 			}
 			break;
@@ -168,23 +169,24 @@ public class HEmP extends OptimizationFunction<double[]> {
 			char[] subbump = new char[] { 's', 'b', 's' };
 			width = 0.5f;
 			float[] heights = new float[] { 0.02f, 0.06f, 0.08f };
+			nBSteps = 2;
 			double[] partialfitness = new double[3];
 
 			double[] morphoDouble = ChromoConversion.str2double(morpho);
 			EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha,
-					new char[] { 's', 's', 's' }, width, heights[0]);
+					new char[] { 's', 's', 's' }, width, heights[0],nBSteps);
 			partialfitness[0] = evaluator.evaluate();
 
 			if (partialfitness[0] < 0.3) {
 
 				evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subbump, width,
-						heights[1]);
+						heights[1],nBSteps);
 				partialfitness[1] = evaluator.evaluate();
 
 				if (partialfitness[1] < 0.3) {
 
 					evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subbump, width,
-							heights[2]);
+							heights[2],nBSteps);
 					partialfitness[2] = evaluator.evaluate();
 
 					fitness = partialfitness[2];
@@ -202,8 +204,9 @@ public class HEmP extends OptimizationFunction<double[]> {
 			char[] subturn = new char[] { 's', 'l', 's' };
 			width = 0.5f;
 			height = 0.08f;
+			nBSteps = 2;
 			morphoDouble = ChromoConversion.str2double(morpho);
-			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn, width, height);
+			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn, width, height,nBSteps);
 			fitness = evaluator.evaluate();
 
 		case "turnright":
@@ -211,8 +214,9 @@ public class HEmP extends OptimizationFunction<double[]> {
 			subturn = new char[] { 's', 'r', 's' };
 			width = 0.5f;
 			height = 0.08f;
+			nBSteps = 2;
 			morphoDouble = ChromoConversion.str2double(morpho);
-			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn, width, height);
+			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn, width, height,nBSteps);
 			fitness = evaluator.evaluate();
 
 		case "simplebump":
@@ -220,8 +224,9 @@ public class HEmP extends OptimizationFunction<double[]> {
 			subturn = new char[] { 's', 'b', 's' };
 			width = 0.5f;
 			height = 0.08f;
+			nBSteps = 2;
 			morphoDouble = ChromoConversion.str2double(morpho);
-			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn, width, height);
+			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn, width, height,nBSteps);
 			fitness = evaluator.evaluate();
 
 		case "GeneralTest":
@@ -230,9 +235,10 @@ public class HEmP extends OptimizationFunction<double[]> {
 					{ 's', 'r', 'l', 'b' }, { 's', 'b', 'l', 'r' }, { 's', 'b', 'r', 'l' } };
 			width = 0.5f;
 			height = 0.08f;
+			nBSteps = 2;
 			morphoDouble = ChromoConversion.str2double(morpho);
 			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[fixednum],
-					width, height);
+					width, height,nBSteps);
 			fitness = evaluator.evaluate();
 
 		}

@@ -168,6 +168,14 @@ public class Simulation {
 		
 	}
 	
+	public void SendMaze(char[] sequence, float width, float height, int nBSteps){
+		SendMaze(sequence,width,height);
+		int result = vrep.simxSetIntegerSignal(clientID, "MazeNS", nBSteps, vrep.simx_opmode_oneshot);
+		if (DEBUG){
+			System.out.println("Using SendMaze() in "+simnumber+" result: "+result);
+		}
+	}
+	
 	public void SendMaxTime(){
 		int result = vrep.simxSetIntegerSignal(clientID, "MaxTime", MaxTime, vrep.simx_opmode_oneshot);
 		if (DEBUG){

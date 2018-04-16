@@ -8,6 +8,7 @@ public class EvaluatorMT {
 	private char[] maze;
 	private float mazewidth;
 	private float mazeheight;
+	private int mazeNBSteps;
 	private String scene = null;
 	private double chromosomeDouble[];
 	private int nModules;
@@ -23,13 +24,14 @@ public class EvaluatorMT {
 	// Simulation sim, float alpha, int extraparam, char[] maze, float
 	// mazewidth) {
 	public EvaluatorMT(double[] cromo, String scene, ParameterMask parammask, Simulation sim, float alpha, char[] maze,
-			float mazewidth, float mazeheight) {
+			float mazewidth, float mazeheight, int mazeNBSteps) {
 		this.scene = scene;
 		this.sim = sim;
 		this.alpha = alpha;
 		this.maze = maze;
 		this.mazewidth = mazewidth;
 		this.mazeheight = mazeheight;
+		this.mazeNBSteps = mazeNBSteps;
 		this.parammask = parammask;
 		if (scene == null || scene.isEmpty() || scene.equals("")) {
 			this.scene = SimulationConfiguration.getWorldsBase().get(0);
@@ -88,7 +90,7 @@ public class EvaluatorMT {
 			controller = new RobotController(sim.getVrepApi(), sim.getClientID(), robot, parammask);
 			controller.sendParameters();
 
-			sim.SendMaze(maze, mazewidth, mazeheight);
+			sim.SendMaze(maze, mazewidth, mazeheight,mazeNBSteps);
 
 			sim.SendMaxTime();
 
