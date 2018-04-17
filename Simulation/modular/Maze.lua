@@ -1,3 +1,7 @@
+getDistanceToGoal = true
+getDistancebyPartToGoal = false
+ 
+
 function getTPoints(mseq,Width,initangle)
     local TPoints={}
     local angle = initangle
@@ -100,7 +104,7 @@ function getTPoints(mseq,Width,initangle)
     return TPoints
 end
 
-function getDistance(CurrentTPart,TPoints,seqlength,position,initangle)
+function getDistance(CurrentTPart,TPoints,seqlength,position,initangle,Width)
     local Goal = false
     local Dxo = 0
     local Dyo = 0
@@ -131,9 +135,9 @@ function getDistance(CurrentTPart,TPoints,seqlength,position,initangle)
                 end
             end
 
-	end
+	   end
 
-	if(CurrentTPart<=seqlength) then
+	   if(CurrentTPart<=seqlength) then
 
             -- Check if over input point taking into account input angle
             if(TPoints[CurrentTPart][5] == 0) then
@@ -162,66 +166,116 @@ function getDistance(CurrentTPart,TPoints,seqlength,position,initangle)
 
     else
 	
-	if(initangle == 0) then
+	    if(initangle == 0) then
         	if(position[2]>=0) then
             		CurrentTPart = CurrentTPart + 1
         	end
-	elseif(initangle == math.pi or initangle == -math.pi) then
-		if(position[2]<=0) then
+	    elseif(initangle == math.pi or initangle == -math.pi) then
+		    if(position[2]<=0) then
             		CurrentTPart = CurrentTPart + 1
         	end
-	elseif(initangle == math.pi/2) then
-		if(position[1]<=0) then
+	    elseif(initangle == math.pi/2) then
+		    if(position[1]<=0) then
             		CurrentTPart = CurrentTPart + 1
         	end
-	elseif(initangle == -math.pi/2) then
-		if(position[1]>=0) then
+	    elseif(initangle == -math.pi/2) then
+		    if(position[1]>=0) then
             		CurrentTPart = CurrentTPart + 1
         	end
     	end
 
     end	
+
+    goalX = TPoints[seqlength][3]
+    goalY = TPoints[seqlength][4]
         
     if(CurrentTPart>=1) then
-        if(CurrentTPart<=#mseq) then
-
-            Do = GetPartManhattanDistance(TPoints,CurrentTPart,position)
-            --Dxo =  TPoints[CurrentTPart][3]-position[1]
-            --Dyo =  TPoints[CurrentTPart][4]-position[2]
-            --Do = math.sqrt((Dxo*Dxo)+(Dyo*Dyo))
-            
-            sum = 0
-            for i=CurrentTPart+1,#mseq,1 do
-                sum = sum + TPoints[i][7]
+        if(CurrentTPart<=seqlength) then
+            if getDistanceToGoal then
+                if getDistancebyPartToGoal then
+                    --Get Manhattan distance based on part
+                    Do = GetPartManhattanDistance(TPoints,CurrentTPart,position)
+                    sum = 0
+                    for i=CurrentTPart+1,seqlength,1 do
+                        sum = sum + TPoints[i][7]
+                    end
+                    D = Do + sum
+                else
+                    --Get Manhattan distance based on goal 
+                    Dxo = math.abs(goalX-position[1])
+                    Dyo = math.abs(goalY-position[2])
+                    D = Dxo + Dyo
+                end
+            else
+                Dxi = math.abs(0-position[1])
+                Dyi = math.abs(0-position[2])
+                D = Dxi + Dyi
             end
-            D = Do + sum
             --print(Do,sum,D)
             --print(D)
         end
     else
-        Dxo =  0-position[1]
-        Dyo =  0-position[2]
-        --Do = math.sqrt((Dxo*Dxo)+(Dyo*Dyo))
-        Do = Dxo + Dyo
-            
-        sum = 0
-        for i=1,#mseq,1 do
-            sum = sum + TPoints[i][7]
+
+        if getDistanceToGoal then
+            Dxo =  math.abs(0-position[1])
+            Dyo =  math.abs(0-position[2])
+            Do = Dxo + Dyo
+
+            if getDistancebyPartToGoal then
+                --Get Manhattan distance based on part
+                sum = 0
+                for i=1,seqlength,1 do
+                    sum = sum + TPoints[i][7]
+                end
+            else
+                --Get Manhattan distance based on goal
+                Dxt = math.abs(goalX-0)
+                Dyt = math.abs(goalY-0)
+                sum = Dxt + Dyt
+            end
+            D = Do + sum
+        else
+            D = 0
         end
-        --print(sum)
-        D = Do + sum
         --print(D)
     end
     -- Normalize Distance
-    sum = 0
-    for i=1,seqlength,1 do
-        sum = sum + TPoints[i][7]
+    if getDistanceToGoal then
+        if getDistancebyPartToGoal then
+            --Get Manhattan distance based on part
+            sum = 0
+            for i=1,seqlength,1 do
+                sum = sum + TPoints[i][7]
+            end
+        else
+            --Get Manhattan distance based on goal
+            Dxt = math.abs(goalX-0)
+            Dyt = math.abs(goalY-0)
+            sum = Dxt + Dyt
+        end
+    else
+        Dxt = math.abs(goalX-0)
+        Dyt = math.abs(goalY-0)
+        sum = Dxt + Dyt + Width/2
+
     end
+
     Dout = D/sum
+
     if(Dout>1) then
         Dout = 1
     end
-    --print(Dout)
+
+    if Goal then
+        if getDistanceToGoal then
+            Dout = 0
+        else
+            Dout = 1
+        end
+    end
+
+
+    print(Dout, CurrentTPart)
     return CurrentTPart,Goal,Dout
 end
 
