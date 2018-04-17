@@ -151,10 +151,10 @@ public class HDebugP extends OptimizationFunction<double[]> {
 			// if (sim.Connect()) {
 			sim.prepareSignals(robot);
 			sim.SendSignals();
-			sim.SendMaze(subenvperm[6], width);
+			sim.SendMaze(subenvperm[6], width,true,true);
 
 			try {
-				rfitness = sim.RunSimulation(alpha);
+				rfitness = sim.RunSimulation();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -208,7 +208,7 @@ public class HDebugP extends OptimizationFunction<double[]> {
 			servers.set(simulator, false);
 		//}
 
-		return (double) rfitness[1];
+		return (double) rfitness[2];
 	}
 
 	@Override

@@ -60,9 +60,9 @@ public class HormControlTest {
 						if(sim.Connect()){
 							sim.prepareSignals(robot);
 							sim.SendSignals();
-							sim.SendMaze(subenvperm[6],0.8f);
+							sim.SendMaze(subenvperm[6],0.8f,true,true);
 							
-							rfitness = sim.RunSimulation(0.7f);
+							rfitness = sim.RunSimulation();
 							
 							sim.Disconnect();
 							
@@ -74,7 +74,7 @@ public class HormControlTest {
 							System.out.println("Failed connecting to remote API server");
 						}
 						
-						System.out.println("Fitness = " + rfitness[1]);
+						System.out.println("Fitness = " + rfitness[2]);
 						
 						
 						

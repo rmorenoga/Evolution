@@ -137,30 +137,38 @@ public class Simulation {
 	 * 
 	 * @param sequence
 	 *            a char array containing the maze sequence
+	 * @param width
+	 * 			the width of the maze
+	 * @param dToGoal
+	 * 			if true the robot distance to the goal will be measured, if false distance will be measured from the starting point to the robot in Manhattan distance 
+	 * @param dToGoalByPart
+	 * 			if true the distance to the goal will be measured for each part of the maze and aggregated in Manhattan distance, if false the distance will be measured in pure Manhattan distance 
 	 */
-	public void SendMaze(char[] sequence) {
+	public void SendMaze(char[] sequence, float width, boolean dToGoal, boolean dToGoalByPart){
 		
+		int dToGoalint = dToGoal ? 1:0;
+		int dToGoalByPartint = dToGoalByPart ? 1:0;
 		strSeq = new CharWA(sequence.length);
 		System.arraycopy(sequence,0,strSeq.getArray(),0,sequence.length);
 
 		int result = vrep.simxSetStringSignal(clientID, "Maze", strSeq, vrep.simx_opmode_oneshot);
+		
+		result = vrep.simxSetFloatSignal(clientID, "MazeW", width, vrep.simx_opmode_oneshot);
+			
+		result = vrep.simxSetIntegerSignal(clientID, "DToGoal", dToGoalint , vrep.simx_opmode_oneshot);
+		
+		result = vrep.simxSetIntegerSignal(clientID, "DToGoalBP", dToGoalByPartint , vrep.simx_opmode_oneshot);
+		
 		if (DEBUG){
 			System.out.println("Using SendMaze() in "+simnumber+" result: "+result);
 		}
+				
+		
 	}
 	
-	public void SendMaze(char[] sequence, float width){
+	public void SendMaze(char[] sequence, float width, boolean dToGoal, boolean dToGoalByPart, float height){
 		
-		SendMaze(sequence);
-		int result = vrep.simxSetFloatSignal(clientID, "MazeW", width, vrep.simx_opmode_oneshot);
-		if (DEBUG){
-			System.out.println("Using SendMaze() in "+simnumber+" result: "+result);
-		}
-	}
-	
-	public void SendMaze(char[] sequence, float width, float height){
-		
-		SendMaze(sequence,width);
+		SendMaze(sequence,width,dToGoal,dToGoalByPart);
 		int result = vrep.simxSetFloatSignal(clientID, "MazeBH", height, vrep.simx_opmode_oneshot);
 		if (DEBUG){
 			System.out.println("Using SendMaze() in "+simnumber+" result: "+result);
@@ -168,8 +176,8 @@ public class Simulation {
 		
 	}
 	
-	public void SendMaze(char[] sequence, float width, float height, int nBSteps){
-		SendMaze(sequence,width,height);
+	public void SendMaze(char[] sequence, float width, boolean dToGoal, boolean dToGoalByPart, float height, int nBSteps){
+		SendMaze(sequence,width,dToGoal,dToGoalByPart,height);
 		int result = vrep.simxSetIntegerSignal(clientID, "MazeNS", nBSteps, vrep.simx_opmode_oneshot);
 		if (DEBUG){
 			System.out.println("Using SendMaze() in "+simnumber+" result: "+result);
@@ -207,7 +215,7 @@ public class Simulation {
 	 *         and whether the robot could get out of the maze
 	 * @throws InterruptedException
 	 */
-	public float[] RunSimulation(float alpha) throws InterruptedException {
+	public float[] RunSimulation() throws InterruptedException {
 		if (DEBUG){
 			System.out.println("Using RunSimulation() in "+simnumber);
 		}
@@ -220,7 +228,7 @@ public class Simulation {
 		IntW out = new IntW(0);
 		CharWA datastring = new CharWA(1);
 		FloatWA out2 = new FloatWA(3);
-		float[] fitnessout = new float[3];
+		float[] fitnessout = new float[4];
 
 		// Start Simulation
 		int ret = vrep.simxStartSimulation(clientID, vrep.simx_opmode_blocking);
@@ -299,9 +307,10 @@ public class Simulation {
 			//System.out.println("Out2["+i+"] = "+out2.getArray()[i]);
 		//}
 		float[] fitness = new float[2];
-		fitness = Calcfitness(out2, alpha);
+		fitness = getResults(out2);
 		fitnessout[1] = fitness[0];
 		fitnessout[2] = fitness[1];
+		fitnessout[3] = fitness[2];
 		
 		// Before closing the connection to V-REP, make sure that the last
 		// command sent out had time to arrive. You can guarantee this with (for
@@ -385,36 +394,34 @@ public class Simulation {
 	}
 
 	/**
-	 * Calculate fitness based on the output coming from the simulator
+	 * Returns the simulation results in a float array
 	 * 
 	 * @param output
 	 *            the output coming from the simulator
-	 * @param alpha
-	 *            the weight of the distance of in the fitness calculation
-	 * @return an array with the calculated fitness and whether the robot could
+	 * 
+	 * @return an array with the distance, time and whether the robot could
 	 *         get out of the maze
 	 */
-	private float[] Calcfitness(FloatWA output, float alpha) {
+	private float[] getResults(FloatWA output) {
 		if (DEBUG){
 			System.out.println("Using Calcfitness() in "+simnumber);
 		}
 
-		float[] fitness = new float[2];
-		float beta = 1 - alpha;
+		float[] results = new float[3];
 
 		if (output.getArray()[0] == 0) {
-			// The robot could get out of the maze so the fitness is the time it
-			// spent normalized
-			fitness[0] = beta * output.getArray()[1] / MaxTime;
-			fitness[1] = 1;
+			// The robot could get out of the maze so the simulator returns the time spent normalized
+			results[0] = 1; //The robot gets out of the maze
+			results[1] = 0; //Distance is the distance of the maze (to be handled in EvaluatorMT)
+			results[2] = output.getArray()[1]/MaxTime; //Time normalized
 		} else if (output.getArray()[1] == 0) {
-			// The robot could not get out of the maze so the fitness is the
-			// distance to goal + the maximum time allowed
-			fitness[0] = alpha * output.getArray()[0] + beta * 1.0f;
-			fitness[1] = 0;
+			// The robot could not get out of the maze so the simulator returns the distance traveled
+			results[0] = 0; //The robot doesn't get out of the maze
+			results[1] = output.getArray()[0]; // The distance normalized
+			results[2] = 1; //Time: The max time 
 		}
 
-		return fitness;
+		return results;
 
 	}
 

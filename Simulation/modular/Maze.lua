@@ -1,7 +1,3 @@
-getDistanceToGoal = true
-getDistancebyPartToGoal = false
- 
-
 function getTPoints(mseq,Width,initangle)
     local TPoints={}
     local angle = initangle
@@ -104,7 +100,7 @@ function getTPoints(mseq,Width,initangle)
     return TPoints
 end
 
-function getDistance(CurrentTPart,TPoints,seqlength,position,initangle,Width)
+function getDistance(CurrentTPart,TPoints,seqlength,position,initangle,Width,getDistanceToGoal,getDistancebyPartToGoal)
     local Goal = false
     local Dxo = 0
     local Dyo = 0
@@ -275,7 +271,7 @@ function getDistance(CurrentTPart,TPoints,seqlength,position,initangle,Width)
     end
 
 
-    print(Dout, CurrentTPart)
+    --print(Dout)
     return CurrentTPart,Goal,Dout
 end
 

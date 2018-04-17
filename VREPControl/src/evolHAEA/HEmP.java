@@ -115,6 +115,10 @@ public class HEmP extends OptimizationFunction<double[]> {
 		// CPGHSBase parammask = new CPGHSBase(true,true,true);
 		CPGHANN parammask = new CPGHANN(fullparam.length, false);
 		parammask.setParameters(fullparam);
+		
+		//Distance measure
+		boolean measureDToGoal = false;
+		boolean measureDToGoalByPart = true;
 
 		switch (mode) {
 		case "sequence":
@@ -130,7 +134,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 				if (morpho != null && !morpho.equals("")) {
 					double[] morphoDouble = ChromoConversion.str2double(morpho);
 					EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha,
-							subenv[sequence[i]], width, height,nBSteps);
+							subenv[sequence[i]], width, height,nBSteps, measureDToGoal,measureDToGoalByPart);
 					subfitness[i] = evaluator.evaluate();
 				}
 
@@ -159,7 +163,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 				// "defaultmhs.ttt", parammask, sim, alpha, subenvperm[0],
 				// width);
 				EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha,
-						subenvperm[fixednum], width, height,nBSteps);
+						subenvperm[fixednum], width, height,nBSteps,measureDToGoal,measureDToGoalByPart);
 				fitness = evaluator.evaluate();
 			}
 			break;
@@ -174,19 +178,19 @@ public class HEmP extends OptimizationFunction<double[]> {
 
 			double[] morphoDouble = ChromoConversion.str2double(morpho);
 			EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha,
-					new char[] { 's', 's', 's' }, width, heights[0],nBSteps);
+					new char[] { 's', 's', 's' }, width, heights[0],nBSteps,measureDToGoal,measureDToGoalByPart);
 			partialfitness[0] = evaluator.evaluate();
 
 			if (partialfitness[0] < 0.3) {
 
 				evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subbump, width,
-						heights[1],nBSteps);
+						heights[1],nBSteps,measureDToGoal,measureDToGoalByPart);
 				partialfitness[1] = evaluator.evaluate();
 
 				if (partialfitness[1] < 0.3) {
 
 					evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subbump, width,
-							heights[2],nBSteps);
+							heights[2],nBSteps,measureDToGoal,measureDToGoalByPart);
 					partialfitness[2] = evaluator.evaluate();
 
 					fitness = partialfitness[2];
@@ -206,7 +210,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 			height = 0.08f;
 			nBSteps = 2;
 			morphoDouble = ChromoConversion.str2double(morpho);
-			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn, width, height,nBSteps);
+			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn, width, height,nBSteps,measureDToGoal,measureDToGoalByPart);
 			fitness = evaluator.evaluate();
 
 		case "turnright":
@@ -216,7 +220,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 			height = 0.08f;
 			nBSteps = 2;
 			morphoDouble = ChromoConversion.str2double(morpho);
-			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn, width, height,nBSteps);
+			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn, width, height,nBSteps,measureDToGoal,measureDToGoalByPart);
 			fitness = evaluator.evaluate();
 
 		case "simplebump":
@@ -226,7 +230,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 			height = 0.08f;
 			nBSteps = 2;
 			morphoDouble = ChromoConversion.str2double(morpho);
-			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn, width, height,nBSteps);
+			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn, width, height,nBSteps,measureDToGoal,measureDToGoalByPart);
 			fitness = evaluator.evaluate();
 
 		case "GeneralTest":
@@ -238,7 +242,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 			nBSteps = 2;
 			morphoDouble = ChromoConversion.str2double(morpho);
 			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[fixednum],
-					width, height,nBSteps);
+					width, height,nBSteps,measureDToGoal,measureDToGoalByPart);
 			fitness = evaluator.evaluate();
 
 		}

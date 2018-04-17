@@ -72,10 +72,10 @@ public class HDebugP extends ObjectiveFunction {
 			if (sim.Connect()) {
 				sim.prepareSignals(robot);
 				sim.SendSignals();
-				sim.SendMaze(subenvperm[6], 0.8f);
+				sim.SendMaze(subenvperm[6], 0.8f, true , true);
 
 				try {
-					rfitness = sim.RunSimulation(0.7f);
+					rfitness = sim.RunSimulation();
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -97,7 +97,7 @@ public class HDebugP extends ObjectiveFunction {
 			break;
 		}
 
-		return rfitness[1];
+		return rfitness[2];
 
 	}
 

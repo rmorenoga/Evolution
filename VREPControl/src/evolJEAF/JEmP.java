@@ -70,6 +70,9 @@ public class JEmP extends ObjectiveFunction {
 		CPGHANN parammask = new CPGHANN(fullparam.length,true);
 		parammask.setParameters(fullparam);
 
+		boolean measureDToGoal = true;
+		boolean measureDToGoalByPart = true;
+		
 		if (seq) {
 			char[][] subenv = new char[][] { { 's', 'l', 's' }, { 's', 'r', 's' }, { 'b' } };
 			int[] sequence = getSequence();
@@ -84,7 +87,7 @@ public class JEmP extends ObjectiveFunction {
 				if (morpho != null && !morpho.equals("")) {
 					double[] morphoDouble = ChromoConversion.str2double(morpho);
 					EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha,
-							subenv[sequence[i]], width, height,nBSteps);
+							subenv[sequence[i]], width, height,nBSteps,measureDToGoal,measureDToGoalByPart);
 					subfitness[i] = evaluator.evaluate();
 				}
 
@@ -113,7 +116,7 @@ public class JEmP extends ObjectiveFunction {
 				// "defaultmhs.ttt", parammask, sim, alpha, subenvperm[0],
 				// width);
 				EvaluatorMT evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subshort,
-						width, height,nBSteps);
+						width, height,nBSteps,measureDToGoal,measureDToGoalByPart);
 				fitness = evaluator.evaluate();
 			}
 		}

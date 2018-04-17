@@ -55,10 +55,10 @@ public class HFDebug extends ObjectiveFunction{
 		if(sim.Connect()){
 			sim.prepareSignals(robot);
 			sim.SendSignals();
-			sim.SendMaze(subenvperm[2],0.8f);
+			sim.SendMaze(subenvperm[2],0.8f, true , true);
 
 			try {
-				rfitness = sim.RunSimulation(0.7f);
+				rfitness = sim.RunSimulation();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -72,7 +72,7 @@ public class HFDebug extends ObjectiveFunction{
 			System.out.println("Failed connecting to remote API server");
 		}
 		
-		return rfitness[1];		
+		return rfitness[2];		
 		
 		
 	}

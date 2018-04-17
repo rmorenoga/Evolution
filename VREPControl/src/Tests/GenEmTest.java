@@ -65,6 +65,9 @@ public class GenEmTest {
 		CPGHSBase parammask = new CPGHSBase(true,true,true);
 		parammask.setParameters(fullparam);
 		
+		boolean measureDToGoal = true;
+		boolean measureDToGoalByPart = true;
+		
 		//char[] subshort = new char[]{'s','b','l','r'};
 		char[][] subenvperm = new char[][] { { 's', 'l', 'b', 'r'},
 			{ 's', 'l', 'r', 'b' }, { 's', 'b', 'l', 'r'},
@@ -86,7 +89,7 @@ public class GenEmTest {
 		
 		double[] res  = new double[subenvperm.length];
 		for (int i= 0;i<res.length;i++){	
-			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[i], width,height,nBSteps);
+			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[i], width,height,nBSteps,measureDToGoal,measureDToGoalByPart);
 			res[i] = evaluator.evaluate();
 			System.out.println("Fitness: " +res[i]);
 		}
