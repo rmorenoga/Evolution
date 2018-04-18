@@ -23,7 +23,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 	protected List<Simulation> simulators;
 	protected String morpho;
 	protected BitArray servers;
-	public float alpha = 0.7f;
+	public float alpha = 0.88f;
 	protected IntUniform r = new IntUniform(5);
 	protected String mode;
 	protected int fixednum = 0;

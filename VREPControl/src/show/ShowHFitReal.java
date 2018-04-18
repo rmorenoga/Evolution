@@ -122,7 +122,7 @@ public class ShowHFitReal {
 		// fitness = evaluator.evaluate();
 		// }
 
-		HEmP opfunc = new HEmP(0.7f, sim, morpho, "fixed",7);
+		HEmP opfunc = new HEmP(0.88f, sim, morpho, "fixed",7);
 		fitness = opfunc.apply(parameters);
 
 		System.out.println("Fitness: " + fitness);

@@ -106,7 +106,7 @@ public class HillClimbingTest {
 
 			String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
 
-			OptimizationFunction<double[]> function = new HEmP(0.7f, sim, morpho, "fixed",6);
+			OptimizationFunction<double[]> function = new HEmP(0.88f, sim, morpho, "fixed",6);
 
 			OptimizationGoal<double[]> goal = new OptimizationGoal<double[]>(function);
 
