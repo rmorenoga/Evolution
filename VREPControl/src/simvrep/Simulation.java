@@ -409,12 +409,12 @@ public class Simulation {
 
 		float[] results = new float[3];
 
-		if (output.getArray()[0] == 0) {
+		if (output.getArray()[2] == 1) {
 			// The robot could get out of the maze so the simulator returns the time spent normalized
 			results[0] = 1; //The robot gets out of the maze
 			results[1] = 0; //Distance is the distance of the maze (to be handled in EvaluatorMT)
 			results[2] = output.getArray()[1]/MaxTime; //Time normalized
-		} else if (output.getArray()[1] == 0) {
+		} else if (output.getArray()[2] == 0) {
 			// The robot could not get out of the maze so the simulator returns the distance traveled
 			results[0] = 0; //The robot doesn't get out of the maze
 			results[1] = output.getArray()[0]; // The distance normalized
