@@ -118,7 +118,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 		
 		//Distance measure
 		boolean measureDToGoal = false;
-		boolean measureDToGoalByPart = true;
+		boolean measureDToGoalByPart = false;
 
 		switch (mode) {
 		case "sequence":
@@ -263,7 +263,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 
 		Tracer.trace(this, tr);
 
-		return fitness;
+		return -fitness;
 
 	}
 
