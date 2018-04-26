@@ -47,7 +47,7 @@ public class RobotController {
 		this.robot = robot;
 		moduleHandlers = robot.getModuleHandlersint();
 		this.numberofModules = moduleHandlers.length;
-		this.numberofParameters = parammask.getNumberofParameters();
+		
 		connectedhandles = robot.getTree().getHandlerListint();
 		
 		
@@ -64,6 +64,7 @@ public class RobotController {
 		PropDirection = SimulationConfiguration.getPropdirection();
 		
 		parammask.growParam(numberofModules);
+		this.numberofParameters = parammask.getNumberofParameters();
 		
 		if (parammask.getMaskedparameters().length >= numberofParameters * numberofModules) {
 			this.parameters = parammask.getMaskedparameters();

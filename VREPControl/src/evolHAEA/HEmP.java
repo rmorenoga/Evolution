@@ -113,7 +113,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 		// CPGSingle parammask = new CPGSingle(true,true);
 		// CPGHSingle parammask = new CPGHSingle(true,true);
 		// CPGHSBase parammask = new CPGHSBase(true,true,true);
-		CPGHANN parammask = new CPGHANN(fullparam.length, false);
+		CPGHANN parammask = new CPGHANN(fullparam.length, true);
 		parammask.setParameters(fullparam);
 		
 		//Distance measure
@@ -237,9 +237,9 @@ public class HEmP extends OptimizationFunction<double[]> {
 
 			subenvperm = new char[][] { { 's', 'l', 'b', 'r' }, { 's', 'l', 'r', 'b' }, { 's', 'r', 'b', 'l' },
 					{ 's', 'r', 'l', 'b' }, { 's', 'b', 'l', 'r' }, { 's', 'b', 'r', 'l' } };
-			width = 0.5f;
+			width = 0.4f;
 			height = 0.08f;
-			nBSteps = 2;
+			nBSteps = 1;
 			morphoDouble = ChromoConversion.str2double(morpho);
 			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[fixednum],
 					width, height,nBSteps,measureDToGoal,measureDToGoalByPart);

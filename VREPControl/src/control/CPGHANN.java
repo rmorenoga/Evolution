@@ -37,11 +37,12 @@ public class CPGHANN extends ParameterMask{
 	
 	float[] organize(int numberofModules, float[] parameters) {
 		
-		float[] grownparam = new float[numberofModules*numberofParameters];
+		if (individual){
+			this.numberofParameters = numberofParameters/numberofModules;
+		}
 		
-		System.out.println("grownparam: "+grownparam.length);
-		System.out.println("numberofmodules: "+numberofModules);
-		System.out.println("numberofParameters: "+numberofParameters);
+		float[] grownparam = new float[numberofModules*numberofParameters];
+				
 		
 		if(!individual){
 		
@@ -54,9 +55,14 @@ public class CPGHANN extends ParameterMask{
 		}else{
 		
 		for (int i = 0;i<grownparam.length;i++){  //Individual parameters per module
-			grownparam[i] = parameters[i]*10;
+			grownparam[i] = parameters[i];
 		}
 		}
+		
+		System.out.println("grownparam: "+grownparam.length);
+		System.out.println("numberofmodules: "+numberofModules);
+		System.out.println("numberofParameters: "+numberofParameters);
+		
 		
 		return grownparam;
 			
