@@ -372,6 +372,7 @@ public class Simulation {
 			// Command to open a simulator with no window
 			// qq = new ProcessBuilder(vrepcommand,"-h");
 			qq = new ProcessBuilder(vrepcommand,"-h", "scenes/Maze/"+scene);
+			//qq = new ProcessBuilder("xvfb-run","-a",vrepcommand, "-h",  "scenes/Maze/"+scene); 
 			// qq = new
 			// ProcessBuilder("xvfb-run","--auto-servernum","--server-num=1",vrepcommand,
 			// "-h");
