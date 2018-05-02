@@ -35,7 +35,7 @@ public class GeneralizationTest {
 
 	public static void main(String[] args) {
 		
-		Simulation sim = new Simulation(0, 180);
+		Simulation sim = new Simulation(0);
 		// Retry if there is a simulator crash
 		for (int i = 0; i < 5; i++) {
 			if (sim.Connect()) {

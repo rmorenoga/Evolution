@@ -12,7 +12,7 @@ import util.ChromoConversion;
 public class GenEmTest {
 
 	public static void main(String[] args) {
-		Simulation sim = new Simulation(0, 60);
+		Simulation sim = new Simulation(0);
 		
 		double[] result;
 		

@@ -122,7 +122,7 @@ public class HAEAParallel {
 						e.printStackTrace();
 					}
 
-					Simulation sim = new Simulation(j, 180);
+					Simulation sim = new Simulation(j);
 					// Retry if there is a simulator crash
 					for (int i = 0; i < 5; i++) {
 						if (sim.Connect()) {
