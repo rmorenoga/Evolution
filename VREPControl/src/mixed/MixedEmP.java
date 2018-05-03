@@ -45,9 +45,9 @@ public class MixedEmP extends OptimizationFunction<MixedGenome>{
 	@Override
 	public Double apply(MixedGenome individual) {
 		
-		System.out.println("+++++++++++++++++++++++++++++++++++++++++++++");
-		System.out.println(individual.sensors.toString());
-		System.out.println(individual.annWeights.toString());
+		//System.out.println("+++++++++++++++++++++++++++++++++++++++++++++");
+		//System.out.println(individual.sensors.toString());
+		//System.out.println(individual.annWeights.toString());
 		
 		VRepEvaluator evaluator = getVRrepEvaluator();
 		double fitness = 0;
@@ -63,7 +63,7 @@ public class MixedEmP extends OptimizationFunction<MixedGenome>{
 		}
 		
 		servers.set(evaluator.getSimulation().getSimnumber(), false);
-		System.out.println("-------------------------------------------");
+		//System.out.println("-------------------------------------------");
 		return fitness / mazes.size();
 	}
 	

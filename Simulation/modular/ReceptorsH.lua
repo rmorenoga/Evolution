@@ -86,7 +86,7 @@ function receptorsbase(hormones,ampd,offd,phasediff,v,deltaparam,delta)
 end
 
 
-function receptorsANNB(hormsum,ampd,offd,phasediff,v,ori,deltaparam)
+function receptorsANNB(hormsum,ampd,offd,phasediff,v,ori,deltaparam,annInputSwitch)
 
     local ampdnew = ampd
     local offdnew = offd
@@ -118,6 +118,10 @@ function receptorsANNB(hormsum,ampd,offd,phasediff,v,ori,deltaparam)
 
     for i=1,#hormsum do--1
         table.insert(inputs,hormsum[i])
+    end
+
+    for i=1,#inputs do
+        inputs[i] = inputs[i]*annInputSwitch[i]
     end
 
     --print(#inputs)
