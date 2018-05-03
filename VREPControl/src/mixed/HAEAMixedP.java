@@ -1,9 +1,11 @@
 package mixed;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.lang.ProcessBuilder.Redirect;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,28 +58,80 @@ import util.ChromoConversion;
 
 public class HAEAMixedP {
 	
-	public static void main(String[] args) {
+	public static int Nsim;
+	public static List<Simulation> simulators;
 	
-	Simulation sim = new Simulation(0);
-	List<Simulation> simulators = new ArrayList<Simulation>();
+	public static void main(String[] args) {
+		
+		Nsim = 0;
+
+		if (args.length > 0) {
+			try {
+				// for(int j=0;j<args.length;j++){
+				// System.out.println("Argument "+j+" = "+args[j]);
+				// }
+				if (args.length >= 1) {
+					Nsim = Integer.parseInt(args[0]);
+				} else {
+					System.err.println("Provide a number of simulators");
+					System.exit(1);
+				}
+			} catch (NumberFormatException e) {
+				System.err.println("Nsim " + args[0] + " must be an integer.");
+				System.exit(1);
+			}
+		} else {
+			System.err.println("Missing arguments");
+			System.exit(1);
+		}
+		
+		simulators = new ArrayList<Simulation>();
+		System.out.println(Nsim);
+		// Start Simulators
+		for (int j = 0; j < Nsim; j++) {
+
+			String vrepcommand = new String("./vrep" + j + ".sh");
+
+			// Initialize a v-rep simulator based on the Nsim parameter
+			try {
+				// ProcessBuilder qq = new ProcessBuilder(vrepcommand,
+				// "-h",
+				// "scenes/Maze/MRun.ttt"); //Snake
+				//ProcessBuilder qq = new ProcessBuilder("xvfb-run","-a",vrepcommand, "-h",  "scenes/Maze/defaultmhs.ttt");
+				ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h", "scenes/Maze/defaultmhs.ttt");
+				qq.directory(new File("/home/rodr/V-REP/Vrep" + j + "/"));
+				File log = new File("Simout/log");
+				qq.redirectErrorStream(true);
+				qq.redirectOutput(Redirect.appendTo(log));
+				qq.start();
+				Thread.sleep(10000);
+			} catch (Exception e) {
+				System.out.println(e.toString());
+				e.printStackTrace();
+			}
+
+			Simulation sim = new Simulation(j);
+			// Retry if there is a simulator crash
+			for (int i = 0; i < 5; i++) {
+				if (sim.Connect()) {
+					simulators.add(sim);
+				} else {
+					// No connection could be established
+					System.out.println("Failed connecting to remote API server");
+					System.out.println("Trying again for the " + i + " time in " + j);
+					continue;
+				}
+				break;
+			}
+
+		}
+	
 	SimulationSettings settings = new SimulationSettings(5,"defaultmhs.ttt",20,false);
-	Maze maze = new Maze(new char[]{'s','s','r'},0.4f,0.088f,3);
+	Maze maze = new Maze(new char[]{'s','l','b','r'},0.4f,0.088f,3);
 	Vector<Maze> mazes = new Vector<Maze>();
 	mazes.add(maze);
 	
-	for (int i = 0; i < settings.maxTries; i++) {
-		if (!sim.Connect()) {
-			// No connection could be established
-			System.out.println("Failed connecting to remote API server");
-			System.out.println("Trying again for the " + i + " time");
-			continue;
-		}
-		break;
-	}
-	
-	simulators.add(sim);
-	simulators.add(sim);
-	
+		
 	int realDIM = 234;
 	int binaryDIM = 12;
 	double[] min = DoubleArray.create(realDIM, -10);
@@ -97,9 +151,9 @@ public class HAEAMixedP {
 	String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
 	double[] morphology = ChromoConversion.str2double(morpho);
 	
-	OptimizationFunction<MixedGenome> function = new MixedEmP(simulators,2,morphology,mazes,settings);
+	OptimizationFunction<MixedGenome> function = new MixedEmP(simulators,Nsim,morphology,mazes,settings);
 	MultithreadOptimizationGoal<MixedGenome> goal = new MultithreadOptimizationGoal<MixedGenome>(function);
-	goal.setMax_threads(2);
+	goal.setMax_threads(Nsim);
 	
 	IntensityMutation realVariation = new PowerLawMutation(0.2, new PermutationPick(23));
 	LinearXOver realXOver = new LinearXOver(); // Use Tournament(4)
@@ -111,7 +165,7 @@ public class HAEAMixedP {
 	MixedXOver xover = new MixedXOver(binaryXOver,realXOver);
 	
 	int POPSIZE = 5;
-	int MAXITERS = 3;
+	int MAXITERS = 10;
 	Variation[] opers = new Variation[2];
 	opers[0] = variation;
 	opers[1] = xover;
@@ -166,7 +220,27 @@ public class HAEAMixedP {
 
 	}
 
-	sim.Disconnect();
+	for (Simulation sim : simulators) {
+		sim.Disconnect();
+	}
+	
+	// Stop Simulators
+	for (int j = 0; j < Nsim; j++) {
+		// kill all the v-rep processes
+		try {
+			ProcessBuilder qq = new ProcessBuilder("killall", "vrep" + j);
+			//ProcessBuilder qq = new ProcessBuilder("killall", "Xvfb");
+			File log = new File("Simout/log");
+			qq.redirectErrorStream(true);
+			qq.redirectOutput(Redirect.appendTo(log));
+			Process p = qq.start();
+			int exitVal = p.waitFor();
+			System.out.println("Terminated vrep" + j + " with error code " + exitVal);
+		} catch (Exception e) {
+			System.out.println(e.toString());
+			e.printStackTrace();
+		}
+	}
 
 	
 	

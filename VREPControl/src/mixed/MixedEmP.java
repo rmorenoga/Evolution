@@ -64,7 +64,7 @@ public class MixedEmP extends OptimizationFunction<MixedGenome>{
 		
 		servers.set(evaluator.getSimulation().getSimnumber(), false);
 		//System.out.println("-------------------------------------------");
-		return fitness / mazes.size();
+		return -fitness / mazes.size();
 	}
 	
 	
