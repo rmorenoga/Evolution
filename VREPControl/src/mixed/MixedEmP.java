@@ -49,33 +49,30 @@ public class MixedEmP extends OptimizationFunction<MixedGenome>{
 		System.out.println(individual.sensors.toString());
 		System.out.println(individual.annWeights.toString());
 		
-		//VRepEvaluator evaluator = getVRrepEvaluator();
-		int number = getVRrepEvaluator();
+		VRepEvaluator evaluator = getVRrepEvaluator();
 		double fitness = 0;
-//		for(Maze maze: mazes) {
-//			evaluator.configure(individual, morphology, maze);
-//			for(int i = 0; i < settings.maxTries; i++) {
-//				if(evaluator.run() == -1)
-//					evaluator.configure(individual, morphology, maze);
-//				else
-//					i = settings.maxTries;
-//			}
-//			fitness += evaluator.evaluate();
-//		}
+		for(Maze maze: mazes) {
+			evaluator.configure(individual, morphology, maze);
+			for(int i = 0; i < settings.maxTries; i++) {
+				if(evaluator.run() == -1)
+					evaluator.configure(individual, morphology, maze);
+				else
+					i = settings.maxTries;
+			}
+			fitness += evaluator.evaluate();
+		}
 		
-		//servers.set(evaluator.getSimulation().getSimnumber(), false);
-		servers.set(number, false);
+		servers.set(evaluator.getSimulation().getSimnumber(), false);
 		System.out.println("-------------------------------------------");
 		return fitness / mazes.size();
 	}
 	
 	
 
-	private int getVRrepEvaluator() {
+	private VRepEvaluator getVRrepEvaluator() {
 		int instance = -1;
 		instance = waitforsim();
-		//return new VRepEvaluator(simulators.get(instance), settings);
-		return instance;
+		return new VRepEvaluator(simulators.get(instance), settings);
 	}
 
 	public synchronized int getSimNumber() {

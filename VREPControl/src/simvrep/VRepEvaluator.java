@@ -26,7 +26,7 @@ public class VRepEvaluator {
 			robot = new RobotBuilder(simulation.getVrepApi(), simulation.getClientID(), morphology);
 			ret = robot.createRobot();
 
-			controller = new RobotController(simulation.getVrepApi(), simulation.getClientID(), robot, individual.getAnnWeightsAsFloatArray(),settings.individualParameters);
+			controller = new RobotController(simulation.getVrepApi(), simulation.getClientID(), robot, individual.getAnnWeightsAsFloatArray(),individual.sensors.toString().toCharArray(),settings.individualParameters);
 			controller.sendParameters();
 
 			simulation.SendMaze(maze.structure, maze.width, settings.measureDToGoal,settings.measureDToGoalByPart, maze.height,maze.nBSteps);
