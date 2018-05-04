@@ -164,8 +164,8 @@ public class HAEAMixedP {
 	MixedMutation variation = new MixedMutation(binaryVariation,realVariation);
 	MixedXOver xover = new MixedXOver(binaryXOver,realXOver);
 	
-	int POPSIZE = 5;
-	int MAXITERS = 10;
+	int POPSIZE = 3;
+	int MAXITERS = 2;
 	Variation[] opers = new Variation[2];
 	opers[0] = variation;
 	opers[1] = xover;
@@ -175,7 +175,7 @@ public class HAEAMixedP {
 	Selection selection = new Tournament(4);
 	
 	ModifiedHaeaStep step = new ModifiedHaeaStep(POPSIZE, selection, operators);
-	step.setJsonManager(new JSONHaeaStepObjectManager());
+	step.setJsonManager(new JSONMixedGenomeManager());
 	PopulationSearch search = new IterativePopulationSearch(step,
 			new ForLoopCondition<Population>(MAXITERS));
 
@@ -209,7 +209,12 @@ public class HAEAMixedP {
 	result.put("settings", easetting.encode());
 	result.put("evolution", step.getJsonManager().encode());
 	JSONObject jsonsolution = new JSONObject();
-	jsonsolution.put("best_individual", solution.object());
+	JSONObject best = new JSONObject();
+	JSONObject genome = new JSONObject();
+	genome.put("sensors", solution.object().sensors.toString());
+	genome.put("weights", solution.object().annWeights);
+	best.put("genome", genome);
+	jsonsolution.put("best_individual", best);
 	jsonsolution.put("best_fitness", solution.info(Goal.GOAL_TEST));
 	result.put("solution", jsonsolution);
 	String path = "./";
