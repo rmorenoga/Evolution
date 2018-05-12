@@ -259,7 +259,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 			tr = tr + ", " + fullparam[i];
 		}
 
-		tr = tr + ", " + fitness;
+		tr = tr + "; " + fitness;
 
 		Tracer.trace(this, tr);
 
