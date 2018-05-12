@@ -28,7 +28,7 @@ public class GeneralizationTest {
 
 	// public float alpha = 0.7f;// Look into the Run simulation method to set
 	// alpha
-	static int numberofindividuals = 10;
+	static int numberofindividuals = 20;
 	static int individuallength = 234;
 	static double maxrandomval = 10;
 	static double minrandomval = -10;
@@ -61,31 +61,31 @@ public class GeneralizationTest {
 //		process.GenerateCSV("Rand");
 
 		 //double [][] indiv=ReadTXTFiles("G:/My Drive/2018/Thesis/Results/UbuntuHome/HillClimbing/TurnLeft","HillClimbingResult",numberofindividuals,individuallength);
-//		double [][] indiv=ReadJsonFiles("G:/My Drive/2018/Thesis/Results/UbuntuHome/HAEA/lbr","testjson",numberofindividuals,individuallength);
-//			for (int i = 0; i < indiv.length; i++) {
-//		 
-//		 			result = RunTest(indiv[i],morpho, sim);
-//		 			WResultsFile(indiv[i], result, filename);
-//		 			for (int j = 0;j<6;j++){
-//		 				System.out.println(result[j]);
-//		 			}
-//		 			System.out.println("+++++++++++++++++++++++++++++++++++++");
-//		 
-//		 		}
-//		 indiv  = null;
-		 double [][] indiv = GenerateRandomIndividuals(numberofindividuals,individuallength, maxrandomval,minrandomval);
+		double [][] indiv=ReadJsonFiles("C:/Users/golde_000/Desktop/Test","HAEA",1,individuallength,10);
+			for (int i = 0; i < indiv.length; i++) {
 		 
-
-		for (int i = 0; i < indiv.length; i++) {
-
-			result = RunTest(indiv[i],morpho, sim);
-			WResultsFile(indiv[i], result, filename);
-			for (int j = 0;j<6;j++){
-				System.out.println(result[j]);
-			}
-			System.out.println("+++++++++++++++++++++++++++++++++++++");
-
-		}
+		 			result = RunTest(indiv[i],morpho, sim);
+		 			WResultsFile(indiv[i], result, filename);
+		 			for (int j = 0;j<6;j++){
+		 				System.out.println(result[j]);
+		 			}
+		 			System.out.println("+++++++++++++++++++++++++++++++++++++");
+		 
+		 		}
+//		 indiv  = null;
+//		 double [][] indiv = GenerateRandomIndividuals(numberofindividuals,individuallength, maxrandomval,minrandomval);
+//		 
+//
+//		for (int i = 0; i < indiv.length; i++) {
+//
+//			result = RunTest(indiv[i],morpho, sim);
+//			WResultsFile(indiv[i], result, filename);
+//			for (int j = 0;j<6;j++){
+//				System.out.println(result[j]);
+//			}
+//			System.out.println("+++++++++++++++++++++++++++++++++++++");
+//
+//		}
 		
 
 	}
@@ -121,35 +121,41 @@ public class GeneralizationTest {
 
 	}
 	
-	private static double[][] ReadJsonFiles(String Folderpath, String fileheader, int numberoffiles, int indivlength) {
+	private static double[][] ReadJsonFiles(String Folderpath, String fileheader, int numberOfEnv, int indivlength, int numberOfReplicas) {
 
-		double[][] individuals = new double[numberoffiles][indivlength];
+		double[][] individuals = new double[numberOfEnv*numberOfReplicas][indivlength];
 		
-		for (int i=0;i<numberoffiles;i++){
-			try {
-				 Object obj = new JSONParser().parse(new FileReader(Folderpath+"/"+fileheader+i+".json"));
-				 JSONObject jo = (JSONObject) obj;
-				 JSONObject best = (JSONObject)jo.get("solution");
-				 //double fitness = (double) bestO.get("best_fitness");
-				 //System.out.println(fitness); 
-				 JSONArray ja = (JSONArray) best.get("best_individual");
-				 
-				 Iterator itr = ja.iterator();
-				 
-				 int j=0;
-				 while (itr.hasNext()) 
-			        {
-					 		individuals[i][j] = (double)itr.next();
-					 		//System.out.println(individuals[i][j]);
-					 		j++;
-			        }
-				 
-				// System.out.println(individuals[i].length);
+		int k = 0;
+		for (int i=0;i<numberOfEnv;i++){
+			for (int l = 0;l<numberOfReplicas;l++){
+				try {
+					 Object obj = new JSONParser().parse(new FileReader(Folderpath+"/"+fileheader+"Env"+i+"R"+l+".json"));
+					 JSONObject jo = (JSONObject) obj;
+					 JSONObject best = (JSONObject)jo.get("solution");
+					 //double fitness = (double) bestO.get("best_fitness");
+					 //System.out.println(fitness); 
+					 JSONArray ja = (JSONArray) best.get("best_individual");
+					 
+					 Iterator itr = ja.iterator();
+					 
+					 int j=0;
+					 while (itr.hasNext()) 
+				        {
+						 		individuals[k][j] = (double)itr.next();
+						 		//System.out.println(individuals[i][j]);
+						 		j++;
+				        }
+					 
+					// System.out.println(individuals[i].length);
+					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				k++;
 				
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}		
+			}
+				
 		}
 		//System.out.println(individuals.length);
 		return individuals;
@@ -201,7 +207,7 @@ public class GeneralizationTest {
 		HEmP test;
 		
 		for (int i = 0;i<6;i++){
-			test = new HEmP(0.7f, sim, morpho, "GeneralTest",i);
+			test = new HEmP(0.88f, sim, morpho, "GeneralTest",i);
 			fitnessD[i] = test.apply(indv);
 		}
 		
