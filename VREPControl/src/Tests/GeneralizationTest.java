@@ -35,43 +35,41 @@ public class GeneralizationTest {
 
 	public static void main(String[] args) {
 		
-		Simulation sim = new Simulation(0, 180);
-		// Retry if there is a simulator crash
-		for (int i = 0; i < 5; i++) {
-			if (sim.Connect()) {
-				break;
-			} else {
-				// No connection could be established
-				System.out.println("Failed connecting to remote API server");
-				System.out.println("Trying again for the " + i + " time in " + 0);
-			}
-		}
-		
-	String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
-		
-		
-		
-		
 		
 		String filename = "GenResultFit.txt";
 		double[] result = new double[6];
-		
-//		Data process = new Data("GenResultRand.txt","TableRand.csv",30,"C:/Users/golde_000/Desktop",",");
 //		
-//		process.GenerateCSV("Rand");
-
-		 //double [][] indiv=ReadTXTFiles("G:/My Drive/2018/Thesis/Results/UbuntuHome/HillClimbing/TurnLeft","HillClimbingResult",numberofindividuals,individuallength);
-		double [][] indiv=ReadJsonFiles("C:/Users/golde_000/Desktop/Test","HAEA",1,individuallength,10);
-			for (int i = 0; i < indiv.length; i++) {
-		 
-		 			result = RunTest(indiv[i],morpho, sim);
-		 			WResultsFile(indiv[i], result, filename);
-		 			for (int j = 0;j<6;j++){
-		 				System.out.println(result[j]);
-		 			}
-		 			System.out.println("+++++++++++++++++++++++++++++++++++++");
-		 
-		 		}
+//		Data process = new Data("GenResultFit.txt","TableHAEAEnvOrder.csv",60,"C:/Users/golde_000/Desktop",",");
+//		
+//		process.GenerateCSV("HAEA");
+		
+////		Simulation sim = new Simulation(0, 180);
+////		// Retry if there is a simulator crash
+////		for (int i = 0; i < 5; i++) {
+////			if (sim.Connect()) {
+////				break;
+////			} else {
+////				// No connection could be established
+////				System.out.println("Failed connecting to remote API server");
+////				System.out.println("Trying again for the " + i + " time in " + 0);
+////			}
+////		}
+////		
+////	String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
+////			
+//
+//		 //double [][] indiv=ReadTXTFiles("G:/My Drive/2018/Thesis/Results/UbuntuHome/HillClimbing/TurnLeft","HillClimbingResult",numberofindividuals,individuallength);
+////		double [][] indiv=ReadJsonFiles("C:/Users/golde_000/Desktop/Test","HAEA",1,individuallength,10);
+////			for (int i = 0; i < indiv.length; i++) {
+////		 
+////		 			result = RunTest(indiv[i],morpho, sim);
+////		 			WResultsFile(indiv[i], result, filename);
+////		 			for (int j = 0;j<6;j++){
+////		 				System.out.println(result[j]);
+////		 			}
+////		 			System.out.println("+++++++++++++++++++++++++++++++++++++");
+////		 
+////		 		}
 //		 indiv  = null;
 //		 double [][] indiv = GenerateRandomIndividuals(numberofindividuals,individuallength, maxrandomval,minrandomval);
 //		 

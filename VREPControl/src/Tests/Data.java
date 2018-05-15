@@ -89,7 +89,7 @@ public class Data {
 			
 			for (int i=0;i<result.length;i++){
 				for (int j=0;j<result[i].length;j++){
-					pw.print((i+30)+separator);
+					pw.print(i+separator);
 					pw.print(env[j]+separator);
 					pw.print(type+separator);
 					pw.println(result[i][j]);	

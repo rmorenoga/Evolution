@@ -237,8 +237,8 @@ public class HEmP extends OptimizationFunction<double[]> {
 
 			subenvperm = new char[][] { { 's', 'l', 'b', 'r' }, { 's', 'l', 'r', 'b' }, { 's', 'r', 'b', 'l' },
 					{ 's', 'r', 'l', 'b' }, { 's', 'b', 'l', 'r' }, { 's', 'b', 'r', 'l' } };
-			width = 0.4f;
-			height = 0.08f;
+			width = randomWithRange(0.32f, 0.48f);//0.4f;
+			height = randomWithRange(0.064f, 0.096f);//0.08f;
 			nBSteps = 1;
 			morphoDouble = ChromoConversion.str2double(morpho);
 			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[fixednum],
@@ -265,6 +265,13 @@ public class HEmP extends OptimizationFunction<double[]> {
 
 		return -fitness;
 
+	}
+
+	@Override
+	public void update(int k) {
+		super.update(k);
+		System.out.println("Iteration by HEmP "+k);
+		
 	}
 
 	/**
