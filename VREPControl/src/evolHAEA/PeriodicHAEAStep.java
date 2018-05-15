@@ -37,7 +37,8 @@ public class PeriodicHAEAStep<T> extends ModifiedHaeaStep<T> {
 	public Population<T> apply(Population<T> pop, Space<T> space) {
 		String gName = Goal.class.getName();
 		Goal goal = (Goal) pop.data(gName);
-		((OptimizationFunction)goal).update(iteration++);
+		//goal.
+		((PeriodicOptimizationGoal)goal).getFunction().update(iteration++);
 		return super.apply(pop, space);
 	}
 	

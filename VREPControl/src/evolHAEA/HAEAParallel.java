@@ -95,7 +95,7 @@ public class HAEAParallel {
 
 		for (int envinst = 0; envinst < 1; envinst++) {
 
-			for (int repli = 0; repli < 5; repli++) {
+			for (int repli = 0; repli < 1; repli++) {
 
 				simulators = new ArrayList<Simulation>();
 				System.out.println(Nsim);
@@ -122,7 +122,7 @@ public class HAEAParallel {
 						e.printStackTrace();
 					}
 
-					Simulation sim = new Simulation(j, 180);
+					Simulation sim = new Simulation(j, 20);
 					// Retry if there is a simulator crash
 					for (int i = 0; i < 5; i++) {
 						if (sim.Connect()) {
@@ -438,8 +438,8 @@ public class HAEAParallel {
 				// Optimization function
 				// OptimizationFunction<double[]> function = new
 				// HDebugP(Nsim,simulators,true,nmodules,ori,7,6,1);
-				OptimizationFunction<double[]> function = new HEmP(Nsim, simulators, morpho, "GeneralTest", envinst);
-				MultithreadOptimizationGoal<double[]> goal = new MultithreadOptimizationGoal<double[]>(function);
+				OptimizationFunction<double[]> function = new HEmP(Nsim, simulators, morpho, "GenerationChange", 2);
+				MultithreadOptimizationGoal<double[]> goal = new PeriodicOptimizationGoal<double[]>(function);
 				goal.setMax_threads(Nsim);
 
 				// Variation Definition
@@ -477,8 +477,8 @@ public class HAEAParallel {
 				// DEXOver(0.9,favor.getFavorVector(DIM,indices),new
 				// StandardUniformGenerator(),DIM);
 
-				int POPSIZE = 30;
-				int MAXITERS = 100;
+				int POPSIZE = 2;
+				int MAXITERS = 15;
 				Variation[] opers = new Variation[2];
 				opers[0] = variation;
 				opers[1] = xover;
@@ -489,7 +489,8 @@ public class HAEAParallel {
 				Selection selection = new Tournament(4); // Use with other
 															// operators
 
-				ModifiedHaeaStep step = new ModifiedHaeaStep(POPSIZE, selection, operators);
+				//ModifiedHaeaStep step = new ModifiedHaeaStep(POPSIZE, selection, operators);
+				ModifiedHaeaStep step = new PeriodicHAEAStep(POPSIZE, selection, operators);
 				step.setJsonManager(new JSONHaeaStepObjectManager());
 				PopulationSearch search = new IterativePopulationSearch(step,
 						new ForLoopCondition<Population>(MAXITERS));

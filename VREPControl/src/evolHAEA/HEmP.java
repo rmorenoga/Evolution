@@ -27,10 +27,13 @@ public class HEmP extends OptimizationFunction<double[]> {
 	protected IntUniform r = new IntUniform(5);
 	protected String mode;
 	protected int fixednum = 0;
+	protected int iteration = 0;
+	protected int envInstance = 0;
+	protected boolean updateEnvInst = true;
 
 	@Override
 	public boolean isNonStationary() {
-		return true;
+		return false;
 	}
 
 	public HEmP(int numberOfServers, List<Simulation> simulators, String morpho, String mode) {
@@ -237,15 +240,29 @@ public class HEmP extends OptimizationFunction<double[]> {
 
 			subenvperm = new char[][] { { 's', 'l', 'b', 'r' }, { 's', 'l', 'r', 'b' }, { 's', 'r', 'b', 'l' },
 					{ 's', 'r', 'l', 'b' }, { 's', 'b', 'l', 'r' }, { 's', 'b', 'r', 'l' } };
-			width = randomWithRange(0.32f, 0.48f);//0.4f;
-			height = randomWithRange(0.064f, 0.096f);//0.08f;
+			width = 0.4f;
+			height = 0.08f;
 			nBSteps = 1;
 			morphoDouble = ChromoConversion.str2double(morpho);
 			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[fixednum],
 					width, height,nBSteps,measureDToGoal,measureDToGoalByPart);
 			fitness = evaluator.evaluate();
-
+		case "GenerationChange":
+			subenvperm = new char[][] { { 's', 'l', 'b', 'r' }, { 's', 'l', 'r', 'b' }, { 's', 'r', 'b', 'l' },
+				{ 's', 'r', 'l', 'b' }, { 's', 'b', 'l', 'r' }, { 's', 'b', 'r', 'l' } };
+				width = randomWithRange(0.32f, 0.48f);//0.4f;
+				height = randomWithRange(0.064f, 0.096f);//0.08f;
+				nBSteps = 1;
+				morphoDouble = ChromoConversion.str2double(morpho);
+				updateEnvInst(fixednum,subenvperm.length);
+				System.out.println("HEmP envinst "+envInstance);
+				evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[envInstance],
+						width, height,nBSteps,measureDToGoal,measureDToGoalByPart);
+				fitness = evaluator.evaluate();	
+			
+		break;
 		}
+		
 
 		// System.out.println("Fitness in "+ simulator+ " = "+fitness);
 
@@ -267,10 +284,28 @@ public class HEmP extends OptimizationFunction<double[]> {
 
 	}
 
+	private void updateEnvInst(int numberOfGenerations, int numberOfEnvironments) {
+		if (iteration != 0) {
+			if (iteration % numberOfGenerations == 0) {
+				if (updateEnvInst) {
+					if (envInstance == numberOfEnvironments - 1) {
+						envInstance = 0;
+					} else {
+						envInstance++;
+					}
+					updateEnvInst = false;
+				}
+			} else {
+				updateEnvInst = true;
+			}
+		}
+	}
+
 	@Override
 	public void update(int k) {
 		super.update(k);
-		System.out.println("Iteration by HEmP "+k);
+		this.iteration = k;
+		//System.out.println("Iteration by HEmP"+k);
 		
 	}
 
