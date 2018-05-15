@@ -45,8 +45,8 @@ public class MixedEmP extends OptimizationFunction<MixedGenome>{
 	@Override
 	public Double apply(MixedGenome individual) {
 		
-		//System.out.println("+++++++++++++++++++++++++++++++++++++++++++++");
-		//System.out.println(individual.sensors.toString());
+		System.out.println("+++++++++++++++++++++++++++++++++++++++++++++");
+		System.out.println(individual.sensors.toString());
 		//System.out.println(individual.annWeights.toString());
 		
 		VRepEvaluator evaluator = getVRrepEvaluator();

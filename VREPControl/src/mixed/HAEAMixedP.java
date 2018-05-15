@@ -146,7 +146,7 @@ public class HAEAMixedP {
 	//Space<double[]> space = new HyperCubeFromPoint(min, max, referencePoints, radius);
 	BinarySpace binarySpace = new BinarySpace(binaryDIM);
 	
-	MixedSpace space = new MixedSpace(realSpace,binarySpace); 
+	MixedSpace space = new MixedSpace(realSpace,binarySpace, true); 
 	
 	String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
 	double[] morphology = ChromoConversion.str2double(morpho);
