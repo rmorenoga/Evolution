@@ -36,7 +36,11 @@ public class MixedSpace extends Space<MixedGenome>{
 
 	@Override
 	public MixedGenome pick() {
-		return new MixedGenome(binSp.pick(),realSp.pick());
+		MixedGenome gen = new MixedGenome(binSp.pick(),realSp.pick());
+		if(fixed)
+			return repair(gen);
+		gen.sensors.zero();
+		return repair(gen);
 	}
 
 	@Override

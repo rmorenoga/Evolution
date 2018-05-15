@@ -127,13 +127,13 @@ public class HAEAMixedP {
 		}
 	
 	SimulationSettings settings = new SimulationSettings(5,"defaultmhs.ttt",20,false);
-	Maze maze = new Maze(new char[]{'s','l','b','r'},0.4f,0.088f,3);
+	Maze maze = new Maze(new char[]{'s','l','b','r'},0.4f,0.088f,1);
 	Vector<Maze> mazes = new Vector<Maze>();
 	mazes.add(maze);
 	
 		
 	int realDIM = 234;
-	int binaryDIM = 12;
+	int binaryDIM = 7;
 	double[] min = DoubleArray.create(realDIM, -10);
 	double[] max = DoubleArray.create(realDIM, 10);
 	
@@ -146,7 +146,7 @@ public class HAEAMixedP {
 	//Space<double[]> space = new HyperCubeFromPoint(min, max, referencePoints, radius);
 	BinarySpace binarySpace = new BinarySpace(binaryDIM);
 	
-	MixedSpace space = new MixedSpace(realSpace,binarySpace, true); 
+	MixedSpace space = new MixedSpace(realSpace,binarySpace); 
 	
 	String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
 	double[] morphology = ChromoConversion.str2double(morpho);
@@ -164,8 +164,8 @@ public class HAEAMixedP {
 	MixedMutation variation = new MixedMutation(binaryVariation,realVariation);
 	MixedXOver xover = new MixedXOver(binaryXOver,realXOver);
 	
-	int POPSIZE = 3;
-	int MAXITERS = 2;
+	int POPSIZE = 10;
+	int MAXITERS = 10;
 	Variation[] opers = new Variation[2];
 	opers[0] = variation;
 	opers[1] = xover;
