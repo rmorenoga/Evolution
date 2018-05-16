@@ -215,6 +215,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 			morphoDouble = ChromoConversion.str2double(morpho);
 			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn, width, height,nBSteps,measureDToGoal,measureDToGoalByPart);
 			fitness = evaluator.evaluate();
+			break;
 
 		case "turnright":
 
@@ -225,6 +226,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 			morphoDouble = ChromoConversion.str2double(morpho);
 			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn, width, height,nBSteps,measureDToGoal,measureDToGoalByPart);
 			fitness = evaluator.evaluate();
+			break;
 
 		case "simplebump":
 
@@ -235,6 +237,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 			morphoDouble = ChromoConversion.str2double(morpho);
 			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn, width, height,nBSteps,measureDToGoal,measureDToGoalByPart);
 			fitness = evaluator.evaluate();
+			break;
 
 		case "GeneralTest":
 
@@ -247,6 +250,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subenvperm[fixednum],
 					width, height,nBSteps,measureDToGoal,measureDToGoalByPart);
 			fitness = evaluator.evaluate();
+			break;
 		case "GenerationChange":
 			subenvperm = new char[][] { { 's', 'l', 'b', 'r' }, { 's', 'l', 'r', 'b' }, { 's', 'r', 'b', 'l' },
 				{ 's', 'r', 'l', 'b' }, { 's', 'b', 'l', 'r' }, { 's', 'b', 'r', 'l' } };
@@ -260,7 +264,9 @@ public class HEmP extends OptimizationFunction<double[]> {
 						width, height,nBSteps,measureDToGoal,measureDToGoalByPart);
 				fitness = evaluator.evaluate();	
 			
-		break;
+				break;
+		
+		
 		}
 		
 

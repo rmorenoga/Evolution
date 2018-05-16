@@ -338,6 +338,10 @@ public class Simulation {
 		return vrep;
 	}
 
+	public void setMaxTime(int maxTime) {
+		MaxTime = maxTime;
+	}
+
 	/**
 	 * Restarts the simulator by killing the process and re-launching it
 	 * 
