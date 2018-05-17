@@ -20,6 +20,7 @@ public class EvaluatorMT {
 	private Simulation sim;
 	private float alpha;
 	private ParameterMask parammask;
+	private float distancePercent;
 	// Number of retries in case of simulator crash
 	int maxTries = 5;
 
@@ -38,6 +39,7 @@ public class EvaluatorMT {
 		this.measureDToGoal = measureDToGoal;
 		this.measureDToGoalByPart = measureDToGoalByPart;
 		this.parammask = parammask;
+		this.distancePercent = 1;
 		if (scene == null || scene.isEmpty() || scene.equals("")) {
 			this.scene = SimulationConfiguration.getWorldsBase().get(0);
 		}
@@ -54,6 +56,12 @@ public class EvaluatorMT {
 		
 		setup();
 
+	}
+	
+	public EvaluatorMT(double[] cromo, String scene, ParameterMask parammask, Simulation sim, float alpha, char[] maze,
+			float mazewidth, float mazeheight, int mazeNBSteps, float distancePercent){
+		this(cromo, scene, parammask, sim, alpha, maze, mazewidth, mazeheight, mazeNBSteps, true, false);
+		this.distancePercent = distancePercent;	
 	}
 	
 
@@ -99,7 +107,7 @@ public class EvaluatorMT {
 			controller = new RobotController(sim.getVrepApi(), sim.getClientID(), robot, parammask);
 			controller.sendParameters();
 
-			sim.SendMaze(maze, mazewidth, measureDToGoal,measureDToGoalByPart, mazeheight,mazeNBSteps);
+			sim.SendMaze(maze, mazewidth, measureDToGoal,measureDToGoalByPart, mazeheight,mazeNBSteps,distancePercent);
 
 			sim.SendMaxTime();
 

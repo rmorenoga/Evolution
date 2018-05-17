@@ -100,7 +100,7 @@ function getTPoints(mseq,Width,initangle)
     return TPoints
 end
 
-function getDistance(CurrentTPart,TPoints,seqlength,position,initangle,Width,getDistanceToGoal,getDistancebyPartToGoal)
+function getDistance(CurrentTPart,TPoints,seqlength,position,initangle,Width,getDistanceToGoal,getDistancebyPartToGoal,distPercent)
     local Goal = false
     local Dxo = 0
     local Dyo = 0
@@ -182,8 +182,10 @@ function getDistance(CurrentTPart,TPoints,seqlength,position,initangle,Width,get
 
     end	
 
-    goalX = TPoints[seqlength][3]
-    goalY = TPoints[seqlength][4]
+    --goalX = TPoints[seqlength][3]
+    --goalY = TPoints[seqlength][4]
+
+    goalX,goalY = getGoalPosition(TPoints[CurrentTPart],distPercent)
         
     if(CurrentTPart>=1) then
         if(CurrentTPart<=seqlength) then
@@ -430,4 +432,20 @@ function GetPartManhattanDistance(TPoints,CurrentPart,position)
     end
     
 end
+
+function getGoalPosition(TPart,distPercent)
+
+    if(TPart[8]=='s') then
+        angle = TPart[6]
+        if (angle==0 or angle == math.pi or angle == -math.pi)
+            goalX = TPart[3]
+            goalY = distPercent*TPart[4]
+        elseif(angle == math.pi/2 or angle == -math.pi/2)
+            goalX = distPercent*TPart[3]
+            goalY = TPart[4]
+        end
+    end
+
+end
+
 
