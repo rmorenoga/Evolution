@@ -60,8 +60,33 @@ public class EvaluatorMT {
 	
 	public EvaluatorMT(double[] cromo, String scene, ParameterMask parammask, Simulation sim, float alpha, char[] maze,
 			float mazewidth, float mazeheight, int mazeNBSteps, float distancePercent){
-		this(cromo, scene, parammask, sim, alpha, maze, mazewidth, mazeheight, mazeNBSteps, true, false);
-		this.distancePercent = distancePercent;	
+		this.scene = scene;
+		this.sim = sim;
+		this.alpha = alpha;
+		this.maze = maze;
+		this.mazewidth = mazewidth;
+		this.mazeheight = mazeheight;
+		this.mazeNBSteps = mazeNBSteps;
+		this.measureDToGoal = true;
+		this.measureDToGoalByPart = false;
+		this.parammask = parammask;
+		this.distancePercent = distancePercent;
+		if (scene == null || scene.isEmpty() || scene.equals("")) {
+			this.scene = SimulationConfiguration.getWorldsBase().get(0);
+		}
+
+		this.chromosomeDouble = cromo;
+
+		if ((cromo.length + 3) % 8 == 0) {
+			nModules = (cromo.length + 3) / 8;
+		} else {
+			System.err.println("Vrep Evaluator");
+			System.err.println("Error in the number of modules nModules; cromo.length=" + cromo.length);
+			System.exit(-1);
+		}
+		
+		setup();
+
 	}
 	
 
@@ -150,17 +175,9 @@ public class EvaluatorMT {
 
 
 		float fitness = 10000f;
-		float beta = 1 - alpha;
 		
 		if (measureDToGoal){
-			if (results[1] == 1) {
-				// The robot could get out of the maze so the simulator returns the time spent normalized
-				fitness = beta * results[3];
-			} else if (results[1] == 0) {
-				// The robot could not get out of the maze so the fitness is the
-				// distance to goal + the maximum time allowed
-				fitness = alpha * results[2] + beta * 1.0f;
-			}
+			fitness = results[2];
 		}else{
 			if (results[1] == 1) {
 				// The robot could get out of the maze so the simulator returns the time spent normalized

@@ -266,12 +266,12 @@ public class HEmP extends OptimizationFunction<double[]> {
 			
 				break;
 		case "ShortChallenge":
-			subturn = new char[] { 's','s'};
+			subturn = new char[] { 's'};
 			width = randomWithRange(0.32f, 0.48f);//0.4f;
 			height = randomWithRange(0.064f, 0.096f);//0.08f;
 			nBSteps = 1;
-			int deltatime = 1;
-			float distancePercent = 0.2f;
+			int deltatime = 10;
+			float distancePercent = 0.1f;
 			sim.setMaxTime(deltatime);
 			morphoDouble = ChromoConversion.str2double(morpho);
 			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn,

@@ -184,10 +184,16 @@ function getDistance(CurrentTPart,TPoints,seqlength,position,initangle,Width,get
 
     --goalX = TPoints[seqlength][3]
     --goalY = TPoints[seqlength][4]
-
-    goalX,goalY = getGoalPosition(TPoints[CurrentTPart],distPercent)
         
     if(CurrentTPart>=1) then
+
+        --print(CurrentTPart)
+
+        goalX,goalY,outAngle = getGoalPosition(TPoints[CurrentTPart],distPercent)
+        --print(goalX,goalY,outAngle)
+
+        Goal = isOverGoal(goalX,goalY,outAngle,position)
+
         if(CurrentTPart<=seqlength) then
             if getDistanceToGoal then
                 if getDistancebyPartToGoal then
@@ -272,8 +278,8 @@ function getDistance(CurrentTPart,TPoints,seqlength,position,initangle,Width,get
         end
     end
 
-
-    --print(Dout)
+    print(getDistanceToGoal,Goal)
+    print(Dout)
     return CurrentTPart,Goal,Dout
 end
 
@@ -437,14 +443,39 @@ function getGoalPosition(TPart,distPercent)
 
     if(TPart[8]=='s') then
         angle = TPart[6]
-        if (angle==0 or angle == math.pi or angle == -math.pi)
+        if (angle==0 or angle == math.pi or angle == -math.pi) then
             goalX = TPart[3]
             goalY = distPercent*TPart[4]
-        elseif(angle == math.pi/2 or angle == -math.pi/2)
+        elseif(angle == math.pi/2 or angle == -math.pi/2) then
             goalX = distPercent*TPart[3]
             goalY = TPart[4]
         end
     end
+    outAngle = angle
+    return goalX,goalY,outAngle
+end
+
+function isOverGoal(goalX,goalY,outAngle,position)
+
+    if(outAngle == 0) then
+        if(position[2]>goalY) then
+            return true
+        end
+    elseif(outAngle == math.pi/2) then
+        if(position[1]<goalX) then
+            return true
+        end
+    elseif(outAngle == -math.pi/2) then
+        if(position[1]>goalX) then
+            return true
+        end
+    elseif(outAngle == math.pi or outAngle == -math.pi) then
+        if(position[2]<goalY) then
+            return true
+        end
+    end
+
+    return false
 
 end
 
