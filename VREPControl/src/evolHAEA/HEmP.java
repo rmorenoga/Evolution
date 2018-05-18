@@ -30,6 +30,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 	protected int iteration = 0;
 	protected int envInstance = 0;
 	protected boolean updateEnvInst = true;
+	protected int challenge = 0;
 
 	@Override
 	public boolean isNonStationary() {
@@ -267,16 +268,22 @@ public class HEmP extends OptimizationFunction<double[]> {
 				break;
 		case "ShortChallenge":
 			subturn = new char[] { 's'};
+			int[] deltatimes = new int[]{2,6,10,15,20};
+			float[] distances = new float[]{0.1f,0.3f,0.6f,0.8f,1f};
 			width = randomWithRange(0.32f, 0.48f);//0.4f;
 			height = randomWithRange(0.064f, 0.096f);//0.08f;
 			nBSteps = 1;
-			int deltatime = 10;
-			float distancePercent = 0.1f;
+			int deltatime = deltatimes[challenge];
+			float distancePercent = distances[challenge];
 			sim.setMaxTime(deltatime);
 			morphoDouble = ChromoConversion.str2double(morpho);
 			evaluator = new EvaluatorMT(morphoDouble, "defaultmhs.ttt", parammask, sim, alpha, subturn,
 					width, height,nBSteps,distancePercent);
 			fitness = evaluator.evaluate();
+			if (fitness<=0){
+				if (challenge<5)
+					challenge++;
+			}
 		
 		}
 		
