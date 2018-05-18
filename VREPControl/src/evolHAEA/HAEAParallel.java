@@ -93,7 +93,7 @@ public class HAEAParallel {
 			System.exit(1);
 		}
 
-		for (int envinst = 0; envinst < 1; envinst++) {
+
 
 			for (int repli = 0; repli < 1; repli++) {
 
@@ -417,8 +417,8 @@ public class HAEAParallel {
 								 };
 				double[] radius = DoubleArray.create(DIM, 0.2);
 
-				// Space<double[]> space = new HyperCube(min, max);
-				Space<double[]> space = new HyperCubeFromPoint(min, max, referencePoints, radius);
+				 Space<double[]> space = new HyperCube(min, max);
+				//Space<double[]> space = new HyperCubeFromPoint(min, max, referencePoints, radius);
 
 				// int nmodules = 4;
 				// int[] ori = new int[]{1,0,1,0}; //Snake
@@ -438,7 +438,7 @@ public class HAEAParallel {
 				// Optimization function
 				// OptimizationFunction<double[]> function = new
 				// HDebugP(Nsim,simulators,true,nmodules,ori,7,6,1);
-				OptimizationFunction<double[]> function = new HEmP(Nsim, simulators, morpho, "GenerationChange", 2);
+				OptimizationFunction<double[]> function = new HEmP(Nsim, simulators, morpho,"ShortChallenge");
 				MultithreadOptimizationGoal<double[]> goal = new PeriodicOptimizationGoal<double[]>(function);
 				goal.setMax_threads(Nsim);
 
@@ -515,7 +515,7 @@ public class HAEAParallel {
 				// Tracer.addTracer(search, tracer);
 
 				EvolutionryAlgorithmSetting easetting = new EvolutionryAlgorithmSetting(
-						"HAEAEnv" + envinst + "R" + repli, POPSIZE, MAXITERS);
+						"HAEAShortR" + repli, POPSIZE, MAXITERS);
 
 				Solution<double[]> solution = search.solve(space, goal);
 
@@ -561,7 +561,7 @@ public class HAEAParallel {
 					}
 				}
 			}
-		}
+		
 
 	}
 

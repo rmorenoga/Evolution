@@ -273,6 +273,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 			width = randomWithRange(0.32f, 0.48f);//0.4f;
 			height = randomWithRange(0.064f, 0.096f);//0.08f;
 			nBSteps = 1;
+			System.out.println("Challenge "+challenge);
 			int deltatime = deltatimes[challenge];
 			float distancePercent = distances[challenge];
 			sim.setMaxTime(deltatime);
@@ -304,7 +305,7 @@ public class HEmP extends OptimizationFunction<double[]> {
 
 		Tracer.trace(this, tr);
 
-		return -fitness;
+		return fitness;
 
 	}
 
