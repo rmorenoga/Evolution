@@ -114,7 +114,7 @@ public class Evaluator {
 		
 		//System.out.println(robot.getTree().detailedToString(robot.getTree().getNodeList()));
 
-		controller = new RobotController(vrepApi,clientID,robot,parameters,null,false);
+		controller = new RobotController(vrepApi,clientID,robot,parameters,false);
 
 		//controller = new CPGHController(vrepApi,clientID,robot,parameters);
 		controller.sendParameters();

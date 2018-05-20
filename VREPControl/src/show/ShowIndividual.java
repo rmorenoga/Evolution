@@ -1,8 +1,8 @@
 package show;
 
+import evolHAEA.EmP;
 import evolHAEA.HEmP;
 import maze.Maze;
-import mixed.MixedEmP;
 import mixed.MixedGenome;
 import simvrep.EvaluatorMT;
 import simvrep.Simulation;
@@ -19,8 +19,6 @@ public class ShowIndividual {
 		
 		SimulationSettings settings = new SimulationSettings(5,"defaultmhs.ttt",120,false);
 		Maze maze = new Maze(new char[]{'s','s','r'},0.4f,0.088f,3);
-		Vector<Maze> mazes = new Vector<Maze>();
-		mazes.add(maze);
 
 		
 		double[] parameters;
@@ -130,7 +128,7 @@ public class ShowIndividual {
 		}
 
 		Simulation sim = new Simulation(0);
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < settings.maxTries; i++) {
 			if (sim.Connect()) {
 				break;
 			} else {
@@ -142,11 +140,9 @@ public class ShowIndividual {
 
 		
 		double[] morphology = ChromoConversion.str2double(morpho);
-		
-		MixedGenome individual = new MixedGenome(parameters);
 
-		MixedEmP function = new MixedEmP(sim,morphology,mazes,settings);
-		double fitness = function.apply(individual);
+		EmP function = new EmP(sim,morphology,maze,settings);
+		double fitness = function.apply(parameters);
 
 
 		System.out.println("Fitness: " + fitness);

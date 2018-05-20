@@ -15,7 +15,6 @@ public class RobotController {
 	 * Signals to set in the simulator
 	 */
 	public CharWA strCP;
-	public CharWA strSW;
 	public CharWA strEP;
 	public CharWA strMH;
 	public CharWA strConn;
@@ -35,8 +34,7 @@ public class RobotController {
 	protected int[] moduleHandlers;
 	protected int numberofModules;
 	protected int numberofParameters;
-	float[] parameters;
-	char[] binParameters;
+	protected float[] parameters;
 	private String Genmodel;
 	private String Recmodel;
 	private String Propmodel;
@@ -78,7 +76,7 @@ public class RobotController {
 		
 	}
 
-	public RobotController(remoteApi vrep, int clientID, RobotBuilder robot, float[] parameters,char[] binParameters,boolean individualParameters) {
+	public RobotController(remoteApi vrep, int clientID, RobotBuilder robot, float[] parameters,boolean individualParameters) {
 		this.vrep = vrep;
 		this.clientID = clientID;
 		this.robot = robot;
@@ -87,7 +85,6 @@ public class RobotController {
 		this.numberofParameters = SimulationConfiguration.getControllerparamnumber();
 		
 		float[] grownParameters = organize(parameters,individualParameters);
-		char[] binGrownParameters = organizeBin(binParameters,individualParameters);
 		
 		connectedhandles = robot.getTree().getHandlerListint();
 		connectedori = robot.getTree().getOriListint();
@@ -98,13 +95,13 @@ public class RobotController {
 		
 		if (grownParameters.length >= numberofParameters * numberofModules) {
 			this.parameters = grownParameters;
-			this.binParameters = binGrownParameters;
 		} else {
 			System.err.println("CPGController");
 			System.err.println("Error in the number of parameters, parameters lenght=" + parameters.length);
 			System.exit(-1);
 		}
 	}
+	
 	
 	float[] organize(float[] parameters, boolean individual) {
 		float[] grownparam = new float[numberofModules * numberofParameters];
@@ -131,30 +128,6 @@ public class RobotController {
 
 	}
 	
-	char[] organizeBin(char[] parameters, boolean individual) {
-		char[] grownparam = new char[numberofModules * 12];//12 Inputs
-		if (!individual) {
-			for (int i = 0; i < grownparam.length; i = i + 12) { 															// all
-				for (int j = 0; j < parameters.length; j++) {
-					grownparam[i + j] = parameters[j];
-				}
-
-			}
-		} else {
-
-			for (int i = 0; i < grownparam.length; i++) { // Individual
-															// parameters per
-															// module
-				grownparam[i] = parameters[i];
-			}
-		}
-
-		System.out.println("grownparamBin: " + grownparam.length);
-
-
-		return grownparam;
-
-	}
 
 
 
@@ -181,9 +154,6 @@ public class RobotController {
 		char[] p = ControlParam.getCharArrayFromArray();
 		strCP = new CharWA(p.length);
 		System.arraycopy(p, 0, strCP.getArray(), 0, p.length);
-		
-		strSW = new CharWA(binParameters.length);
-		System.arraycopy(binParameters,0,strSW.getArray(),0,binParameters.length);
 
 		IntWA Connhandles = new IntWA(connectedhandles.length);
 		System.arraycopy(connectedhandles, 0, Connhandles.getArray(), 0, connectedhandles.length);
@@ -213,15 +183,14 @@ public class RobotController {
 		
 		// Set Simulator signal values
 		int result1 = vrep.simxSetStringSignal(clientID, "ControlParam", strCP, vrep.simx_opmode_oneshot);
-		int result2 = vrep.simxSetStringSignal(clientID, "InputSwitches", strSW, vrep.simx_opmode_oneshot);
-		int result3 = vrep.simxSetStringSignal(clientID, "ConnHandles", strConn, vrep.simx_opmode_oneshot);
-		int result4 = vrep.simxSetStringSignal(clientID, "ModHandles", strMH, vrep.simx_opmode_oneshot);
-		int result5 = vrep.simxSetStringSignal(clientID, "ConnOri", strConnori, vrep.simx_opmode_oneshot);
-		int result6 = vrep.simxSetStringSignal(clientID, "Genmodel", strGenmodel, vrep.simx_opmode_oneshot);
-		int result7 = vrep.simxSetStringSignal(clientID, "Recmodel", strRecmodel, vrep.simx_opmode_oneshot);
-		int result8 = vrep.simxSetStringSignal(clientID, "Propmodel", strPropmodel, vrep.simx_opmode_oneshot);
-		int result9 = vrep.simxSetStringSignal(clientID, "PropDirection", strPropDirection, vrep.simx_opmode_oneshot);
-		int result10 = vrep.simxSetIntegerSignal(clientID, "Nparameters", numberofParameters, vrep.simx_opmode_oneshot);
+		int result2 = vrep.simxSetStringSignal(clientID, "ConnHandles", strConn, vrep.simx_opmode_oneshot);
+		int result3 = vrep.simxSetStringSignal(clientID, "ModHandles", strMH, vrep.simx_opmode_oneshot);
+		int result4 = vrep.simxSetStringSignal(clientID, "ConnOri", strConnori, vrep.simx_opmode_oneshot);
+		int result5 = vrep.simxSetStringSignal(clientID, "Genmodel", strGenmodel, vrep.simx_opmode_oneshot);
+		int result6 = vrep.simxSetStringSignal(clientID, "Recmodel", strRecmodel, vrep.simx_opmode_oneshot);
+		int result7 = vrep.simxSetStringSignal(clientID, "Propmodel", strPropmodel, vrep.simx_opmode_oneshot);
+		int result8 = vrep.simxSetStringSignal(clientID, "PropDirection", strPropDirection, vrep.simx_opmode_oneshot);
+		int result9 = vrep.simxSetIntegerSignal(clientID, "Nparameters", numberofParameters, vrep.simx_opmode_oneshot);
 		
 		
 		// Unpause communication

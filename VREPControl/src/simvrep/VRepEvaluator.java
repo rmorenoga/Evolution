@@ -13,22 +13,19 @@ public class VRepEvaluator {
 	private RobotController controller;
 	private SimulationSettings settings;
 	private float[] result = new float[4];
-	protected BitArray ONES, ZEROS;
 
 	public VRepEvaluator(Simulation simulation, SimulationSettings settings) {
 		this.simulation = simulation;
 		this.settings = settings;
-		this.ZEROS = new BitArray(5, false);
-		this.ZEROS.zero();
-		this.ONES = (BitArray) ZEROS.clone();
-		this.ONES.not();
 	}
 
-	public void configure(MixedGenome individual, double[] morphology, Maze maze) {
-		BitArray sensors = (individual.sensors.get(0) == true) ? (BitArray) ONES.clone() : (BitArray) ZEROS.clone();
-		sensors.add(individual.sensors);
-		System.out.println("+++++++++++++++++++++++++++++++++++++++++++++");
-		System.out.println(sensors.toString());
+	public void configure(double[] individual, double[] morphology, Maze maze) {
+		
+		float[] floatAnnWeights = new float[individual.length];
+
+		for (int i = 0; i < individual.length; i++) {
+			floatAnnWeights[i] = (float) individual[i];
+		}
 		
 		int ret;
 		// Retry if there is a simulator crash
@@ -37,7 +34,7 @@ public class VRepEvaluator {
 			robot = new RobotBuilder(simulation.getVrepApi(), simulation.getClientID(), morphology);
 			ret = robot.createRobot();
 
-			controller = new RobotController(simulation.getVrepApi(), simulation.getClientID(), robot, individual.getAnnWeightsAsFloatArray(),sensors.toString().toCharArray(),settings.individualParameters);
+			controller = new RobotController(simulation.getVrepApi(), simulation.getClientID(), robot, floatAnnWeights,settings.individualParameters);
 			controller.sendParameters();
 
 			simulation.SendMaze(maze.structure, maze.width, settings.measureDToGoal,settings.measureDToGoalByPart, maze.height,maze.nBSteps);
