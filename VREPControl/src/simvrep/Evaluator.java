@@ -107,14 +107,14 @@ public class Evaluator {
 		}
 		robot = SimulationConfiguration.getRobot();
 		if (robot == null){
-			robot = new RobotBuilder(vrepApi, clientID, chromosomeDouble, this.scene);
+			robot = new RobotBuilder(vrepApi, clientID, chromosomeDouble);
 			robot.createRobot();
 			SimulationConfiguration.setRobot(robot);
 		}
 		
 		//System.out.println(robot.getTree().detailedToString(robot.getTree().getNodeList()));
 
-		controller = new RobotController(vrepApi,clientID,robot,parameters);
+		controller = new RobotController(vrepApi,clientID,robot,parameters,false);
 
 		//controller = new CPGHController(vrepApi,clientID,robot,parameters);
 		controller.sendParameters();

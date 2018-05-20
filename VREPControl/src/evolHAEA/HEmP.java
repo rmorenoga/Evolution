@@ -5,9 +5,6 @@ import java.util.List;
 
 import control.CPGHANN;
 import control.CPGHANNOriD;
-import control.CPGHSBase;
-import control.CPGHSingle;
-import control.CPGSingle;
 import control.ParameterMask;
 import simvrep.EvaluatorMT;
 import simvrep.Simulation;

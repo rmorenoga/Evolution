@@ -94,7 +94,7 @@ public class HillClimbingTest {
 					e.printStackTrace();
 				}
 
-				Simulation sim = new Simulation(process, 180);
+				Simulation sim = new Simulation(process);
 				// Retry if there is a simulator crash
 				for (int i = 0; i < 5; i++) {
 					if (sim.Connect()) {
