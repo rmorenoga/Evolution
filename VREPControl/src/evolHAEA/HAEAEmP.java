@@ -139,7 +139,7 @@ public class HAEAEmP {
 		double[] morphology = ChromoConversion.str2double(morpho);
 		
 		OptimizationFunction<double[]> function = new EmP(simulators,Nsim,morphology,maze,settings);
-		MultithreadOptimizationGoal<double[]> goal = new MultithreadOptimizationGoal<double[]>(function);
+		MultithreadOptimizationGoal<double[]> goal = new PeriodicOptimizationGoal<double[]>(function);
 		goal.setMax_threads(Nsim);
 		
 		IntensityMutation realVariation = new PowerLawMutation(0.2, new PermutationPick(23));
@@ -154,7 +154,8 @@ public class HAEAEmP {
 		SimpleHaeaOperators operators = new SimpleHaeaOperators(opers);
 		Selection selection = new Tournament(4);
 		
-		ModifiedHaeaStep step = new ModifiedHaeaStep(POPSIZE, selection, operators);
+		//ModifiedHaeaStep step = new ModifiedHaeaStep(POPSIZE, selection, operators);
+		ModifiedHaeaStep step = new PeriodicHAEAStep(POPSIZE, selection, operators);
 		step.setJsonManager(new JSONHaeaStepObjectManager());
 		PopulationSearch search = new IterativePopulationSearch(step,
 				new ForLoopCondition<Population>(MAXITERS));
