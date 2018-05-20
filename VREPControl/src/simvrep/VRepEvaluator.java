@@ -36,8 +36,12 @@ public class VRepEvaluator {
 
 			controller = new RobotController(simulation.getVrepApi(), simulation.getClientID(), robot, floatAnnWeights,settings.individualParameters);
 			controller.sendParameters();
-
-			simulation.SendMaze(maze.structure, maze.width, settings.measureDToGoal,settings.measureDToGoalByPart, maze.height,maze.nBSteps);
+			
+			if (!settings.shortChallenge)
+				simulation.SendMaze(maze.structure, maze.width, settings.measureDToGoal,settings.measureDToGoalByPart, maze.height,maze.nBSteps);
+			else
+				simulation.SendMaze(maze.structure, maze.width, settings.measureDToGoal,settings.measureDToGoalByPart, maze.height,maze.nBSteps, settings.environmentFraction);
+			
 			
 			simulation.SendMaxTime(settings.maxTime);
 

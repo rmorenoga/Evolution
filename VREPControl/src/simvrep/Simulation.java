@@ -158,6 +158,14 @@ public class Simulation {
 		}
 	}
 	
+	public void SendMaze(char[] sequence, float width, boolean dToGoal, boolean dToGoalByPart, float height, int nBSteps, float environmentFraction){
+		SendMaze(sequence,width,dToGoal,dToGoalByPart,height,nBSteps);
+		int result = vrep.simxSetFloatSignal(clientID, "MazeSC", environmentFraction, vrep.simx_opmode_oneshot);
+		if (DEBUG){
+			System.out.println("Using SendMaze() in "+simnumber+" result: "+result);
+		}
+	}
+	
 	public void SendMaxTime(int maxTime){
 		this.MaxTime = maxTime; 
 		int result = vrep.simxSetIntegerSignal(clientID, "MaxTime", MaxTime, vrep.simx_opmode_oneshot);
