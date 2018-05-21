@@ -28,11 +28,16 @@ function getDistance(CurrentTPart,TPoints,seqLength,position,initAngle,width,get
     end	
 
     --Calculate distance based on position
-
-    goalX = TPoints[seqLength][3]
-    goalY = TPoints[seqLength][4]
         
     if(CurrentTPart>=1) then
+
+        if  not shortChallenge then
+            local goalX = TPoints[seqLength][3]
+            local goalY = TPoints[seqLength][4]
+        else
+            local goalX,goalY,goalAngle = getGoalFromFraction(TPoints[CurrentTPart],environmentFraction)
+            Goal = checkOverGoal(goalX,goalY,goalAngle,position)
+        end
 
         if(CurrentTPart<=seqLength) then
             if getDistanceToGoal then
@@ -64,6 +69,15 @@ function getDistance(CurrentTPart,TPoints,seqLength,position,initAngle,width,get
     return CurrentTPart,Goal,D
 end
 
+function checkOverGoal(goalX,goalY,goalAngle,position)
+
+    local ret = checkOverOutput(1,goalX,goalY,goalAngle,position)
+    if ret > 1 then
+        return true
+    else
+        return false
+    end
+end
 
 function checkOverOutputPart(TPart,CurrentPart,position)
     local outputX = TPart[3]
@@ -131,6 +145,34 @@ function checkOverInput(CurrentPart,inputX,inputY,inputAngle,position)
     end
 
     return CurrentP
+
+end
+
+function getGoalFromFraction(TPart,environmentFraction)
+    local shape = TPart[8]
+    local outputAngle = TPart[6]
+    local outputX = TPart[3]
+    local outputY = TPart[4]
+    local inputAngle = TPart[5]
+    local inputX = TPart[1]
+    local inputY = TPart[2]
+
+    if (shape == 's' or shape == 'b')
+        if (outputAngle == 0 or outputAngle == math.pi or outputAngle == -math.pi) then
+            goalX = outputX
+            goalY = outputY*environmentFraction
+        elseif (outputAngle == math.pi/2 or outputAngle == -math.pi/2) then
+            goalX = outputX*environmentFraction
+            goalY = outputY
+        end
+        local outAngle = outputAngle
+    elseif (shape == 'l' or shape == 'r') then
+        --TODO Implement for shapes l and r
+        goalX = outputX
+        goalY = outputY
+    end
+
+    return goalX,goalY,outAngle
 
 end
 
@@ -246,17 +288,17 @@ function GetPartManhattanDistance(TPart,CurrentPart,position)
         --print(angle,outputX,outputY,inputX,inputY)
         if(outputAngle == 0 or outputAngle == math.pi or outputAngle == -math.pi) then
             local DyInputLine = math.abs(inputY-positionY)
-            local DxOuputLine = math.abs(outputX-positionX)
-            --print(angle,DyoinputLine,DxoouputLine)
-            if (DyInputLine < DxOuputLine) then
+            local DxOutputLine = math.abs(outputX-positionX)
+            --print(angle,DyoinputLine,DxooutputLine)
+            if (DyInputLine < DxOutputLine) then
                 local outputLine = math.abs(outputY-inputY)
                 local remainingInputLine = math.abs(outputX-positionX)
                 D = outputLine + remainingInputLine + DyInputLine
                 --print(outputLine,rInputLine,DyoinputLine,Do)
             else
                 local remainingOutputLine = math.abs(outputY-positionY)
-                D = remainingOutputLine + DxOuputLine
-                --print(routputLine,DxoouputLine,Do)
+                D = remainingOutputLine + DxOutputLine
+                --print(routputLine,DxooutputLine,Do)
             end
             return D
         elseif(outputAngle == math.pi/2 or outputAngle == -math.pi/2) then
