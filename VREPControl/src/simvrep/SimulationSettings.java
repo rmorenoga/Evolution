@@ -8,14 +8,14 @@ public class SimulationSettings {
 	public boolean measureDToGoal;
 	public boolean measureDToGoalByPart;
 	public String scene;
-	public int maxTime = 10;
+	public float maxTime = 10;
 	public float alpha = 0.88f;
 	public boolean individualParameters;
 	public boolean shortChallenge;
 	public float environmentFraction = 1; 
 	
 	public SimulationSettings(int maxTries, boolean measureDToGoal,
-			boolean measureDToGoalByPart, String scene, int maxTime, float alpha, boolean individualParameters) {
+			boolean measureDToGoalByPart, String scene, float maxTime, float alpha, boolean individualParameters) {
 		this.maxTries = maxTries;
 		this.measureDToGoal = measureDToGoal;
 		this.measureDToGoalByPart = measureDToGoalByPart;
@@ -26,11 +26,11 @@ public class SimulationSettings {
 		this.shortChallenge = false;
 	}
 
-	public SimulationSettings(int maxTries, String scene, int maxTime,boolean individualParameters) {
+	public SimulationSettings(int maxTries, String scene, float maxTime,boolean individualParameters) {
 		this(maxTries,false,false,scene,maxTime,0.88f,individualParameters);
 	}
 	
-	public SimulationSettings(int maxTries,String scene, int maxTime, float alpha, boolean individualParameters, float environmentFraction){
+	public SimulationSettings(int maxTries,String scene, float maxTime, float alpha, boolean individualParameters, float environmentFraction){
 		this.maxTries = maxTries;
 		this.measureDToGoal = true;
 		this.measureDToGoalByPart = false;
@@ -42,7 +42,7 @@ public class SimulationSettings {
 		this.environmentFraction = environmentFraction;
 	}
 	
-	public SimulationSettings(int maxTries, String scene, int maxTime,boolean individualParameters, float environmentFraction) {
+	public SimulationSettings(int maxTries, String scene, float maxTime,boolean individualParameters, float environmentFraction) {
 		this(maxTries,scene,maxTime,0.88f,individualParameters, environmentFraction);	
 	}
 }

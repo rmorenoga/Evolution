@@ -17,7 +17,7 @@ public class ShowIndividual {
 	public static void main(String[] args) {
 		
 		
-		SimulationSettings settings = new SimulationSettings(5,"defaultmhs.ttt",120,false);
+		SimulationSettings settings = new SimulationSettings(5,true,true,"defaultmhs.ttt",23.4f,0.88f,false);
 		Maze maze = new Maze(new char[]{'s','s','r'},0.4f,0.088f,3);
 
 		

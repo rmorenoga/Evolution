@@ -2,18 +2,18 @@ package simvrep;
 
 public class ShortChallengeSettings extends SimulationSettings{
 	
-	protected int[] times;
+	protected float[] times;
 	protected float[] fractions;
 	protected int selection = 0;
 	
-	public ShortChallengeSettings(int[] times, float[] fractions, int selection,int maxTries,String scene, float alpha, boolean individualParameters){
+	public ShortChallengeSettings(float[] times, float[] fractions, int selection,int maxTries,String scene, float alpha, boolean individualParameters){
 		super(maxTries,scene,times[selection],alpha,individualParameters,fractions[selection]);
 		this.times = times;
 		this.fractions = fractions;
 		this.selection = selection; 
 	}
 	
-	public ShortChallengeSettings(int[] times, float[] fractions,int selection,int maxTries, String scene,boolean individualParameters){
+	public ShortChallengeSettings(float[] times, float[] fractions,int selection,int maxTries, String scene,boolean individualParameters){
 		super(maxTries,scene,times[selection],individualParameters,fractions[selection]);
 		this.times = times;
 		this.fractions = fractions;

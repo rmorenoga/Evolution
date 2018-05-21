@@ -1,6 +1,7 @@
 function getDistance(CurrentTPart,TPoints,seqLength,position,initAngle,width,getDistanceToGoal,getDistancebyPartToGoal,shortChallenge,environmentFraction)
     local Goal = false
     local D = 0
+    local goalX,goalY,goalAngle = 0
 
     --Track movements of the robot in the maze structure
 
@@ -32,10 +33,10 @@ function getDistance(CurrentTPart,TPoints,seqLength,position,initAngle,width,get
     if(CurrentTPart>=1) then
 
         if  not shortChallenge then
-            local goalX = TPoints[seqLength][3]
-            local goalY = TPoints[seqLength][4]
+            goalX = TPoints[seqLength][3]
+            goalY = TPoints[seqLength][4]
         else
-            local goalX,goalY,goalAngle = getGoalFromFraction(TPoints[CurrentTPart],environmentFraction)
+            goalX,goalY,goalAngle = getGoalFromFraction(TPoints[CurrentTPart],environmentFraction)
             Goal = checkOverGoal(goalX,goalY,goalAngle,position)
         end
 
@@ -65,7 +66,7 @@ function getDistance(CurrentTPart,TPoints,seqLength,position,initAngle,width,get
             D = 1
         end
     end
-    --print(Dout)
+    --print(D,CurrentTPart,Goal,shortChallenge)
     return CurrentTPart,Goal,D
 end
 
@@ -156,8 +157,9 @@ function getGoalFromFraction(TPart,environmentFraction)
     local inputAngle = TPart[5]
     local inputX = TPart[1]
     local inputY = TPart[2]
+    local outAngle = 0
 
-    if (shape == 's' or shape == 'b')
+    if (shape == 's' or shape == 'b') then
         if (outputAngle == 0 or outputAngle == math.pi or outputAngle == -math.pi) then
             goalX = outputX
             goalY = outputY*environmentFraction
@@ -165,7 +167,7 @@ function getGoalFromFraction(TPart,environmentFraction)
             goalX = outputX*environmentFraction
             goalY = outputY
         end
-        local outAngle = outputAngle
+        outAngle = outputAngle
     elseif (shape == 'l' or shape == 'r') then
         --TODO Implement for shapes l and r
         goalX = outputX
@@ -181,6 +183,7 @@ function getDistanceToStartingPointNormalized(goalX,goalY,position,width)
     local positionY = position[2]
     local D = 0
     local totalDistance = 0
+    local DN = 0
 
     local Dx = math.abs(0-positionX)
     local Dy = math.abs(0-positionY)
@@ -191,7 +194,13 @@ function getDistanceToStartingPointNormalized(goalX,goalY,position,width)
     local DyTotal = math.abs(goalY-0)
     totalDistance = DxTotal + DyTotal + width/2
 
-    return D/totalDistance
+    DN = D/totalDistance
+
+    if DN > 1 then
+        DN = 1
+    end
+
+    return DN 
 
 end
 
@@ -231,6 +240,7 @@ function getDistanceToGoalNormalized(goalX,goalY,position,TPoints,CurrentPart,se
     local D = 0
     local positionX = position[1]
     local positionY = position[2]
+    local DN = 0
 
     if distanceByPart then
         --Get Manhattan distance based on part
@@ -259,7 +269,13 @@ function getDistanceToGoalNormalized(goalX,goalY,position,TPoints,CurrentPart,se
 
     end
 
-    return D/totalSum
+    DN = D/totalSum
+
+    if DN > 1 then
+        DN = 1
+    end
+
+    return DN
 
 end
 

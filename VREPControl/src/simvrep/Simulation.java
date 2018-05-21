@@ -23,7 +23,7 @@ public class Simulation {
 	/**
 	 * Maximum simulation time allowed
 	 */
-	public int MaxTime = 10;
+	public float MaxTime = 10;
 
 	/**
 	 * Client Id assigned by the simulator server
@@ -166,9 +166,9 @@ public class Simulation {
 		}
 	}
 	
-	public void SendMaxTime(int maxTime){
+	public void SendMaxTime(float maxTime){
 		this.MaxTime = maxTime; 
-		int result = vrep.simxSetIntegerSignal(clientID, "MaxTime", MaxTime, vrep.simx_opmode_oneshot);
+		int result = vrep.simxSetFloatSignal(clientID, "MaxTime", MaxTime, vrep.simx_opmode_oneshot);
 		if (DEBUG){
 			System.out.println("Using SendMaxTime() in "+simnumber+" result: "+result);
 		}
