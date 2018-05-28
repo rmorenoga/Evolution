@@ -8,8 +8,7 @@ import simvrep.Simulation;
 
 public class ShortChallengeEmP extends EmP{
 	
-	
-	protected int iteration = 0;
+
 
 	public ShortChallengeEmP(List<Simulation> simulators, int numberOfServers, double[] morphology, Maze maze,
 			ShortChallengeSettings settings) {
@@ -18,12 +17,6 @@ public class ShortChallengeEmP extends EmP{
 
 	public ShortChallengeEmP(Simulation sim, double[] morphology, Maze maze, ShortChallengeSettings settings) {
 		super(sim, morphology, maze, settings);
-	}
-
-	@Override
-	public void update(int k) {
-		super.update(k);
-		this.iteration = k;
 	}
 
 	@Override
