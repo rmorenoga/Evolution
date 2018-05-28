@@ -18,6 +18,7 @@ import emst.evolution.search.multithread.MultithreadOptimizationGoal;
 import emst.evolution.search.population.PopulationDescriptors;
 import es.udc.gii.common.eaf.algorithm.population.Population;
 import maze.Maze;
+import maze.SelectableMaze;
 import mixed.MixedGenome;
 import simvrep.ShortChallengeSettings;
 import simvrep.Simulation;
@@ -123,11 +124,20 @@ public class HAEAEmP {
 		
 		float[] times = new float[]{1.5f,5.2340f,11.2285f,19.4833f,30};
 		float[] envFractions = new float[]{0.05f,0.1744f,0.4574f,0.7575f,1};
+		char[][] structures = new char[][]{
+			{'s','l','b','r'},
+			{'s','l','r','b'},
+			{'s','r','l','b'},
+			{'s','r','b','l'},
+			{'s','b','l','r'},
+			{'s','b','r','l'}
+		};
 		
-		//SimulationSettings settings = new SimulationSettings(5,"defaultmhs.ttt",20,false);
-		ShortChallengeSettings settings = new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false);
+		SimulationSettings settings = new SimulationSettings(5,"defaultmhs.ttt",180,false);
+		//ShortChallengeSettings settings = new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false);
 		//Maze maze = new Maze(new char[]{'s','l','b','r'},0.4f,0.088f,1);
-		Maze maze = new Maze(new char[]{'s'},0.4f,0.088f,1);
+		//Maze maze = new Maze(new char[]{'s'},0.4f,0.088f,1);
+		SelectableMaze maze = new SelectableMaze(structures, 0, 0.4f, 0.088f);
 		
 		int realDIM = 234;
 		double[] min = DoubleArray.create(realDIM, -10);
@@ -145,7 +155,8 @@ public class HAEAEmP {
 		double[] morphology = ChromoConversion.str2double(morpho);
 		
 		//OptimizationFunction<double[]> function = new EmP(simulators,Nsim,morphology,maze,settings);
-		ShortChallengeEmP function = new ShortChallengeEmP(simulators,Nsim,morphology,maze,settings);
+		//ShortChallengeEmP function = new ShortChallengeEmP(simulators,Nsim,morphology,maze,settings);
+		GenerationalEnvEmP function = new GenerationalEnvEmP(simulators,Nsim,morphology,maze,settings,10);
 		MultithreadOptimizationGoal<double[]> goal = new PeriodicOptimizationGoal<double[]>(function);
 		goal.setMax_threads(Nsim);
 		
@@ -189,6 +200,8 @@ public class HAEAEmP {
 				"HAEAEmP", POPSIZE, MAXITERS);
 		
 		Solution<double[]> solution = search.solve(realSpace, goal);
+		
+		System.out.println(solution.object());
 		
 		tracer1.close();
 		

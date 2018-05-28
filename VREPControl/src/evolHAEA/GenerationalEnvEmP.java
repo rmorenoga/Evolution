@@ -37,9 +37,8 @@ public class GenerationalEnvEmP extends EmP{
 	@Override
 	public Double apply(double[] individual) {
 		updateEnvironment();
-		double fitness = super.apply(individual);
-		//System.out.println("Simulation Settings " + this.settings.maxTime + " ," +this.settings.environmentFraction);
-		return fitness;
+		//System.out.println("Maze " + maze.structure.toString() );
+		return super.apply(individual);
 	}
 	
 	private void updateEnvironment(){
