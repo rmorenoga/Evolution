@@ -43,6 +43,6 @@ public class SimulationSettings {
 	}
 	
 	public SimulationSettings(int maxTries, String scene, float maxTime,boolean individualParameters, float environmentFraction) {
-		this(maxTries,scene,maxTime,0.88f,individualParameters, environmentFraction);	
+		this(maxTries,scene,maxTime,1,individualParameters, environmentFraction);	
 	}
 }

@@ -29,7 +29,7 @@ public class ShortChallengeSettings extends SimulationSettings{
 	public void selectNextChallenge(){
 		selection++;
 		if (selection >= times.length)
-			selection = 0;
+			selection = times.length-1;
 		this.maxTime = times[selection];
 		this.environmentFraction = fractions[selection];
 	

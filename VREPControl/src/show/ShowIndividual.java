@@ -2,9 +2,11 @@ package show;
 
 import evolHAEA.EmP;
 import evolHAEA.HEmP;
+import evolHAEA.ShortChallengeEmP;
 import maze.Maze;
 import mixed.MixedGenome;
 import simvrep.EvaluatorMT;
+import simvrep.ShortChallengeSettings;
 import simvrep.Simulation;
 import simvrep.SimulationConfiguration;
 import simvrep.SimulationSettings;
@@ -17,8 +19,9 @@ public class ShowIndividual {
 	public static void main(String[] args) {
 		
 		
-		SimulationSettings settings = new SimulationSettings(5,true,true,"defaultmhs.ttt",23.4f,0.88f,false);
-		Maze maze = new Maze(new char[]{'s','s','r'},0.4f,0.088f,3);
+		//SimulationSettings settings = new SimulationSettings(5,true,true,"defaultmhs.ttt",23.4f,0.88f,false);
+		ShortChallengeSettings settings = new ShortChallengeSettings(new float[]{1.5f,5.2340f,11.2285f,19.4833f,30}, new float[]{0.05f,0.1744f,0.4574f,0.7575f,1}, 0, 5, "defaultmhs.ttt", false);
+		Maze maze = new Maze(new char[]{'s'},0.4f,0.088f,3);
 
 		
 		double[] parameters;
@@ -141,7 +144,8 @@ public class ShowIndividual {
 		
 		double[] morphology = ChromoConversion.str2double(morpho);
 
-		EmP function = new EmP(sim,morphology,maze,settings);
+		//EmP function  = new EmP(sim,morphology,maze,settings);
+		ShortChallengeEmP function = new ShortChallengeEmP(sim,morphology,maze,settings);
 		double fitness = function.apply(parameters);
 
 
