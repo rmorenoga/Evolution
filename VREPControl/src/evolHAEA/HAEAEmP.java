@@ -15,7 +15,7 @@ import emst.evolution.haea.ModifiedHaeaStep;
 import emst.evolution.json.haea.JSONHaeaStepObjectManager;
 import emst.evolution.json.setting.EvolutionryAlgorithmSetting;
 import emst.evolution.search.multithread.MultithreadOptimizationGoal;
-import emst.evolution.search.population.PopulationDescriptors;
+//import emst.evolution.search.population.PopulationDescriptors;
 import es.udc.gii.common.eaf.algorithm.population.Population;
 import maze.Maze;
 import maze.SelectableMaze;
@@ -41,6 +41,7 @@ import unalcol.optimization.real.mutation.PowerLawMutation;
 import unalcol.optimization.real.xover.LinearXOver;
 import unalcol.search.Goal;
 import unalcol.search.population.IterativePopulationSearch;
+import unalcol.search.population.PopulationDescriptors;
 import unalcol.search.population.PopulationSearch;
 import unalcol.search.selection.Selection;
 import unalcol.search.selection.Tournament;
@@ -135,9 +136,9 @@ public class HAEAEmP {
 		
 		SimulationSettings settings = new SimulationSettings(5,"defaultmhs.ttt",180,false);
 		//ShortChallengeSettings settings = new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false);
-		//Maze maze = new Maze(new char[]{'s','l','b','r'},0.4f,0.088f,1);
+		Maze maze = new Maze(new char[]{'s','l','b','r'},0.4f,0.088f,1);
 		//Maze maze = new Maze(new char[]{'s'},0.4f,0.088f,1);
-		SelectableMaze maze = new SelectableMaze(structures, 0, 0.4f, 0.088f);
+		//SelectableMaze maze = new SelectableMaze(structures, 0, 0.4f, 0.088f);
 		
 		int realDIM = 234;
 		double[] min = DoubleArray.create(realDIM, -10);
@@ -154,17 +155,17 @@ public class HAEAEmP {
 		String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
 		double[] morphology = ChromoConversion.str2double(morpho);
 		
-		//OptimizationFunction<double[]> function = new EmP(simulators,Nsim,morphology,maze,settings);
+		OptimizationFunction<double[]> function = new EmP(simulators,Nsim,morphology,maze,settings);
 		//ShortChallengeEmP function = new ShortChallengeEmP(simulators,Nsim,morphology,maze,settings);
-		GenerationalEnvEmP function = new GenerationalEnvEmP(simulators,Nsim,morphology,maze,settings,10);
+		//GenerationalEnvEmP function = new GenerationalEnvEmP(simulators,Nsim,morphology,maze,settings,10);
 		MultithreadOptimizationGoal<double[]> goal = new PeriodicOptimizationGoal<double[]>(function);
 		goal.setMax_threads(Nsim);
 		
 		IntensityMutation realVariation = new PowerLawMutation(0.2, new PermutationPick(23));
 		LinearXOver realXOver = new LinearXOver(); // Use Tournament(4)
 		
-		int POPSIZE = 10;
-		int MAXITERS = 10;
+		int POPSIZE = 4;
+		int MAXITERS = 3;
 		Variation[] opers = new Variation[2];
 		opers[0] = realVariation;
 		opers[1] = realXOver;
@@ -172,24 +173,25 @@ public class HAEAEmP {
 		SimpleHaeaOperators operators = new SimpleHaeaOperators(opers);
 		Selection selection = new Tournament(4);
 		
-		//ModifiedHaeaStep step = new ModifiedHaeaStep(POPSIZE, selection, operators);
-		ModifiedHaeaStep step = new PeriodicHAEAStep(POPSIZE, selection, operators);
+		ModifiedHaeaStep step = new ModifiedHaeaStep(POPSIZE, selection, operators);
+		//ModifiedHaeaStep step = new PeriodicHAEAStep(POPSIZE, selection, operators);
 		step.setJsonManager(new JSONHaeaStepObjectManager());
 		PopulationSearch search = new IterativePopulationSearch(step,
 				new ForLoopCondition<Population>(MAXITERS));
 		
 		// Track Individuals and Goal Evaluations
 		WriteDescriptors write_desc = new WriteDescriptors();
+		Descriptors.set(Population.class, new PopulationDescriptors<double[]>());
+		Descriptors.set(HaeaStep.class, new HaeaStepDescriptors<double[]>());
+		Descriptors.set(HaeaOperators.class, new SimpleHaeaOperatorsDescriptor<double[]>());
 		Write.set(double[].class, new DoubleArrayPlainWrite(false));
-		Write.set(HaeaStep.class, new WriteHaeaStep());
+		Write.set(HaeaStep.class, new WriteHaeaStep<double[]>());
 		// Descriptors.set(Population.class, new
 		// PopulationDescriptors());
-		Descriptors.set(Population.class, new PopulationDescriptors());
-		Descriptors.set(HaeaStep.class, new HaeaStepDescriptors());
-		Descriptors.set(HaeaOperators.class, new SimpleHaeaOperatorsDescriptor());
 		Write.set(Population.class, write_desc);
 		Write.set(HaeaStep.class, write_desc);
 		Write.set(HaeaOperators.class, write_desc);
+		
 		
 		// Add tracer based on descriptors set
 		// FileTracer tracer = new FileTracer("Evolresult.txt", ',');
