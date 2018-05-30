@@ -321,7 +321,7 @@ public class Simulation {
 		return vrep;
 	}
 
-	public void setMaxTime(int maxTime) {
+	public void setMaxTime(float maxTime) {
 		MaxTime = maxTime;
 	}
 

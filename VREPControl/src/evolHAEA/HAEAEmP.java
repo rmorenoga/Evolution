@@ -15,8 +15,8 @@ import emst.evolution.haea.ModifiedHaeaStep;
 import emst.evolution.json.haea.JSONHaeaStepObjectManager;
 import emst.evolution.json.setting.EvolutionryAlgorithmSetting;
 import emst.evolution.search.multithread.MultithreadOptimizationGoal;
-//import emst.evolution.search.population.PopulationDescriptors;
-import es.udc.gii.common.eaf.algorithm.population.Population;
+import emst.evolution.search.population.PopulationDescriptors;
+
 import maze.Maze;
 import maze.SelectableMaze;
 import mixed.MixedGenome;
@@ -41,7 +41,7 @@ import unalcol.optimization.real.mutation.PowerLawMutation;
 import unalcol.optimization.real.xover.LinearXOver;
 import unalcol.search.Goal;
 import unalcol.search.population.IterativePopulationSearch;
-import unalcol.search.population.PopulationDescriptors;
+import unalcol.search.population.Population;
 import unalcol.search.population.PopulationSearch;
 import unalcol.search.selection.Selection;
 import unalcol.search.selection.Tournament;
@@ -164,7 +164,7 @@ public class HAEAEmP {
 		IntensityMutation realVariation = new PowerLawMutation(0.2, new PermutationPick(23));
 		LinearXOver realXOver = new LinearXOver(); // Use Tournament(4)
 		
-		int POPSIZE = 4;
+		int POPSIZE = 3;
 		int MAXITERS = 3;
 		Variation[] opers = new Variation[2];
 		opers[0] = realVariation;
