@@ -42,9 +42,9 @@ public class GeneralizationTest {
 
 	public static void main(String[] args) {
 		
-		String path = "C:/Users/golde_000/Desktop/";
+		String path = "G:/My Drive/2018/Thesis/Results/HillClimbing/EnvOrder/";
 		String fileName = "GenResultFit.txt";
-		String fileNameCsv = "TableHAEAEnvOrder.csv";
+		String fileNameCsv = "TableHillEnvOrder.csv";
 		double[] result = new double[6];
 	
 		Simulation sim = new Simulation(0);
@@ -73,8 +73,8 @@ public class GeneralizationTest {
 	String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
 	double[] morphology = ChromoConversion.str2double(morpho);		
 
-		 double [][] indiv=ReadTXTFiles(path,"HillEnvR",numberofindividuals,individuallength);
-//		double [][] indiv=ReadJsonFiles("C:/Users/golde_000/Desktop/Test","HAEA",1,individuallength,10);
+		 double [][] indiv = ReadTXTFiles(path,"Hill",6,individuallength,10); 
+		//double [][] indiv=ReadJsonFiles("C:/Users/golde_000/Desktop/Test","HAEA",1,individuallength,10);
 		 //double [][] indiv = GenerateRandomIndividuals(numberofindividuals,individuallength, maxrandomval,minrandomval);
 			for (int i = 0; i < indiv.length; i++) {
 		 
@@ -134,7 +134,7 @@ public class GeneralizationTest {
 		for (int i=0;i<numberOfEnv;i++){
 			for (int l = 0;l<numberOfReplicas;l++){
 				try {
-					 Object obj = new JSONParser().parse(new FileReader(Folderpath+"/"+fileheader+"Env"+i+"R"+l+".json"));
+					 Object obj = new JSONParser().parse(new FileReader(Folderpath+fileheader+"Env"+i+"R"+l+".json"));
 					 JSONObject jo = (JSONObject) obj;
 					 JSONObject best = (JSONObject)jo.get("solution");
 					 //double fitness = (double) bestO.get("best_fitness");
@@ -167,13 +167,15 @@ public class GeneralizationTest {
 		
 	}
 
-	private static double[][] ReadTXTFiles(String Folderpath, String fileheader, int numberoffiles, int indivlength) {
+	private static double[][] ReadTXTFiles(String Folderpath, String fileheader, int numberOfEnv, int indivlength, int numberOfReplicas) {
 		
 		List<String> list = new ArrayList<String>();
-		for (int i=0;i<numberoffiles;i++){
+		
+		for (int i=0;i<numberOfEnv;i++){
+			for (int l = 0;l<numberOfReplicas;l++){
 			
 			try {
-				BufferedReader in = new BufferedReader(new FileReader(Folderpath+"/"+fileheader+i+".txt"));
+				BufferedReader in = new BufferedReader(new FileReader(Folderpath+fileheader+"Env"+i+"R"+l+".txt"));
 				String str;
 
 				while ((str = in.readLine()) != null) {
@@ -186,7 +188,7 @@ public class GeneralizationTest {
 			}
 			
 			//System.out.println(list.get(i));
-			
+			}
 		}
 		
 		
