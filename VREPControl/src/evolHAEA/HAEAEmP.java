@@ -181,11 +181,11 @@ public class HAEAEmP {
 		
 		// Track Individuals and Goal Evaluations
 		WriteDescriptors write_desc = new WriteDescriptors();
-		Descriptors.set(Population.class, new PopulationDescriptors<double[]>());
-		Descriptors.set(HaeaStep.class, new HaeaStepDescriptors<double[]>());
-		Descriptors.set(HaeaOperators.class, new SimpleHaeaOperatorsDescriptor<double[]>());
+		Descriptors.set(Population.class, new PopulationDescriptors());
+		Descriptors.set(HaeaStep.class, new HaeaStepDescriptors());
+		Descriptors.set(HaeaOperators.class, new SimpleHaeaOperatorsDescriptor());
 		Write.set(double[].class, new DoubleArrayPlainWrite(false));
-		Write.set(HaeaStep.class, new WriteHaeaStep<double[]>());
+		Write.set(HaeaStep.class, new WriteHaeaStep());
 		// Descriptors.set(Population.class, new
 		// PopulationDescriptors());
 		Write.set(Population.class, write_desc);
