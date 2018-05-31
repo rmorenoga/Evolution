@@ -17,8 +17,15 @@ import coppelia.FloatWA;
 import coppelia.IntW;
 import coppelia.IntWA;
 import coppelia.remoteApi;
+import evolHAEA.EmP;
 import evolHAEA.HEmP;
+import maze.Maze;
+import maze.SelectableMaze;
+import simvrep.ShortChallengeSettings;
 import simvrep.Simulation;
+import simvrep.SimulationSettings;
+import unalcol.optimization.OptimizationFunction;
+import util.ChromoConversion;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -28,63 +35,63 @@ public class GeneralizationTest {
 
 	// public float alpha = 0.7f;// Look into the Run simulation method to set
 	// alpha
-	static int numberofindividuals = 20;
+	static int numberofindividuals = 2;
 	static int individuallength = 234;
 	static double maxrandomval = 10;
 	static double minrandomval = -10;
 
 	public static void main(String[] args) {
 		
-		
-		String filename = "GenResultFit.txt";
+		String path = "C:/Users/golde_000/Desktop/";
+		String fileName = "GenResultFit.txt";
+		String fileNameCsv = "TableHAEAEnvOrder.csv";
 		double[] result = new double[6];
-//		
-//		Data process = new Data("GenResultFit.txt","TableHAEAEnvOrder.csv",60,"C:/Users/golde_000/Desktop",",");
-//		
-//		process.GenerateCSV("HAEA");
+	
+		Simulation sim = new Simulation(0);
+		// Retry if there is a simulator crash
+		for (int i = 0; i < 5; i++) {
+			if (sim.Connect()) {
+				break;
+			} else {
+				// No connection could be established
+				System.out.println("Failed connecting to remote API server");
+				System.out.println("Trying again for the " + i + " time in " + 0);
+			}
+		}
 		
-////		Simulation sim = new Simulation(0, 180);
-////		// Retry if there is a simulator crash
-////		for (int i = 0; i < 5; i++) {
-////			if (sim.Connect()) {
-////				break;
-////			} else {
-////				// No connection could be established
-////				System.out.println("Failed connecting to remote API server");
-////				System.out.println("Trying again for the " + i + " time in " + 0);
-////			}
-////		}
-////		
-////	String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
-////			
-//
-//		 //double [][] indiv=ReadTXTFiles("G:/My Drive/2018/Thesis/Results/UbuntuHome/HillClimbing/TurnLeft","HillClimbingResult",numberofindividuals,individuallength);
-////		double [][] indiv=ReadJsonFiles("C:/Users/golde_000/Desktop/Test","HAEA",1,individuallength,10);
-////			for (int i = 0; i < indiv.length; i++) {
-////		 
-////		 			result = RunTest(indiv[i],morpho, sim);
-////		 			WResultsFile(indiv[i], result, filename);
-////		 			for (int j = 0;j<6;j++){
-////		 				System.out.println(result[j]);
-////		 			}
-////		 			System.out.println("+++++++++++++++++++++++++++++++++++++");
-////		 
-////		 		}
-//		 indiv  = null;
-//		 double [][] indiv = GenerateRandomIndividuals(numberofindividuals,individuallength, maxrandomval,minrandomval);
-//		 
-//
-//		for (int i = 0; i < indiv.length; i++) {
-//
-//			result = RunTest(indiv[i],morpho, sim);
-//			WResultsFile(indiv[i], result, filename);
-//			for (int j = 0;j<6;j++){
-//				System.out.println(result[j]);
-//			}
-//			System.out.println("+++++++++++++++++++++++++++++++++++++");
-//
-//		}
+		char[][] structures = new char[][]{
+			{'s','l','b','r'},
+			{'s','l','r','b'},
+			{'s','r','b','l'},
+			{'s','r','l','b'},
+			{'s','b','l','r'},
+			{'s','b','r','l'}
+		};	
 		
+	SimulationSettings settings = new SimulationSettings(5,"defaultmhs.ttt",180,false);
+	SelectableMaze maze = new SelectableMaze(structures, 0, 0.4f, 0.088f);
+	String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
+	double[] morphology = ChromoConversion.str2double(morpho);		
+
+		 double [][] indiv=ReadTXTFiles(path,"HillEnvR",numberofindividuals,individuallength);
+//		double [][] indiv=ReadJsonFiles("C:/Users/golde_000/Desktop/Test","HAEA",1,individuallength,10);
+		 //double [][] indiv = GenerateRandomIndividuals(numberofindividuals,individuallength, maxrandomval,minrandomval);
+			for (int i = 0; i < indiv.length; i++) {
+		 
+		 			result = RunTest(indiv[i],morphology, sim,settings,maze);
+		 			WResultsFile(indiv[i], result, path+fileName);
+		 			for (int j = 0;j<6;j++){
+		 				System.out.println(result[j]);
+		 			}
+		 			System.out.println("+++++++++++++++++++++++++++++++++++++");
+		 
+		 		}
+			
+			sim.Disconnect();
+			
+			Data process = new Data(fileName,fileNameCsv,numberofindividuals,path,",");
+			
+			process.GenerateCSV("HAEA");
 
 	}
 
@@ -200,13 +207,15 @@ public class GeneralizationTest {
 	
 	
 
-	static double[] RunTest(double[] indv, String morpho, Simulation sim) {
+	static double[] RunTest(double[] indv, double[] morphology, Simulation sim, SimulationSettings settings, SelectableMaze maze) {
+			
 		double[] fitnessD = new double[6];		
-		HEmP test;
+		EmP function;
 		
 		for (int i = 0;i<6;i++){
-			test = new HEmP(0.88f, sim, morpho, "GeneralTest",i);
-			fitnessD[i] = test.apply(indv);
+			maze.selectMaze(i);
+			function = new EmP(sim,morphology,maze,settings);
+			fitnessD[i] = function.apply(indv);
 		}
 		
 		return fitnessD;
