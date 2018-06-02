@@ -31,25 +31,22 @@ function getDistance(CurrentTPart,TPoints,seqLength,position,initAngle,width,get
     --Calculate distance based on position
         
     if(CurrentTPart>=1) then
-
-        if  not shortChallenge then
-            goalX = TPoints[seqLength][3]
-            goalY = TPoints[seqLength][4]
-        else
-            goalX,goalY,goalAngle = getGoalFromFraction(TPoints[CurrentTPart],environmentFraction)
-            Goal = checkOverGoal(goalX,goalY,goalAngle,position)
-        end
-
         if(CurrentTPart<=seqLength) then
+            if  not shortChallenge then
+                goalX = TPoints[seqLength][3]
+                goalY = TPoints[seqLength][4]
+            else
+                goalX,goalY,goalAngle = getGoalFromFraction(TPoints[CurrentTPart],environmentFraction)
+                Goal = checkOverGoal(goalX,goalY,goalAngle,position)
+            end
+            
             if getDistanceToGoal then
                 D = getDistanceToGoalNormalized(goalX,goalY,position,TPoints,CurrentTPart,seqLength,getDistancebyPartToGoal)              
             else
                 D = getDistanceToStartingPointNormalized(goalX,goalY,position,width)
             end
         end
-
     else
-
         if getDistanceToGoal then
             --D = getDistanceToGoalBehindZeroNormalized(goalX,goalY,position,TPoints,seqLength,getDistancebyPartToGoal)--Deprecated will always return 1
             D = 1
