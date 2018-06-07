@@ -36,7 +36,7 @@ function getDistance(CurrentTPart,TPoints,seqLength,position,initAngle,width,get
                 goalX = TPoints[seqLength][3]
                 goalY = TPoints[seqLength][4]
             else
-                goalX,goalY,goalAngle = getGoalFromFraction(TPoints[CurrentTPart],environmentFraction)
+                goalX,goalY,goalAngle = getGoalFromFraction(TPoints[CurrentTPart],environmentFraction,width)
                 Goal = checkOverGoal(goalX,goalY,goalAngle,position)
             end
             
@@ -146,7 +146,7 @@ function checkOverInput(CurrentPart,inputX,inputY,inputAngle,position)
 
 end
 
-function getGoalFromFraction(TPart,environmentFraction)
+function getGoalFromFraction(TPart,environmentFraction,width)
     local shape = TPart[8]
     local outputAngle = TPart[6]
     local outputX = TPart[3]
@@ -155,6 +155,8 @@ function getGoalFromFraction(TPart,environmentFraction)
     local inputX = TPart[1]
     local inputY = TPart[2]
     local outAngle = 0
+    local goalX = 0
+    local goalY = 0
 
     if (shape == 's' or shape == 'b') then
         if (outputAngle == 0 or outputAngle == math.pi or outputAngle == -math.pi) then
@@ -166,9 +168,37 @@ function getGoalFromFraction(TPart,environmentFraction)
         end
         outAngle = outputAngle
     elseif (shape == 'l' or shape == 'r') then
-        --TODO Implement for shapes l and r
-        goalX = outputX
-        goalY = outputY
+        if (outputAngle == 0 or outputAngle == math.pi or outputAngle == -math.pi) then
+            if (environmentFraction <= 0.5) then
+                goalX = outputX * environmentFraction * 2
+                goalY = inputY
+            else
+                goalX = outputX
+                goalY = outputY * ((environmentFraction - 0.5) * 2)
+            end
+            local distanceToInputY = math.abs(inputY - goalY)
+            --local distanceToOutputY = math.abs(outputY-goalY)
+            if (distanceToInputY <= width/2) then
+                outAngle = inputAngle
+            else
+                outAngle = outputAngle
+            end
+        elseif(outputAngle == math.pi/2 or outputAngle == -math.pi/2) then
+            if (environmentFraction <= 0.5) then
+                goalX = inputX
+                goalY = outputY * environmentFraction * 2
+            else
+                goalX = outputX * ((environmentFraction - 0.5) * 2)
+                goalY = outputY
+            end
+            local distanceToInputX = math.abs(inputX - goalX)
+            --local distanceToOutputY = math.abs(outputY-goalY)
+            if (distanceToInputX <= width/2) then
+                outAngle = inputAngle
+            else
+                outAngle = outputAngle
+            end
+        end
     end
 
     return goalX,goalY,outAngle
