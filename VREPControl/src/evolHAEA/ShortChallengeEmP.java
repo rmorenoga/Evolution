@@ -20,24 +20,20 @@ public class ShortChallengeEmP extends EmP{
 	}
 
 	@Override
-	public Double apply(double[] individual) {
+	public Double apply(double[] individual) {		
 		double fitness = -super.apply(individual);
 		if (fitness == 0){
-			ShortChallengeSettings newSetting = (ShortChallengeSettings) this.settings;
-			newSetting.selectNextChallenge();
+			ShortChallengeSettings newSettings = (ShortChallengeSettings) this.settings;
+			newSettings.selectNextChallenge();
 		}
-		//System.out.println("Simulation Settings " + this.settings.maxTime + " ," +this.settings.environmentFraction);
+		System.out.println("Simulation Settings " + this.settings.maxTime + " ," +this.settings.environmentFraction + ", " + this.maze.width + ", " + this.maze.height);
 		return fitness;
 	}
+	
 
 	@Override
 	public boolean isNonStationary() {
 		return true;
 	}
 	
-	
-	
-	
-	
-
 }

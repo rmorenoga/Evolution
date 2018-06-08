@@ -6,15 +6,15 @@ public class ShortChallengeSettings extends SimulationSettings{
 	protected float[] fractions;
 	protected int selection = 0;
 	
-	public ShortChallengeSettings(float[] times, float[] fractions, int selection,int maxTries,String scene, float alpha, boolean individualParameters){
-		super(maxTries,scene,times[selection],alpha,individualParameters,fractions[selection]);
+	public ShortChallengeSettings(float[] times, float[] fractions, int selection,int maxTries,String scene, float alpha, boolean individualParameters, boolean noisy){
+		super(maxTries,scene,times[selection],alpha,individualParameters,fractions[selection],noisy);
 		this.times = times;
 		this.fractions = fractions;
-		this.selection = selection; 
+		this.selection = selection;
 	}
 	
-	public ShortChallengeSettings(float[] times, float[] fractions,int selection,int maxTries, String scene,boolean individualParameters){
-		super(maxTries,scene,times[selection],individualParameters,fractions[selection]);
+	public ShortChallengeSettings(float[] times, float[] fractions,int selection,int maxTries, String scene,boolean individualParameters, boolean noisy){
+		super(maxTries,scene,times[selection],individualParameters,fractions[selection],noisy);
 		this.times = times;
 		this.fractions = fractions;
 		this.selection = selection;
@@ -34,6 +34,6 @@ public class ShortChallengeSettings extends SimulationSettings{
 		this.environmentFraction = fractions[selection];
 	
 	}
-	
+		
 
 }

@@ -9,7 +9,6 @@ import simvrep.SimulationSettings;
 import simvrep.VRepEvaluator;
 import unalcol.optimization.OptimizationFunction;
 import unalcol.types.collection.bitarray.BitArray;
-import unalcol.types.collection.vector.Vector;
 
 public class EmP extends OptimizationFunction<double[]>{
 	
@@ -45,7 +44,9 @@ public class EmP extends OptimizationFunction<double[]>{
 		
 		VRepEvaluator evaluator = getVRrepEvaluator();
 		double fitness = 0;
-	
+		
+		if (settings.noisy) 
+			applyNoiseToMaze();	
 		
 		evaluator.configure(individual, morphology, maze);
 		for(int i = 0; i < settings.maxTries; i++) {
@@ -84,6 +85,10 @@ public class EmP extends OptimizationFunction<double[]>{
 				return i;
 			}
 		return -1;
+	}
+	
+	private void applyNoiseToMaze() {
+		this.maze.nextNoisyDimensions(this.settings.noiseRadiusMaze);
 	}
 
 

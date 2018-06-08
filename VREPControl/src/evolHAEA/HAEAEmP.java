@@ -134,8 +134,8 @@ public class HAEAEmP {
 			{'s','b','r','l'}
 		};
 		
-		SimulationSettings settings = new SimulationSettings(5,"defaultmhs.ttt",180,false);
-		//ShortChallengeSettings settings = new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false);
+		SimulationSettings settings = new SimulationSettings(5,"defaultmhs.ttt",180,false,false);
+		//ShortChallengeSettings settings = new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,true);
 		Maze maze = new Maze(new char[]{'s','l','b','r'},0.4f,0.088f,1);
 		//Maze maze = new Maze(new char[]{'s'},0.4f,0.088f,1);
 		//SelectableMaze maze = new SelectableMaze(structures, 0, 0.4f, 0.088f);

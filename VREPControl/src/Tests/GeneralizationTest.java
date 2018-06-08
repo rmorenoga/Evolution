@@ -68,7 +68,7 @@ public class GeneralizationTest {
 			{'s','b','r','l'}
 		};	
 		
-	SimulationSettings settings = new SimulationSettings(5,"defaultmhs.ttt",180,false);
+	SimulationSettings settings = new SimulationSettings(5,"defaultmhs.ttt",180,false,false);
 	SelectableMaze maze = new SelectableMaze(structures, 0, 0.4f, 0.088f);
 	String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
 	double[] morphology = ChromoConversion.str2double(morpho);		
