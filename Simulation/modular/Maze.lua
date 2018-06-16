@@ -36,7 +36,7 @@ function getDistance(CurrentTPart,TPoints,seqLength,position,initAngle,width,get
                 goalX = TPoints[seqLength][3]
                 goalY = TPoints[seqLength][4]
             else
-                goalX,goalY,goalAngle = getGoalFromFraction(TPoints[CurrentTPart],environmentFraction,width)
+                goalX,goalY,goalAngle = getGoalFromFraction(TPoints,environmentFraction,width,seqLength)
                 Goal = checkOverGoal(goalX,goalY,goalAngle,position)
             end
             
@@ -63,7 +63,7 @@ function getDistance(CurrentTPart,TPoints,seqLength,position,initAngle,width,get
             D = 1
         end
     end
-    --print(D,CurrentTPart,Goal,shortChallenge)
+    --print('Overall',D,CurrentTPart,Goal,shortChallenge)
     return CurrentTPart,Goal,D
 end
 
@@ -146,7 +146,38 @@ function checkOverInput(CurrentPart,inputX,inputY,inputAngle,position)
 
 end
 
-function getGoalFromFraction(TPart,environmentFraction,width)
+function getGoalFromFraction(TPoints,environmentFraction,width,seqLength)
+    local partDivision = 1/seqLength
+    local partFraction = 0
+    local numberOfParts = seqLength
+    local totalFraction = environmentFraction
+    local goalX = 0
+    local goalY = 0
+    local outAngle = 0
+
+    if (totalFraction < partDivision) then
+        partFraction = totalFraction*numberOfParts
+        goalX,goalY,outAngle = getGoalFromFractionPart(TPoints[1],partFraction,width)
+        --print(1)
+    elseif (totalFraction >= partDivision*(numberOfParts-1)) then
+        partFraction = (totalFraction - (partDivision*(numberOfParts-1)))*numberOfParts
+        goalX,goalY,outAngle = getGoalFromFractionPart(TPoints[numberOfParts],partFraction,width)
+        --print(numberOfParts)
+    end
+
+    for i=2,numberOfParts-1,1 do
+        if (totalFraction >= partDivision*(i-1) and totalFraction < partDivision*i) then
+            partFraction = (totalFraction - (partDivision*(i-1)))*numberOfParts
+            goalX,goalY,outAngle = getGoalFromFractionPart(TPoints[i],partFraction,width)
+            --print(i)
+        end
+    end
+    --print('Fraction',totalFraction,partDivision,partFraction, goalX,goalY,outAngle)
+
+    return goalX,goalY,outAngle
+end
+
+function getGoalFromFractionPart(TPart,environmentFraction,width)
     local shape = TPart[8]
     local outputAngle = TPart[6]
     local outputX = TPart[3]
@@ -158,23 +189,29 @@ function getGoalFromFraction(TPart,environmentFraction,width)
     local goalX = 0
     local goalY = 0
 
+    --print('Part',inputX,inputY,outputX,outputY)
+
     if (shape == 's' or shape == 'b') then
-        if (outputAngle == 0 or outputAngle == math.pi or outputAngle == -math.pi) then
+        if (outputAngle == 0 or outputAngle == math.pi or outputAngle == -math.pi) then 
             goalX = outputX
-            goalY = outputY*environmentFraction
+            local alongY = outputY - inputY
+            goalY = alongY * environmentFraction + inputY
         elseif (outputAngle == math.pi/2 or outputAngle == -math.pi/2) then
-            goalX = outputX*environmentFraction
+            local alongX = outputX - inputX
+            goalX = alongX * environmentFraction + inputX
             goalY = outputY
         end
         outAngle = outputAngle
     elseif (shape == 'l' or shape == 'r') then
         if (outputAngle == 0 or outputAngle == math.pi or outputAngle == -math.pi) then
             if (environmentFraction <= 0.5) then
-                goalX = outputX * environmentFraction * 2
+                local alongX = outputX - inputX
+                goalX = alongX * environmentFraction * 2 + inputX
                 goalY = inputY
             else
                 goalX = outputX
-                goalY = outputY * ((environmentFraction - 0.5) * 2)
+                local alongY = outputY - inputY
+                goalY = alongY * ((environmentFraction - 0.5) * 2) + inputY
             end
             local distanceToInputY = math.abs(inputY - goalY)
             --local distanceToOutputY = math.abs(outputY-goalY)
@@ -186,9 +223,11 @@ function getGoalFromFraction(TPart,environmentFraction,width)
         elseif(outputAngle == math.pi/2 or outputAngle == -math.pi/2) then
             if (environmentFraction <= 0.5) then
                 goalX = inputX
-                goalY = outputY * environmentFraction * 2
+                local alongY = outputY - inputY
+                goalY = alongY * environmentFraction * 2 + inputY
             else
-                goalX = outputX * ((environmentFraction - 0.5) * 2)
+                local alongX = outputX - inputX
+                goalX = alongX * ((environmentFraction - 0.5) * 2) + inputX
                 goalY = outputY
             end
             local distanceToInputX = math.abs(inputX - goalX)
@@ -202,8 +241,8 @@ function getGoalFromFraction(TPart,environmentFraction,width)
     end
 
     return goalX,goalY,outAngle
-
 end
+
 
 function getDistanceToStartingPointNormalized(goalX,goalY,position,width)
     local positionX = position[1]
@@ -295,7 +334,7 @@ function getDistanceToGoalNormalized(goalX,goalY,position,TPoints,CurrentPart,se
         totalSum = DxTotal + DyTotal
 
     end
-
+    --print('Distance',totalSum,D)
     DN = D/totalSum
 
     if DN > 1 then

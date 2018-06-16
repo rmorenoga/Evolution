@@ -20,9 +20,9 @@ public class ShowIndividual {
 		
 		
 		//SimulationSettings settings = new SimulationSettings(5,true,true,"defaultmhs.ttt",23.4f,0.88f,false);
-		ShortChallengeSettings settings = new ShortChallengeSettings(new float[]{1.5f,5.2340f,11.2285f,19.4833f,30}, new float[]{0.05f,0.1744f,0.4574f,0.7575f,1}, 0, 5, "defaultmhs.ttt", false,true);
-		Maze maze = new Maze(new char[]{'r'},0.4f,0.088f,3);
-
+		//ShortChallengeSettings settings = new ShortChallengeSettings(new float[]{1.5f,5.2340f,11.2285f,19.4833f,30}, new float[]{0.05f,0.1744f,0.4574f,0.7575f,1}, 0, 5, "defaultmhs.ttt", false,true);
+		Maze maze = new Maze(new char[]{'s','r','s','l'},0.4f,0.088f,3);
+		ShortChallengeSettings settings = new ShortChallengeSettings(new float[]{30,30,30,30,30}, new float[]{0.15f,0.45f,0.65f,0.95f,1}, 0, 5, "defaultmhs.ttt", false,true);
 		
 		double[] parameters;
 		// String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0,
@@ -145,7 +145,7 @@ public class ShowIndividual {
 		double[] morphology = ChromoConversion.str2double(morpho);
 
 		//EmP function  = new EmP(sim,morphology,maze,settings);
-		settings.selectChallenge(4);
+		settings.selectChallenge(3);
 		ShortChallengeEmP function = new ShortChallengeEmP(sim,morphology,maze,settings);
 		double fitness = function.apply(parameters);
 
