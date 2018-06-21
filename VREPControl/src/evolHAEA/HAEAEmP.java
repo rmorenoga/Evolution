@@ -3,6 +3,7 @@ package evolHAEA;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.lang.ProcessBuilder.Redirect;
@@ -58,7 +59,7 @@ public class HAEAEmP {
 	public static int Nsim;
 	public static List<Simulation> simulators;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
 		Nsim = 0;
 
