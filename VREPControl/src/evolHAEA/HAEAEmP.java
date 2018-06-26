@@ -17,7 +17,7 @@ import emst.evolution.json.haea.JSONHaeaStepObjectManager;
 import emst.evolution.json.setting.EvolutionryAlgorithmSetting;
 import emst.evolution.search.multithread.MultithreadOptimizationGoal;
 import emst.evolution.search.population.PopulationDescriptors;
-
+import emst.evolution.search.selection.ModifiedTournament;
 import maze.Maze;
 import maze.SelectableMaze;
 import mixed.MixedGenome;
@@ -172,7 +172,7 @@ public class HAEAEmP {
 		opers[1] = realXOver;
 		
 		SimpleHaeaOperators operators = new SimpleHaeaOperators(opers);
-		Selection selection = new Tournament(4);
+		Selection selection = new ModifiedTournament(4);
 		
 		ModifiedHaeaStep step = new ModifiedHaeaStep(POPSIZE, selection, operators);
 		//ModifiedHaeaStep step = new PeriodicHAEAStep(POPSIZE, selection, operators);
