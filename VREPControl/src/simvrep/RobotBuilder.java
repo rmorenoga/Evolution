@@ -220,7 +220,7 @@ public class RobotBuilder {
 			initialHeight = 1;
 		}
 
-		System.out.println("initialHeight: " + initialHeight);
+		//System.out.println("initialHeight: " + initialHeight);
 		if (initialHeight < (0.055 / 2))
 			initialHeight += (0.055 / 2);
 		// Move the robot up

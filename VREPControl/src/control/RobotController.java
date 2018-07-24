@@ -121,9 +121,9 @@ public class RobotController {
 				grownparam[i] = parameters[i];
 			}
 		}
-		System.out.println("grownparam: " + grownparam.length);
-		System.out.println("numberofmodules: " + numberofModules);
-		System.out.println("numberofParameters: " + numberofParameters);
+		//System.out.println("grownparam: " + grownparam.length);
+		//System.out.println("numberofmodules: " + numberofModules);
+		//System.out.println("numberofParameters: " + numberofParameters);
 		return grownparam;
 
 	}

@@ -17,9 +17,16 @@ public class EmP extends OptimizationFunction<double[]>{
 	protected double[] morphology;
 	protected Maze maze;
 	protected SimulationSettings settings;
+	protected int iteration = 0;
 	
 	public boolean isNonStationary() {
 		return true;
+	}
+	
+	@Override
+	public void update(int k) {
+		super.update(k);
+		this.iteration = k;
 	}
 	
 	public EmP(List<Simulation> simulators, int numberOfServers, double[] morphology, Maze maze, SimulationSettings settings) {
@@ -59,7 +66,7 @@ public class EmP extends OptimizationFunction<double[]>{
 	
 		
 		servers.set(evaluator.getSimulation().getSimnumber(), false);
-		
+		System.out.println("Iteration: " + this.iteration);
 		return -fitness;
 	}
 	

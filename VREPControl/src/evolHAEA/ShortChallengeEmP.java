@@ -9,7 +9,6 @@ import simvrep.Simulation;
 public class ShortChallengeEmP extends EmP{
 	
 
-
 	public ShortChallengeEmP(List<Simulation> simulators, int numberOfServers, double[] morphology, Maze maze,
 			ShortChallengeSettings settings) {
 		super(simulators, numberOfServers, morphology, maze, settings);
@@ -26,14 +25,14 @@ public class ShortChallengeEmP extends EmP{
 			ShortChallengeSettings newSettings = (ShortChallengeSettings) this.settings;
 			newSettings.selectNextChallenge();
 		}
-		System.out.println("Simulation Settings " + this.settings.maxTime + " ," +this.settings.environmentFraction + ", " + this.maze.width + ", " + this.maze.height);
+		System.out.println("Simulation Settings " + this.settings.maxTime + " ," +this.settings.environmentFraction + ", " + this.maze.width + ", " + this.maze.height + ", " + this.iteration);
 		return fitness;
 	}
 	
 
 	@Override
 	public boolean isNonStationary() {
-		return true;
+		return false;
 	}
 	
 }
