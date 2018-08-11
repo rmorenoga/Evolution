@@ -34,6 +34,10 @@ public class ShortChallengeSettings extends SimulationSettings{
 		this.environmentFraction = fractions[selection];
 	
 	}
+
+	public int getSelection() {
+		return selection;
+	}
 		
 
 }
