@@ -25,7 +25,6 @@ import evolHAEA.PeriodicOptimizationGoal;
 import maze.Maze;
 import simvrep.ShortChallengeSettings;
 import simvrep.Simulation;
-import unalcol.algorithm.iterative.ForLoopCondition;
 import unalcol.descriptors.Descriptors;
 import unalcol.descriptors.WriteDescriptors;
 import unalcol.evolution.haea.HaeaOperators;
@@ -61,8 +60,8 @@ public class IncrementalShortChallenge {
 
 	public static void main(String[] args) {
 
-		double[] newBest = new double[234];
 		double fitness;
+		double maxFitness = 0.5;
 
 		launchSimulators(args);
 
@@ -77,7 +76,7 @@ public class IncrementalShortChallenge {
 		String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
 		double[] morphology = ChromoConversion.str2double(morpho);
 
-		// First Challenge
+		// Seed individual
 		double[] lastBest = new double[] { -8.7022977429907, -2.6940289379121, -1.4431944620278, -1.3156390547095,
 				-5.9917088877257, 2.1502158872271, -1.8173197715124, 6.3601008200855, -3.5660225156747, 5.5365650414796,
 				4.5212175819355, -1.5748587388453, -1.8679579950777, -3.3668785635023, 2.7163317783425,
@@ -125,33 +124,57 @@ public class IncrementalShortChallenge {
 				-1.1064774052773, -0.16971508183716, -3.1912106322592, 2.2794946034352, -0.28934785714308,
 				0.2129963491506, -0.26788281062592, -0.43967702357483, -2.0035689388687, -3.7853548813787,
 				5.3783756402157, 3.0580856959208, 1.3283480946602, 0.73279123887078 };
-
+		
+		JSONObject challengeResult = new JSONObject();
+		
+		challengeResult.put("Test", "Incremental Short Challenge");
+		
 		for (int i = 0; i < envFractions.length; i++) {
 			
-			try {
-				newBest = evolve(morphology,maze, settings, lastBest,30,100);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			JSONObject challengeStep = new JSONObject();
+			
+			simulators = new ArrayList<Simulation>();
+			connectToSimulator(0);
+			EmP function  = new EmP(simulators.get(0),morphology,maze,settings);
+			fitness = function.apply(lastBest);
+			simulators.get(0).Disconnect();
+			challengeStep.put("lastBest", lastBest);
+			challengeStep.put("fitness", fitness);
+			
+			if (fitness < maxFitness) {
+				try {
+					Solution <double[]> result = evolve(morphology,maze, settings, lastBest,30,100,maxFitness);
+					lastBest = result.object();
+					fitness = (double)result.info(Goal.GOAL_TEST);
+					
+					challengeStep.put("lastBestEvol", lastBest);
+					challengeStep.put("fitnessEvol", fitness);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}			
+			}else {
+				challengeStep.put("lastBestEvol", -1);
+				challengeStep.put("fitnessEvol", -1);
 			}
+			
 			settings.selectNextChallenge();
-			
-			// TODO implement to test whether newBest can solve next challenge
-			// simulators = new ArrayList<Simulation>();
-			// connectToSimulator(0);
-			//EmP function  = new EmP(simulators.get(0),morphology,maze,settings);
-			// fitness = function.apply(parameters);
-			
-			lastBest = newBest; //Can this be done without problems?
+			challengeResult.put("challenge"+i, challengeStep);
 		}
 		
-		//TODO Save last newBest
+		try (Writer writer = new BufferedWriter(
+				new OutputStreamWriter(new FileOutputStream("IncrementalChallenge.json"), "utf-8"))) {
+			writer.write(challengeResult.toString());
+		} catch (Exception e) {
+			
+		}
+		
 		
 		stopSimulators();
-
+		System.out.println(challengeResult);
 	}
 
-	static double[] evolve(double[] morphology, Maze maze, ShortChallengeSettings settings, double[] lastBest,int POPSIZE,int MAXITERS)
+	static Solution<double[]> evolve(double[] morphology, Maze maze, ShortChallengeSettings settings, double[] lastBest,int POPSIZE,int MAXITERS, double maxFitness)
 		throws IOException { // Must test for fitness and max iterations finishing conditions
 
 		simulators = new ArrayList<Simulation>();
@@ -189,7 +212,7 @@ public class IncrementalShortChallenge {
 		// ModifiedHaeaStep step = new ModifiedHaeaStep(POPSIZE, selection, operators);
 		ModifiedHaeaStep step = new PeriodicHAEAStep(POPSIZE, selection, operators);
 		step.setJsonManager(new JSONHaeaStepObjectManager());
-		PopulationSearch search = new IterativePopulationSearch(step, new ForLoopCondition<Population>(MAXITERS));
+		PopulationSearch search = new IterativePopulationSearch(step, new ForLoopFitnessCondition(MAXITERS, maxFitness));
 
 		// Track Individuals and Goal Evaluations
 		WriteDescriptors write_desc = new WriteDescriptors();
@@ -237,7 +260,7 @@ public class IncrementalShortChallenge {
 			sim.Disconnect();
 		}
 		
-		return solution.object();
+		return solution;
 
 	}
 

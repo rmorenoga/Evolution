@@ -40,6 +40,7 @@ import unalcol.optimization.real.mutation.IntensityMutation;
 import unalcol.optimization.real.mutation.PermutationPick;
 import unalcol.optimization.real.mutation.PowerLawMutation;
 import unalcol.optimization.real.xover.LinearXOver;
+import unalcol.optimization.real.xover.SimpleXOver;
 import unalcol.search.Goal;
 import unalcol.search.population.IterativePopulationSearch;
 import unalcol.search.population.Population;
@@ -170,12 +171,14 @@ public class HAEAEmP {
 			
 			IntensityMutation realVariation = new PowerLawMutation(0.2, new PermutationPick(23));
 			LinearXOver realXOver = new LinearXOver(); // Use Tournament(4)
+			SimpleXOver simpleXOver = new SimpleXOver();
 			
 			int POPSIZE = 30;
 			int MAXITERS = 100;
-			Variation[] opers = new Variation[2];
+			Variation[] opers = new Variation[3];
 			opers[0] = realVariation;
 			opers[1] = realXOver;
+			opers[2] = simpleXOver;
 			
 			SimpleHaeaOperators operators = new SimpleHaeaOperators(opers);
 			Selection selection = new ModifiedTournament(4);
