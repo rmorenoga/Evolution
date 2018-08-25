@@ -17,7 +17,7 @@ public class ForLoopFitnessCondition<T> extends ForLoopCondition<Population<T>> 
 
 	@Override
 	public boolean evaluate(Population<T> pop) {
-		return super.evaluate(pop) || evaluateFitness(pop);
+		return super.evaluate(pop) && evaluateFitness(pop);
 	}
 
 	private boolean evaluateFitness(Population<T> pop) {
@@ -26,9 +26,9 @@ public class ForLoopFitnessCondition<T> extends ForLoopCondition<Population<T>> 
 		RealQualityGoal<T> goal = (RealQualityGoal<T>)pop.data(gName);
     	Order<Double> order = goal.order();
     	for(Double fitness: goal.apply(pop.object()))
-    		if( order.compare(maxFitness, fitness) <= 0)
-    			return true;
-		return false;
+    		if( order.compare(maxFitness, fitness) < 0)
+    			return false;
+		return true;
 	}
 	
 	

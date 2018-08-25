@@ -61,7 +61,7 @@ public class IncrementalShortChallenge {
 	public static void main(String[] args) {
 
 		double fitness;
-		double maxFitness = 0.5;
+		double maxFitness = 0.1;
 
 		launchSimulators(args);
 
@@ -71,7 +71,7 @@ public class IncrementalShortChallenge {
 
 		ShortChallengeSettings settings = new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,
 				true);
-		Maze maze = new Maze(new char[] { 's', 'l', 'b', 'r' }, 0.4f, 0.088f, 1);
+		Maze maze = new Maze(new char[] { 'l' }, 0.4f, 0.088f, 1);
 		
 		String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
 		double[] morphology = ChromoConversion.str2double(morpho);
@@ -141,9 +141,11 @@ public class IncrementalShortChallenge {
 			challengeStep.put("lastBest", lastBest);
 			challengeStep.put("fitness", fitness);
 			
-			if (fitness < maxFitness) {
+			System.out.println("Fitness = "+fitness);
+			
+			if (fitness > maxFitness) {
 				try {
-					Solution <double[]> result = evolve(morphology,maze, settings, lastBest,30,100,maxFitness);
+					Solution <double[]> result = evolve(morphology,maze, settings, lastBest,30,20,maxFitness);
 					lastBest = result.object();
 					fitness = (double)result.info(Goal.GOAL_TEST);
 					
@@ -338,7 +340,7 @@ public class IncrementalShortChallenge {
 				// "scenes/Maze/MRun.ttt"); //Snake
 				// ProcessBuilder qq = new ProcessBuilder("xvfb-run","-a",vrepcommand, "-h",
 				// "scenes/Maze/defaultmhs.ttt");
-				ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h", "scenes/Maze/defaultmhs.ttt");
+				ProcessBuilder qq = new ProcessBuilder(vrepcommand,"-h", "scenes/Maze/defaultmhs.ttt");
 				qq.directory(new File("/home/rodr/V-REP/Vrep" + j + "/"));
 				File log = new File("Simout/log");
 				qq.redirectErrorStream(true);

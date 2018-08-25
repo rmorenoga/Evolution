@@ -67,7 +67,13 @@ public class EmP extends OptimizationFunction<double[]>{
 		
 		servers.set(evaluator.getSimulation().getSimnumber(), false);
 		System.out.println("Iteration: " + this.iteration);
-		return -fitness;
+		
+		if (!settings.measureDToGoal){
+			return -fitness;
+		}else{
+			return fitness;
+		}
+		
 	}
 	
 
