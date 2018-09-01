@@ -71,7 +71,7 @@ public class IncrementalShortChallenge {
 		//float[] envFractions = new float[] { 0.05f, 0.1744f, 0.4574f, 0.7575f, 1 };
 		float[] envFractions = new float[]{0.05f,0.17f,0.45f,0.5f,0.55f,0.67f,0.75f,1};
 		ShortChallengeSettings settings = new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,
-				true);
+				false);
 		Maze maze = new Maze(new char[] { 's','b' }, 0.4f, 0.088f, 1);
 		
 		String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
@@ -138,7 +138,7 @@ public class IncrementalShortChallenge {
 			if (lastBest != null) {
 				simulators = new ArrayList<Simulation>();
 				connectToSimulator(0);
-				EmP function = new EmP(simulators.get(0), morphology, maze, settings);
+				EmP function = new EmP(simulators,1, morphology, maze, settings);
 				fitness = function.apply(lastBest);
 				simulators.get(0).Disconnect();
 				challengeStep.put("lastBest", lastBest);
@@ -149,11 +149,11 @@ public class IncrementalShortChallenge {
 				challengeStep.put("fitness", fitness);
 			}
 			
-			System.out.println("Fitness = "+fitness);
+			System.out.println("Fitness = "+fitness +", Challenge: "+settings.getSelection());
 			
 			if (fitness > maxFitness) {
 				try {
-					Solution <double[]> result = evolve(morphology,maze, settings, lastBest,30,20,maxFitness);
+					Solution <double[]> result = evolve(morphology,maze, settings, lastBest,50,30,maxFitness);
 					lastBest = result.object();
 					fitness = (double)result.info(Goal.GOAL_TEST);
 					
