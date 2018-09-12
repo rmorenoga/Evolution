@@ -40,6 +40,7 @@ import unalcol.optimization.real.mutation.IntensityMutation;
 import unalcol.optimization.real.mutation.PermutationPick;
 import unalcol.optimization.real.mutation.PowerLawMutation;
 import unalcol.optimization.real.xover.LinearXOver;
+import unalcol.optimization.real.xover.SimpleXOver;
 import unalcol.search.Goal;
 import unalcol.search.population.IterativePopulationSearch;
 import unalcol.search.population.Population;
@@ -66,18 +67,24 @@ public class IncrementalShortChallenge {
 		launchSimulators(args);
 
 		// Define challenges
-		//float[] times = new float[] { 1.5f, 5.2340f, 11.2285f, 19.4833f, 30 };
-		float[] times = new float[]{1.5f,5.23f,11.22f,12.7f,14f,18.2f,23.4f,30};
-		//float[] envFractions = new float[] { 0.05f, 0.1744f, 0.4574f, 0.7575f, 1 };
-		float[] envFractions = new float[]{0.05f,0.17f,0.45f,0.5f,0.55f,0.67f,0.75f,1};
+		//float[] times = new float[] { 1.5f, 5.234f, 11.2285f, 19.4833f, 30 }; //Turns
+		//float[]  times = new float[]{1.5f,3.1f,5.23f,7.6f,10.9f,15.5f,18.2f,25.7f,30};//b
+		//float[] times = new float[]{1.5f,5.23f,11.22f,12.7f,14f,18.2f,23.4f,30};//sb
+		float[] times = new float[]{2.5f,3.1f,5.23f,7.6f,10.9f,15.5f,18.2f,25.7f,30};//s
+		
+		
+		//float[] envFractions = new float[] { 0.05f, 0.1744f, 0.4574f, 0.7575f, 1 };//Turns
+		//float[] envFractions = new float[]{0.05f,0.1f,0.2f,0.35f,0.45f,0.55f,0.67f,0.8f,1};//b
+		//float[] envFractions = new float[]{0.05f,0.17f,0.45f,0.5f,0.55f,0.67f,0.75f,1};//sb
+		float[] envFractions = new float[]{0.05f,0.085f,0.18f,0.35f,0.45f,0.55f,0.67f,0.8f,1};//s
 		ShortChallengeSettings settings = new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,
 				false);
-		Maze maze = new Maze(new char[] { 's','b' }, 0.4f, 0.088f, 1);
+		Maze maze = new Maze(new char[] { 's' }, 0.4f, 0.088f, 1);
 		
 		String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
 		double[] morphology = ChromoConversion.str2double(morpho);
 
-		// Seed individual
+//		// Seed individual
 //		double[] lastBest = new double[] { -8.7022977429907, -2.6940289379121, -1.4431944620278, -1.3156390547095,
 //				-5.9917088877257, 2.1502158872271, -1.8173197715124, 6.3601008200855, -3.5660225156747, 5.5365650414796,
 //				4.5212175819355, -1.5748587388453, -1.8679579950777, -3.3668785635023, 2.7163317783425,
@@ -181,7 +188,7 @@ public class IncrementalShortChallenge {
 		
 		
 		stopSimulators();
-		System.out.println(challengeResult);
+		//System.out.println(challengeResult);
 	}
 
 	static Solution<double[]> evolve(double[] morphology, Maze maze, ShortChallengeSettings settings, double[] lastBest,int POPSIZE,int MAXITERS, double maxFitness)
@@ -216,12 +223,14 @@ public class IncrementalShortChallenge {
 
 		IntensityMutation realVariation = new PowerLawMutation(0.2, new PermutationPick(23));
 		LinearXOver realXOver = new LinearXOver(); // Use Tournament(4)
+		SimpleXOver simpleXOver = new SimpleXOver();
 
 		//int POPSIZE = 30;
 		//int MAXITERS = 100;
-		Variation[] opers = new Variation[2];
+		Variation[] opers = new Variation[3];
 		opers[0] = realVariation;
 		opers[1] = realXOver;
+		opers[2] = simpleXOver;
 
 		SimpleHaeaOperators operators = new SimpleHaeaOperators(opers);
 		Selection selection = new ModifiedTournament(4);
