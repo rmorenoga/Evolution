@@ -38,6 +38,16 @@ public class ShortChallengeSettings extends SimulationSettings{
 	public int getSelection() {
 		return selection;
 	}
+
+	public float[] getTimes() {
+		return times;
+	}
+
+	public float[] getFractions() {
+		return fractions;
+	}
+	
+	
 		
 
 }
