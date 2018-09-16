@@ -130,17 +130,30 @@ public class IncrementalShortChallenge {
 		/*Experiments*/
 		
 		/* Experiment 1 */
-		times = new float[] { 2.5f,5.23f,12.22f,15,16.3f,21.2f,23.4f,30};
-		envFractions = new float[] {0.05f,0.17f,0.45f,0.5f,0.55f,0.67f,0.75f,1};
+//		times = new float[] { 2.5f,5.23f,12.22f,15,16.3f,21.2f,23.4f,30};
+//		envFractions = new float[] {0.05f,0.17f,0.45f,0.5f,0.55f,0.67f,0.75f,1};
+//		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
+//		mazeChallenges.add(new Maze(new char[] { 'l' }, 0.4f, 0.088f, 1));
+//		seeds.add(null);
+		
+		times = new float[] { 2.5f,5.23f,8.6f,10.2f,11.9f,13.9f,15.1f,16.6f,18.3f,20.5f,21.5f,23.4f,30};
+		envFractions = new float[] {0.05f,0.17f,0.28f,0.33f,0.37f,0.45f,0.5f,0.55f,0.6f,0.67f,0.7f,0.75f,1};
 		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
-		mazeChallenges.add(new Maze(new char[] { 'l' }, 0.4f, 0.088f, 1));
+		mazeChallenges.add(new Maze(new char[] { 'b' }, 0.4f, 0.088f, 3));
 		seeds.add(null);
 		
+		
 		/* Experiment 2 */
-		times = new float[] { 2.5f,5.23f,12.22f,15,16.3f,21.2f,23.4f,30};
-		envFractions = new float[] {0.05f,0.17f,0.45f,0.5f,0.55f,0.67f,0.75f,1};
+//		times = new float[] { 2.5f,5.23f,12.22f,15,16.3f,21.2f,23.4f,30};
+//		envFractions = new float[] {0.05f,0.17f,0.45f,0.5f,0.55f,0.67f,0.75f,1};
+//		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
+//		mazeChallenges.add(new Maze(new char[] { 'r' }, 0.4f, 0.088f, 1));
+//		seeds.add(null);
+		
+		times = new float[] { 2.5f,5.23f,7.5f,8.9f,12.22f,15.1f,16.6f,20.9f,21.5f,23,25,30};
+		envFractions = new float[] {0.05f,0.17f,0.25f,0.29f,0.45f,0.5f,0.55f,0.67f,0.71f,0.75f,0.78f,1};
 		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
-		mazeChallenges.add(new Maze(new char[] { 'r' }, 0.4f, 0.088f, 1));
+		mazeChallenges.add(new Maze(new char[] { 'b' }, 0.4f, 0.088f, 4));
 		seeds.add(null);
 		
 		
@@ -176,7 +189,7 @@ public class IncrementalShortChallenge {
 				JSONObject challengeResult = new JSONObject();
 				
 				JSONObject test = new JSONObject();
-				test.put("Name", "IncrF"+new String(maze.structure)+repli);
+				test.put("Name", "IncrF"+new String(maze.structure)+challenge+repli);
 				test.put("times", settings.getTimes());
 				test.put("envFractions", settings.getFractions());
 				test.put("noisy", settings.noisy);
@@ -211,7 +224,7 @@ public class IncrementalShortChallenge {
 
 					if (fitness > maxFitness) {
 						try {
-							Solution<double[]> result = evolve(morphology, maze, settings, lastBest, 5, 3,
+							Solution<double[]> result = evolve(morphology, maze, settings, lastBest, 50, 30,
 									maxFitness,(String) test.get("Name"));
 							lastBest = result.object();
 							fitness = (double) result.info(Goal.GOAL_TEST);
