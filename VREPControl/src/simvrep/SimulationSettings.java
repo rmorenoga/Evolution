@@ -35,7 +35,7 @@ public class SimulationSettings {
 	
 	public SimulationSettings(int maxTries,String scene, float maxTime, float alpha, boolean individualParameters, float environmentFraction, boolean noisy){
 		this.maxTries = maxTries;
-		this.measureDToGoal = true;
+		this.measureDToGoal = false;
 		this.measureDToGoalByPart = false;
 		this.scene = scene;
 		this.maxTime = maxTime;
