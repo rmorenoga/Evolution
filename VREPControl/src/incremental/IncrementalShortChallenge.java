@@ -42,12 +42,14 @@ import unalcol.optimization.real.mutation.PowerLawMutation;
 import unalcol.optimization.real.xover.LinearXOver;
 import unalcol.optimization.real.xover.SimpleXOver;
 import unalcol.search.Goal;
+import unalcol.search.RealQualityGoal;
 import unalcol.search.population.IterativePopulationSearch;
 import unalcol.search.population.Population;
 import unalcol.search.population.PopulationSearch;
 import unalcol.search.selection.Selection;
 import unalcol.search.solution.Solution;
 import unalcol.search.variation.Variation;
+import unalcol.sort.Order;
 import unalcol.tracer.ConsoleTracer;
 import unalcol.tracer.Tracer;
 import unalcol.types.real.array.DoubleArray;
@@ -64,7 +66,7 @@ public class IncrementalShortChallenge {
 		double fitness;
 		double maxFitness = -0.5;
 		int maxReplicas = 2;
-		double[] lastBest;
+		double[][] lastPop;
 
 		launchSimulators(args);
 		
@@ -124,7 +126,7 @@ public class IncrementalShortChallenge {
 		float[] envFractions;
 		List<Maze> mazeChallenges  = new ArrayList<Maze>();
 		List<ShortChallengeSettings> challengeSettings = new ArrayList<ShortChallengeSettings>();
-		List<double[]> seeds = new ArrayList<double[]>();
+		List<double[][]> seeds = new ArrayList<double[][]>();
 		
 		
 		/*Experiments*/
@@ -193,7 +195,7 @@ public class IncrementalShortChallenge {
 			
 			settings = challengeSettings.get(challenge);
 			maze = mazeChallenges.get(challenge);
-			lastBest = seeds.get(challenge);
+			lastPop = seeds.get(challenge);
 
 			for (int repli = 0; repli < maxReplicas; repli++) {
 				
@@ -220,13 +222,13 @@ public class IncrementalShortChallenge {
 
 					JSONObject challengeStep = new JSONObject();
 
-					if (lastBest != null) {
+					if (lastPop != null) {
 						simulators = new ArrayList<Simulation>();
 						connectToSimulator(0);
 						EmP function = new EmP(simulators, 1, morphology, maze, settings);
-						fitness = function.apply(lastBest);
+						fitness = function.apply(lastPop[0]);
 						simulators.get(0).Disconnect();
-						challengeStep.put("lastBest", lastBest);
+						challengeStep.put("lastBest", lastPop[0]);
 						challengeStep.put("fitness", fitness);
 					} else {
 						fitness = 1.0;
@@ -238,12 +240,16 @@ public class IncrementalShortChallenge {
 
 					if (fitness > maxFitness) {
 						try {
-							Solution<double[]> result = evolve(morphology, maze, settings, lastBest, 100, 30,
-									maxFitness,(String) test.get("Name"));
-							lastBest = result.object();
-							fitness = (double) result.info(Goal.GOAL_TEST);
+							Solution<double[]>[] bestPop = evolve(morphology, maze, settings, 100, 30,
+									maxFitness,(String) test.get("Name"), lastPop);
+							
+							lastPop = new double[bestPop.length][];
+							for(int j = 0; j < lastPop.length; j++)
+								lastPop[j] = bestPop[j].object();
+							fitness = (double) bestPop[0].info(Goal.GOAL_TEST);
 
-							challengeStep.put("lastBestEvol", lastBest);
+							challengeStep.put("lastBestEvol", lastPop[0]);
+							challengeStep.put("lastPopEvol", lastPop);
 							challengeStep.put("fitnessEvol", fitness);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
@@ -272,7 +278,7 @@ public class IncrementalShortChallenge {
 		//System.out.println(challengeResult);
 	}
 
-	static Solution<double[]> evolve(double[] morphology, Maze maze, ShortChallengeSettings settings, double[] lastBest,int POPSIZE,int MAXITERS, double maxFitness,String name)
+	static Solution<double[]>[] evolve(double[] morphology, Maze maze, ShortChallengeSettings settings,int POPSIZE,int MAXITERS, double maxFitness,String name, double[][] lastPop)
 		throws IOException { // Must test for fitness and max iterations finishing conditions
 
 		simulators = new ArrayList<Simulation>();
@@ -285,8 +291,8 @@ public class IncrementalShortChallenge {
 		double[] max = DoubleArray.create(realDIM, 10);
 		
 		HyperCube realSpace;
-		if (lastBest!= null){
-		double[][] referencePoints = new double[][] {lastBest}; 
+		if (lastPop!= null){
+		double[][] referencePoints = lastPop; 
 		double[] radius = DoubleArray.create(realDIM, 0.2);//Can this be done without problems?
 		realSpace = new HyperCubeFromPoint(min, max, referencePoints, radius);
 		}else{
@@ -343,6 +349,20 @@ public class IncrementalShortChallenge {
 				MAXITERS);
 
 		Solution<double[]> solution = search.solve(realSpace, goal);
+		Population<Solution<double[]>> pop = ((PeriodicHAEAStep)step).lastPop;
+		 
+		Solution<double[]>[] spop = new Solution[pop.size()];
+		int[] indexes = new int[spop.length];
+		for(int i = 0; i < spop.length; i++) {
+			spop[i] = pop.object()[i].object();
+			indexes[i] = i;
+		}
+    	Double[] popFitness = goal.apply(spop);
+    	sort(indexes, popFitness, goal.order());
+    	
+    	Solution<double[]>[] bestpop = new Solution[(int)(0.1 * spop.length)];
+    	for(int i = 0; i < bestpop.length; i++)
+    		bestpop[i] = spop[indexes[i]];
 
 		System.out.println(solution.object());
 
@@ -367,8 +387,39 @@ public class IncrementalShortChallenge {
 			sim.Disconnect();
 		}
 		
-		return solution;
+		return bestpop;
 
+	}
+
+	private static void sort(int[] indexes, Double[] fitness, Order<Double> order) {
+		quicksort(indexes, fitness, order, 0, indexes.length - 1);
+	}
+
+	private static void quicksort(int[] indexes, Double[] fitness, Order<Double> order, int lo, int hi) {
+		if (lo < hi) {
+			int p = partition(indexes, fitness, order, lo, hi);
+			quicksort(indexes,fitness,order,lo,p-1);
+			quicksort(indexes,fitness, order, p+1,hi);
+		}
+		
+	}
+
+	private static int partition(int[] indexes, Double[] fitness, Order<Double> order, int lo, int hi) {
+		double pivot = fitness[indexes[hi]];
+		int i = lo;
+		int temp;
+		for (int j = lo; j<hi;j++) {
+			if (order.compare(fitness[indexes[j]], pivot) > 0) {
+				temp = indexes[i];
+				indexes[i] = indexes[j];
+				indexes[j] = temp;
+				i = i + 1;
+			}
+		}
+		temp = indexes[i];
+		indexes[i] = indexes[hi];
+		indexes[hi] = temp;
+		return i;
 	}
 
 	static void connectToSimulator(int simulatorNumber) {
