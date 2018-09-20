@@ -43,6 +43,14 @@ public class PeriodicHAEAStep<T> extends ModifiedHaeaStep<T> {
 		lastPop = super.apply(pop, space);
 		return lastPop;
 	}
+
+	@Override
+	public Population<T> init(Space<T> space, Goal<T, Double> goal) {
+		lastPop = super.init(space, goal);
+		return lastPop;
+	}
+	
+	
 	
 
 }

@@ -154,8 +154,16 @@ public class IncrementalShortChallenge {
 		times = new float[] { 2.5f,5.23f,8.6f,10.2f,11.9f,13.9f,15.1f,16.6f,18.3f,20.5f,21.5f,23.4f,30};
 		envFractions = new float[] {0.05f,0.17f,0.28f,0.33f,0.37f,0.45f,0.5f,0.55f,0.6f,0.67f,0.7f,0.75f,1};
 		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
+		mazeChallenges.add(new Maze(new char[] { 's' }, 0.4f, 0.088f, 1));
+		seeds.add(null);
+		
+		times = new float[] { 2.5f,5.23f,8.6f,10.2f,11.9f,13.9f,15.1f,16.6f,18.3f,20.5f,21.5f,23.4f,30};
+		envFractions = new float[] {0.05f,0.17f,0.28f,0.33f,0.37f,0.45f,0.5f,0.55f,0.6f,0.67f,0.7f,0.75f,1};
+		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
 		mazeChallenges.add(new Maze(new char[] { 'b' }, 0.4f, 0.088f, 3));
 		seeds.add(null);
+		
+
 		
 		
 		/* Experiment 2 */
@@ -165,11 +173,11 @@ public class IncrementalShortChallenge {
 //		mazeChallenges.add(new Maze(new char[] { 'r' }, 0.4f, 0.088f, 1));
 //		seeds.add(null);
 		
-		times = new float[] { 2.5f,5.23f,7.5f,8.9f,12.22f,15.1f,16.6f,20.9f,21.5f,23,25,30};
-		envFractions = new float[] {0.05f,0.17f,0.25f,0.29f,0.45f,0.5f,0.55f,0.67f,0.71f,0.75f,0.78f,1};
-		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
-		mazeChallenges.add(new Maze(new char[] { 'b' }, 0.4f, 0.088f, 4));
-		seeds.add(null);
+//		times = new float[] { 2.5f,5.23f,7.5f,8.9f,12.22f,15.1f,16.6f,20.9f,21.5f,23,25,30};
+//		envFractions = new float[] {0.05f,0.17f,0.25f,0.29f,0.45f,0.5f,0.55f,0.67f,0.71f,0.75f,0.78f,1};
+//		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
+//		mazeChallenges.add(new Maze(new char[] { 'b' }, 0.4f, 0.088f, 4));
+//		seeds.add(null);
 		
 		
 
@@ -240,13 +248,17 @@ public class IncrementalShortChallenge {
 
 					if (fitness > maxFitness) {
 						try {
-							Solution<double[]>[] bestPop = evolve(morphology, maze, settings, 100, 30,
+							Solution<double[]>[] bestPop = evolve(morphology, maze, settings, 50, 30,
 									maxFitness,(String) test.get("Name"), lastPop);
 							
 							lastPop = new double[bestPop.length][];
-							for(int j = 0; j < lastPop.length; j++)
+							for(int j = 0; j < lastPop.length; j++){
 								lastPop[j] = bestPop[j].object();
+								System.out.println("Fitness "+ j + " = " + bestPop[j].info(Goal.GOAL_TEST));
+							}
 							fitness = (double) bestPop[0].info(Goal.GOAL_TEST);
+							
+							System.out.println("FitnessBest = " + fitness);
 
 							challengeStep.put("lastBestEvol", lastPop[0]);
 							challengeStep.put("lastPopEvol", lastPop);
@@ -351,18 +363,19 @@ public class IncrementalShortChallenge {
 		Solution<double[]> solution = search.solve(realSpace, goal);
 		Population<Solution<double[]>> pop = ((PeriodicHAEAStep)step).lastPop;
 		 
-		Solution<double[]>[] spop = new Solution[pop.size()];
-		int[] indexes = new int[spop.length];
-		for(int i = 0; i < spop.length; i++) {
-			spop[i] = pop.object()[i].object();
+		//Solution<double[]>[] spop = new Solution[pop.size()];
+		int[] indexes = new int[pop.size()];
+		for(int i = 0; i < pop.size(); i++) {
+			//System.out.println(pop.get(i).object());
+			//spop[i] = pop.get(i).object();
 			indexes[i] = i;
 		}
-    	Double[] popFitness = goal.apply(spop);
+    	Double[] popFitness = goal.apply((Solution[])pop.object());
     	sort(indexes, popFitness, goal.order());
     	
-    	Solution<double[]>[] bestpop = new Solution[(int)(0.1 * spop.length)];
+    	Solution<double[]>[] bestpop = new Solution[(int)(0.1 * pop.size())];
     	for(int i = 0; i < bestpop.length; i++)
-    		bestpop[i] = spop[indexes[i]];
+    		bestpop[i] = (Solution)pop.get(indexes[i]);
 
 		System.out.println(solution.object());
 
