@@ -89,40 +89,40 @@ public class IncrementalShortChallenge {
 		
 		/*Experiments*/
 				
-		times = new float[] {        2.5f,5.23f,10.2f,13.9f,16.6f,20.5f,21.5f,23.4f,24   ,24.9f,27.6f,30};
-		envFractions = new float[] {0.05f,0.17f,0.33f,0.45f,0.55f,0.67f,0.7f ,0.75f,0.78f,0.82f,0.91f,1};
+		times = new float[] {        2.5f ,3.2f ,5.23f ,7.5f ,9.6f ,13.9f,16.6f,20.5f,24.9f,30  ,32.5f,35.23f,40.2f,43.9f,46.6f,50.5f,51.5f,53.4f,54   ,54.9f,57.6f,60};
+		envFractions = new float[] {0.025f,0.05f,0.085f,0.12f,0.15f,0.22f,0.27f,0.33f,0.4f ,0.5f,0.52f,0.58f ,0.66f,0.72f,0.77f,0.83f,0.85f,0.87f,0.89f,0.91f,0.95f,1};
 		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
-		mazeChallenges.add(new Maze(new char[] { 'l' }, 0.4f, 0.088f, 1));
+		mazeChallenges.add(new Maze(new char[] { 's','l' }, 0.4f, 0.088f, 1));
 		seeds.add(null);	
 		
-		times = new float[] {        2.5f,5.23f,10.2f,13.9f,16.6f,20.5f,21.5f,23.4f,24   ,24.9f,27.6f,30};
-		envFractions = new float[] {0.05f,0.17f,0.33f,0.45f,0.55f,0.67f,0.7f ,0.75f,0.78f,0.82f,0.91f,1};
+		times = new float[] {        2.5f ,3.2f ,5.23f ,7.5f ,9.6f ,13.9f,16.6f,20.5f,24.9f,30  ,32.5f,35.23f,40.2f,43.9f,46.6f,50.5f,51.5f,53.4f,54   ,54.9f,57.6f,60};
+		envFractions = new float[] {0.025f,0.05f,0.085f,0.12f,0.15f,0.22f,0.27f,0.33f,0.4f ,0.5f,0.52f,0.58f ,0.66f,0.72f,0.77f,0.83f,0.85f,0.87f,0.89f,0.91f,0.95f,1};
 		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
-		mazeChallenges.add(new Maze(new char[] { 'r' }, 0.4f, 0.088f, 1));
+		mazeChallenges.add(new Maze(new char[] { 's','r' }, 0.4f, 0.088f, 1));
 		seeds.add(null);
 		
-		times = new float[]{        2.5f,3.2f,5.23f,7.5f ,9.6f,13.9f,16.6f,20.5f,24.9f,30};//b
-		envFractions = new float[]{0.05f,0.1f,0.17f,0.24f,0.3f,0.45f,0.55f,0.67f,0.8f ,1};//b
+		times = new float[]{        2.5f ,3.2f ,5.23f ,7.5f ,9.6f ,13.9f,16.6f,20.5f,24.9f,30  ,32.5f,33.2f,35.23f,37.5f,39.6f,43.9f,46.6f,50.5f,54.9f,60};//b
+		envFractions = new float[]{0.025f,0.05f,0.085f,0.12f,0.15f,0.22f,0.27f,0.33f,0.4f ,0.5f,0.52f,0.55f,0.58f ,0.62f,0.65f,0.72f,0.77f,0.83f,0.9f ,1};//b
 		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
-		mazeChallenges.add(new Maze(new char[] { 'b' }, 0.4f, 0.088f, 1));
+		mazeChallenges.add(new Maze(new char[] { 's','b' }, 0.4f, 0.088f, 1));
 		seeds.add(null);
 		
-		times = new float[]{        2.5f,3.2f,5.23f,7.5f ,9.6f,13.9f,16.6f,20.5f,24.9f,30};//b
-		envFractions = new float[]{0.05f,0.1f,0.17f,0.24f,0.3f,0.45f,0.55f,0.67f,0.8f ,1};//b
+		times = new float[]{        2.5f,3.2f,5.23f,7.5f ,9.6f,13.9f,16.6f,20.5f,24.9f,30,32.5f,33.2f,35.23f,37.5f,39.6f,43.9f,46.6f,50.5f,54.9f,60};//b
+		envFractions = new float[]{0.025f,0.05f,0.085f,0.12f,0.15f,0.22f,0.27f,0.33f,0.4f ,0.5f,0.52f,0.55f,0.58f,0.62f,0.65f,0.72f,0.77f,0.83f,0.9f,1};//b
 		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
-		mazeChallenges.add(new Maze(new char[] { 'b' }, 0.4f, 0.088f, 1));
+		mazeChallenges.add(new Maze(new char[] { 's','b' }, 0.4f, 0.088f, 1));
 		seeds.add(seedPop);
 		
-		times = new float[] {        2.5f ,5.23f ,10.2f,13.9f,16.6f,20.5f,21.5f,23.4f,24   ,24.9f,27.6f,30   ,32.5f,35.23f,40.2f,43.9f,46.6f,50.5f,51.5f,53.4f,54   ,54.9f,57.6f,60   ,69.5f,70.2f,72.23f,74.5f,76.6f,80.9f,83.6f,87.5f,91.9f,100};
-		envFractions = new float[] {0.016f,0.056f,0.11f,0.15f,0.18f,0.22f,0.23f,0.25f,0.26f,0.27f,0.30f,0.33f,0.35f,0.39f ,0.44f,0.48f,0.51f,0.55f,0.56f,0.58f,0.59f,0.60f,0.63f,0.66f,0.68f,0.7f ,0.72f ,0.74f,0.76f,0.81f,0.85f,0.89f,0.93f,1};
+		times = new float[] {          2.5f,3.2f  ,5.23f  ,7.5f ,9.6f  ,13.9f  ,16.6f  ,20.5f  ,24.9f,30   ,32.5f,35.23f ,40.2f  ,43.9f  ,46.6f  ,50.5f  ,51.5f ,53.4f  ,54    ,54.9f ,57.6f  ,60  ,62.5f  ,65.23f ,70.2f  ,73.9f  ,76.6f  ,80.5f,81.5f ,83.4f  ,84    ,84.9f ,87.6f  ,90   ,92.5f  ,93.2f ,95.23f ,97.5f,99.6f ,103.9f ,106.6f ,110.5f ,114.9f,120};
+		envFractions = new float[] {0.0125f,0.025f,0.0425f,0.06f,0.075f,0.1125f,0.1375f,0.1675f,0.2f ,0.25f,0.26f,0.2925f,0.3325f,0.3625f,0.3875f,0.4175f,0.425f,0.4375f,0.445f,0.455f,0.4775f,0.5f,0.5125f,0.5425f,0.5825f,0.6125f,0.6375f,13.5f,0.675f,0.6875f,0.695f,0.705f,0.7275f,0.75f,0.7625f,0.775f,0.7925f,0.81f,0.825f,0.8625f,0.8875f,0.9175f,0.95f ,1};
 		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
-		mazeChallenges.add(new Maze(new char[] { 'l','r','b' }, 0.4f, 0.088f, 1));
+		mazeChallenges.add(new Maze(new char[] { 's','l','r','b' }, 0.4f, 0.088f, 1));
 		seeds.add(seedPop);	
 		
-		times = new float[] {        2.5f ,5.23f ,10.2f,13.9f,16.6f,20.5f,21.5f,23.4f,24   ,24.9f,27.6f,30   ,32.5f,35.23f,40.2f,43.9f,46.6f,50.5f,51.5f,53.4f,54   ,54.9f,57.6f,60   ,69.5f,70.2f,72.23f,74.5f,76.6f,80.9f,83.6f,87.5f,91.9f,100};
-		envFractions = new float[] {0.016f,0.056f,0.11f,0.15f,0.18f,0.22f,0.23f,0.25f,0.26f,0.27f,0.30f,0.33f,0.35f,0.39f ,0.44f,0.48f,0.51f,0.55f,0.56f,0.58f,0.59f,0.60f,0.63f,0.66f,0.68f,0.7f ,0.72f ,0.74f,0.76f,0.81f,0.85f,0.89f,0.93f,1};
+		times = new float[] {          2.5f,3.2f  ,5.23f  ,7.5f ,9.6f  ,13.9f  ,16.6f  ,20.5f  ,24.9f,30   ,32.5f,35.23f ,40.2f  ,43.9f  ,46.6f  ,50.5f  ,51.5f ,53.4f  ,54    ,54.9f ,57.6f  ,60  ,62.5f  ,65.23f ,70.2f  ,73.9f  ,76.6f  ,80.5f,81.5f ,83.4f  ,84    ,84.9f ,87.6f  ,90   ,92.5f  ,93.2f ,95.23f ,97.5f,99.6f ,103.9f ,106.6f ,110.5f ,114.9f,120};
+		envFractions = new float[] {0.0125f,0.025f,0.0425f,0.06f,0.075f,0.1125f,0.1375f,0.1675f,0.2f ,0.25f,0.26f,0.2925f,0.3325f,0.3625f,0.3875f,0.4175f,0.425f,0.4375f,0.445f,0.455f,0.4775f,0.5f,0.5125f,0.5425f,0.5825f,0.6125f,0.6375f,13.5f,0.675f,0.6875f,0.695f,0.705f,0.7275f,0.75f,0.7625f,0.775f,0.7925f,0.81f,0.825f,0.8625f,0.8875f,0.9175f,0.95f ,1};
 		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
-		mazeChallenges.add(new Maze(new char[] { 'r','l','b' }, 0.4f, 0.088f, 1));
+		mazeChallenges.add(new Maze(new char[] { 's','r','l','b' }, 0.4f, 0.088f, 1));
 		seeds.add(seedPop);
 				
 		ShortChallengeSettings settings;
