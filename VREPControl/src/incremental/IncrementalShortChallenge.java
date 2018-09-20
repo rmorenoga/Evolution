@@ -155,7 +155,7 @@ public class IncrementalShortChallenge {
 				challengeResult.put("test", test);
 				
 
-				for (int i = 0; i < envFractions.length; i++) {
+				for (int i = 0; i < settings.getFractions().length; i++) {
 
 					JSONObject challengeStep = new JSONObject();
 
