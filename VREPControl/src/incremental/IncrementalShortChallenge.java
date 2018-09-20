@@ -203,11 +203,11 @@ public class IncrementalShortChallenge {
 			
 			settings = challengeSettings.get(challenge);
 			maze = mazeChallenges.get(challenge);
-			lastPop = seeds.get(challenge);
 
 			for (int repli = 0; repli < maxReplicas; repli++) {
 				
 				settings.selectChallenge(0);
+				lastPop = seeds.get(challenge);
 
 				JSONObject challengeResult = new JSONObject();
 				
