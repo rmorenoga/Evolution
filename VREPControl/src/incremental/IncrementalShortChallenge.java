@@ -89,8 +89,8 @@ public class IncrementalShortChallenge {
 		
 		/*Experiments*/
 		
-		times = new float[]{        2.5f,3.2f,5.23f,7.5f ,9.6f,13.9f,16.6f,20.5f,24.9f,30};//b
-		envFractions = new float[]{0.05f,0.1f,0.17f,0.24f,0.3f,0.45f,0.55f,0.67f,0.8f ,1};//b
+		times = new float[]{        3   ,4.5f,8    ,12   ,15.36f,22.24f,26.56f,32.8f,39.84f,48};//b
+		envFractions = new float[]{0.05f,0.1f,0.17f,0.24f,0.3f  ,0.45f ,0.55f ,0.67f,0.8f  ,1};//b
 		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
 		mazeChallenges.add(new Maze(new char[] { 's' }, 0.4f, 0.088f, 1));
 		seeds.add(null);
