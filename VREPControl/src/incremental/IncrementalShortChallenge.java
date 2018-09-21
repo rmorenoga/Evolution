@@ -68,7 +68,9 @@ public class IncrementalShortChallenge {
 
 		double maxFitness = -0.5;
 		int maxReplicas = 10;
-		double[][] lastPop;
+		int maxPop = 50;
+		int maxIter = 30;
+
 		double[][] seedPop = null;
 
 		launchSimulators(args);
@@ -81,9 +83,7 @@ public class IncrementalShortChallenge {
 		List<Maze> mazeChallenges  = new ArrayList<Maze>();
 		List<ShortChallengeSettings> challengeSettings = new ArrayList<ShortChallengeSettings>();
 		List<double[][]> seeds = new ArrayList<double[][]>();
-		
-
-		
+				
 		/*Experiments*/
 		
 		/* Straight*/
@@ -94,8 +94,14 @@ public class IncrementalShortChallenge {
 		mazeChallenges.add(new Maze(new char[] { 's' }, 0.4f, 0.088f, 1));
 		seeds.add(null);
 		
+		runIsolatedChallenge(morphology,challengeSettings,mazeChallenges,seeds,maxReplicas,maxFitness,maxPop,maxIter);
+		
 		/* Bumps*/
-	/*	
+		/*
+		mazeChallenges  = new ArrayList<Maze>();
+		challengeSettings = new ArrayList<ShortChallengeSettings>();
+		seeds = new ArrayList<double[][]>();
+		
 		times = new float[]{        2.5f,3.2f,5.23f,7.5f ,9.6f,13.9f,16.6f,20.5f,24.9f,30};//b
 		envFractions = new float[]{0.05f,0.1f,0.17f,0.24f,0.3f,0.45f,0.55f,0.67f,0.8f ,1};//b
 		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
@@ -109,9 +115,16 @@ public class IncrementalShortChallenge {
 		mazeChallenges.add(new Maze(new char[] { 'b' }, 0.4f, 0.088f, 1));
 		seedPop = readSeeds("seedPops.json","seedPopStep");
 		seeds.add(seedPop);
+		
+		runIsolatedChallenge(morphology,challengeSettings,mazeChallenges,seeds,maxReplicas,maxFitness,maxPop,maxIter);
 		*/
 		/* Incremental Separated */
 		/*
+		 * 
+		mazeChallenges  = new ArrayList<Maze>();
+		challengeSettings = new ArrayList<ShortChallengeSettings>();
+		seeds = new ArrayList<double[][]>();
+		
 		times = new float[] {        2.5f,5.23f,10.2f,13.9f,16.6f,20.5f,21.5f,23.4f,24   ,24.9f,27.6f,30};
 		envFractions = new float[] {0.05f,0.17f,0.33f,0.45f,0.55f,0.67f,0.7f ,0.75f,0.78f,0.82f,0.91f,1};
 		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
@@ -131,6 +144,16 @@ public class IncrementalShortChallenge {
 		mazeChallenges.add(new Maze(new char[] { 'b' }, 0.4f, 0.088f, 1));
 		seeds.add(null);
 		
+		runLinkedChallenge(morphology,challengeSettings,mazeChallenges,seeds,maxReplicas,maxFitness,maxPop,maxIter);
+		
+		/* Incremental Combined */
+		
+		/*
+		 * 
+		mazeChallenges  = new ArrayList<Maze>();
+		challengeSettings = new ArrayList<ShortChallengeSettings>();
+		seeds = new ArrayList<double[][]>();
+		
 		times = new float[] {        2.5f ,5.23f ,10.2f,13.9f,16.6f,20.5f,21.5f,23.4f,24   ,24.9f,27.6f,30   ,32.5f,35.23f,40.2f,43.9f,46.6f,50.5f,51.5f,53.4f,54   ,54.9f,57.6f,60   ,69.5f,70.2f,72.23f,74.5f,76.6f,80.9f,83.6f,87.5f,91.9f,100};
 		envFractions = new float[] {0.016f,0.056f,0.11f,0.15f,0.18f,0.22f,0.23f,0.25f,0.26f,0.27f,0.30f,0.33f,0.35f,0.39f ,0.44f,0.48f,0.51f,0.55f,0.56f,0.58f,0.59f,0.60f,0.63f,0.66f,0.68f,0.7f ,0.72f ,0.74f,0.76f,0.81f,0.85f,0.89f,0.93f,1};
 		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
@@ -142,9 +165,75 @@ public class IncrementalShortChallenge {
 		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
 		mazeChallenges.add(new Maze(new char[] { 'r','l','b' }, 0.4f, 0.088f, 1));
 		seeds.add(seedPop);
+		
+		runIsolatedChallenge(morphology,challengeSettings,mazeChallenges,seeds,maxReplicas,maxFitness,maxPop,maxIter);
 */
+		
+
+		
+		
+		
+		stopSimulators();
+	}
+
+	
+	private static void runLinkedChallenge(double[] morphology, List<ShortChallengeSettings> challengeSettings,
+			List<Maze> mazeChallenges, List<double[][]> seeds, int maxReplicas, double maxFitness, int maxPop,
+			int maxIter) {
+		
 		ShortChallengeSettings settings;
 		Maze maze;
+		double[][] lastPop = null;
+		
+		for (int repli = 0; repli < maxReplicas; repli++) {
+			
+			JSONObject challengeResult = new JSONObject();
+			JSONObject test = new JSONObject();
+			test.put("Name", "IncrLinkedF"+new String(mazeChallenges.get(0).structure)+repli);
+			test.put("maxFitness", maxFitness);
+			
+			for (int challenge = 0;challenge < challengeSettings.size();challenge++){
+					
+					settings = challengeSettings.get(challenge);
+					maze = mazeChallenges.get(challenge);
+	                settings.selectChallenge(0);
+	                if (challenge==0) {
+	        			lastPop = seeds.get(challenge);		
+	                }
+	    			JSONObject subenv = new JSONObject();
+	    			subenv.put("times", settings.getTimes());
+	    			subenv.put("envFractions", settings.getFractions());
+	    			subenv.put("noisy", settings.noisy);
+	    			subenv.put("individualParamters", settings.individualParameters);
+	    			subenv.put("maze", maze.structure);
+	    			subenv.put("width", maze.width);
+	    			subenv.put("height", maze.height);
+	    			subenv.put("steps", maze.nBSteps);
+	    			
+	    			test.put("subenv"+challenge, subenv);
+				
+				lastPop = runChallenges(morphology,maze,settings,maxFitness,lastPop,maxPop,maxIter,challengeResult,(String)test.get("Name"));
+
+			}
+				
+				challengeResult.put("test", test);
+				try (Writer writer = new BufferedWriter(
+						new OutputStreamWriter(new FileOutputStream(test.get("Name")+".json"), "utf-8"))) {
+					writer.write(challengeResult.toString());
+				} catch (Exception e) {
+
+				}
+		}
+		
+	}
+
+
+	private static void runIsolatedChallenge(double[] morphology, List<ShortChallengeSettings> challengeSettings, List<Maze> mazeChallenges,
+			List<double[][]> seeds, int maxReplicas, double maxFitness, int maxPop, int maxIter) {
+		
+		ShortChallengeSettings settings;
+		Maze maze;
+		double[][] lastPop = null;
 		
 		for (int challenge = 0;challenge < challengeSettings.size();challenge++){
 			
@@ -159,7 +248,7 @@ public class IncrementalShortChallenge {
 				JSONObject challengeResult = new JSONObject();
 				
 				JSONObject test = new JSONObject();
-				test.put("Name", "IncrF"+new String(maze.structure)+challenge+repli);
+				test.put("Name", "IncrIsolF"+new String(maze.structure)+challenge+repli);
 				test.put("times", settings.getTimes());
 				test.put("envFractions", settings.getFractions());
 				test.put("noisy", settings.noisy);
@@ -172,7 +261,7 @@ public class IncrementalShortChallenge {
 				
 				challengeResult.put("test", test);
 				
-				runChallenges(morphology,maze,settings,maxFitness,lastPop,50,30,challengeResult,(String)test.get("Name"));
+				runChallenges(morphology,maze,settings,maxFitness,lastPop,maxPop,maxIter,challengeResult,(String)test.get("Name"));
 				
 				try (Writer writer = new BufferedWriter(
 						new OutputStreamWriter(new FileOutputStream(test.get("Name")+".json"), "utf-8"))) {
@@ -184,11 +273,12 @@ public class IncrementalShortChallenge {
 			}
 		}
 		
-		stopSimulators();
+		
+		
 	}
 
-	
-	private static void runChallenges(double[] morphology, Maze maze, ShortChallengeSettings settings,
+
+	private static double[][] runChallenges(double[] morphology, Maze maze, ShortChallengeSettings settings,
 			double maxFitness, double[][] lastPop, int maxPop, int maxIter, JSONObject resultLogger,String name) {
 		double fitness;
 		
@@ -244,7 +334,7 @@ public class IncrementalShortChallenge {
 			settings.selectNextChallenge();
 			resultLogger.put("challenge" + i, challengeStep);
 		}
-		
+		return lastPop;
 	}
 
 
