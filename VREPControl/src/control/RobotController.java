@@ -34,7 +34,7 @@ public class RobotController {
 	protected int[] moduleHandlers;
 	protected int numberofModules;
 	protected int numberofParameters;
-	float[] parameters;
+	protected float[] parameters;
 	private String Genmodel;
 	private String Recmodel;
 	private String Propmodel;
@@ -76,13 +76,16 @@ public class RobotController {
 		
 	}
 
-	public RobotController(remoteApi vrep, int clientID, RobotBuilder robot, float[] parameters) {
+	public RobotController(remoteApi vrep, int clientID, RobotBuilder robot, float[] parameters,boolean individualParameters) {
 		this.vrep = vrep;
 		this.clientID = clientID;
 		this.robot = robot;
 		moduleHandlers = robot.getModuleHandlersint();
 		this.numberofModules = moduleHandlers.length;
 		this.numberofParameters = SimulationConfiguration.getControllerparamnumber();
+		
+		float[] grownParameters = organize(parameters,individualParameters);
+		
 		connectedhandles = robot.getTree().getHandlerListint();
 		connectedori = robot.getTree().getOriListint();
 		Genmodel = SimulationConfiguration.getGenmodel();
@@ -90,14 +93,42 @@ public class RobotController {
 		Propmodel = SimulationConfiguration.getPropmodel();
 		PropDirection = SimulationConfiguration.getPropdirection();		
 		
-		if (parameters.length >= numberofParameters * numberofModules) {
-			this.parameters = parameters;
+		if (grownParameters.length >= numberofParameters * numberofModules) {
+			this.parameters = grownParameters;
 		} else {
 			System.err.println("CPGController");
 			System.err.println("Error in the number of parameters, parameters lenght=" + parameters.length);
 			System.exit(-1);
 		}
 	}
+	
+	
+	float[] organize(float[] parameters, boolean individual) {
+		float[] grownparam = new float[numberofModules * numberofParameters];
+		if (!individual) {
+			for (int i = 0; i < grownparam.length; i = i + numberofParameters) { // The
+																					// same
+																					// for
+																					// all
+				for (int j = 0; j < parameters.length; j++) {
+					grownparam[i + j] = parameters[j];
+				}
+			}
+		} else {
+			for (int i = 0; i < grownparam.length; i++) { // Individual
+															// parameters per
+															// module
+				grownparam[i] = parameters[i];
+			}
+		}
+		//System.out.println("grownparam: " + grownparam.length);
+		//System.out.println("numberofmodules: " + numberofModules);
+		//System.out.println("numberofParameters: " + numberofParameters);
+		return grownparam;
+
+	}
+	
+
 
 
 	public void sendParameters() {

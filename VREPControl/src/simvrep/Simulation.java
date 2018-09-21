@@ -13,6 +13,7 @@ import represent.Robot;
 public class Simulation {
 	
 	boolean DEBUG = false;
+	private int attempt = 0;
 
 	/**
 	 * Simulator server number to connect to
@@ -22,7 +23,7 @@ public class Simulation {
 	/**
 	 * Maximum simulation time allowed
 	 */
-	public int MaxTime = 10;
+	public float MaxTime = 10;
 
 	/**
 	 * Client Id assigned by the simulator server
@@ -53,14 +54,11 @@ public class Simulation {
 	 * @param robot
 	 */
 
-	public Simulation(int simnumber, int MaxTime) {
+	public Simulation(int simnumber) {
 		if (DEBUG){
 			System.out.println("Building Simulation with simnumber: "+simnumber+" MaxTime: "+MaxTime);
 		}
-		this.simnumber = simnumber;
-		this.MaxTime = MaxTime;
-
-		
+		this.simnumber = simnumber;	
 
 	}
 	
@@ -70,30 +68,6 @@ public class Simulation {
 	 * @param robot
 	 */
 	
-	public void prepareSignals(Robot robot){
-		
-		FloatWA ControlParam = new FloatWA(robot.getControlParam().length);
-		System.arraycopy(robot.getControlParam(),0,ControlParam.getArray(),0,robot.getControlParam().length);
-		char[] p = ControlParam.getCharArrayFromArray();
-		strCP = new CharWA(p.length);
-		System.arraycopy(p,0,strCP.getArray(),0,p.length);
-		
-		int nmodules = robot.getNumberofmodules();
-		int[] orientation = robot.getOrientation();
-		// Pack Integers into one String data signal
-		IntWA NumberandOri = new IntWA(nmodules + 2);
-		int[] NO = new int[nmodules+ 2];
-		NO[0] = nmodules;
-		NO[1] = MaxTime;
-		for (int i = 2; i < nmodules + 2; i++) {
-			NO[i] = orientation[i - 2];
-		}
-		System.arraycopy(NO,0,NumberandOri.getArray(),0,NO.length);
-		char[] p2 = NumberandOri.getCharArrayFromArray();
-		strNO = new CharWA(p2.length);
-		System.arraycopy(p2,0,strNO.getArray(),0,p2.length);
-		
-	}
 
 	/**
 	 * Connects to the simulator server specified by simnumber
@@ -184,17 +158,17 @@ public class Simulation {
 		}
 	}
 	
-	public void SendMaze(char[] sequence, float width, boolean dToGoal, boolean dToGoalByPart, float height, int nBSteps,float distPercent){
+	public void SendMaze(char[] sequence, float width, boolean dToGoal, boolean dToGoalByPart, float height, int nBSteps, float environmentFraction){
 		SendMaze(sequence,width,dToGoal,dToGoalByPart,height,nBSteps);
-		int result = vrep.simxSetFloatSignal(clientID, "MazeDP", distPercent, vrep.simx_opmode_oneshot);
+		int result = vrep.simxSetFloatSignal(clientID, "MazeSC", environmentFraction, vrep.simx_opmode_oneshot);
 		if (DEBUG){
 			System.out.println("Using SendMaze() in "+simnumber+" result: "+result);
 		}
-		
 	}
 	
-	public void SendMaxTime(){
-		int result = vrep.simxSetIntegerSignal(clientID, "MaxTime", MaxTime, vrep.simx_opmode_oneshot);
+	public void SendMaxTime(float maxTime){
+		this.MaxTime = maxTime; 
+		int result = vrep.simxSetFloatSignal(clientID, "MaxTime", MaxTime, vrep.simx_opmode_oneshot);
 		if (DEBUG){
 			System.out.println("Using SendMaxTime() in "+simnumber+" result: "+result);
 		}
@@ -347,7 +321,7 @@ public class Simulation {
 		return vrep;
 	}
 
-	public void setMaxTime(int maxTime) {
+	public void setMaxTime(float maxTime) {
 		MaxTime = maxTime;
 	}
 
@@ -357,7 +331,7 @@ public class Simulation {
 	 * @param j
 	 *            the attempt number
 	 */
-	public void RestartSim(int j, String scene) {
+	public void RestartSim(String scene) {
 		if (DEBUG){
 			System.out.println("Using RestartSim() in "+simnumber);
 		}
@@ -367,8 +341,8 @@ public class Simulation {
 		// Create the command to open the corresponding simulator
 		String vrepcommand = new String("./vrep" + simnumber + ".sh");
 
-		System.out.println("Restarting simulator and trying again for the " + j + " time in " + simnumber);
-
+		System.out.println("Restarting simulator and trying again for the " + attempt + " time in " + simnumber);
+		attempt++;
 		try {
 			// Command to kill corresponding simulator
 			ProcessBuilder qq = new ProcessBuilder("killall", "vrep" + simnumber);

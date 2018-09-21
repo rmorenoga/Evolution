@@ -59,9 +59,9 @@ public class CPGHANN extends ParameterMask{
 		}
 		}
 		
-		System.out.println("grownparam: "+grownparam.length);
-		System.out.println("numberofmodules: "+numberofModules);
-		System.out.println("numberofParameters: "+numberofParameters);
+		//System.out.println("grownparam: "+grownparam.length);
+		//System.out.println("numberofmodules: "+numberofModules);
+		//System.out.println("numberofParameters: "+numberofParameters);
 		
 		
 		return grownparam;

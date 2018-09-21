@@ -48,7 +48,7 @@ public class Data {
 		
 		
 		try {
-			BufferedReader in = new BufferedReader(new FileReader(folderpath+"/"+inputfile));
+			BufferedReader in = new BufferedReader(new FileReader(folderpath+inputfile));
 			String str;
 
 			while ((str = in.readLine()) != null) {
@@ -84,7 +84,7 @@ public class Data {
 		FileWriter file = null;
 		PrintWriter pw = null;
 		try {
-			file = new FileWriter(folderpath+"/"+outputfile, true);
+			file = new FileWriter(folderpath+outputfile, true);
 			pw = new PrintWriter(file);
 			
 			for (int i=0;i<result.length;i++){

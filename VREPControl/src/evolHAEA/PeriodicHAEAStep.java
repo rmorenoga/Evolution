@@ -12,6 +12,7 @@ import unalcol.search.space.Space;
 
 public class PeriodicHAEAStep<T> extends ModifiedHaeaStep<T> {
 	int iteration = 0;
+	public Population<T> lastPop = null;
 
 	public PeriodicHAEAStep(int mu, ModifiedHaeaVariation<T> variation, ModifiedHaeaReplacement<T> replacement) {
 		super(mu, variation, replacement);
@@ -39,8 +40,17 @@ public class PeriodicHAEAStep<T> extends ModifiedHaeaStep<T> {
 		Goal goal = (Goal) pop.data(gName);
 		//goal.
 		((PeriodicOptimizationGoal)goal).getFunction().update(iteration++);
-		return super.apply(pop, space);
+		lastPop = super.apply(pop, space);
+		return lastPop;
 	}
+
+	@Override
+	public Population<T> init(Space<T> space, Goal<T, Double> goal) {
+		lastPop = super.init(space, goal);
+		return lastPop;
+	}
+	
+	
 	
 
 }

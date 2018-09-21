@@ -126,7 +126,7 @@ public class EvaluatorMT {
 		// Retry if there is a simulator crash
 		for (int j = 0; j < maxTries; j++) {
 
-			robot = new RobotBuilder(sim.getVrepApi(), sim.getClientID(), chromosomeDouble, this.scene);
+			robot = new RobotBuilder(sim.getVrepApi(), sim.getClientID(), chromosomeDouble);
 			ret = robot.createRobot();
 
 			controller = new RobotController(sim.getVrepApi(), sim.getClientID(), robot, parammask);
@@ -134,7 +134,7 @@ public class EvaluatorMT {
 
 			sim.SendMaze(maze, mazewidth, measureDToGoal,measureDToGoalByPart, mazeheight,mazeNBSteps,distancePercent);
 
-			sim.SendMaxTime();
+			sim.SendMaxTime(180);
 
 			if (ret == -1) {
 				restartsim(j);
@@ -151,7 +151,7 @@ public class EvaluatorMT {
 		} catch (Exception e) {
 
 		}
-		sim.RestartSim(j, scene);
+		sim.RestartSim(scene);
 		boolean connected = false;
 		for (int k = 0; k < maxTries && !connected; k++) {
 			connected = sim.Connect();

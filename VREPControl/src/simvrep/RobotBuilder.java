@@ -70,8 +70,8 @@ public class RobotBuilder {
 	 * 
 	 */
 
-	RobotBuilder(remoteApi vrep, int clientID, double[] chromosomeDouble, String scene) {
-		this(clientID, chromosomeDouble, scene);
+	RobotBuilder(remoteApi vrep, int clientID, double[] chromosomeDouble) {
+		this(clientID, chromosomeDouble);
 		this.vrep = vrep;
 		this.clientID = clientID;
 	}
@@ -90,7 +90,7 @@ public class RobotBuilder {
 	 *            the scene to load in the simulator
 	 *
 	 */
-	RobotBuilder(int clientID, double[] chromo, String scene) {
+	RobotBuilder(int clientID, double[] chromo) {
 
 		// Load the module set
 		moduleSet = ModuleSetFactory.getModulesSet();
@@ -109,10 +109,6 @@ public class RobotBuilder {
 	 */
 	public int createRobot() {
 
-		// load a new scene
-		//loadScene();
-
-
 		// calculate the rotation and position of the modules and the force
 		// sensors. Load them in Vrep simulator. We also calcualte the
 		// dimensions
@@ -122,38 +118,6 @@ public class RobotBuilder {
 		return returncode;
 	}
 
-	public void loadScene() {
-		// TODO: select the correct scene for the simulation (flat terrain,
-		// obstacles, paint wall, etc...)
-		String scenePath = "scenes/Maze/defaulti.ttt";
-
-		int rank = 0;
-		if (SimulationConfiguration.isUseMPI()) {
-			rank = MPI.COMM_WORLD.Rank();
-		}
-
-		int nAttemps = SimulationConfiguration.getnAttempts();
-		int ret;
-		for (int i = 0; i < nAttemps; i++) {
-			ret = vrep.simxLoadScene(clientID, scenePath, 0, remoteApi.simx_opmode_blocking);
-			if (ret == remoteApi.simx_return_ok) {
-				// System.out.format("Scene loaded correctly: \n");
-				return;
-			} else {
-				System.err.format(
-						"VrepCreateRobot (" + rank
-								+ "). Error loading the scene: Remote API function call returned with error code: %d\n",
-						ret);
-				System.err.println(
-						"VrepCreateRobot. Check that the vrep simulator is running and listening in the correct port.");
-				System.err.println("VrepCreateRobot. Check also the scene path: " + scenePath);
-
-			}
-		}
-		if (SimulationConfiguration.isUseMPI())
-			MPI.COMM_WORLD.Abort(-1);// Try to close all the programs
-		System.exit(-1);
-	}
 
 	private int robotAssembly() {
 		List<RobotNode> nodes = tree.getNodeList();
@@ -256,7 +220,7 @@ public class RobotBuilder {
 			initialHeight = 1;
 		}
 
-		System.out.println("initialHeight: " + initialHeight);
+		//System.out.println("initialHeight: " + initialHeight);
 		if (initialHeight < (0.055 / 2))
 			initialHeight += (0.055 / 2);
 		// Move the robot up
