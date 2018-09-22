@@ -88,43 +88,43 @@ public class IncrementalShortChallenge {
 		
 		/* Straight*/
 	
-		times = new float[]{        3   ,4.5f,8    ,12   ,15.36f,22.24f,26.56f,32.8f,39.84f,48};//b
-		envFractions = new float[]{0.05f,0.1f,0.17f,0.24f,0.3f  ,0.45f ,0.55f ,0.67f,0.8f  ,1};//b
-		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
-		mazeChallenges.add(new Maze(new char[] { 's' }, 0.4f, 0.088f, 1));
-		seeds.add(null);
-		
-//		times = new float[]{        3   ,4.5f,8  };//b
-//		envFractions = new float[]{0.05f,0.1f,0.17f};//b
+//		times = new float[]{        3   ,4.5f,8    ,12   ,15.36f,22.24f,26.56f,32.8f,39.84f,48};//b
+//		envFractions = new float[]{0.05f,0.1f,0.17f,0.24f,0.3f  ,0.45f ,0.55f ,0.67f,0.8f  ,1};//b
 //		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
-//		mazeChallenges.add(new Maze(new char[] { 'l' }, 0.4f, 0.088f, 1));
+//		mazeChallenges.add(new Maze(new char[] { 's' }, 0.4f, 0.088f, 1));
 //		seeds.add(null);
 		
+		times = new float[] { 2.5f,5.23f,8.6f,10.2f,11.9f,13.9f,15.1f,16.6f,18.3f,20.5f,21.5f,23.4f,30};
+		envFractions = new float[] {0.05f,0.17f,0.28f,0.33f,0.37f,0.45f,0.5f,0.55f,0.6f,0.67f,0.7f,0.75f,1};
+		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
+		mazeChallenges.add(new Maze(new char[] { 'b' }, 0.4f, 0.088f, 3));
+		seeds.add(null);
+				
 		runIsolatedChallenge(morphology,challengeSettings,mazeChallenges,seeds,maxReplicas,maxFitness,maxPop,maxIter);
 		//runLinkedChallenge(morphology,challengeSettings,mazeChallenges,seeds,maxReplicas,maxFitness,maxPop,maxIter);
 		
 		/* Bumps*/
-		/*
-		mazeChallenges  = new ArrayList<Maze>();
-		challengeSettings = new ArrayList<ShortChallengeSettings>();
-		seeds = new ArrayList<double[][]>();
 		
-		times = new float[]{        2.5f,3.2f,5.23f,7.5f ,9.6f,13.9f,16.6f,20.5f,24.9f,30};//b
-		envFractions = new float[]{0.05f,0.1f,0.17f,0.24f,0.3f,0.45f,0.55f,0.67f,0.8f ,1};//b
-		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
-		mazeChallenges.add(new Maze(new char[] { 'b' }, 0.4f, 0.088f, 1));
-		seedPop = readSeeds("seedPops.json","seedPopStraight");
-		seeds.add(seedPop);
-				
-		times = new float[]{        2.5f,3.2f,5.23f,7.5f ,9.6f,13.9f,16.6f,20.5f,24.9f,30};//b
-		envFractions = new float[]{0.05f,0.1f,0.17f,0.24f,0.3f,0.45f,0.55f,0.67f,0.8f ,1};//b
-		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
-		mazeChallenges.add(new Maze(new char[] { 'b' }, 0.4f, 0.088f, 1));
-		seedPop = readSeeds("seedPops.json","seedPopStep");
-		seeds.add(seedPop);
+//		mazeChallenges  = new ArrayList<Maze>();
+//		challengeSettings = new ArrayList<ShortChallengeSettings>();
+//		seeds = new ArrayList<double[][]>();
 		
-		runIsolatedChallenge(morphology,challengeSettings,mazeChallenges,seeds,maxReplicas,maxFitness,maxPop,maxIter);
-		*/
+//		times = new float[]{        2.5f,3.2f,5.23f,7.5f ,9.6f,13.9f,16.6f,20.5f,24.9f,30};//b
+//		envFractions = new float[]{0.05f,0.1f,0.17f,0.24f,0.3f,0.45f,0.55f,0.67f,0.8f ,1};//b
+//		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
+//		mazeChallenges.add(new Maze(new char[] { 'b' }, 0.4f, 0.088f, 1));
+//		seedPop = readSeeds("seedPops.json","seedPopStraight");
+//		seeds.add(seedPop);
+//				
+//		times = new float[]{        2.5f,3.2f,5.23f,7.5f ,9.6f,13.9f,16.6f,20.5f,24.9f,30};//b
+//		envFractions = new float[]{0.05f,0.1f,0.17f,0.24f,0.3f,0.45f,0.55f,0.67f,0.8f ,1};//b
+//		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
+//		mazeChallenges.add(new Maze(new char[] { 'b' }, 0.4f, 0.088f, 1));
+//		seedPop = readSeeds("seedPops.json","seedPopStep");
+//		seeds.add(seedPop);
+//		
+//		runIsolatedChallenge(morphology,challengeSettings,mazeChallenges,seeds,maxReplicas,maxFitness,maxPop,maxIter);
+		
 		/* Incremental Separated */
 		/*
 		 * 
