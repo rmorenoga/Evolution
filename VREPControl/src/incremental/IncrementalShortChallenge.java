@@ -94,7 +94,14 @@ public class IncrementalShortChallenge {
 		mazeChallenges.add(new Maze(new char[] { 's' }, 0.4f, 0.088f, 1));
 		seeds.add(null);
 		
+//		times = new float[]{        3   ,4.5f,8  };//b
+//		envFractions = new float[]{0.05f,0.1f,0.17f};//b
+//		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
+//		mazeChallenges.add(new Maze(new char[] { 'l' }, 0.4f, 0.088f, 1));
+//		seeds.add(null);
+		
 		runIsolatedChallenge(morphology,challengeSettings,mazeChallenges,seeds,maxReplicas,maxFitness,maxPop,maxIter);
+		//runLinkedChallenge(morphology,challengeSettings,mazeChallenges,seeds,maxReplicas,maxFitness,maxPop,maxIter);
 		
 		/* Bumps*/
 		/*
@@ -191,15 +198,14 @@ public class IncrementalShortChallenge {
 			JSONObject test = new JSONObject();
 			test.put("Name", "IncrLinkedF"+new String(mazeChallenges.get(0).structure)+repli);
 			test.put("maxFitness", maxFitness);
+			lastPop = seeds.get(0);
 			
 			for (int challenge = 0;challenge < challengeSettings.size();challenge++){
 					
 					settings = challengeSettings.get(challenge);
 					maze = mazeChallenges.get(challenge);
 	                settings.selectChallenge(0);
-	                if (challenge==0) {
-	        			lastPop = seeds.get(challenge);		
-	                }
+	                
 	    			JSONObject subenv = new JSONObject();
 	    			subenv.put("times", settings.getTimes());
 	    			subenv.put("envFractions", settings.getFractions());
@@ -212,7 +218,7 @@ public class IncrementalShortChallenge {
 	    			
 	    			test.put("subenv"+challenge, subenv);
 				
-				lastPop = runChallenges(morphology,maze,settings,maxFitness,lastPop,maxPop,maxIter,challengeResult,(String)test.get("Name"));
+				lastPop = runChallenges(morphology,maze,settings,maxFitness,lastPop,maxPop,maxIter,challengeResult,(String)test.get("Name"),true,challenge);
 
 			}
 				
@@ -261,7 +267,7 @@ public class IncrementalShortChallenge {
 				
 				challengeResult.put("test", test);
 				
-				runChallenges(morphology,maze,settings,maxFitness,lastPop,maxPop,maxIter,challengeResult,(String)test.get("Name"));
+				runChallenges(morphology,maze,settings,maxFitness,lastPop,maxPop,maxIter,challengeResult,(String)test.get("Name"),false,challenge);
 				
 				try (Writer writer = new BufferedWriter(
 						new OutputStreamWriter(new FileOutputStream(test.get("Name")+".json"), "utf-8"))) {
@@ -279,7 +285,7 @@ public class IncrementalShortChallenge {
 
 
 	private static double[][] runChallenges(double[] morphology, Maze maze, ShortChallengeSettings settings,
-			double maxFitness, double[][] lastPop, int maxPop, int maxIter, JSONObject resultLogger,String name) {
+			double maxFitness, double[][] lastPop, int maxPop, int maxIter, JSONObject resultLogger,String name, boolean linked, int subenv) {
 		double fitness;
 		
 		for (int i = 0; i < settings.getFractions().length; i++) {
@@ -305,7 +311,7 @@ public class IncrementalShortChallenge {
 			if (fitness > maxFitness) {
 				try {
 					Solution<double[]>[] bestPop = evolve(morphology, maze, settings, maxPop, maxIter,
-							maxFitness,name, lastPop);
+							maxFitness,name, lastPop,linked,subenv);
 					
 					lastPop = new double[bestPop.length][];
 					double[] lastPopFitness = new double[bestPop.length];
@@ -332,13 +338,18 @@ public class IncrementalShortChallenge {
 			}
 
 			settings.selectNextChallenge();
-			resultLogger.put("challenge" + i, challengeStep);
+			if (!linked){
+				resultLogger.put("challenge" + i, challengeStep);
+			}else{
+				resultLogger.put("challenge" +subenv+ i, challengeStep);
+			}
+
 		}
 		return lastPop;
 	}
 
 
-	static Solution<double[]>[] evolve(double[] morphology, Maze maze, ShortChallengeSettings settings,int POPSIZE,int MAXITERS, double maxFitness,String name, double[][] lastPop)
+	static Solution<double[]>[] evolve(double[] morphology, Maze maze, ShortChallengeSettings settings,int POPSIZE,int MAXITERS, double maxFitness,String name, double[][] lastPop, boolean linked, int subenv)
 		throws IOException { // Must test for fitness and max iterations finishing conditions
 
 		simulators = new ArrayList<Simulation>();
@@ -404,8 +415,15 @@ public class IncrementalShortChallenge {
 		// FileTracer tracer = new FileTracer("Evolresult.txt", ',');
 		ConsoleTracer tracer1 = new ConsoleTracer();
 		Tracer.addTracer(search, tracer1);
-
-		EvolutionryAlgorithmSetting easetting = new EvolutionryAlgorithmSetting(name +"evol"+ settings.getSelection(), POPSIZE,
+		
+		String registerName;
+		if(!linked){
+			 registerName= name +"evol"+ settings.getSelection();
+		}else{
+			registerName= name +"evol"+subenv+ settings.getSelection();
+		}
+		
+		EvolutionryAlgorithmSetting easetting = new EvolutionryAlgorithmSetting(registerName, POPSIZE,
 				MAXITERS);
 
 		Solution<double[]> solution = search.solve(realSpace, goal);
