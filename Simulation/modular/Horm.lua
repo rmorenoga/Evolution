@@ -199,8 +199,8 @@ function spatialtr(rhorm,connori,Genmodel)
 	end
 
 
-	return rhormnew
-
+	--return rhormnew
+	return rhorm
 end
 
 
