@@ -66,10 +66,11 @@ public class IncrementalShortChallenge {
 
 	public static void main(String[] args) {
 
-		double fitness;
 		double maxFitness = -0.5;
 		int maxReplicas = 10;
-		double[][] lastPop;
+		int maxPop = 50;
+		int maxIter = 30;
+
 		double[][] seedPop = null;
 
 		launchSimulators(args);
@@ -82,24 +83,61 @@ public class IncrementalShortChallenge {
 		List<Maze> mazeChallenges  = new ArrayList<Maze>();
 		List<ShortChallengeSettings> challengeSettings = new ArrayList<ShortChallengeSettings>();
 		List<double[][]> seeds = new ArrayList<double[][]>();
-		
-		/* Read seed populations*/
-		
-		seedPop = readSeeds("seedPops.json","seedPop0");
-		
+				
 		/*Experiments*/
 		
-		times = new float[]{        3   ,4.5f,8    ,12   ,15.36f,22.24f,26.56f,32.8f,39.84f,48};//b
-		envFractions = new float[]{0.05f,0.1f,0.17f,0.24f,0.3f  ,0.45f ,0.55f ,0.67f,0.8f  ,1};//b
+		/* Straight*/
+	
+//		times = new float[]{        3   ,4.5f,8    ,12   ,15.36f,22.24f,26.56f,32.8f,39.84f,48};//b
+//		envFractions = new float[]{0.05f,0.1f,0.17f,0.24f,0.3f  ,0.45f ,0.55f ,0.67f,0.8f  ,1};//b
+//		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
+//		mazeChallenges.add(new Maze(new char[] { 's' }, 0.4f, 0.088f, 1));
+//		seeds.add(null);
+		
+		times = new float[] { 2.5f,5.23f,8.6f,10.2f,11.9f,13.9f,15.1f,16.6f,18.3f,20.5f,21.5f,23.4f,30};
+		envFractions = new float[] {0.05f,0.17f,0.28f,0.33f,0.37f,0.45f,0.5f,0.55f,0.6f,0.67f,0.7f,0.75f,1};
 		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
-		mazeChallenges.add(new Maze(new char[] { 's' }, 0.4f, 0.088f, 1));
+		mazeChallenges.add(new Maze(new char[] { 'b' }, 0.4f, 0.088f, 3));
 		seeds.add(null);
-	/*			
+				
+		runIsolatedChallenge(morphology,challengeSettings,mazeChallenges,seeds,maxReplicas,maxFitness,maxPop,maxIter);
+		//runLinkedChallenge(morphology,challengeSettings,mazeChallenges,seeds,maxReplicas,maxFitness,maxPop,maxIter);
+		
+		/* Bumps*/
+		
+//		mazeChallenges  = new ArrayList<Maze>();
+//		challengeSettings = new ArrayList<ShortChallengeSettings>();
+//		seeds = new ArrayList<double[][]>();
+		
+//		times = new float[]{        2.5f,3.2f,5.23f,7.5f ,9.6f,13.9f,16.6f,20.5f,24.9f,30};//b
+//		envFractions = new float[]{0.05f,0.1f,0.17f,0.24f,0.3f,0.45f,0.55f,0.67f,0.8f ,1};//b
+//		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
+//		mazeChallenges.add(new Maze(new char[] { 'b' }, 0.4f, 0.088f, 1));
+//		seedPop = readSeeds("seedPops.json","seedPopStraight");
+//		seeds.add(seedPop);
+//				
+//		times = new float[]{        2.5f,3.2f,5.23f,7.5f ,9.6f,13.9f,16.6f,20.5f,24.9f,30};//b
+//		envFractions = new float[]{0.05f,0.1f,0.17f,0.24f,0.3f,0.45f,0.55f,0.67f,0.8f ,1};//b
+//		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
+//		mazeChallenges.add(new Maze(new char[] { 'b' }, 0.4f, 0.088f, 1));
+//		seedPop = readSeeds("seedPops.json","seedPopStep");
+//		seeds.add(seedPop);
+//		
+//		runIsolatedChallenge(morphology,challengeSettings,mazeChallenges,seeds,maxReplicas,maxFitness,maxPop,maxIter);
+		
+		/* Incremental Separated */
+		/*
+		 * 
+		mazeChallenges  = new ArrayList<Maze>();
+		challengeSettings = new ArrayList<ShortChallengeSettings>();
+		seeds = new ArrayList<double[][]>();
+		
 		times = new float[] {        2.5f,5.23f,10.2f,13.9f,16.6f,20.5f,21.5f,23.4f,24   ,24.9f,27.6f,30};
 		envFractions = new float[] {0.05f,0.17f,0.33f,0.45f,0.55f,0.67f,0.7f ,0.75f,0.78f,0.82f,0.91f,1};
 		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
 		mazeChallenges.add(new Maze(new char[] { 'l' }, 0.4f, 0.088f, 1));
-		seeds.add(null);	
+		seedPop = readSeeds("seedPops.json","seedPopStraight");
+		seeds.add(seedPop);	
 		
 		times = new float[] {        2.5f,5.23f,10.2f,13.9f,16.6f,20.5f,21.5f,23.4f,24   ,24.9f,27.6f,30};
 		envFractions = new float[] {0.05f,0.17f,0.33f,0.45f,0.55f,0.67f,0.7f ,0.75f,0.78f,0.82f,0.91f,1};
@@ -113,11 +151,15 @@ public class IncrementalShortChallenge {
 		mazeChallenges.add(new Maze(new char[] { 'b' }, 0.4f, 0.088f, 1));
 		seeds.add(null);
 		
-		times = new float[]{        2.5f,3.2f,5.23f,7.5f ,9.6f,13.9f,16.6f,20.5f,24.9f,30};//b
-		envFractions = new float[]{0.05f,0.1f,0.17f,0.24f,0.3f,0.45f,0.55f,0.67f,0.8f ,1};//b
-		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
-		mazeChallenges.add(new Maze(new char[] { 'b' }, 0.4f, 0.088f, 1));
-		seeds.add(seedPop);
+		runLinkedChallenge(morphology,challengeSettings,mazeChallenges,seeds,maxReplicas,maxFitness,maxPop,maxIter);
+		
+		/* Incremental Combined */
+		
+		/*
+		 * 
+		mazeChallenges  = new ArrayList<Maze>();
+		challengeSettings = new ArrayList<ShortChallengeSettings>();
+		seeds = new ArrayList<double[][]>();
 		
 		times = new float[] {        2.5f ,5.23f ,10.2f,13.9f,16.6f,20.5f,21.5f,23.4f,24   ,24.9f,27.6f,30   ,32.5f,35.23f,40.2f,43.9f,46.6f,50.5f,51.5f,53.4f,54   ,54.9f,57.6f,60   ,69.5f,70.2f,72.23f,74.5f,76.6f,80.9f,83.6f,87.5f,91.9f,100};
 		envFractions = new float[] {0.016f,0.056f,0.11f,0.15f,0.18f,0.22f,0.23f,0.25f,0.26f,0.27f,0.30f,0.33f,0.35f,0.39f ,0.44f,0.48f,0.51f,0.55f,0.56f,0.58f,0.59f,0.60f,0.63f,0.66f,0.68f,0.7f ,0.72f ,0.74f,0.76f,0.81f,0.85f,0.89f,0.93f,1};
@@ -130,9 +172,74 @@ public class IncrementalShortChallenge {
 		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
 		mazeChallenges.add(new Maze(new char[] { 'r','l','b' }, 0.4f, 0.088f, 1));
 		seeds.add(seedPop);
+		
+		runIsolatedChallenge(morphology,challengeSettings,mazeChallenges,seeds,maxReplicas,maxFitness,maxPop,maxIter);
 */
+		
+
+		
+		
+		
+		stopSimulators();
+	}
+
+	
+	private static void runLinkedChallenge(double[] morphology, List<ShortChallengeSettings> challengeSettings,
+			List<Maze> mazeChallenges, List<double[][]> seeds, int maxReplicas, double maxFitness, int maxPop,
+			int maxIter) {
+		
 		ShortChallengeSettings settings;
 		Maze maze;
+		double[][] lastPop = null;
+		
+		for (int repli = 0; repli < maxReplicas; repli++) {
+			
+			JSONObject challengeResult = new JSONObject();
+			JSONObject test = new JSONObject();
+			test.put("Name", "IncrLinkedF"+new String(mazeChallenges.get(0).structure)+repli);
+			test.put("maxFitness", maxFitness);
+			lastPop = seeds.get(0);
+			
+			for (int challenge = 0;challenge < challengeSettings.size();challenge++){
+					
+					settings = challengeSettings.get(challenge);
+					maze = mazeChallenges.get(challenge);
+	                settings.selectChallenge(0);
+	                
+	    			JSONObject subenv = new JSONObject();
+	    			subenv.put("times", settings.getTimes());
+	    			subenv.put("envFractions", settings.getFractions());
+	    			subenv.put("noisy", settings.noisy);
+	    			subenv.put("individualParamters", settings.individualParameters);
+	    			subenv.put("maze", maze.structure);
+	    			subenv.put("width", maze.width);
+	    			subenv.put("height", maze.height);
+	    			subenv.put("steps", maze.nBSteps);
+	    			
+	    			test.put("subenv"+challenge, subenv);
+				
+				lastPop = runChallenges(morphology,maze,settings,maxFitness,lastPop,maxPop,maxIter,challengeResult,(String)test.get("Name"),true,challenge);
+
+			}
+				
+				challengeResult.put("test", test);
+				try (Writer writer = new BufferedWriter(
+						new OutputStreamWriter(new FileOutputStream(test.get("Name")+".json"), "utf-8"))) {
+					writer.write(challengeResult.toString());
+				} catch (Exception e) {
+
+				}
+		}
+		
+	}
+
+
+	private static void runIsolatedChallenge(double[] morphology, List<ShortChallengeSettings> challengeSettings, List<Maze> mazeChallenges,
+			List<double[][]> seeds, int maxReplicas, double maxFitness, int maxPop, int maxIter) {
+		
+		ShortChallengeSettings settings;
+		Maze maze;
+		double[][] lastPop = null;
 		
 		for (int challenge = 0;challenge < challengeSettings.size();challenge++){
 			
@@ -147,7 +254,7 @@ public class IncrementalShortChallenge {
 				JSONObject challengeResult = new JSONObject();
 				
 				JSONObject test = new JSONObject();
-				test.put("Name", "IncrF"+new String(maze.structure)+challenge+repli);
+				test.put("Name", "IncrIsolF"+new String(maze.structure)+challenge+repli);
 				test.put("times", settings.getTimes());
 				test.put("envFractions", settings.getFractions());
 				test.put("noisy", settings.noisy);
@@ -160,60 +267,8 @@ public class IncrementalShortChallenge {
 				
 				challengeResult.put("test", test);
 				
-
-				for (int i = 0; i < settings.getFractions().length; i++) {
-
-					JSONObject challengeStep = new JSONObject();
-
-					if (lastPop != null) {
-						simulators = new ArrayList<Simulation>();
-						connectToSimulator(0);
-						EmP function = new EmP(simulators, 1, morphology, maze, settings);
-						fitness = function.apply(lastPop[0]);
-						simulators.get(0).Disconnect();
-						challengeStep.put("lastBest", lastPop[0]);
-						challengeStep.put("fitness", fitness);
-					} else {
-						fitness = 1.0;
-						challengeStep.put("lastBest", -1);
-						challengeStep.put("fitness", fitness);
-					}
-
-					System.out.println("Fitness = " + fitness + ", Challenge: " + settings.getSelection());
-
-					if (fitness > maxFitness) {
-						try {
-							Solution<double[]>[] bestPop = evolve(morphology, maze, settings, 50, 30,
-									maxFitness,(String) test.get("Name"), lastPop);
-							
-							lastPop = new double[bestPop.length][];
-							double[] lastPopFitness = new double[bestPop.length];
-							for(int j = 0; j < lastPop.length; j++){
-								lastPop[j] = bestPop[j].object();
-								lastPopFitness[j] = (double) bestPop[j].info(Goal.GOAL_TEST);
-								System.out.println("Fitness "+ j + " = " + bestPop[j].info(Goal.GOAL_TEST));
-							}
-							fitness = (double) bestPop[0].info(Goal.GOAL_TEST);
-
-							challengeStep.put("lastBestEvol", lastPop[0]);
-							challengeStep.put("lastPopEvol", lastPop);
-							challengeStep.put("lastPopFitness", lastPopFitness);
-							challengeStep.put("fitnessEvol", fitness);
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					} else {
-						challengeStep.put("lastBestEvol", -1);
-						challengeStep.put("lastPopEvol", -1);
-						challengeStep.put("lastPopFitness", -1);
-						challengeStep.put("fitnessEvol", -1);
-					}
-
-					settings.selectNextChallenge();
-					challengeResult.put("challenge" + i, challengeStep);
-				}
-
+				runChallenges(morphology,maze,settings,maxFitness,lastPop,maxPop,maxIter,challengeResult,(String)test.get("Name"),false,challenge);
+				
 				try (Writer writer = new BufferedWriter(
 						new OutputStreamWriter(new FileOutputStream(test.get("Name")+".json"), "utf-8"))) {
 					writer.write(challengeResult.toString());
@@ -224,11 +279,77 @@ public class IncrementalShortChallenge {
 			}
 		}
 		
-		stopSimulators();
+		
+		
 	}
 
-	
-	static Solution<double[]>[] evolve(double[] morphology, Maze maze, ShortChallengeSettings settings,int POPSIZE,int MAXITERS, double maxFitness,String name, double[][] lastPop)
+
+	private static double[][] runChallenges(double[] morphology, Maze maze, ShortChallengeSettings settings,
+			double maxFitness, double[][] lastPop, int maxPop, int maxIter, JSONObject resultLogger,String name, boolean linked, int subenv) {
+		double fitness;
+		
+		for (int i = 0; i < settings.getFractions().length; i++) {
+
+			JSONObject challengeStep = new JSONObject();
+
+			if (lastPop != null) {
+				simulators = new ArrayList<Simulation>();
+				connectToSimulator(0);
+				EmP function = new EmP(simulators, 1, morphology, maze, settings);
+				fitness = function.apply(lastPop[0]);
+				simulators.get(0).Disconnect();
+				challengeStep.put("lastBest", lastPop[0]);
+				challengeStep.put("fitness", fitness);
+			} else {
+				fitness = 1.0;
+				challengeStep.put("lastBest", -1);
+				challengeStep.put("fitness", fitness);
+			}
+
+			System.out.println("Fitness = " + fitness + ", Challenge: " + settings.getSelection());
+
+			if (fitness > maxFitness) {
+				try {
+					Solution<double[]>[] bestPop = evolve(morphology, maze, settings, maxPop, maxIter,
+							maxFitness,name, lastPop,linked,subenv);
+					
+					lastPop = new double[bestPop.length][];
+					double[] lastPopFitness = new double[bestPop.length];
+					for(int j = 0; j < lastPop.length; j++){
+						lastPop[j] = bestPop[j].object();
+						lastPopFitness[j] = (double) bestPop[j].info(Goal.GOAL_TEST);
+						System.out.println("Fitness "+ j + " = " + bestPop[j].info(Goal.GOAL_TEST));
+					}
+					fitness = (double) bestPop[0].info(Goal.GOAL_TEST);
+
+					challengeStep.put("lastBestEvol", lastPop[0]);
+					challengeStep.put("lastPopEvol", lastPop);
+					challengeStep.put("lastPopFitness", lastPopFitness);
+					challengeStep.put("fitnessEvol", fitness);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				challengeStep.put("lastBestEvol", -1);
+				challengeStep.put("lastPopEvol", -1);
+				challengeStep.put("lastPopFitness", -1);
+				challengeStep.put("fitnessEvol", -1);
+			}
+
+			settings.selectNextChallenge();
+			if (!linked){
+				resultLogger.put("challenge" + i, challengeStep);
+			}else{
+				resultLogger.put("challenge" +subenv+ i, challengeStep);
+			}
+
+		}
+		return lastPop;
+	}
+
+
+	static Solution<double[]>[] evolve(double[] morphology, Maze maze, ShortChallengeSettings settings,int POPSIZE,int MAXITERS, double maxFitness,String name, double[][] lastPop, boolean linked, int subenv)
 		throws IOException { // Must test for fitness and max iterations finishing conditions
 
 		simulators = new ArrayList<Simulation>();
@@ -294,8 +415,15 @@ public class IncrementalShortChallenge {
 		// FileTracer tracer = new FileTracer("Evolresult.txt", ',');
 		ConsoleTracer tracer1 = new ConsoleTracer();
 		Tracer.addTracer(search, tracer1);
-
-		EvolutionryAlgorithmSetting easetting = new EvolutionryAlgorithmSetting(name +"evol"+ settings.getSelection(), POPSIZE,
+		
+		String registerName;
+		if(!linked){
+			 registerName= name +"evol"+ settings.getSelection();
+		}else{
+			registerName= name +"evol"+subenv+ settings.getSelection();
+		}
+		
+		EvolutionryAlgorithmSetting easetting = new EvolutionryAlgorithmSetting(registerName, POPSIZE,
 				MAXITERS);
 
 		Solution<double[]> solution = search.solve(realSpace, goal);
