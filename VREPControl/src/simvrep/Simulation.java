@@ -232,6 +232,18 @@ public class Simulation {
 		while (out.getValue() == 0) {
 
 			Thread.sleep(100);
+			
+			stopTime = System.currentTimeMillis();
+			elapsedTime = stopTime - startTime;
+
+			if (elapsedTime > 600000) {
+				System.out.println("Too much time has passed attempting to restart simulator in "+simnumber);
+				fitnessout[0] = -1; // This signals that the output is not
+				// ok and the simulator should be
+				// restarted
+				fitnessout[1] = 1000;
+				return fitnessout;
+			}
 
 			if (vrep.simxGetIntegerSignal(clientID, "finished", out, vrep.simx_opmode_buffer) == vrep.simx_return_ok) {
 				// We received a fitness signal and everything is ok
@@ -240,18 +252,7 @@ public class Simulation {
 			} else {
 				// We have not received the fitness message and out may contain
 				// garbage so we set it up to 0 again
-				out.setValue(0);
-				stopTime = System.currentTimeMillis();
-				elapsedTime = stopTime - startTime;
-
-				if (elapsedTime > 600000) {
-					System.out.println("Too much time has passed attempting to restart simulator in "+simnumber);
-					fitnessout[0] = -1; // This signals that the output is not
-					// ok and the simulator should be
-					// restarted
-					fitnessout[1] = 1000;
-					return fitnessout;
-				}
+				out.setValue(0);	
 			}
 		}
 
