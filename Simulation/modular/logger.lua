@@ -221,7 +221,7 @@ function logProp(active,connh,rhormnew,file)
 
 	str = str .."\"f1\":["
 	for j = 1,#active[1] do 
-		local str2 = active[1][j]
+		local str2 = tostring(active[1][j])
 		if(j == 1) then
 			str = str..str2
 		else
@@ -234,7 +234,7 @@ function logProp(active,connh,rhormnew,file)
 	for i =2, #active do
 		local str1 = ",\"f"..i.."\":["
 		for j = 1,#active[i] do
-			local str2 = active[i][j]
+			local str2 = tostring(active[i][j])
 			if(j == 1) then
 				str1 = str1..str2
 			else
