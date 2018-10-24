@@ -157,7 +157,7 @@ function logOri(sensorO,file)
 	
 end
 
-function logProp(active,connh,file)
+function logProp(active,connh,rhormnew,file)
 
 	local receivtable = {}
 	for i=1,#active do
@@ -185,7 +185,7 @@ function logProp(active,connh,file)
 	
 
 	local str = ""
-	str = str..",\"HProp\":{"
+	str = str..",\"HPropTable\":{"
 
 	str = str .."\"f1\":["
 	for j = 1,#receivtable[1] do 
@@ -216,6 +216,73 @@ function logProp(active,connh,file)
 	--print(str)
 	file:write(str)
 	
+	str = ""
+	str = str..",\"HPropActive\":{"
+
+	str = str .."\"f1\":["
+	for j = 1,#active[1] do 
+		local str2 = active[1][j]
+		if(j == 1) then
+			str = str..str2
+		else
+			str = str..","..str2
+		end
+	end
+
+	str = str.."]"	
+
+	for i =2, #active do
+		local str1 = ",\"f"..i.."\":["
+		for j = 1,#active[i] do
+			local str2 = active[i][j]
+			if(j == 1) then
+				str1 = str1..str2
+			else
+				str1 = str1..","..str2
+			end
+		end
+		str1 = str1.."]"
+		str = str .. str1
+		--print(str1)
+		
+	end
+
+	str = str.."}"
+	file:write(str)	
+
+	str = ""
+	str = str..",\"HProp\":{"
+
+	str = str .."\"f1\":["
+	for j = 1,#active[1] do 
+		local str2 = json.encode(simUnpackFloatTable(rhormnew[1][j]))
+		if(j == 1) then
+			str = str..str2
+		else
+			str = str..","..str2
+		end
+	end
+
+	str = str.."]"	
+
+	for i =2, #active do
+		local str1 = ",\"f"..i.."\":["
+		for j = 1,#active[i] do
+			local str2 = json.encode(simUnpackFloatTable(rhormnew[i][j]))
+			if(j == 1) then
+				str1 = str1..str2
+			else
+				str1 = str1..","..str2
+			end
+		end
+		str1 = str1.."]"
+		str = str .. str1
+		--print(str1)
+		
+	end
+
+	str = str.."}"
+	file:write(str)	
 
 end
 

@@ -158,7 +158,7 @@ function propagate(rhorm,connh,Propmodel,Direction)
  	end
 
  	simstep = simstep + 1
- 	return phorm,active -- With active and Rhorm we can make receivtable in the logger so that it shows which hormone was propagated through which face
+ 	return phorm,active,rhormnew 
 end
 
 function spatialtr(rhorm,connori,Genmodel)
@@ -186,6 +186,8 @@ function spatialtr(rhorm,connori,Genmodel)
 					--for k,v in pairs(hormnew) do print(k,v) end
 				elseif (Genmodel == 'connHormone') then
 					hormnew = connHSpTransform(exhorm,i,connori[i])
+					--hormnew = exhorm
+					--print(hormnew[3])
 				elseif (Genmodel == 'frontHormone') then
 					hormnew = HSpTransform(exhorm,i,connori[i])
 					--print('+++++++++++++++++++++++++++')

@@ -1,3 +1,6 @@
+-- OldRange = (OldMax - OldMin)  
+-- NewRange = (NewMax - NewMin)  
+-- NewValue = (((OldValue - OldMin) * NewRange) / OldRange) + NewMin
 
 --Amplitude
 MAX_AMPLITUDE = 1

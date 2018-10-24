@@ -179,7 +179,7 @@ public class IncrementalShortChallenge {
 	/*	times = new float[] {         2.5f,5.23f ,7.5f  ,8.9f  ,12.22f,15.1f,16.6f,20.9f,21.5f,23   ,25   ,30   ,32.5f,35.23f,40.2f,43.9f,46.6f,50.5f,51.5f,53.4f,54   ,54.9f,57.6f,60   ,62.5f,65.23f,70.2f,73.9f,76.6f,80.5f,81.5f,83.4f,84f  ,84.9f,87.6f,90 };
 		envFractions = new float[] {0.016f,0.056f,0.083f,0.096f,0.15f ,0.16f,0.18f,0.22f,0.23f,0.25f,0.26f,0.33f,0.35f,0.39f ,0.44f,0.48f,0.51f,0.55f,0.56f,0.58f,0.59f,0.60f,0.63f,0.66f,0.68f,0.72f ,0.77f,0.81f,0.84f,0.88f,0.89f,0.91f,0.92f,0.93f,0.96f,1};
 		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
-		mazeChallenges.add(new Maze(new char[] { 'b','r','l' }, 0.4f, 0.044f, 3));
+		mazeChallenges.add(new Maze(new char[] { 'b','r','l' }, 0.4f, 0.044f, 4));
 		seeds.add(null);
 		
 		

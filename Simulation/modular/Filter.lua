@@ -1,9 +1,9 @@
 
-oriwindow  = 12--15
+oriwindow  = 12--12--15
 oricount = {0,0,0,0,0,0}
 orifiltered = 1
 
-hormsumwindow = 7--8
+hormsumwindow = 7--7--8
 hormsumfiltered = {}
 hormsumarrived = {}
 
