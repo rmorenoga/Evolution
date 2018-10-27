@@ -49,7 +49,8 @@ public class EmP extends OptimizationFunction<double[]>{
 	
 	public Double apply(double[] individual){
 		
-		VRepEvaluator evaluator = getVRrepEvaluator();
+		int simInstance = waitforsim();
+		VRepEvaluator evaluator = new VRepEvaluator(simulators.get(simInstance), settings);
 		double fitness = 0;
 		
 		if (settings.noisy) 
@@ -65,7 +66,7 @@ public class EmP extends OptimizationFunction<double[]>{
 		fitness += evaluator.evaluate();
 	
 		
-		servers.set(evaluator.getSimulation().getSimnumber(), false);
+		servers.set(simInstance, false);
 		System.out.println("Iteration: " + this.iteration);
 		
 		if (!settings.measureDToGoal){
@@ -76,12 +77,6 @@ public class EmP extends OptimizationFunction<double[]>{
 		
 	}
 	
-
-	private VRepEvaluator getVRrepEvaluator() {
-		int instance = -1;
-		instance = waitforsim();
-		return new VRepEvaluator(simulators.get(instance), settings);
-	}
 
 	public synchronized int waitforsim() {
 		int sim = -1;
