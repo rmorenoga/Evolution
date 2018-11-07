@@ -15,6 +15,7 @@ public class SimulationSettings {
 	public float environmentFraction = 1; 
 	public boolean noisy;
 	public float noiseRadiusMaze = 0.2f;
+	private String logPath = "/home/rodr/Desktop/Results/Dummy";
 	
 	public SimulationSettings(int maxTries, boolean measureDToGoal,
 			boolean measureDToGoalByPart, String scene, float maxTime, float alpha, boolean individualParameters, boolean noisy) {
@@ -33,6 +34,11 @@ public class SimulationSettings {
 		this(maxTries,false,false,scene,maxTime,0.88f,individualParameters,noisy);
 	}
 	
+	public SimulationSettings(int maxTries, String scene, float maxTime,boolean individualParameters, boolean noisy,String logPath) {
+		this(maxTries,false,false,scene,maxTime,0.88f,individualParameters,noisy);
+		this.logPath = logPath;
+	}
+	
 	public SimulationSettings(int maxTries,String scene, float maxTime, float alpha, boolean individualParameters, float environmentFraction, boolean noisy){
 		this.maxTries = maxTries;
 		this.measureDToGoal = false;
@@ -48,5 +54,9 @@ public class SimulationSettings {
 	
 	public SimulationSettings(int maxTries, String scene, float maxTime,boolean individualParameters, float environmentFraction, boolean noisy) {
 		this(maxTries,scene,maxTime,1,individualParameters, environmentFraction, noisy);	
+	}
+
+	public void setLogPath(String path) {
+		logPath  = path;	
 	}
 }

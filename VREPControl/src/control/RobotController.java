@@ -39,6 +39,7 @@ public class RobotController {
 	private String Recmodel;
 	private String Propmodel;
 	private String PropDirection;
+	private String logPath;
 
 	
 	public RobotController(remoteApi vrep, int clientID, RobotBuilder robot, ParameterMask parammask){
@@ -76,13 +77,14 @@ public class RobotController {
 		
 	}
 
-	public RobotController(remoteApi vrep, int clientID, RobotBuilder robot, float[] parameters,boolean individualParameters) {
+	public RobotController(remoteApi vrep, int clientID, RobotBuilder robot, float[] parameters,boolean individualParameters,String logPath) {
 		this.vrep = vrep;
 		this.clientID = clientID;
 		this.robot = robot;
 		moduleHandlers = robot.getModuleHandlersint();
 		this.numberofModules = moduleHandlers.length;
 		this.numberofParameters = SimulationConfiguration.getControllerparamnumber();
+		this.logPath = logPath;
 		
 		float[] grownParameters = organize(parameters,individualParameters);
 		
@@ -192,6 +194,10 @@ public class RobotController {
 		int result8 = vrep.simxSetStringSignal(clientID, "PropDirection", strPropDirection, vrep.simx_opmode_oneshot);
 		int result9 = vrep.simxSetIntegerSignal(clientID, "Nparameters", numberofParameters, vrep.simx_opmode_oneshot);
 		
+		if (SimulationConfiguration.getController().contentEquals("CPGHLog")) {
+			CharWA strLogPath = new CharWA(logPath);
+			result1 = vrep.simxSetStringSignal(clientID, "LogPath", strLogPath, vrep.simx_opmode_oneshot);
+		}
 		
 		// Unpause communication
 		vrep.simxPauseCommunication(clientID, false);
