@@ -8,6 +8,7 @@ import simvrep.Simulation;
 import simvrep.SimulationSettings;
 import simvrep.VRepEvaluator;
 import unalcol.optimization.OptimizationFunction;
+import unalcol.tracer.Tracer;
 import unalcol.types.collection.bitarray.BitArray;
 
 public class EmP extends OptimizationFunction<double[]>{
@@ -68,6 +69,20 @@ public class EmP extends OptimizationFunction<double[]>{
 		
 		servers.set(simInstance, false);
 		System.out.println("Iteration: " + this.iteration);
+		
+		/***** Only for hill climbing***//*
+		System.out.println("Fitness = " + (-fitness));
+
+		String tr = new String("Indv = " + individual[0]);
+
+		for (int i = 1; i < individual.length; i++) {
+			tr = tr + ", " + individual[i];
+		}
+
+		tr = tr + "; " + (-fitness);
+
+		Tracer.trace(this, tr);
+		/******/
 		
 		if (!settings.measureDToGoal){
 			return -fitness;

@@ -42,9 +42,9 @@ public class GeneralizationTest {
 
 	public static void main(String[] args) {
 		
-		String path = "G:/My Drive/2018/Thesis/Results/HillClimbing/EnvOrder/";
-		String fileName = "GenResultFit.txt";
-		String fileNameCsv = "TableHillEnvOrder.csv";
+		String path = "/home/rodr/Desktop/Results/EnvOrder/HAEA/";
+		String fileName = "GenResultFitHAEA.txt";
+		String fileNameCsv = "TableHAEAEnvOrder.csv";
 		double[] result = new double[6];
 	
 		Simulation sim = new Simulation(0);

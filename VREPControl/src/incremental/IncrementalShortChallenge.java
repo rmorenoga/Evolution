@@ -68,15 +68,18 @@ public class IncrementalShortChallenge {
 
 		double maxFitness = -0.5;
 		int maxReplicas = 10;
-		int maxPop = 50;
-		int maxIter = 30;
+		int maxPop = 30;
+		int maxIter = 20;
 
 		double[][] seedPop = null;
 
 		launchSimulators(args);
 		
-		String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
-		double[] morphology = ChromoConversion.str2double(morpho);
+		//Snake morphology
+		//String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
+		//T with shoulder module morphology
+		String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,3.0, 1.0, 2.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 2.0, 1.0, 1.0, 2.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
+		double[] morphology = ChromoConversion.str2double(morpho);		
 		
 		float[] times;
 		float[] envFractions;
@@ -114,6 +117,7 @@ public class IncrementalShortChallenge {
 		challengeSettings.add(new ShortChallengeSettings(times, envFractions, 0, 5, "defaultmhs.ttt", false,false));
 		mazeChallenges.add(new Maze(new char[] { 'b' }, 0.4f, 0.088f, 1));
 		seedPop = readSeeds("seedPops.json","seedPopStraight");
+		//seedPop = readSeeds("seedPops.json","seedPopStraight2");
 		seeds.add(seedPop);
 				
 		times = new float[]{        2.5f,3.2f,5.23f,7.5f ,9.6f,13.9f,16.6f,20.5f,24.9f,30};//b
@@ -445,7 +449,7 @@ public class IncrementalShortChallenge {
     	Double[] popFitness = goal.apply((Solution[])pop.object());
     	sort(indexes, popFitness, goal.order());
     	
-    	Solution<double[]>[] bestpop = new Solution[(int)(0.1 * pop.size())];
+    	Solution<double[]>[] bestpop = new Solution[(int)(1 * pop.size())];
     	for(int i = 0; i < bestpop.length; i++)
     		bestpop[i] = (Solution)pop.get(indexes[i]);
 
