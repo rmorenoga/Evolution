@@ -34,7 +34,7 @@ public class VRepEvaluator {
 			robot = new RobotBuilder(simulation.getVrepApi(), simulation.getClientID(), morphology);
 			ret = robot.createRobot();
 
-			controller = new RobotController(simulation.getVrepApi(), simulation.getClientID(), robot, floatAnnWeights,settings.individualParameters);
+			controller = new RobotController(simulation.getVrepApi(), simulation.getClientID(), robot, floatAnnWeights,settings.individualParameters,settings.logPath);
 			controller.sendParameters();
 			
 			if (!settings.shortChallenge)

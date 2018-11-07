@@ -15,7 +15,7 @@ public class SimulationSettings {
 	public float environmentFraction = 1; 
 	public boolean noisy;
 	public float noiseRadiusMaze = 0.2f;
-	private String logPath = "/home/rodr/Desktop/Results/Dummy";
+	public String logPath = "/home/rodr/Desktop/Results/Dummy";
 	
 	public SimulationSettings(int maxTries, boolean measureDToGoal,
 			boolean measureDToGoalByPart, String scene, float maxTime, float alpha, boolean individualParameters, boolean noisy) {
