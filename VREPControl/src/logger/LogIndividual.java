@@ -1,4 +1,4 @@
-package show;
+package logger;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,15 +23,14 @@ import util.ChromoConversion;
 public class LogIndividual {
 	
 	public static int Nsim;
-	public static List<Simulation> simulators;
 	
 	static int individuallength = 234;
 
 	public static void main(String[] args) {
 		
-		String path = "/home/rodr/Desktop/Results/EnvOrder/HAEA/";
-		String fileHeader = "HAEAXlrbR";
-		String logPath = path+fileHeader;
+		String path = "/home/rodr/Desktop/Results/LogTest";
+		String fileHeader = "HillEnv0R";
+		String logPath = path+"/"+fileHeader;
 		
 		//Snake morphology
 		String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
@@ -44,18 +43,20 @@ public class LogIndividual {
 		Maze maze = new Maze(new char[]{'l','r','b'},0.4f,0.088f,1);
 		SimulationSettings settings = new SimulationSettings(5,"defaultmhs.ttt",180,false,false,logPath);
 		
-		simulators = new ArrayList<Simulation>();
 		Simulation sim = connectToSimulator(Nsim);
 		
-		//double [][] indiv = ReadTXTFiles(path,"Hill",individuallength,10);
-		double [][] indiv=ReadJsonFiles(path,fileHeader,individuallength,10);
+		double [][] indiv = ReadTXTFiles(path,fileHeader,individuallength,10);
+		//double [][] indiv=ReadJsonFiles(path,fileHeader,individuallength,10);
 		
 		for (int i = 0; i < indiv.length; i++) {
 			settings.setLogPath(logPath+i);
+			System.out.println(logPath+i);
 			RunLogger(indiv[i],morphology, sim,settings,maze);
 		}
-		
+			
 		sim.Disconnect();
+		
+		stopSimulator();
 				
 	}
 	
@@ -73,7 +74,7 @@ public class LogIndividual {
 		
 			for (int l = 0;l<numberOfReplicas;l++){
 				try {
-					 Object obj = new JSONParser().parse(new FileReader(Folderpath+fileheader+l+".json"));
+					 Object obj = new JSONParser().parse(new FileReader(Folderpath+"/"+fileheader+l+".json"));
 					 JSONObject jo = (JSONObject) obj;
 					 JSONObject best = (JSONObject)jo.get("solution");
 					 //double fitness = (double) bestO.get("best_fitness");
@@ -111,7 +112,7 @@ private static double[][] ReadTXTFiles(String Folderpath, String fileheader, int
 		for (int l = 0;l<numberOfReplicas;l++){
 			
 			try {
-				BufferedReader in = new BufferedReader(new FileReader(Folderpath+fileheader+l+".txt"));
+				BufferedReader in = new BufferedReader(new FileReader(Folderpath+"/"+fileheader+l+".txt"));
 				String str;
 
 				while ((str = in.readLine()) != null) {
@@ -148,7 +149,6 @@ private static double[][] ReadTXTFiles(String Folderpath, String fileheader, int
 	// Retry if there is a simulator crash
 	for (int i = 0; i < 5; i++) {
 		if (sim.Connect()) {
-			simulators.add(sim);
 		} else {
 			// No connection could be established
 			System.out.println("Failed connecting to remote API server");
