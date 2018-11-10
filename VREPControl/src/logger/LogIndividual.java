@@ -45,8 +45,8 @@ public class LogIndividual {
 		
 		Simulation sim = connectToSimulator(Nsim);
 		
-		double [][] indiv = ReadTXTFiles(path,fileHeader,individuallength,10);
-		//double [][] indiv=ReadJsonFiles(path,fileHeader,individuallength,10);
+		//double [][] indiv = ReadTXTFiles(path,fileHeader,individuallength,10);
+		double [][] indiv=ReadJsonFiles(path,fileHeader,individuallength,10,"Evol");
 		
 		for (int i = 0; i < indiv.length; i++) {
 			settings.setLogPath(logPath+i);
@@ -68,18 +68,60 @@ public class LogIndividual {
 		return fitnessD;
 	}
 	
-	private static double[][] ReadJsonFiles(String Folderpath, String fileheader, int indivlength, int numberOfReplicas) {
+	private static double[][] ReadJsonFiles(String Folderpath, String fileheader, int indivlength, int numberOfReplicas,String test) {
 
 		double[][] individuals = new double[numberOfReplicas][indivlength];
+		JSONArray ja = new JSONArray();
 		
 			for (int l = 0;l<numberOfReplicas;l++){
 				try {
 					 Object obj = new JSONParser().parse(new FileReader(Folderpath+"/"+fileheader+l+".json"));
 					 JSONObject jo = (JSONObject) obj;
-					 JSONObject best = (JSONObject)jo.get("solution");
-					 //double fitness = (double) bestO.get("best_fitness");
-					 //System.out.println(fitness); 
-					 JSONArray ja = (JSONArray) best.get("best_individual");
+					 
+					 switch (test) {
+						
+						case "Evol":
+							JSONObject best = (JSONObject)jo.get("solution");
+							//double fitness = (double) bestO.get("best_fitness");
+							//System.out.println(fitness); 
+							ja = (JSONArray) best.get("best_individual");
+							break;
+						case "ShortSep":
+							JSONObject lastChallenge = (JSONObject)jo.get("challenge29");
+							if((double)lastChallenge.get("fitnessEvol")!=-1) {
+								ja = (JSONArray) lastChallenge.get("lastBestEvol");
+							}else {
+								ja = (JSONArray) lastChallenge.get("lastBest");
+							}
+							break;
+						case "ShortComb":
+							lastChallenge = (JSONObject)jo.get("challenge33");
+							if((double)lastChallenge.get("fitnessEvol")!=-1) {
+								ja = (JSONArray) lastChallenge.get("lastBestEvol");
+							}else {
+								ja = (JSONArray) lastChallenge.get("lastBest");
+							}
+							break;
+						case "ShortBump":
+							lastChallenge = (JSONObject)jo.get("challenge9");
+							if((double)lastChallenge.get("fitnessEvol")!=-1) {
+								ja = (JSONArray) lastChallenge.get("lastBestEvol");
+							}else {
+								ja = (JSONArray) lastChallenge.get("lastBest");
+							}
+							break;
+						case "ShortDeactivated":
+							lastChallenge = (JSONObject)jo.get("challenge211");
+							if((double)lastChallenge.get("fitnessEvol")!=-1) {
+								ja = (JSONArray) lastChallenge.get("lastBestEvol");
+							}else {
+								ja = (JSONArray) lastChallenge.get("lastBest");
+							}							
+							break;
+						default:
+							System.out.println("Type of json test not recognized");
+							break;					 
+					 }
 					 
 					 Iterator itr = ja.iterator();
 					 
@@ -97,8 +139,7 @@ public class LogIndividual {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}				
-			}
-				
+			}	
 		
 		//System.out.println(individuals.length);
 		return individuals;
