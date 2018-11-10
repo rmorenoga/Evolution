@@ -28,8 +28,8 @@ public class LogIndividual {
 
 	public static void main(String[] args) {
 		
-		String path = "/home/rodr/Desktop/Results/LogTest";
-		String fileHeader = "HillEnv0R";
+		String path = "/home/rodr/Desktop/Results/Morpho1/Incremental/Deactivated/Filter35-60";
+		String fileHeader = "IncrLinkedFb";
 		String logPath = path+"/"+fileHeader;
 		
 		//Snake morphology
@@ -46,7 +46,14 @@ public class LogIndividual {
 		Simulation sim = connectToSimulator(Nsim);
 		
 		//double [][] indiv = ReadTXTFiles(path,fileHeader,individuallength,10);
-		double [][] indiv=ReadJsonFiles(path,fileHeader,individuallength,10,"Evol");
+		double [][] indiv=ReadJsonFiles(path,fileHeader,individuallength,10,"ShortDeactivated");
+		
+		for (int i = 0;i<indiv.length;i++){
+			for (int j=0;j<indiv[i].length;j++){
+				System.out.print(indiv[i][j]+",");
+			}
+			System.out.println("\n");		
+		}
 		
 		for (int i = 0; i < indiv.length; i++) {
 			settings.setLogPath(logPath+i);
@@ -72,6 +79,7 @@ public class LogIndividual {
 
 		double[][] individuals = new double[numberOfReplicas][indivlength];
 		JSONArray ja = new JSONArray();
+		String number;
 		
 			for (int l = 0;l<numberOfReplicas;l++){
 				try {
@@ -88,7 +96,8 @@ public class LogIndividual {
 							break;
 						case "ShortSep":
 							JSONObject lastChallenge = (JSONObject)jo.get("challenge29");
-							if((double)lastChallenge.get("fitnessEvol")!=-1) {
+							number = lastChallenge.get("fitnessEvol").toString();
+							if(!number.equals("-1")) {
 								ja = (JSONArray) lastChallenge.get("lastBestEvol");
 							}else {
 								ja = (JSONArray) lastChallenge.get("lastBest");
@@ -96,7 +105,8 @@ public class LogIndividual {
 							break;
 						case "ShortComb":
 							lastChallenge = (JSONObject)jo.get("challenge33");
-							if((double)lastChallenge.get("fitnessEvol")!=-1) {
+							number = lastChallenge.get("fitnessEvol").toString();
+							if(!number.equals("-1")) {
 								ja = (JSONArray) lastChallenge.get("lastBestEvol");
 							}else {
 								ja = (JSONArray) lastChallenge.get("lastBest");
@@ -104,7 +114,8 @@ public class LogIndividual {
 							break;
 						case "ShortBump":
 							lastChallenge = (JSONObject)jo.get("challenge9");
-							if((double)lastChallenge.get("fitnessEvol")!=-1) {
+							number = lastChallenge.get("fitnessEvol").toString();
+							if(!number.equals("-1")) {
 								ja = (JSONArray) lastChallenge.get("lastBestEvol");
 							}else {
 								ja = (JSONArray) lastChallenge.get("lastBest");
@@ -112,7 +123,8 @@ public class LogIndividual {
 							break;
 						case "ShortDeactivated":
 							lastChallenge = (JSONObject)jo.get("challenge211");
-							if((double)lastChallenge.get("fitnessEvol")!=-1) {
+							number = lastChallenge.get("fitnessEvol").toString();
+							if(!number.equals("-1")) {
 								ja = (JSONArray) lastChallenge.get("lastBestEvol");
 							}else {
 								ja = (JSONArray) lastChallenge.get("lastBest");
