@@ -42,7 +42,8 @@ public class GeneralizationTest {
 
 	public static void main(String[] args) {
 		
-		String path = "/home/rodr/Desktop/Results/EnvOrder/HAEA/";
+		String path = "/home/rodr/Desktop/Results/Morpho1/Incremental/lrbCombined/10Percent";
+		String fileHeader = "IncrIsolFlrb0";
 		String fileName = "GenResultFitHAEA.txt";
 		String fileNameCsv = "TableHAEAEnvOrder.csv";
 		double[] result = new double[6];
@@ -73,9 +74,9 @@ public class GeneralizationTest {
 	String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
 	double[] morphology = ChromoConversion.str2double(morpho);		
 
-		 double [][] indiv = ReadTXTFiles(path,"Hill",6,individuallength,10); 
-		//double [][] indiv=ReadJsonFiles("C:/Users/golde_000/Desktop/Test","HAEA",1,individuallength,10);
-		 //double [][] indiv = GenerateRandomIndividuals(numberofindividuals,individuallength, maxrandomval,minrandomval);
+		 //double [][] indiv = ReadTXTFiles(path,fileHeader,individuallength,10); 
+		double [][] indiv=ReadJsonFiles(path,fileHeader,individuallength,10,"Evol");
+		 //double [][] indiv = GenerateRandomIndividuals(numberofindividuals,ierndividuallength, maxrandomval,minrandomval);
 			for (int i = 0; i < indiv.length; i++) {
 		 
 		 			result = RunTest(indiv[i],morphology, sim,settings,maze);
@@ -126,27 +127,72 @@ public class GeneralizationTest {
 
 	}
 	
-	private static double[][] ReadJsonFiles(String Folderpath, String fileheader, int numberOfEnv, int indivlength, int numberOfReplicas) {
+	private static double[][] ReadJsonFiles(String Folderpath, String fileheader, int indivlength, int numberOfReplicas,String test) {
 
-		double[][] individuals = new double[numberOfEnv*numberOfReplicas][indivlength];
+		double[][] individuals = new double[numberOfReplicas][indivlength];
+		JSONArray ja = new JSONArray();
+		String number;
 		
-		int k = 0;
-		for (int i=0;i<numberOfEnv;i++){
 			for (int l = 0;l<numberOfReplicas;l++){
 				try {
-					 Object obj = new JSONParser().parse(new FileReader(Folderpath+fileheader+"Env"+i+"R"+l+".json"));
+					 Object obj = new JSONParser().parse(new FileReader(Folderpath+"/"+fileheader+l+".json"));
 					 JSONObject jo = (JSONObject) obj;
-					 JSONObject best = (JSONObject)jo.get("solution");
-					 //double fitness = (double) bestO.get("best_fitness");
-					 //System.out.println(fitness); 
-					 JSONArray ja = (JSONArray) best.get("best_individual");
+					 
+					 switch (test) {
+						
+						case "Evol":
+							JSONObject best = (JSONObject)jo.get("solution");
+							//double fitness = (double) bestO.get("best_fitness");
+							//System.out.println(fitness); 
+							ja = (JSONArray) best.get("best_individual");
+							break;
+						case "ShortSep":
+							JSONObject lastChallenge = (JSONObject)jo.get("challenge29");
+							number = lastChallenge.get("fitnessEvol").toString();
+							if(!number.equals("-1")) {
+								ja = (JSONArray) lastChallenge.get("lastBestEvol");
+							}else {
+								ja = (JSONArray) lastChallenge.get("lastBest");
+							}
+							break;
+						case "ShortComb":
+							lastChallenge = (JSONObject)jo.get("challenge33");
+							number = lastChallenge.get("fitnessEvol").toString();
+							if(!number.equals("-1")) {
+								ja = (JSONArray) lastChallenge.get("lastBestEvol");
+							}else {
+								ja = (JSONArray) lastChallenge.get("lastBest");
+							}
+							break;
+						case "ShortBump":
+							lastChallenge = (JSONObject)jo.get("challenge9");
+							number = lastChallenge.get("fitnessEvol").toString();
+							if(!number.equals("-1")) {
+								ja = (JSONArray) lastChallenge.get("lastBestEvol");
+							}else {
+								ja = (JSONArray) lastChallenge.get("lastBest");
+							}
+							break;
+						case "ShortDeactivated":
+							lastChallenge = (JSONObject)jo.get("challenge211");
+							number = lastChallenge.get("fitnessEvol").toString();
+							if(!number.equals("-1")) {
+								ja = (JSONArray) lastChallenge.get("lastBestEvol");
+							}else {
+								ja = (JSONArray) lastChallenge.get("lastBest");
+							}							
+							break;
+						default:
+							System.out.println("Type of json test not recognized");
+							break;					 
+					 }
 					 
 					 Iterator itr = ja.iterator();
 					 
 					 int j=0;
 					 while (itr.hasNext()) 
 				        {
-						 		individuals[k][j] = (double)itr.next();
+						 		individuals[l][j] = (double)itr.next();
 						 		//System.out.println(individuals[i][j]);
 						 		j++;
 				        }
@@ -156,26 +202,22 @@ public class GeneralizationTest {
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-				k++;
-				
-			}
-				
-		}
+				}				
+			}	
+		
 		//System.out.println(individuals.length);
 		return individuals;
 		
 	}
 
-	private static double[][] ReadTXTFiles(String Folderpath, String fileheader, int numberOfEnv, int indivlength, int numberOfReplicas) {
+private static double[][] ReadTXTFiles(String Folderpath, String fileheader, int indivlength, int numberOfReplicas) {
 		
 		List<String> list = new ArrayList<String>();
 		
-		for (int i=0;i<numberOfEnv;i++){
-			for (int l = 0;l<numberOfReplicas;l++){
+		for (int l = 0;l<numberOfReplicas;l++){
 			
 			try {
-				BufferedReader in = new BufferedReader(new FileReader(Folderpath+fileheader+"Env"+i+"R"+l+".txt"));
+				BufferedReader in = new BufferedReader(new FileReader(Folderpath+"/"+fileheader+l+".txt"));
 				String str;
 
 				while ((str = in.readLine()) != null) {
@@ -188,8 +230,8 @@ public class GeneralizationTest {
 			}
 			
 			//System.out.println(list.get(i));
-			}
 		}
+		
 		
 		
 		double[][] individuals = new double[list.size()][indivlength];

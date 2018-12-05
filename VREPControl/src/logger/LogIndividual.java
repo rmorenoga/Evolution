@@ -28,7 +28,7 @@ public class LogIndividual {
 
 	public static void main(String[] args) {
 		
-		String path = "/home/rodr/Desktop/Results/Morpho1/Incremental/Deactivated/Filter35-60";
+		String path = "/home/rodr/Desktop/Results/Morpho1/Incremental/Deactivated/Filter1-1";
 		String fileHeader = "IncrLinkedFb";
 		String logPath = path+"/"+fileHeader;
 		
@@ -40,7 +40,9 @@ public class LogIndividual {
 		
 		launchSimulator(args);
 		
-		Maze maze = new Maze(new char[]{'l','r','b'},0.4f,0.088f,1);
+		//Maze maze = new Maze(new char[]{'l','r','b'},0.4f,0.088f,1);
+		//Maze maze = new Maze(new char[]{'b'},0.4f,0.088f,1);
+		Maze maze = new Maze(new char[]{'b','r','l'},0.4f,0.05f,4);
 		SimulationSettings settings = new SimulationSettings(5,"defaultmhs.ttt",180,false,false,logPath);
 		
 		Simulation sim = connectToSimulator(Nsim);
@@ -56,8 +58,19 @@ public class LogIndividual {
 		}
 		
 		for (int i = 0; i < indiv.length; i++) {
-			settings.setLogPath(logPath+i);
-			System.out.println(logPath+i);
+			maze = new Maze(new char[]{'l'},0.4f,0.088f,1);
+			settings.setLogPath(logPath+'l'+i);
+			System.out.println(logPath+'l'+i);
+			RunLogger(indiv[i],morphology, sim,settings,maze);
+			
+			maze = new Maze(new char[]{'r'},0.4f,0.088f,1);
+			settings.setLogPath(logPath+'r'+i);
+			System.out.println(logPath+'r'+i);
+			RunLogger(indiv[i],morphology, sim,settings,maze);
+			
+			maze = new Maze(new char[]{'b'},0.4f,0.088f,1);
+			settings.setLogPath(logPath+'b'+i);
+			System.out.println(logPath+'b'+i);
 			RunLogger(indiv[i],morphology, sim,settings,maze);
 		}
 			
