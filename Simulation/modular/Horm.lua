@@ -40,7 +40,7 @@ function ghormone(connh,sensorR,sensorD,sensorO,Genmodel)
 	return hormones,sendhorm
 end
 
-function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltaparam,RecModel,Genmodel)
+function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltaparam,RecModel,Genmodel,filelog)
 	local hormnew = {}
 	local ampdnew = ampd
 	local offdnew = offd
@@ -91,7 +91,10 @@ function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltapar
 
 		local hormfiltered = filterhorm(hormsum,simstep)
 
-
+		if (filelog ~= nil) then
+			logHormSum(hormsum,filelog)
+			logHormFiltered(hormfiltered,filelog)
+		end
 
 
 		
@@ -117,7 +120,7 @@ function receptors(hormones,rhorm,sensorO,connori,ampd,offd,phasediff,v,deltapar
 		--print(simstep)
 		--print(orifiltered)
 
-		ampdnew,offdnew,phasediffnew,vnew = receptorsANNB(hormfiltered,ampdnew,offdnew,phasediffnew,vnew,orifiltered,deltaparam)
+		ampdnew,offdnew,phasediffnew,vnew = receptorsANNB(hormfiltered,ampdnew,offdnew,phasediffnew,vnew,orifiltered,deltaparam,filelog)
 		--ampdnew,offdnew,phasediffnew,vnew = receptorsANNLastTime(hormsum,ampdnew,offdnew,phasediffnew,vnew,orifiltered,deltaparam)
 
 	else

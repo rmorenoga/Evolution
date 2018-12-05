@@ -86,7 +86,7 @@ function receptorsbase(hormones,ampd,offd,phasediff,v,deltaparam,delta)
 end
 
 
-function receptorsANNB(hormsum,ampd,offd,phasediff,v,ori,deltaparam)
+function receptorsANNB(hormsum,ampd,offd,phasediff,v,ori,deltaparam,filelog)
 
     local ampdnew = ampd
     local offdnew = offd
@@ -120,6 +120,9 @@ function receptorsANNB(hormsum,ampd,offd,phasediff,v,ori,deltaparam)
         table.insert(inputs,hormsum[i])
     end
 
+    if (filelog ~= nil) then
+        logANNInputs(inputs,filelog)
+    end
     --print(#inputs)
 
     local outputs = propagateANN(ann,inputs) --{ampdnew,offdnew,phasediffnew}

@@ -313,3 +313,41 @@ function logHCountE(count,file)
 	file:write(",\"HCountE\":"..str)
 end
 
+function logANNInputs(inputs,file)
+	local logtable ={}
+
+	for i=1,#inputs do
+		logtable[i] = inputs[i]
+	end
+
+	local str = json.encode(logtable)
+	--print(str)
+
+	file:write(",\"ANNInputs\":"..str)
+end
+
+function logHormSum(hormsum,file)
+	local logtable ={}
+
+	for i=1,#hormsum do
+		logtable[i] = hormsum[i]
+	end
+	
+	local str = json.encode(logtable)
+	--print(str)
+
+	file:write(",\"HormSum\":"..str)
+end
+
+function logHormFiltered(hormfiltered,file)
+	local logtable ={}
+
+	for i=1,#hormfiltered do
+		logtable[i] = hormfiltered[i]
+	end
+	
+	local str = json.encode(logtable)
+	--print(str)
+
+	file:write(",\"HormFiltered\":"..str)
+end
