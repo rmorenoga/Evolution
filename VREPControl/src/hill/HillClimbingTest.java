@@ -137,8 +137,11 @@ public class HillClimbingTest {
 				 Space<double[]> space = new HyperCube(min, max);
 				//Space<double[]> space = new HyperCubeFromPoint(min, max, referencePoints, radius);
 
+				//Snake morphology
 				String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 3.0, 1.0, 3.0, 1.0, 3.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
-				double[] morphology = ChromoConversion.str2double(morpho);		
+				//T with shoulder module morphology
+				//String morpho = "[(0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,3.0, 1.0, 2.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,0.0, 1.0, 2.0, 1.0, 1.0, 2.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,1.0 , 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0]";
+				double[] morphology = ChromoConversion.str2double(morpho);
 				
 				//OptimizationFunction<double[]> function = new HEmP(0.88f, sim, morpho, "GeneralTest", envInst);
 				OptimizationFunction<double[]>	function = new EmP(sim,morphology,maze,settings);

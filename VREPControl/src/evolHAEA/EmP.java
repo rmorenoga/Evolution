@@ -70,7 +70,7 @@ public class EmP extends OptimizationFunction<double[]>{
 		servers.set(simInstance, false);
 		System.out.println("Iteration: " + this.iteration);
 		
-		/***** Only for hill climbing***//*
+		/***** Only for hill climbing***/
 		System.out.println("Fitness = " + (-fitness));
 
 		String tr = new String("Indv = " + individual[0]);
