@@ -128,7 +128,7 @@ public class HAEAEmH {
 			
 			
 			SimulationSettings settings = new SimulationSettings(5,"defaultmhsH.ttt",180,false,false);
-			Maze maze = new Maze(new char[]{'s','l','r'},0.4f,0.088f,1);
+			Maze maze = new Maze(new char[]{'s','r','l'},0.4f,0.088f,1);
 			//Maze maze = new Maze(new char[]{'l'},0.4f,0.088f,1);
 			
 			int realDIM = 234;
@@ -195,7 +195,7 @@ public class HAEAEmH {
 			Tracer.addTracer(search, tracer1);
 			
 			EvolutionryAlgorithmSetting easetting = new EvolutionryAlgorithmSetting(
-					"HAEAHlrR"+repli, POPSIZE, MAXITERS);
+					"HAEAHrlR"+repli, POPSIZE, MAXITERS);
 			
 			Solution<double[]> solution = search.solve(realSpace, goal);
 			
