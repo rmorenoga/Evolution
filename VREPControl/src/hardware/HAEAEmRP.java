@@ -71,8 +71,8 @@ public class HAEAEmRP {
 		LinearXOver realXOver = new LinearXOver(); // Use Tournament(4)
 		SimpleXOver simpleXOver = new SimpleXOver();
 	
-		int POPSIZE = 8;
-		int MAXITERS = 10;
+		int POPSIZE = 2;
+		int MAXITERS = 3;
 		Variation[] opers = new Variation[3];
 		opers[0] = realVariation;
 		opers[1] = realXOver;

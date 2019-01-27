@@ -3,6 +3,8 @@ package hardware;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import org.json.JSONObject;
+
 import unalcol.optimization.OptimizationFunction;
 import unalcol.types.collection.bitarray.BitArray;
 
@@ -12,6 +14,7 @@ public class EmH extends OptimizationFunction<double[]>{
 	protected int maxDistance = 10;
 	protected int maxTime = 10;
 	protected BitArray servers;
+	protected JSONObject resultLogger = null;
 
 	/**
 	 * Calculates the fitness given a distance and a time, both measured in a hardware experiment
@@ -25,10 +28,11 @@ public class EmH extends OptimizationFunction<double[]>{
 		this.servers = new BitArray(numberOfServers, false);
 	}
 	
-	public EmH(int maxDistance, int maxTime) {
+	public EmH(int maxDistance, int maxTime,JSONObject resultLogger) {
 		this.maxDistance = maxDistance;
 		this.maxTime = maxTime;
 		this.servers = new BitArray(1, false);
+		this.resultLogger = resultLogger;
 	}
 
 	public boolean isNonStationary() {
@@ -43,6 +47,10 @@ public class EmH extends OptimizationFunction<double[]>{
 
 	
 	public Double apply(double[] individual){
+		
+		JSONObject eval = new JSONObject();
+		
+		eval.put("individual", individual);
 		
 		int threadInstance = waitforthread();
 		
@@ -60,18 +68,26 @@ public class EmH extends OptimizationFunction<double[]>{
 	 
 	    System.out.print("Enter the distance obtained in " + threadInstance +":");
 	    distance = scan.nextDouble();
+	    eval.put("distanceRaw", distance);
 	    
 	    System.out.print("Enter the time obtained in " + threadInstance +":");
 	    time = scan.nextDouble();
+	    eval.put("timeRaw", time);
 	    
 	    D = distance/maxDistance;
 	    t = time/maxTime;
+	    eval.put("D", D);
+	    eval.put("t", t);
 	    
 	    fitness = D -(t/D);
 	    
+	    eval.put("fitness", fitness);
+	    
 	    servers.set(threadInstance, false);
 	    
-	    System.out.println(-fitness);
+	    System.out.println("Fitness in "+ threadInstance + " = " + (-fitness));
+	    
+	    resultLogger.accumulate("Gen" + iteration, eval);
 		
 		return -fitness;
 		
