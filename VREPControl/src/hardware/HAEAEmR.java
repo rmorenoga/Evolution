@@ -81,7 +81,7 @@ public class HAEAEmR {
 		test.put("Name", name);
 		
 		
-		OptimizationFunction<double[]> function = new EmH(10,300,evolution);
+		OptimizationFunction<double[]> function = new EmH(1.265,300,evolution);
 		Goal<double[],Double> goal = new IterOptimizationGoal<double[]>(function);
 		
 		IntensityMutation realVariation = new PowerLawMutation(0.2, new PermutationPick(23));

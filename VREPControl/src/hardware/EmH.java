@@ -11,7 +11,7 @@ import unalcol.types.collection.bitarray.BitArray;
 public class EmH extends OptimizationFunction<double[]>{
 	
 	protected int iteration = 0;
-	protected int maxDistance = 10;
+	protected double maxDistance = 10;
 	protected int maxTime = 10;
 	protected BitArray servers;
 	protected JSONObject resultLogger = null;
@@ -22,13 +22,13 @@ public class EmH extends OptimizationFunction<double[]>{
 	 * @param maxTime
 	 */
 
-	public EmH(int maxDistance, int maxTime, int numberOfServers) {
+	public EmH(double maxDistance, int maxTime, int numberOfServers) {
 		this.maxDistance = maxDistance;
 		this.maxTime = maxTime;
 		this.servers = new BitArray(numberOfServers, false);
 	}
 	
-	public EmH(int maxDistance, int maxTime,JSONObject resultLogger) {
+	public EmH(double maxDistance, int maxTime,JSONObject resultLogger) {
 		this.maxDistance = maxDistance;
 		this.maxTime = maxTime;
 		this.servers = new BitArray(1, false);
