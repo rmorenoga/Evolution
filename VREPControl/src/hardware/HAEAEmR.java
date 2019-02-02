@@ -81,7 +81,7 @@ public class HAEAEmR {
 		test.put("Name", name);
 		
 		
-		OptimizationFunction<double[]> function = new EmH(1.265,300,evolution);
+		OptimizationFunction<double[]> function = new EmH(126.5,300,evolution);
 		Goal<double[],Double> goal = new IterOptimizationGoal<double[]>(function);
 		
 		IntensityMutation realVariation = new PowerLawMutation(0.2, new PermutationPick(23));
@@ -92,8 +92,8 @@ public class HAEAEmR {
 		test.put("xover2", "SimpleXOver()");
 		
 	
-		int POPSIZE = 2;
-		int MAXITERS = 3;
+		int POPSIZE = 8;
+		int MAXITERS = 10;
 		test.put("popsize", POPSIZE);
 		test.put("maxiters", MAXITERS);
 		

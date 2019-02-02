@@ -79,7 +79,7 @@ public class EmH extends OptimizationFunction<double[]>{
 	    eval.put("D", D);
 	    eval.put("t", t);
 	    
-	    fitness = D -(t/D);
+	    fitness = D -(t/(1+D));
 	    
 	    eval.put("fitness", fitness);
 	    
