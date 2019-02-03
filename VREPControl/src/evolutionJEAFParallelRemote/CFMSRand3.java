@@ -87,14 +87,6 @@ public class CFMSRand3 extends ObjectiveFunction {
 			{ 'b', 's', 'r', 's', 's', 'l', 's' },
 			{ 's', 'r', 's', 's', 'l', 's', 'b' },
 			{ 's', 'r', 's', 'b', 's', 'l', 's' } };
-			
-		// Generate random 3 sub-environment sequence (by Brute Force)
-//		IntUniform r = new IntUniform(3);
-//		int[] seq = r.generate(3);
-//		while (seq[1] == seq[0]) {
-//			seq[1] = r.next();
-//		}
-//		seq[2] = 5 - ((seq[0] + 1) + (seq[1] + 1));
 
 		// Maze Parameters (Already a string)
 		char[] mazeseq = new char[] { 's' }; // Default Maze Sequence
@@ -119,70 +111,63 @@ public class CFMSRand3 extends ObjectiveFunction {
 		}
 
 		// Retry if there is a simulator crash
-//		for (int j = 0; j < maxTries; j++) {
-//
-//			// Simulator interaction start
-//			remoteApi vrep = new remoteApi(); // Create simulator control object
-//			vrep.simxFinish(-1); // just in case, close all opened connections
-//			// Connect with the corresponding simulator remote server
-//			int clientID = vrep.simxStart("127.0.0.1", 19997 - myRank, true,
-//					true, 5000, 5);
-//
-//			if (clientID != -1) {
-//				// Set Simulator signal values
-//				vrep.simxSetStringSignal(clientID, "NumberandOri", strNO,
-//						vrep.simx_opmode_oneshot_wait);
-//				vrep.simxSetStringSignal(clientID, "ControlParam", strCP,
-//						vrep.simx_opmode_oneshot_wait);
-//				vrep.simxSetStringSignal(clientID, "Maze", strSeq,
-//						vrep.simx_opmode_oneshot_wait);
-//
-//				try {
-//					// *******************************************************************************************************************************
-//
-//					// New Maze Parameters (Already a string)
-//					mazeseq = subenvperm[currentEnv];
-//					strSeq.setArray(mazeseq);
-//					vrep.simxSetStringSignal(clientID, "Maze", strSeq,
-//							vrep.simx_opmode_oneshot_wait);
-//
-//					// Run Scene in the simulator
-//					rfitness = RunSimulation(vrep, clientID, MaxTime, myRank);
-//
-//					if (rfitness[0] == -1) {
-//						RestartSim(myRank, j);
-//						continue;
-//					}
-//
-//					// Retrieve the fitness if there is no crash
-//					fitness[0] = rfitness[1];
-//					
-//					// *******************************************************************************************************************************
-//				} catch (InterruptedException e) {
-//					System.err.println("InterruptedException: "
-//							+ e.getMessage());
-//				}
-//				// Close connection with the simulator
-//				vrep.simxFinish(clientID);
-//
-//			} else {
-//				// No connection could be established
-//				System.out.println("Failed connecting to remote API server");
-//				System.out.println("Trying again for the " + j + " time");
-//				continue;
-//			}
-//
-//			break;
-//		}
+		for (int j = 0; j < maxTries; j++) {
+
+			// Simulator interaction start
+			remoteApi vrep = new remoteApi(); // Create simulator control object
+			vrep.simxFinish(-1); // just in case, close all opened connections
+			// Connect with the corresponding simulator remote server
+			int clientID = vrep.simxStart("127.0.0.1", 19997 - myRank, true,
+					true, 5000, 5);
+
+			if (clientID != -1) {
+				// Set Simulator signal values
+				vrep.simxSetStringSignal(clientID, "NumberandOri", strNO,
+						vrep.simx_opmode_oneshot_wait);
+				vrep.simxSetStringSignal(clientID, "ControlParam", strCP,
+						vrep.simx_opmode_oneshot_wait);
+				vrep.simxSetStringSignal(clientID, "Maze", strSeq,
+						vrep.simx_opmode_oneshot_wait);
+
+				try {
+					// *******************************************************************************************************************************
+
+					// New Maze Parameters (Already a string)
+					mazeseq = subenvperm[currentEnv];
+					strSeq.setArray(mazeseq);
+					vrep.simxSetStringSignal(clientID, "Maze", strSeq,
+							vrep.simx_opmode_oneshot_wait);
+
+					// Run Scene in the simulator
+					rfitness = RunSimulation(vrep, clientID, MaxTime, myRank);
+
+					if (rfitness[0] == -1) {
+						RestartSim(myRank, j);
+						continue;
+					}
+
+					// Retrieve the fitness if there is no crash
+					fitness = rfitness[1];
+					
+					// *******************************************************************************************************************************
+				} catch (InterruptedException e) {
+					System.err.println("InterruptedException: "
+							+ e.getMessage());
+				}
+				// Close connection with the simulator
+				vrep.simxFinish(clientID);
+
+			} else {
+				// No connection could be established
+				System.out.println("Failed connecting to remote API server");
+				System.out.println("Trying again for the " + j + " time");
+				continue;
+			}
+
+			break;
+		}
 
 		// Calculate global fitness and convert it from float to Double
-		
-		
-
-		
-		
-		fitness = (float)Math.pow(ampli,2)+(float)Math.pow(offset,2)+(float)Math.pow(phase,2);
-
 		double fitnessd;
 		
 		fitnessd = fitness;
@@ -321,7 +306,7 @@ public class CFMSRand3 extends ObjectiveFunction {
 			// Command to open a simulator with no window
 			// qq = new ProcessBuilder(vrepcommand,"-h");
 			qq = new ProcessBuilder(vrepcommand, "-h",
-					"/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt");
+					"scenes/Maze/MazeBuilderR02.ttt");
 			// qq = new
 			// ProcessBuilder("xvfb-run","--auto-servernum","--server-num=1",vrepcommand,
 			// "-h");
