@@ -12,7 +12,6 @@ import es.udc.gii.common.eaf.util.EAFRandom;
 public class EvolJEAFMazeR {
 
 	public static int startNumber;
-	public static int generation = 0;
 
 	// static EvolutionaryAlgorithm algorithm;
 
@@ -63,31 +62,31 @@ public class EvolJEAFMazeR {
 		int myRank = MPI.COMM_WORLD.Rank();
 		myRank = myRank + startNumber;
 
-		String vrepcommand = new String("./vrep" + myRank + ".sh");
-
-		/*Initialize a v-rep simulator based on the starNumber parameter */
-		try {
-			// ProcessBuilder qq=new ProcessBuilder(vrepcommand,"-h");
-			// ProcessBuilder qq = new
-			// ProcessBuilder("xvfb-run","--auto-servernum","--server-num=1",vrepcommand,
-			// "-h");
-			// ProcessBuilder qq=new ProcessBuilder(vrepcommand);
-			ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h",
-					"/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt");
-			// ProcessBuilder qq = new
-			// ProcessBuilder(vrepcommand,"/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt");
-			// Map<String, String> env = qq.environment();
-			qq.directory(new File("/home/rodr/V-REP/Vrep" + myRank + "/"));
-			// qq.inheritIO();
-			File log = new File("Simout/log");
-			qq.redirectErrorStream(true);
-			qq.redirectOutput(Redirect.appendTo(log));
-			qq.start();
-			Thread.sleep(10000);
-		} catch (Exception e) {
-			System.out.println(e.toString());
-			e.printStackTrace();
-		}
+//		String vrepcommand = new String("./vrep" + myRank + ".sh");
+//
+//		/*Initialize a v-rep simulator based on the starNumber parameter */
+//		try {
+//			// ProcessBuilder qq=new ProcessBuilder(vrepcommand,"-h");
+//			// ProcessBuilder qq = new
+//			// ProcessBuilder("xvfb-run","--auto-servernum","--server-num=1",vrepcommand,
+//			// "-h");
+//			// ProcessBuilder qq=new ProcessBuilder(vrepcommand);
+//			ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h",
+//					"/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt");
+//			// ProcessBuilder qq = new
+//			// ProcessBuilder(vrepcommand,"/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt");
+//			// Map<String, String> env = qq.environment();
+//			qq.directory(new File("/home/rodr/V-REP/Vrep" + myRank + "/"));
+//			// qq.inheritIO();
+//			File log = new File("Simout/log");
+//			qq.redirectErrorStream(true);
+//			qq.redirectOutput(Redirect.appendTo(log));
+//			qq.start();
+//			Thread.sleep(10000);
+//		} catch (Exception e) {
+//			System.out.println(e.toString());
+//			e.printStackTrace();
+//		}
 
 		// Initialize Random Number Generator
 		EAFRandom.init(seed != -Long.MAX_VALUE ? seed : System
@@ -113,22 +112,22 @@ public class EvolJEAFMazeR {
 			System.out.println("Finished");
 		}
 		// kill all the v-rep processes
-		try {
-			// ProcessBuilder qq=new ProcessBuilder("killall","-r","vrep");
-			// ProcessBuilder qq=new
-			// ProcessBuilder("killall","-r","vrep"+myRank+".sh");
-			ProcessBuilder qq = new ProcessBuilder("killall", "vrep" + myRank);
-			File log = new File("Simout/log");
-			qq.redirectErrorStream(true);
-			qq.redirectOutput(Redirect.appendTo(log));
-			Process p = qq.start();
-			int exitVal = p.waitFor();
-			System.out.println("Terminated vrep" + myRank + " with error code "
-					+ exitVal);
-		} catch (Exception e) {
-			System.out.println(e.toString());
-			e.printStackTrace();
-		}
+//		try {
+//			// ProcessBuilder qq=new ProcessBuilder("killall","-r","vrep");
+//			// ProcessBuilder qq=new
+//			// ProcessBuilder("killall","-r","vrep"+myRank+".sh");
+//			ProcessBuilder qq = new ProcessBuilder("killall", "vrep" + myRank);
+//			File log = new File("Simout/log");
+//			qq.redirectErrorStream(true);
+//			qq.redirectOutput(Redirect.appendTo(log));
+//			Process p = qq.start();
+//			int exitVal = p.waitFor();
+//			System.out.println("Terminated vrep" + myRank + " with error code "
+//					+ exitVal);
+//		} catch (Exception e) {
+//			System.out.println(e.toString());
+//			e.printStackTrace();
+//		}
 
 		// Terminate Parallel Environment
 		MPI.Finalize();

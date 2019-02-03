@@ -1,6 +1,7 @@
 package evolutionJEAFParallelRemote;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -10,6 +11,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 import unalcol.random.integer.IntUniform;
 import mpi.MPI;
@@ -22,6 +25,9 @@ import es.udc.gii.common.eaf.problem.objective.ObjectiveFunction;
 import evolutionJEAFParallel.EvolJEAFMaze;
 
 public class CFMSRand3 extends ObjectiveFunction {
+	
+	protected int generation = 0;
+	protected int currentEnv = -1;
 
 	public double evaluate(double[] values) {
 
@@ -55,7 +61,7 @@ public class CFMSRand3 extends ObjectiveFunction {
 		int[] orientation = new int[] { 1, 0, 1, 0, 1, 0, 1, 0 };
 
 		// Simulation Parameters
-		int MaxTime = 40;
+		int MaxTime = 120;
 
 		// Pack Integers into one String data signal
 		IntWA NumberandOri = new IntWA(Numberofmodules + 3);
@@ -99,94 +105,87 @@ public class CFMSRand3 extends ObjectiveFunction {
 		// Array that receives fitness from the simulator or signals a crash
 		float[] rfitness = new float[3];
 
-		// Solved environment flag
-		float[] pass = new float[] { 0, 0, 0 };
-
 		// Fitness to be returned to Evolutionary Algorithm
-		float[] fitness = new float[] { 1, 1, 1 };
+		float fitness = 1;
 
 		// Number of retries in case of simulator crash
 		int maxTries = 5;
-
-		// Retry if there is a simulator crash
-		for (int j = 0; j < maxTries; j++) {
-
-			// Simulator interaction start
-			remoteApi vrep = new remoteApi(); // Create simulator control object
-			vrep.simxFinish(-1); // just in case, close all opened connections
-			// Connect with the corresponding simulator remote server
-			int clientID = vrep.simxStart("127.0.0.1", 19997 - myRank, true,
-					true, 5000, 5);
-
-			if (clientID != -1) {
-				// Set Simulator signal values
-				vrep.simxSetStringSignal(clientID, "NumberandOri", strNO,
-						vrep.simx_opmode_oneshot_wait);
-				vrep.simxSetStringSignal(clientID, "ControlParam", strCP,
-						vrep.simx_opmode_oneshot_wait);
-				vrep.simxSetStringSignal(clientID, "Maze", strSeq,
-						vrep.simx_opmode_oneshot_wait);
-
-				try {
-					// *******************************************************************************************************************************
-
-					// New Maze Parameters (Already a string)
-					mazeseq = subenvperm[currentEnv];
-					strSeq.setArray(mazeseq);
-					vrep.simxSetStringSignal(clientID, "Maze", strSeq,
-							vrep.simx_opmode_oneshot_wait);
-
-					// Run Scene in the simulator
-					rfitness = RunSimulation(vrep, clientID, MaxTime, myRank);
-
-					if (rfitness[0] == -1) {
-						RestartSim(myRank, j);
-						continue;
-					}
-
-					// Retrieve the fitness if there is no crash
-					fitness[0] = rfitness[1];
-					pass[0] = rfitness[2];
-					
-					// *******************************************************************************************************************************
-				} catch (InterruptedException e) {
-					System.err.println("InterruptedException: "
-							+ e.getMessage());
-				}
-				// Close connection with the simulator
-				vrep.simxFinish(clientID);
-
-			} else {
-				// No connection could be established
-				System.out.println("Failed connecting to remote API server");
-				System.out.println("Trying again for the " + j + " time");
-				continue;
-			}
-
-			break;
+		
+		try {
+			updateCurrentEnv("Testout/TestSRand3.txt",myRank);
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 
+		// Retry if there is a simulator crash
+//		for (int j = 0; j < maxTries; j++) {
+//
+//			// Simulator interaction start
+//			remoteApi vrep = new remoteApi(); // Create simulator control object
+//			vrep.simxFinish(-1); // just in case, close all opened connections
+//			// Connect with the corresponding simulator remote server
+//			int clientID = vrep.simxStart("127.0.0.1", 19997 - myRank, true,
+//					true, 5000, 5);
+//
+//			if (clientID != -1) {
+//				// Set Simulator signal values
+//				vrep.simxSetStringSignal(clientID, "NumberandOri", strNO,
+//						vrep.simx_opmode_oneshot_wait);
+//				vrep.simxSetStringSignal(clientID, "ControlParam", strCP,
+//						vrep.simx_opmode_oneshot_wait);
+//				vrep.simxSetStringSignal(clientID, "Maze", strSeq,
+//						vrep.simx_opmode_oneshot_wait);
+//
+//				try {
+//					// *******************************************************************************************************************************
+//
+//					// New Maze Parameters (Already a string)
+//					mazeseq = subenvperm[currentEnv];
+//					strSeq.setArray(mazeseq);
+//					vrep.simxSetStringSignal(clientID, "Maze", strSeq,
+//							vrep.simx_opmode_oneshot_wait);
+//
+//					// Run Scene in the simulator
+//					rfitness = RunSimulation(vrep, clientID, MaxTime, myRank);
+//
+//					if (rfitness[0] == -1) {
+//						RestartSim(myRank, j);
+//						continue;
+//					}
+//
+//					// Retrieve the fitness if there is no crash
+//					fitness[0] = rfitness[1];
+//					
+//					// *******************************************************************************************************************************
+//				} catch (InterruptedException e) {
+//					System.err.println("InterruptedException: "
+//							+ e.getMessage());
+//				}
+//				// Close connection with the simulator
+//				vrep.simxFinish(clientID);
+//
+//			} else {
+//				// No connection could be established
+//				System.out.println("Failed connecting to remote API server");
+//				System.out.println("Trying again for the " + j + " time");
+//				continue;
+//			}
+//
+//			break;
+//		}
+
 		// Calculate global fitness and convert it from float to Double
-		// double fitnessd = (fitness[0]+fitness[1]+fitness[2]+fitness[3])/4;
+		
+		
+
+		
+		
+		fitness = (float)Math.pow(ampli,2)+(float)Math.pow(offset,2)+(float)Math.pow(phase,2);
 
 		double fitnessd;
-
-//		if (pass[0] == 1) {
-//			if (pass[1] == 1) {
-//				if (pass[2] == 1) {
-//					fitnessd = ((fitness[0] + fitness[1] + fitness[2]) / 3) - 4f;
-//				} else {
-//					fitnessd = fitness[2] - 4f;
-//				}
-//			} else {
-//				fitnessd = fitness[1] - 2f;
-//			}
-//		} else {
-//			fitnessd = fitness[0];
-//		}
 		
-//		fitnessd = (fitness[0] + fitness[1] + fitness[2]) / 3;
-		fitnessd = fitness[0];
+		fitnessd = fitness;
 		
 
 		try {
@@ -194,29 +193,12 @@ public class CFMSRand3 extends ObjectiveFunction {
 			pw = new PrintWriter(fichero);
 			// Discovering Generation number based on the output file
 
-			// int numgen = generation("Testout/TestS2430.txt")+1;
-
 			int numgen = 0;
 
-			// if (myRank<10){
-			// numgen = generation("Testout/TestS2430.txt")+1;
-			// }else if (myRank<20){
-			// numgen = generation("Testout/TestS24310.txt")+1;
-			// }else {
-			// numgen = generation("Testout/TestS24320.txt")+1;
-			// }
+			numgen = getGeneration("Testout/TestSRand3.txt") + 1;
 
-			if (myRank < 8) {
-				numgen = generation("Testout/TestSRand30.txt") + 1;
-			} else {
-				numgen = generation("Testout/TestSRand38.txt") + 1;
-			}
 
-			pw.println(numgen + "," + seq[0] + "," + seq[1] + "," + seq[2]
-					+ "," + pass[0] + "," + pass[1] + "," + pass[2] + ","
-					+ fitness[0] + "," + fitness[1] + "," + fitness[2] + ","
-					+ fitnessd);
-			// pw.println(fitnessd + "-" + reportDate);
+			pw.println(numgen + "," + currentEnv + "," + fitness + "," + fitnessd);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -242,6 +224,76 @@ public class CFMSRand3 extends ObjectiveFunction {
 
 	public void reset() {
 
+	}
+	
+	void updateCurrentEnv(String outputFile, int thread) throws InterruptedException {
+		if ((getGeneration(outputFile) + 1) != generation || currentEnv == -1) {
+			if (thread == 0) {
+				writeNotReady("Random/current.txt");
+				currentEnv = ThreadLocalRandom.current().nextInt(0, 5 + 1);
+				generation = (getGeneration(outputFile) + 1);
+				writeCurrent("Random/current.txt",currentEnv);
+			} else {
+				Thread.sleep(100);
+				int[] parsed = new int[2];
+				parsed = readCurrent("Random/current.txt");
+				while (parsed[0] == 0) {
+					System.out.println("Waiting in "+thread);
+					Thread.sleep(100);
+					parsed = readCurrent("Random/current.txt");
+				}
+				currentEnv = parsed[1];
+				generation = (getGeneration(outputFile) + 1);
+			}
+		}
+
+	}
+	
+
+	private void writeNotReady(String file) {
+		String fileContent = "0,0";
+		FileWriter fileWriter;
+		try {
+			fileWriter = new FileWriter(file);
+		    fileWriter.write(fileContent);
+		    fileWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
+	}
+
+	private int[] readCurrent(String filePath) {
+		int[] parsed = new int[2];
+		File file = new File(filePath);
+		Scanner input;
+		try {
+			input = new Scanner(file);
+			input.useDelimiter(",");
+			parsed[0] = Integer.parseInt(input.next());
+			parsed[1] = Integer.parseInt(input.next());
+			input.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//System.out.println("parsed = "+parsed[0]+","+parsed[1]);
+
+		return parsed;
+
+	}
+
+	private void writeCurrent(String file, int currentEnv2) {
+		String fileContent = "1,"+currentEnv2;
+		FileWriter fileWriter;
+		try {
+			fileWriter = new FileWriter(file);
+		    fileWriter.write(fileContent);
+		    fileWriter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
+		
 	}
 
 	void RestartSim(int myRank, int j) {
@@ -326,7 +378,7 @@ public class CFMSRand3 extends ObjectiveFunction {
 
 		while (out.getValue() == 0) {
 
-			Thread.sleep(10);
+			Thread.sleep(100);
 
 			if (vrep.simxGetIntegerSignal(clientID, "finished", out,
 					vrep.simx_opmode_buffer) == vrep.simx_return_ok) {
@@ -399,7 +451,7 @@ public class CFMSRand3 extends ObjectiveFunction {
 
 	}
 
-	public int generation(String string) {
+	public int getGeneration(String string) {
 		RandomAccessFile fileHandler = null;
 		try {
 			fileHandler = new RandomAccessFile(string, "r");
@@ -451,5 +503,7 @@ public class CFMSRand3 extends ObjectiveFunction {
 				}
 		}
 	}
+	
+
 
 }
