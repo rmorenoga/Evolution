@@ -71,16 +71,24 @@ public class CFMSRand3 extends ObjectiveFunction {
 		strNO.setArray(NumberandOri.getCharArrayFromArray());
 
 		// 3 Sub-environment maze parameters
-		char[][] subenv = new char[][] { { 's', 'l', 's' }, { 'b' },
-				{ 's', 'r', 's' } };
+//		char[][] subenv = new char[][] { { 's', 'l', 's' }, { 'b' },
+//				{ 's', 'r', 's' } };
 
+		char[][] subenvperm = new char[][] {
+			{ 's', 'l', 's', 'b', 's', 'r', 's' },
+			{ 's', 'l', 's', 's', 'r', 's', 'b' },
+			{ 'b', 's', 'l', 's', 's', 'r', 's' },
+			{ 'b', 's', 'r', 's', 's', 'l', 's' },
+			{ 's', 'r', 's', 's', 'l', 's', 'b' },
+			{ 's', 'r', 's', 'b', 's', 'l', 's' } };
+			
 		// Generate random 3 sub-environment sequence (by Brute Force)
-		IntUniform r = new IntUniform(3);
-		int[] seq = r.generate(3);
-		while (seq[1] == seq[0]) {
-			seq[1] = r.next();
-		}
-		seq[2] = 5 - ((seq[0] + 1) + (seq[1] + 1));
+//		IntUniform r = new IntUniform(3);
+//		int[] seq = r.generate(3);
+//		while (seq[1] == seq[0]) {
+//			seq[1] = r.next();
+//		}
+//		seq[2] = 5 - ((seq[0] + 1) + (seq[1] + 1));
 
 		// Maze Parameters (Already a string)
 		char[] mazeseq = new char[] { 's' }; // Default Maze Sequence
@@ -123,7 +131,7 @@ public class CFMSRand3 extends ObjectiveFunction {
 					// *******************************************************************************************************************************
 
 					// New Maze Parameters (Already a string)
-					mazeseq = subenv[seq[0]];
+					mazeseq = subenvperm[currentEnv];
 					strSeq.setArray(mazeseq);
 					vrep.simxSetStringSignal(clientID, "Maze", strSeq,
 							vrep.simx_opmode_oneshot_wait);
@@ -139,49 +147,7 @@ public class CFMSRand3 extends ObjectiveFunction {
 					// Retrieve the fitness if there is no crash
 					fitness[0] = rfitness[1];
 					pass[0] = rfitness[2];
-					// *******************************************************************************************************************************
-					if (pass[0] == 1) {
-						// New Maze Parameters (Already a string)
-						mazeseq = subenv[seq[1]];
-						strSeq.setArray(mazeseq);
-						vrep.simxSetStringSignal(clientID, "Maze", strSeq,
-								vrep.simx_opmode_oneshot_wait);
-
-						// Run Scene in the simulator
-						rfitness = RunSimulation(vrep, clientID, MaxTime,
-								myRank);
-
-						if (rfitness[0] == -1) {
-							RestartSim(myRank, j);
-							continue;
-						}
-
-						// Retrieve the fitness if there is no crash
-						fitness[1] = rfitness[1];
-						pass[1] = rfitness[2];
-					}
-
-					// *******************************************************************************************************************************
-					if (pass[0] == 1 && pass[1] == 1) {
-						// New Maze Parameters (Already a string)
-						mazeseq = subenv[seq[2]];
-						strSeq.setArray(mazeseq);
-						vrep.simxSetStringSignal(clientID, "Maze", strSeq,
-								vrep.simx_opmode_oneshot_wait);
-
-						// Run Scene in the simulator
-						rfitness = RunSimulation(vrep, clientID, MaxTime,
-								myRank);
-
-						if (rfitness[0] == -1) {
-							RestartSim(myRank, j);
-							continue;
-						}
-
-						// Retrieve the fitness if there is no crash
-						fitness[2] = rfitness[1];
-						pass[2] = rfitness[2];
-					}
+					
 					// *******************************************************************************************************************************
 				} catch (InterruptedException e) {
 					System.err.println("InterruptedException: "
@@ -219,7 +185,9 @@ public class CFMSRand3 extends ObjectiveFunction {
 //			fitnessd = fitness[0];
 //		}
 		
-		fitnessd = (fitness[0] + fitness[1] + fitness[2]) / 3;
+//		fitnessd = (fitness[0] + fitness[1] + fitness[2]) / 3;
+		fitnessd = fitness[0];
+		
 
 		try {
 			fichero = new FileWriter("Testout/Indiv" + myRank + ".txt", true);

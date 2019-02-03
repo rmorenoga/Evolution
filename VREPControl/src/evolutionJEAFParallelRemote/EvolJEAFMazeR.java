@@ -12,6 +12,7 @@ import es.udc.gii.common.eaf.util.EAFRandom;
 public class EvolJEAFMazeR {
 
 	public static int startNumber;
+	public static int generation = 0;
 
 	// static EvolutionaryAlgorithm algorithm;
 
