@@ -76,7 +76,7 @@ public class EvolJEAFMazeR {
 			// ProcessBuilder qq = new
 			// ProcessBuilder(vrepcommand,"/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt");
 			// Map<String, String> env = qq.environment();
-			qq.directory(new File("/home/rodr/V-REP/Vrep" + myRank + "/"));
+			qq.directory(new File("/home/morenoja/V-REP/Vrep" + myRank + "/"));
 			// qq.inheritIO();
 			File log = new File("Simout/log");
 			qq.redirectErrorStream(true);

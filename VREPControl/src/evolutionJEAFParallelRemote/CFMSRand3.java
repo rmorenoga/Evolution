@@ -101,7 +101,7 @@ public class CFMSRand3 extends ObjectiveFunction {
 		float fitness = 1;
 
 		// Number of retries in case of simulator crash
-		int maxTries = 5;
+		int maxTries = 6;
 		
 		try {
 			updateCurrentEnv("Testout/TestSRand3.txt",myRank);
@@ -161,6 +161,9 @@ public class CFMSRand3 extends ObjectiveFunction {
 				// No connection could be established
 				System.out.println("Failed connecting to remote API server");
 				System.out.println("Trying again for the " + j + " time");
+				if (j==(maxTries-2)) {
+					RestartSim(myRank, j);
+				}
 				continue;
 			}
 
@@ -311,7 +314,7 @@ public class CFMSRand3 extends ObjectiveFunction {
 			// ProcessBuilder("xvfb-run","--auto-servernum","--server-num=1",vrepcommand,
 			// "-h");
 			// Open the simulator from its own directory
-			qq.directory(new File("/home/rodr/V-REP/Vrep" + myRank + "/"));
+			qq.directory(new File("/home/morenoja/V-REP/Vrep" + myRank + "/"));
 			// Specify output file for command line messages of the simulator
 			qq.redirectErrorStream(true);
 			qq.redirectOutput(Redirect.appendTo(log));

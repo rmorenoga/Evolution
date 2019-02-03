@@ -4,10 +4,10 @@
 #
 
 
-for i in {0..3}
+for i in {0..11}
 do
 
-cp -r ./Maze /home/rodr/V-REP/Vrep$i/scenes/
-cp -r ./Maze/corridors /home/rodr/V-REP/Vrep$i/models/
+cp -r ./Maze /home/morenoja/V-REP/Vrep$i/scenes/
+cp -r ./Maze/corridors /home/morenoja/V-REP/Vrep$i/models/
 
 done
