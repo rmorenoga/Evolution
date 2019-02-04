@@ -11,6 +11,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -222,10 +223,10 @@ public class CFMSRand3 extends ObjectiveFunction {
 				generation = (getGeneration(outputFile) + 1);
 				writeCurrent("Random/current.txt",currentEnv);
 			} else {
-				Thread.sleep(100);
+				Thread.sleep(200);
 				int[] parsed = new int[2];
 				parsed = readCurrent("Random/current.txt");
-				while (parsed[0] == 0) {
+				while (parsed[0] != 1) {
 					System.out.println("Waiting in "+thread);
 					Thread.sleep(100);
 					parsed = readCurrent("Random/current.txt");
@@ -251,14 +252,25 @@ public class CFMSRand3 extends ObjectiveFunction {
 	}
 
 	private int[] readCurrent(String filePath) {
-		int[] parsed = new int[2];
+		int[] parsed = new int[]{0,-1};
 		File file = new File(filePath);
 		Scanner input;
 		try {
 			input = new Scanner(file);
 			input.useDelimiter(",");
-			parsed[0] = Integer.parseInt(input.next());
-			parsed[1] = Integer.parseInt(input.next());
+			if (!input.hasNextInt()) {
+				input.close();
+				return parsed;
+			} else {
+				parsed[0] = input.nextInt();
+				if(!input.hasNextInt()) {
+					input.close();
+					parsed[0] = 0;
+					return parsed;
+				} else {
+					parsed[1] = input.nextInt();
+				}	
+			}
 			input.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
