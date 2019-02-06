@@ -40,13 +40,13 @@ public class HillTest {
 		try {
 			
 			ProcessBuilder qq = new ProcessBuilder(vrepcommand, "-h",
-					"/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt");
+					"scenes/Maze/MazeBuilderR02.ttt");
 			 //ProcessBuilder qq = new
 			 //ProcessBuilder(vrepcommand,"/home/rodrigo/V-REP/Modular/Maze/MazeBuilder01.ttt");
 			 //ProcessBuilder qq = new
 					 //ProcessBuilder(vrepcommand,"-h","/home/rodrigo/V-REP/Modular/Maze/MazeBuilder01.ttt");
 			
-			qq.directory(new File("/home/rodr/V-REP/Vrep" + simNumber + "/"));
+			qq.directory(new File("/home/morenoja/V-REP/Vrep" + simNumber + "/"));
 			//qq.directory(new File("/home/rodrigo/V-REP/Vrep" + simNumber + "/"));
 			File log = new File("Simout/log");
 			qq.redirectErrorStream(true);
@@ -68,8 +68,8 @@ public class HillTest {
 	Space<double[]> space = new HyperCube(min,max);
 	
 	//Optimization function
-	//OptimizationFunction<double[]> function = new HillMazeRand3(simNumber, alpha);
-	OptimizationFunction<double[]> function = new HillMAS(simNumber, alpha);
+	OptimizationFunction<double[]> function = new HillMazeRand3(simNumber, alpha);
+	//OptimizationFunction<double[]> function = new HillMAS(simNumber, alpha);
 	Goal<double[]> goal = new OptimizationGoal<double[]>(function);
 	
 	
@@ -78,7 +78,7 @@ public class HillTest {
 	IntensityMutation variation = new GaussianMutation(0.1,null,adapt);
 	
 	//Search Method
-	int MAXITERS = 1000;
+	int MAXITERS = 9000;
 	boolean neutral = true;
 	HillClimbing<double[]> search = new HillClimbing<double[]>(variation, neutral, MAXITERS);
 	

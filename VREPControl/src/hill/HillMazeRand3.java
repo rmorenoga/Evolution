@@ -2,6 +2,7 @@ package hill;
 
 import java.io.File;
 import java.lang.ProcessBuilder.Redirect;
+import java.util.concurrent.ThreadLocalRandom;
 
 import unalcol.optimization.OptimizationFunction;
 import unalcol.random.integer.IntUniform;
@@ -17,6 +18,7 @@ public class HillMazeRand3 extends OptimizationFunction<double[]> {
 	
 	public int simNumber = 0;
 	public float alpha = 0.7f;
+	protected int currentEnv = -1;
 
 	HillMazeRand3(int simNumber) {
 		this.simNumber = simNumber;
@@ -51,7 +53,7 @@ public class HillMazeRand3 extends OptimizationFunction<double[]> {
 		int[] orientation = new int[] { 1, 0, 1, 0, 1, 0, 1, 0 };
 
 		// Simulation Parameters
-		int MaxTime = 40;
+		int MaxTime = 120;
 
 		// Pack Integers into one String data signal
 		IntWA NumberandOri = new IntWA(Numberofmodules + 3);
@@ -67,16 +69,19 @@ public class HillMazeRand3 extends OptimizationFunction<double[]> {
 		strNO.setArray(NumberandOri.getCharArrayFromArray());
 
 		// 3 Sub-environment maze parameters
-		char[][] subenv = new char[][] { { 's', 'l', 's' }, { 'b' },
-				{ 's', 'r', 's' } };
+//		char[][] subenv = new char[][] { { 's', 'l', 's' }, { 'b' },
+//				{ 's', 'r', 's' } };
 		
-		// Generate random 3 sub-environment sequence (by Brute Force)
-		IntUniform r = new IntUniform(3);
-		int[] seq = r.generate(3);
-		while (seq[1] == seq[0]) {
-			seq[1] = r.next();
-		}
-		seq[2] = 5 - ((seq[0] + 1) + (seq[1] + 1));
+		char[][] subenvperm = new char[][] {
+			{ 's', 'l', 's', 'b', 's', 'r', 's' },
+			{ 's', 'l', 's', 's', 'r', 's', 'b' },
+			{ 'b', 's', 'l', 's', 's', 'r', 's' },
+			{ 'b', 's', 'r', 's', 's', 'l', 's' },
+			{ 's', 'r', 's', 's', 'l', 's', 'b' },
+			{ 's', 'r', 's', 'b', 's', 'l', 's' } };
+		
+	
+		
 
 		// Maze Parameters (Already a string)
 		char[] mazeseq = new char[] { 's' }; // Default Maze Sequence
@@ -86,15 +91,13 @@ public class HillMazeRand3 extends OptimizationFunction<double[]> {
 		// Array that receives fitness from the simulator or signals a crash
 		float[] rfitness = new float[3];
 
-		// Solved environment flag
-		float[] pass = new float[] { 0, 0, 0 };
-
 		// Fitness to be returned to Evolutionary Algorithm
-		float[] fitness = new float[] { 1, 1, 1 };
+		float fitness = 1;
 
 		// Number of retries in case of simulator crash
 		int maxTries = 5;
 
+		currentEnv = ThreadLocalRandom.current().nextInt(0, 5 + 1);
 		// Retry if there is a simulator crash
 		for (int j = 0; j < maxTries; j++) {
 
@@ -120,7 +123,7 @@ public class HillMazeRand3 extends OptimizationFunction<double[]> {
 					// *******************************************************************************************************************************
 
 					// New Maze Parameters (Already a string)
-					mazeseq = subenv[seq[0]];
+					mazeseq = subenvperm[currentEnv];
 					strSeq.setArray(mazeseq);
 					vrep.simxSetStringSignal(clientID, "Maze", strSeq,
 							vrep.simx_opmode_oneshot_wait);
@@ -134,51 +137,8 @@ public class HillMazeRand3 extends OptimizationFunction<double[]> {
 					}
 
 					// Retrieve the fitness if there is no crash
-					fitness[0] = rfitness[1];
-					pass[0] = rfitness[2];
-					// *******************************************************************************************************************************
-					if (pass[0] == 1) {
-						// New Maze Parameters (Already a string)
-						mazeseq = subenv[seq[1]];
-						strSeq.setArray(mazeseq);
-						vrep.simxSetStringSignal(clientID, "Maze", strSeq,
-								vrep.simx_opmode_oneshot_wait);
-
-						// Run Scene in the simulator
-						rfitness = RunSimulation(vrep, clientID, MaxTime,
-								simNumber);
-
-						if (rfitness[0] == -1) {
-							RestartSim(simNumber, j);
-							continue;
-						}
-
-						// Retrieve the fitness if there is no crash
-						fitness[1] = rfitness[1];
-						pass[1] = rfitness[2];
-					}
-
-					// *******************************************************************************************************************************
-					if (pass[0] == 1 && pass[1] == 1) {
-						// New Maze Parameters (Already a string)
-						mazeseq = subenv[seq[2]];
-						strSeq.setArray(mazeseq);
-						vrep.simxSetStringSignal(clientID, "Maze", strSeq,
-								vrep.simx_opmode_oneshot_wait);
-
-						// Run Scene in the simulator
-						rfitness = RunSimulation(vrep, clientID, MaxTime,
-								simNumber);
-
-						if (rfitness[0] == -1) {
-							RestartSim(simNumber, j);
-							continue;
-						}
-
-						// Retrieve the fitness if there is no crash
-						fitness[2] = rfitness[1];
-						pass[2] = rfitness[2];
-					}
+					fitness = rfitness[1];
+					
 					// *******************************************************************************************************************************
 				} catch (InterruptedException e) {
 					System.err.println("InterruptedException: "
@@ -199,7 +159,7 @@ public class HillMazeRand3 extends OptimizationFunction<double[]> {
 
 		// Calculate global fitness and convert it from float to Double
 
-		double fitnessd = (fitness[0] + fitness[1] + fitness[2]) / 3;
+		double fitnessd = fitness;
 
 		// Calculate evaluation time and print it
 		long stopTime = System.currentTimeMillis();
@@ -207,9 +167,7 @@ public class HillMazeRand3 extends OptimizationFunction<double[]> {
 		System.out.println(elapsedTime);
 
 		// System.out.println("Total Fitness = "+fitnessd+" myrank "+myRank);
-		String tr = new String("->,"+seq[0] + "," + seq[1] + "," + seq[2]
-				+ "," + pass[0] + "," + pass[1] + "," + pass[2] + ","
-				+ fitness[0] + "," + fitness[1] + "," + fitness[2]);
+		String tr = new String("->,"+currentEnv + "," + fitness);
 		
         Tracer.trace(this,tr);
 		return fitnessd;
@@ -240,12 +198,12 @@ public class HillMazeRand3 extends OptimizationFunction<double[]> {
 			// Command to open a simulator with no window
 			// qq = new ProcessBuilder(vrepcommand,"-h");
 			qq = new ProcessBuilder(vrepcommand, "-h",
-					"/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt");
+					"scenes/Maze/MazeBuilderR02.ttt");
 			// qq = new
 			// ProcessBuilder("xvfb-run","--auto-servernum","--server-num=1",vrepcommand,
 			// "-h");
 			// Open the simulator from its own directory
-			qq.directory(new File("/home/rodr/V-REP/Vrep" + myRank + "/"));
+			qq.directory(new File("/home/morenoja/V-REP/Vrep" + myRank + "/"));
 			// Specify output file for command line messages of the simulator
 			qq.redirectErrorStream(true);
 			qq.redirectOutput(Redirect.appendTo(log));
