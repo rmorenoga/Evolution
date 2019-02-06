@@ -95,13 +95,13 @@ public class HillTest {
 	FileTracer tracer = new FileTracer("Hillsim"+simNumber+".txt",',');
 	ConsoleTracer tracer1 = new ConsoleTracer();
 	//Tracer.addTracer(goal, tracer);
-//	Tracer.addTracer(search, tracer);
-//	Tracer.addTracer(HillMazeRand3.class,tracer);
-//	Tracer.addTracer(search,tracer1);
-//	Tracer.addTracer(HillMazeRand3.class,tracer1);.
 	Tracer.addTracer(search, tracer);
-	Tracer.addTracer(HillMAS.class,tracer);
+	Tracer.addTracer(HillMazeRand3.class,tracer);
 	Tracer.addTracer(search,tracer1);
+	Tracer.addTracer(HillMazeRand3.class,tracer1);
+//	Tracer.addTracer(search, tracer);
+//	Tracer.addTracer(HillMAS.class,tracer);
+//	Tracer.addTracer(search,tracer1);
 	//Tracer.addTracer(HillMaze.class,tracer1);
 	
 	

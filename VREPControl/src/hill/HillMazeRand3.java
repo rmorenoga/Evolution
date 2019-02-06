@@ -167,7 +167,7 @@ public class HillMazeRand3 extends OptimizationFunction<double[]> {
 		System.out.println(elapsedTime);
 
 		// System.out.println("Total Fitness = "+fitnessd+" myrank "+myRank);
-		String tr = new String("->,"+currentEnv + "," + fitness);
+		String tr = new String("->,"+currentEnv + "," + fitness + "," + fitnessd);
 		
         Tracer.trace(this,tr);
 		return fitnessd;
