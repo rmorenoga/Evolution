@@ -88,7 +88,7 @@ public class EmH extends OptimizationFunction<double[]>{
 	    System.out.println("Fitness in "+ threadInstance + " = " + (-fitness));
 	    
 	    resultLogger.accumulate("Gen" + iteration, eval);
-		
+	    
 		return -fitness;
 		
 	}

@@ -106,7 +106,7 @@ public class HAEAEmR {
 		SimpleHaeaOperators<double[]> operators = new SimpleHaeaOperators<double[]>(realVariation,realXOver,simpleXOver);
 		Selection<double[]> selection = new Tournament<double[]>(4);
 		
-		HaeaStep step = new IterHAEAStep(POPSIZE, selection, operators);
+		HaeaStep step = new IterHAEAStep(POPSIZE, selection, operators,evolution);
 		PopulationSearch search = new IterativePopulationSearch(step,
 				new ForLoopCondition<Population>(MAXITERS));
 		
