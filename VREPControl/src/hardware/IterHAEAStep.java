@@ -29,9 +29,8 @@ public class IterHAEAStep<T> extends HaeaStep<T>{
 	}
 
 	public IterHAEAStep(int mu, Selection<T> parent_selection, HaeaOperators<T> operators,JSONObject resultLogger) {
-		super(mu, parent_selection, operators);
+		super(mu, new HaeaVariation<T>(parent_selection, operators),new CHaeaReplacement<T>( operators ));
 		this.resultLogger = resultLogger;
-		// TODO Auto-generated constructor stub
 	}
 
 	public IterHAEAStep(int mu, Selection<T> parent_selection, HaeaReplacement<T> replacement) {

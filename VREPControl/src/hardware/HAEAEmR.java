@@ -92,7 +92,7 @@ public class HAEAEmR {
 		test.put("xover2", "SimpleXOver()");
 		
 	
-		int POPSIZE = 8;
+		int POPSIZE = 5;
 		int MAXITERS = 10;
 		test.put("popsize", POPSIZE);
 		test.put("maxiters", MAXITERS);
