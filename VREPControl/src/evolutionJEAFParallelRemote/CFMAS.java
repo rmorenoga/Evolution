@@ -20,9 +20,7 @@ public class CFMAS extends ObjectiveFunction {
 
 	public double evaluate(double[] values) {
 
-		// Create objects to save information into a txt file
-		FileWriter fichero = null;
-		PrintWriter pw = null;
+
 
 		// Retrieve process number from mpj
 		int myRank = MPI.COMM_WORLD.Rank();
@@ -156,45 +154,6 @@ public class CFMAS extends ObjectiveFunction {
 
 		double fitnesst = sum;
 
-		try {
-			fichero = new FileWriter("Testout/Indiv" + myRank + ".txt", true);
-			pw = new PrintWriter(fichero);
-			// Discovering Generation number based on the output file
-
-			// int numgen = generation("Testout/TestS2430.txt")+1;
-
-			int numgen = 0;
-
-			// if (myRank<10){
-			// numgen = generation("Testout/TestS2430.txt")+1;
-			// }else if (myRank<20){
-			// numgen = generation("Testout/TestS24310.txt")+1;
-			// }else {
-			// numgen = generation("Testout/TestS24320.txt")+1;
-			// }
-
-			if (myRank < 8) {
-				numgen = generation("Testout/TestSMAS0.txt") + 1;
-			} else {
-				numgen = generation("Testout/TestSMAS8.txt") + 1;
-			}
-
-			pw.println(numgen + "," + ampli + "," + offset + "," + phase + ","
-					+ fitness[0] + "," + fitness[1] + "," + fitness[2] + ","
-					+ fitness[3] + "," + fitness[4] + "," + fitness[5]+ "," + fitnesst);
-			// pw.println(fitnessd + "-" + reportDate);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (null != fichero)
-					fichero.close();
-			} catch (Exception e2) {
-				e2.printStackTrace();
-			}
-		}
-
 		// Calculate evaluation time and print it
 		long stopTime = System.currentTimeMillis();
 		long elapsedTime = stopTime - startTime;
@@ -207,57 +166,6 @@ public class CFMAS extends ObjectiveFunction {
 
 	}
 
-	public int generation(String string) {
-		RandomAccessFile fileHandler = null;
-		try {
-			fileHandler = new RandomAccessFile(string, "r");
-			long fileLength = fileHandler.length() - 1;
-			StringBuilder sb = new StringBuilder();
-
-			for (long filePointer = fileLength; filePointer != -1; filePointer--) {
-				fileHandler.seek(filePointer);
-				int readByte = fileHandler.readByte();
-
-				if (readByte == 0xA) {
-					if (filePointer == fileLength) {
-						continue;
-					}
-					break;
-
-				} else if (readByte == 0xD) {
-					if (filePointer == fileLength - 1) {
-						continue;
-					}
-					break;
-				}
-
-				sb.append((char) readByte);
-
-			}
-
-			if (fileLength <= 0) {
-				return -1;
-			} else {
-				String lastLine = sb.reverse().toString();
-				String number = lastLine.substring(0, lastLine.indexOf(" "));
-				// System.out.println(lastLine.indexOf(" "));
-				return Integer.parseInt(number);
-			}
-
-		} catch (java.io.FileNotFoundException e) {
-			e.printStackTrace();
-			return -1;
-		} catch (java.io.IOException e) {
-			e.printStackTrace();
-			return -1;
-		} finally {
-			if (fileHandler != null)
-				try {
-					fileHandler.close();
-				} catch (IOException e) {
-					/* ignore */
-				}
-		}
-	}
+	
 
 }
