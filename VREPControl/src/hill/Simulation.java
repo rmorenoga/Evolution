@@ -44,7 +44,7 @@ public class Simulation {
 			// Command to open a simulator with no window
 			// qq = new ProcessBuilder(vrepcommand,"-h");
 			qq = new ProcessBuilder(vrepcommand, "-h",
-					"/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt");
+					"scenes/Maze/MazeBuilderR02.ttt");
 			// qq = new
 			// ProcessBuilder("xvfb-run","--auto-servernum","--server-num=1",vrepcommand,
 			// "-h");

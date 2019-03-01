@@ -46,7 +46,7 @@ public class HillTest {
 			 //ProcessBuilder qq = new
 					 //ProcessBuilder(vrepcommand,"-h","/home/rodrigo/V-REP/Modular/Maze/MazeBuilder01.ttt");
 			
-			qq.directory(new File("/home/morenoja/V-REP/Vrep" + simNumber + "/"));
+			qq.directory(new File("/home/rodr/V-REP/Vrep" + simNumber + "/"));
 			//qq.directory(new File("/home/rodrigo/V-REP/Vrep" + simNumber + "/"));
 			File log = new File("Simout/log");
 			qq.redirectErrorStream(true);
@@ -64,11 +64,18 @@ public class HillTest {
 		int DIM = 3;
 		double[] min = DoubleArray.create(DIM,-1);
 		double[] max = DoubleArray.create(DIM,1);
+	
+	//double[][] referencePoints = new double[][] {
+	//		{-0.9714631812016897,0.021137619237815188,0.2832678510656925}
+	//};
 		
+	//double[] radius = DoubleArray.create(DIM, 0.2);
 	Space<double[]> space = new HyperCube(min,max);
+	//Space<double[]> space = new HyperCubeFromPoint(min, max, referencePoints, radius);
 	
 	//Optimization function
-	OptimizationFunction<double[]> function = new HillMazeRand3(simNumber, alpha);
+	//OptimizationFunction<double[]> function = new HillMazeRand3(simNumber, alpha);
+	OptimizationFunction<double[]> function = new HillMaze(simNumber, alpha);
 	//OptimizationFunction<double[]> function = new HillMAS(simNumber, alpha);
 	Goal<double[]> goal = new OptimizationGoal<double[]>(function);
 	
@@ -96,13 +103,16 @@ public class HillTest {
 	ConsoleTracer tracer1 = new ConsoleTracer();
 	//Tracer.addTracer(goal, tracer);
 	Tracer.addTracer(search, tracer);
-	Tracer.addTracer(HillMazeRand3.class,tracer);
+	//Tracer.addTracer(HillMazeRand3.class,tracer);
 	Tracer.addTracer(search,tracer1);
-	Tracer.addTracer(HillMazeRand3.class,tracer1);
+	//Tracer.addTracer(HillMazeRand3.class,tracer1);
 //	Tracer.addTracer(search, tracer);
-//	Tracer.addTracer(HillMAS.class,tracer);
+	//Tracer.addTracer(HillMAS.class,tracer);
 //	Tracer.addTracer(search,tracer1);
-	//Tracer.addTracer(HillMaze.class,tracer1);
+	//Tracer.addTracer(HillMAS.class,tracer1);
+	Tracer.addTracer(HillMaze.class,tracer);
+	Tracer.addTracer(HillMaze.class,tracer1);
+	
 	
 	
 	
