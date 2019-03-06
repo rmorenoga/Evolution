@@ -46,7 +46,7 @@ public class CalcFitnessMazeR extends ObjectiveFunction {
 		int[] orientation = new int[] { 1, 0, 1, 0, 1, 0, 1, 0 };
 
 		// Simulation Parameters
-		int MaxTime = 40;
+		int MaxTime = 120;
 
 		// Pack Integers into one String data signal
 		IntWA NumberandOri = new IntWA(Numberofmodules + 3);
@@ -164,9 +164,9 @@ public class CalcFitnessMazeR extends ObjectiveFunction {
 				// fitness[2] = rfitness[1];
 
 				// *******************************************************************************************************************************
-
+				try {
 				// New Maze Parameters (Already a string)
-				mazeseq = new char[] { 'b' };
+				mazeseq = new char[] {'s', 'l', 's', 's', 'r', 's', 'b'};
 				strSeq.setArray(mazeseq);
 				vrep.simxSetStringSignal(clientID, "Maze", strSeq,
 						vrep.simx_opmode_oneshot_wait);
@@ -187,7 +187,10 @@ public class CalcFitnessMazeR extends ObjectiveFunction {
 				fitness[0] = rfitness[1];
 
 				// *******************************************************************************************************************************
-
+				} catch (InterruptedException e) {
+					System.err.println("InterruptedException: "
+							+ e.getMessage());
+				}
 				// Close connection with the simulator
 				vrep.simxFinish(clientID);
 
@@ -245,12 +248,12 @@ public class CalcFitnessMazeR extends ObjectiveFunction {
 			// Command to open a simulator with no window
 			// qq = new ProcessBuilder(vrepcommand,"-h");
 			qq = new ProcessBuilder(vrepcommand, "-h",
-					"/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt");
+					"scenes/Maze/MazeBuilderR02.ttt");
 			// qq = new
 			// ProcessBuilder("xvfb-run","--auto-servernum","--server-num=1",vrepcommand,
 			// "-h");
 			// Open the simulator from its own directory
-			qq.directory(new File("/home/rodr/V-REP/Vrep" + myRank + "/"));
+			qq.directory(new File("/home/morenoja/V-REP/Vrep" + myRank + "/"));
 			// Specify output file for command line messages of the simulator
 			qq.redirectErrorStream(true);
 			qq.redirectOutput(Redirect.appendTo(log));
@@ -280,7 +283,7 @@ public class CalcFitnessMazeR extends ObjectiveFunction {
 	}
 
 	float[] RunSimulation(remoteApi vrep, int clientID, int MaxTime,
-			int threadnum) {
+			int threadnum) throws InterruptedException {
 
 		long startTime = System.currentTimeMillis();
 		long stopTime = 0;
@@ -289,7 +292,7 @@ public class CalcFitnessMazeR extends ObjectiveFunction {
 		IntW out = new IntW(0);
 		CharWA datastring = new CharWA(1);
 		FloatWA out2 = new FloatWA(3);
-		float[] fitnessout = new float[2];
+		float[] fitnessout = new float[3];
 
 		// Start Simulation
 		int ret = vrep.simxStartSimulation(clientID,
@@ -301,6 +304,9 @@ public class CalcFitnessMazeR extends ObjectiveFunction {
 		out.setValue(0);
 
 		while (out.getValue() == 0) {
+
+			Thread.sleep(100);
+
 			if (vrep.simxGetIntegerSignal(clientID, "finished", out,
 					vrep.simx_opmode_buffer) == vrep.simx_return_ok) {
 				// We received a fitness signal and everything is ok
@@ -351,14 +357,20 @@ public class CalcFitnessMazeR extends ObjectiveFunction {
 		}
 
 		fitnessout[0] = 0;
+
+		float alpha = 0.7f;
+		float beta = 1 - alpha;
+
 		if (out2.getArray()[0] == 0) {
 			// The robot could get out of the maze so the fitness is the time it
-			// spent
-			fitnessout[1] = out2.getArray()[1] * 0.01f;
+			// spent normalized
+			fitnessout[1] = beta * out2.getArray()[1] / MaxTime;
+			fitnessout[2] = 1;
 		} else if (out2.getArray()[1] == 0) {
 			// The robot could not get out of the maze so the fitness is the
 			// distance to goal + the maximum time allowed
-			fitnessout[1] = out2.getArray()[0] + (float) MaxTime * 0.01f;
+			fitnessout[1] = alpha * out2.getArray()[0] + beta * 1.0f;
+			fitnessout[2] = 0;
 		}
 
 		// Return the fitness of the run

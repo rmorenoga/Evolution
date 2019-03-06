@@ -44,12 +44,12 @@ public class Simulation {
 			// Command to open a simulator with no window
 			// qq = new ProcessBuilder(vrepcommand,"-h");
 			qq = new ProcessBuilder(vrepcommand, "-h",
-					"/home/rodr/EvolWork/Modular/Maze/MazeBuilderR01.ttt");
+					"scenes/Maze/MazeBuilderR02.ttt");
 			// qq = new
 			// ProcessBuilder("xvfb-run","--auto-servernum","--server-num=1",vrepcommand,
 			// "-h");
 			// Open the simulator from its own directory
-			qq.directory(new File("/home/rodr/V-REP/Vrep" + myRank + "/"));
+			qq.directory(new File("/home/morenoja/V-REP/Vrep" + myRank + "/"));
 			// Specify output file for command line messages of the simulator
 			qq.redirectErrorStream(true);
 			qq.redirectOutput(Redirect.appendTo(log));
