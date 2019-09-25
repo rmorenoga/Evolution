@@ -29,7 +29,11 @@ public class HyperCubeFromPoint extends HyperCube{
 				fixed = false;
 			}
 		}
-		return repair(result);
+		if(fixed) {
+			return result;
+		}else {
+			return repair(result);
+		}
 	}
 	
 	public double variate(double radius){
