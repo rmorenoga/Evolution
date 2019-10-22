@@ -365,7 +365,7 @@ public class Simulation {
 			// ProcessBuilder("xvfb-run","--auto-servernum","--server-num=1",vrepcommand,
 			// "-h");
 			// Open the simulator from its own directory
-			qq.directory(new File("/home/rodr/V-REP/Vrep" + simnumber + "/"));
+			qq.directory(new File("/home/rodrigo/V-REP/Vrep" + simnumber + "/"));
 			// Specify output file for command line messages of the simulator
 			qq.redirectErrorStream(true);
 			qq.redirectOutput(Redirect.appendTo(log));
